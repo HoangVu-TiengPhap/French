@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2025 by anonymous (http://jsbin.com/faqawowapa/6/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercice - Le Gérondif</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .header, .question-block, .options label {
+            font-family: Arial, sans-serif;
+        }
+
+        .page-content-wrapper {
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .header h1 {
+            text-align: center;
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+
+        #score-container {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color: #fff;
+            color: #007bff;
+            padding: 12px 20px;
+            border: 1px solid #cce5ff;
+            border-radius: 8px;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            font-size: 1.3em;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+            box-sizing: border-box;
+        }
+        #score-container strong {
+            color: #0056b3;
+        }
+
+        #quiz-container {
+        }
+        .question-block {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .question-text {
+            font-size: 1.1em;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .question-translation {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+        .rephrased-sentence {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .rephrased-sentence span {
+            color: #dc3545; /* Màu đỏ cho chỗ trống */
+            font-weight: bold;
+            text-decoration: underline;
+        }
+        .options {
+            max-width: 500px;
+            margin-bottom: 15px;
+        }
+        .options label {
+            display: block;
+            margin-bottom: 10px;
+            cursor: pointer;
+            padding: 8px;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+            font-family: Arial, sans-serif;
+        }
+        .options label:hover {
+                background-color: #e9e9e9;
+        }
+        .feedback {
+            margin-top: 15px;
+            font-weight: bold;
+            display: none;
+            font-family: 'Roboto', sans-serif;
+        }
+        .feedback-explanation {
+            font-weight: normal;
+            font-size: 0.9em;
+            margin-top: 5px;
+            color: #0056b3;
+        }
+        .feedback-correct-answer-text {
+            color: #0056b3;
+        }
+        .correct {
+            color: green;
+        }
+        .incorrect {
+            color: red;
+        }
+        .highlight-correct {
+            background-color: #d4edda !important;
+            border-color: #28a745 !important;
+        }
+        .highlight-incorrect-selected {
+            background-color: #f8d7da !important;
+            border-color: #dc3545 !important;
+        }
+        .validate-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 15px;
+            transition: background-color 0.3s ease;
+        }
+        .validate-btn:hover {
+            background-color: #0056b3;
+        }
+        .validation-error {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 15px;
+            font-weight: normal;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-content-wrapper">
+        <div class="header">
+            <div class="header-top">
+                <p><strong>Enseignant:</strong> Nguyễn Hoàng Vũ</p>
+                <p><strong>Jour de test:</strong> <span id="currentDate"></span></p>
+            </div>
+            <h1>Exercice - Le Gérondif</h1>
+        </div>
+
+        <div id="score-container">
+            Score: <strong id="current-score-value">0</strong> / <strong id="total-questions-value">10</strong>
+        </div>
+
+        <div id="quiz-container">
+            <div class="question-block" id="q1" data-correct-answer="en rougissant">
+                <p class="question-text">1. Tu regardes cette fille et tu rougis.</p>
+                <p class="question-translation"><em>(Bạn nhìn cô gái đó và đỏ mặt.)</em></p>
+                <p class="rephrased-sentence">Viết lại câu: Tu regardes cette fille <span>__________</span>.</p>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q1', 'Động từ thứ hai (&quot;rougir&quot;) diễn tả hành động đồng thời hoặc cách thức, nên được chia ở Gérondif (&quot;en rougissant&quot;).', 'error-q1')">Valider</button>
+                <div class="feedback" id="feedback-q1"></div>
+                <div class="validation-error" id="error-q1">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+            <div class="question-block" id="q2" data-correct-answer="en descendant">
+                <p class="question-text">2. Il est tombé, il descendait les escaliers.</p>
+                <p class="question-translation"><em>(Anh ấy ngã, anh ấy đang xuống cầu thang.)</em></p>
+                <p class="rephrased-sentence">Viết lại câu: Il est tombé <span>__________</span> les escaliers.</p>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q2', 'Động từ thứ hai (&quot;descendre&quot;) diễn tả hành động đồng thời, nên được chia ở Gérondif (&quot;en descendant&quot;).', 'error-q2')">Valider</button>
+                <div class="feedback" id="feedback-q2"></div>
+                <div class="validation-error" id="error-q2">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+            <div class="question-block" id="q3" data-correct-answer="en prenant">
+                <p class="question-text">3. Je chante et je prends ma douche.</p>
+                <p class="question-translation"><em>(Tôi hát và tôi đang tắm.)</em></p>
+                <p class="rephrased-sentence">Viết lại câu: Je chante <span>__________</span> ma douche.</p>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q3', 'Động từ thứ hai (&quot;prendre&quot;) diễn tả hành động đồng thời, nên được chia ở Gérondif (&quot;en prenant&quot;).', 'error-q3')">Valider</button>
+                <div class="feedback" id="feedback-q3"></div>
+                <div class="validation-error" id="error-q3">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+            <div class="question-block" id="q4" data-correct-answer="en courant">
+                <p class="question-text">4. Il est arrivé, il courait.</p>
+                <p class="question-translation"><em>(Anh ấy đã đến, anh ấy đang chạy.)</em></p>
+                <p class="rephrased-sentence">Viết lại câu: Il est arrivé <span>__________</span>.</p>
+            <div class="options">
+                </div>
+            <button class="validate-btn" onclick="checkAnswer('q4', 'Động từ thứ hai (&quot;courir&quot;) diễn tả hành động đồng thời hoặc cách thức, nên được chia ở Gérondif (&quot;en courant&quot;).', 'error-q4')">Valider</button>
+            <div class="feedback" id="feedback-q4"></div>
+            <div class="validation-error" id="error-q4">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+        </div>
+
+            <div class="question-block" id="q5" data-correct-answer="en voyant">
+                <p class="question-text">5. Elle a poussé un cri; elle a vu son mari avec sa meilleure amie.</p>
+                <p class="question-translation"><em>(Cô ấy hét lên; cô ấy đã thấy chồng mình với người bạn thân nhất.)</em></p>
+                <p class="rephrased-sentence">Viết lại câu: Elle a poussé un cri <span>__________</span> son mari avec sa meilleure amie.</p>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q5', 'Động từ thứ hai (&quot;voir&quot;) diễn tả nguyên nhân hoặc hành động đồng thời, nên được chia ở Gérondif (&quot;en voyant&quot;).', 'error-q5')">Valider</button>
+                <div class="feedback" id="feedback-q5"></div>
+                <div class="validation-error" id="error-q5">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+            <div class="question-block" id="q6" data-correct-answer="en conduisant">
+                <p class="question-text">6. Tu ne peux pas lire et conduire en même temps.</p>
+                <p class="question-translation"><em>(Bạn không thể đọc và lái xe cùng lúc.)</em></p>
+                <p class="rephrased-sentence">Viết lại câu: Tu ne peux pas lire <span>__________</span>.</p>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q6', 'Động từ thứ hai (&quot;conduire&quot;) diễn tả hành động đồng thời, nên được chia ở Gérondif (&quot;en conduisant&quot;).', 'error-q6')">Valider</button>
+                <div class="feedback" id="feedback-q6"></div>
+                <div class="validation-error" id="error-q6">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+            <div class="question-block" id="q7" data-correct-answer="en faisant">
+                <p class="question-text">7. Vous avez réussi. Vous avez fait un effort.</p>
+                <p class="question-translation"><em>(Bạn đã thành công. Bạn đã nỗ lực.)</em></p>
+                <p class="rephrased-sentence">Viết lại câu: Vous avez réussi <span>__________</span> un effort.</p>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q7', 'Động từ thứ hai (&quot;faire&quot;) diễn tả cách thức hoặc nguyên nhân, nên được chia ở Gérondif (&quot;en faisant&quot;).', 'error-q7')">Valider</button>
+                <div class="feedback" id="feedback-q7"></div>
+                <div class="validation-error" id="error-q7">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+            <div class="question-block" id="q8" data-correct-answer="en repeignant">
+                <p class="question-text">8. Il a renversé un pot de peinture. Il repeignait sa chambre.</p>
+                <p class="question-translation"><em>(Anh ấy làm đổ một lon sơn. Anh ấy đang sơn lại phòng của mình.)</em></p>
+                <p class="rephrased-sentence">Viết lại câu: Il a renversé un pot de peinture <span>__________</span> sa chambre.</p>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q8', 'Động từ thứ hai (&quot;repeindre&quot;) diễn tả hành động đồng thời, nên được chia ở Gérondif (&quot;en repeignant&quot;).', 'error-q8')">Valider</button>
+                <div class="feedback" id="feedback-q8"></div>
+                <div class="validation-error" id="error-q8">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+            <div class="question-block" id="q9" data-correct-answer="en voulant">
+                <p class="question-text">9. Elle est tombée malade. Elle voulait faire un régime.</p>
+                <p class="question-translation"><em>(Cô ấy bị ốm. Cô ấy muốn ăn kiêng.)</em></p>
+                <p class="rephrased-sentence">Viết lại câu: Elle est tombée malade <span>__________</span> faire un régime.</p>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q9', 'Động từ thứ hai (&quot;vouloir&quot;) diễn tả nguyên nhân hoặc ý định, nên được chia ở Gérondif (&quot;en voulant&quot;).', 'error-q9')">Valider</button>
+                <div class="feedback" id="feedback-q9"></div>
+                <div class="validation-error" id="error-q9">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+            <div class="question-block" id="q10" data-correct-answer="en la mettant">
+                <p class="question-text">10. J'ai cassé la clé : je la mettais dans la serrure.</p>
+                <p class="question-translation"><em>(Tôi làm gãy chìa khóa: tôi đang đặt nó vào ổ khóa.)</em></p>
+                <p class="rephrased-sentence">Viết lại câu: J'ai cassé la clé <span>__________</span> dans la serrure.</p>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q10', 'Động từ thứ hai (&quot;mettre&quot;) diễn tả hành động đồng thời, nên được chia ở Gérondif (&quot;en la mettant&quot;).', 'error-q10')">Valider</button>
+                <div class="feedback" id="feedback-q10"></div>
+                <div class="validation-error" id="error-q10">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+        </div>
+    </div> <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const date = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('currentDate').textContent = date.toLocaleDateString('fr-FR', options);
+            
+            // Định nghĩa các câu hỏi và đáp án cho việc xáo trộn
+            const questionsData = {
+                q1: {
+                    correct: 'en rougissant',
+                    rephrased: 'Tu regardes cette fille <span>__________</span>.',
+                    options: ['en rougissant', 'rougissant', 'en rougit', 'rougit']
+                },
+                q2: {
+                    correct: 'en descendant',
+                    rephrased: 'Il est tombé <span>__________</span> les escaliers.',
+                    options: ['en descendant', 'descendant', 'en descendait', 'descend']
+                },
+                q3: {
+                    correct: 'en prenant',
+                    rephrased: 'Je chante <span>__________</span> ma douche.',
+                    options: ['en prenant', 'prenant', 'en prends', 'prends']
+                },
+                q4: {
+                    correct: 'en courant',
+                    rephrased: 'Il est arrivé <span>__________</span>.',
+                    options: ['en courant', 'courant', 'en courait', 'court']
+                },
+                q5: {
+                    correct: 'en voyant',
+                    rephrased: 'Elle a poussé un cri <span>__________</span> son mari avec sa meilleure amie.',
+                    options: ['en voyant', 'voyant', 'en voit', 'voit']
+                },
+                q6: {
+                    correct: 'en conduisant',
+                    rephrased: 'Tu ne peux pas lire <span>__________</span>.',
+                    options: ['en conduisant', 'conduisant', 'en conduis', 'conduis']
+                },
+                q7: {
+                    correct: 'en faisant',
+                    rephrased: 'Vous avez réussi <span>__________</span> un effort.',
+                    options: ['en faisant', 'faisant', 'en faites', 'faites']
+                },
+                q8: {
+                    correct: 'en repeignant',
+                    rephrased: 'Il a renversé un pot de peinture <span>__________</span> sa chambre.',
+                    options: ['en repeignant', 'repeignant', 'en repeignait', 'repeignait']
+                },
+                q9: {
+                    correct: 'en voulant',
+                    rephrased: 'Elle est tombée malade <span>__________</span> faire un régime.',
+                    options: ['en voulant', 'voulant', 'en voulait', 'veut']
+                },
+                q10: {
+                    correct: 'en la mettant',
+                    rephrased: 'J\'ai cassé la clé <span>__________</span> dans la serrure.',
+                    options: ['en la mettant', 'la mettant', 'en la mettait', 'la met']
+                }
+            };
+
+            // Hàm xáo trộn mảng
+            function shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]]; // Hoán đổi vị trí
+                }
+            }
+
+            // Tạo và xáo trộn các lựa chọn đáp án cho mỗi câu hỏi
+            for (const qId in questionsData) {
+                const questionBlock = document.getElementById(qId);
+                const optionsDiv = questionBlock.querySelector('.options');
+                const rephrasedSentenceDiv = questionBlock.querySelector('.rephrased-sentence');
+                
+                // Hiển thị câu viết lại với chỗ trống
+                rephrasedSentenceDiv.innerHTML = questionsData[qId].rephrased;
+
+                let currentOptions = [...questionsData[qId].options];
+                shuffleArray(currentOptions);
+
+                optionsDiv.innerHTML = '';
+                currentOptions.forEach(optionText => {
+                    const label = document.createElement('label');
+                    const input = document.createElement('input');
+                    input.type = 'radio';
+                    input.name = qId;
+                    input.value = optionText; // Giá trị radio button là dạng Gérondif
+                    label.appendChild(input);
+                    label.appendChild(document.createTextNode(' ' + optionText)); // Chỉ hiển thị dạng Gérondif
+                    optionsDiv.appendChild(label);
+                });
+            }
+
+            updateOverallScore();
+        });
+
+        const answeredQuestions = {};
+        const totalQuestions = 10; 
+
+        const currentScoreValue = document.getElementById('current-score-value');
+        const totalQuestionsValue = document.getElementById('total-questions-value');
+
+        function updateOverallScore() {
+            let correctCount = 0;
+            const allQuestionIds = ['q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8', 'q9', 'q10'];
+            allQuestionIds.forEach(id => {
+                if (answeredQuestions[id] === true) {
+                    correctCount++;
+                }
+            });
+
+            currentScoreValue.textContent = correctCount;
+            totalQuestionsValue.textContent = totalQuestions;
+        }
+
+        function checkAnswer(questionId, explanation, errorDivId) {
+            const questionBlock = document.getElementById(questionId);
+            const selectedOption = questionBlock.querySelector(`input[name="${questionId}"]:checked`);
+            const feedbackDiv = questionBlock.querySelector('.feedback');
+            const optionsLabels = questionBlock.querySelectorAll('.options label');
+            const correctAnswer = questionBlock.dataset.correctAnswer;
+            const errorDiv = document.getElementById(errorDivId);
+
+            document.querySelectorAll('.validation-error').forEach(div => {
+                div.style.display = 'none';
+            });
+
+            optionsLabels.forEach(label => {
+                label.classList.remove('highlight-correct', 'highlight-incorrect-selected');
+            });
+            feedbackDiv.style.display = 'none';
+            feedbackDiv.classList.remove('correct', 'incorrect');
+            feedbackDiv.innerHTML = '';
+
+            if (!selectedOption) {
+                errorDiv.style.display = 'block';
+                setTimeout(() => {
+                    errorDiv.style.display = 'none';
+                }, 3000);
+                return;
+            }
+
+            const userAnswer = selectedOption.value;
+            let feedbackMessage = "";
+
+            optionsLabels.forEach(label => {
+                if (label.querySelector('input').value === correctAnswer) {
+                    label.classList.add('highlight-correct');
+                }
+            });
+
+            if (userAnswer === correctAnswer) {
+                feedbackMessage = "<b>Chính xác!</b> Đây là đáp án đúng.";
+                feedbackDiv.classList.add('correct');
+                answeredQuestions[questionId] = true;
+            } else {
+                feedbackMessage = `<b>Không chính xác.</b> Đáp án đúng là <span class="feedback-correct-answer-text">"${correctAnswer}"</span>.`;
+                feedbackDiv.classList.add('incorrect');
+                selectedOption.closest('label').classList.add('highlight-incorrect-selected');
+                answeredQuestions[questionId] = false;
+            }
+            feedbackDiv.innerHTML = feedbackMessage + `<div class="feedback-explanation">Giải thích: ${explanation}</div>`;
+            feedbackDiv.style.display = 'block';
+
+            updateOverallScore();
+        }
+    </script>
+</body>
+</html>

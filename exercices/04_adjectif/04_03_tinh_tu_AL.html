@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+
+<meta name="robots" content="noindex">
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tính từ đuôi -AL</title>
+    <style>
+        /* CSS để làm cho trang kiểm tra đẹp hơn */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-header {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 0.95em;
+            color: #555;
+        }
+        
+        .info-header p {
+            margin: 0;
+        }
+
+        .quiz-status-bar {
+            position: sticky;
+            top: 0;
+            background-color: #4a5a7b;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            z-index: 1000;
+        }
+
+        .quiz-status-bar h1 {
+            margin: 0;
+            font-size: 1.5em;
+        }
+
+        #score-display, #timer-display {
+            font-size: 1.2em;
+            font-weight: bold;
+            background-color: #ffffff;
+            color: #4a5a7b;
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+
+        .section-title {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+        
+        .question-block {
+            margin-bottom: 25px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background-color: #fdfdfd;
+        }
+
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .question-translation {
+            font-size: 0.9em;
+            font-style: italic;
+            color: #6c757d;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .answers label {
+            display: block;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            max-width: 500px;
+        }
+
+        .answers label:hover {
+            background-color: #e9ecef;
+        }
+
+        .answers input[type="radio"] {
+            margin-right: 10px;
+        }
+        
+        .validate-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            display: block;
+            margin-top: 15px; 
+            transition: background-color 0.3s;
+        }
+
+        .validate-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .validate-btn:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+        
+        .feedback {
+            margin-top: 15px;
+            font-weight: normal;
+            font-size: 0.95em;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .feedback-correct {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .feedback-incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .feedback-warning {
+            background-color: #fffbe6;
+            color: #8a6d3b;
+        }
+
+        .correct-answer {
+            background-color: #d4edda !important;
+            border-color: #c3e6cb !important;
+        }
+
+        .incorrect-answer {
+            background-color: #f8d7da !important;
+            border-color: #f5c6cb !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="quiz-container">
+        <div class="info-header">
+            <p><strong>Enseignant:</strong> Nguyễn Hoàng Vũ</p>
+            <p><strong>Ngày kiểm tra:</strong> <span id="test-date"></span></p>
+        </div>
+
+        <div class="quiz-status-bar">
+            <h1>Tính từ đuôi -AL</h1>
+            <div>
+                <span id="score-display">Điểm: 0 / 10</span>
+                <span id="timer-display">Thời gian: 10:00</span>
+            </div>
+        </div>
+        
+        <div id="all-questions-container">
+            <h2 class="section-title">Phần A: Chuyển sang giống cái số ít</h2>
+            <div class="question-block" id="q1">
+                <p class="question-text">1. C'est le mot principal. C'est l'idée ______.</p>
+                <p class="question-translation">(Đây là từ chính. Đây là ý chính.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q1" value="a"> a) principal</label>
+                    <label><input type="radio" name="q1" value="b"> b) principale</label>
+                    <label><input type="radio" name="q1" value="c"> c) principaux</label>
+                    <label><input type="radio" name="q1" value="d"> d) principales</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(1, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q2">
+                <p class="question-text">2. C'est un groupe international. C'est une société ______.</p>
+                <p class="question-translation">(Đây là một tập đoàn quốc tế. Đây là một công ty quốc tế.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q2" value="a"> a) international</label>
+                    <label><input type="radio" name="q2" value="b"> b) internationaux</label>
+                    <label><input type="radio" name="q2" value="c"> c) internationale</label>
+                    <label><input type="radio" name="q2" value="d"> d) internationales</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(2, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q3">
+                <p class="question-text">3. C'est un jour spécial. C'est une soirée ______.</p>
+                <p class="question-translation">(Đây là một ngày đặc biệt. Đây là một buổi tối đặc biệt.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q3" value="a"> a) spéciale</label>
+                    <label><input type="radio" name="q3" value="b"> b) spécial</label>
+                    <label><input type="radio" name="q3" value="c"> c) spéciaux</label>
+                    <label><input type="radio" name="q3" value="d"> d) spéciales</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(3, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q4">
+                <p class="question-text">4. C'est un artiste génial. C'est une œuvre ______.</p>
+                <p class="question-translation">(Đây là một nghệ sĩ thiên tài. Đây là một tác phẩm thiên tài.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q4" value="a"> a) génial</label>
+                    <label><input type="radio" name="q4" value="b"> b) géniale</label>
+                    <label><input type="radio" name="q4" value="c"> c) géniaux</label>
+                    <label><input type="radio" name="q4" value="d"> d) géniales</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(4, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q5">
+                <p class="question-text">5. C'est un plat régional. C'est une cuisine ______.</p>
+                <p class="question-translation">(Đây là một món ăn địa phương. Đây là một nền ẩm thực địa phương.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q5" value="a"> a) régionals</label>
+                    <label><input type="radio" name="q5" value="b"> b) régionaux</label>
+                    <label><input type="radio" name="q5" value="c"> c) régional</label>
+                    <label><input type="radio" name="q5" value="d"> d) régionale</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(5, 'd')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+
+            <h2 class="section-title">Phần B: Chuyển sang số nhiều</h2>
+            <div class="question-block" id="q6">
+                <p class="question-text">6. Ce sont les mots ______, ce sont les idées ______.</p>
+                <p class="question-translation">(Chúng là những từ chính, chúng là những ý chính.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q6" value="a"> a) principals / principales</label>
+                    <label><input type="radio" name="q6" value="b"> b) principaux / principales</label>
+                    <label><input type="radio" name="q6" value="c"> c) principaux / principale</label>
+                    <label><input type="radio" name="q6" value="d"> d) principals / principale</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(6, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q7">
+                <p class="question-text">7. Ce sont des groupes ______, ce sont des sociétés ______.</p>
+                <p class="question-translation">(Chúng là những tập đoàn quốc tế, chúng là những công ty quốc tế.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q7" value="a"> a) internationals / internationales</label>
+                    <label><input type="radio" name="q7" value="b"> b) internationaux / internationale</label>
+                    <label><input type="radio" name="q7" value="c"> c) internationaux / internationales</label>
+                    <label><input type="radio" name="q7" value="d"> d) internationals / internationals</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(7, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q8">
+                <p class="question-text">8. Ce sont des jours ______, ce sont des soirées ______.</p>
+                <p class="question-translation">(Đó là những ngày đặc biệt, đó là những buổi tối đặc biệt.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q8" value="a"> a) spécials / spéciales</label>
+                    <label><input type="radio" name="q8" value="b"> b) spéciaux / spéciales</label>
+                    <label><input type="radio" name="q8" value="c"> c) spéciaux / spécials</label>
+                    <label><input type="radio" name="q8" value="d"> d) spécials / spéciaux</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(8, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q9">
+                <p class="question-text">9. Ce sont des artistes ______, ce sont des œuvres ______.</p>
+                <p class="question-translation">(Họ là những nghệ sĩ thiên tài, chúng là những tác phẩm thiên tài.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q9" value="a"> a) génials / géniales</label>
+                    <label><input type="radio" name="q9" value="b"> b) géniaux / géniales</label>
+                    <label><input type="radio" name="q9" value="c"> c) géniaux / géniaux</label>
+                    <label><input type="radio" name="q9" value="d"> d) génials / génials</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(9, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q10">
+                <p class="question-text">10. Ce sont des plats ______, ce sont des cuisines ______.</p>
+                <p class="question-translation">(Chúng là những món ăn địa phương, chúng là những nền ẩm thực địa phương.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q10" value="a"> a) régionals / régionales</label>
+                    <label><input type="radio" name="q10" value="b"> b) régionaux / régionales</label>
+                    <label><input type="radio" name="q10" value="c"> c) régionaux / régionals</label>
+                    <label><input type="radio" name="q10" value="d"> d) régionals / régionaux</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(10, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let score = 0;
+        const maxScore = 10;
+        const scoreDisplay = document.getElementById('score-display');
+        let timeInSeconds = 600; // 10 minutes
+        let timerInterval = null;
+
+        const feedbackExplanations = {
+            1: "Chính xác! Tính từ đuôi '-al' ở giống đực khi sang giống cái sẽ thành '-ale'. 'principal' (m) ➞ 'principale' (f).",
+            2: "Chính xác! 'international' (m) ➞ 'internationale' (f).",
+            3: "Chính xác! 'spécial' (m) ➞ 'spéciale' (f).",
+            4: "Chính xác! 'génial' (m) ➞ 'géniale' (f).",
+            5: "Chính xác! 'régional' (m) ➞ 'régionale' (f).",
+            6: "Chính xác! Giống đực số nhiều '-al' ➞ '-aux' (principaux). Giống cái số nhiều '-ale' ➞ '-ales' (principales).",
+            7: "Chính xác! Giống đực số nhiều: 'internationaux'. Giống cái số nhiều: 'internationales'.",
+            8: "Chính xác! Giống đực số nhiều: 'spéciaux'. Giống cái số nhiều: 'spéciales'.",
+            9: "Chính xác! Giống đực số nhiều: 'géniaux'. Giống cái số nhiều: 'géniales'.",
+            10: "Chính xác! Giống đực số nhiều: 'régionaux'. Giống cái số nhiều: 'régionales'."
+        };
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const today = new Date();
+            const day = String(today.getDate()).padStart(2, '0');
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const year = today.getFullYear();
+            document.getElementById('test-date').textContent = `${day}/${month}/${year}`;
+            
+            updateScoreDisplay();
+            startTimer();
+        });
+
+        function startTimer() {
+            const timerDisplay = document.getElementById('timer-display');
+            clearInterval(timerInterval); 
+            
+            timerInterval = setInterval(() => {
+                timeInSeconds--;
+                const minutes = Math.floor(timeInSeconds / 60);
+                const seconds = timeInSeconds % 60;
+                timerDisplay.textContent = `Thời gian: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                if (timeInSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    timerDisplay.textContent = "Hết giờ!";
+                    alert("Hết giờ làm bài!");
+                    document.querySelectorAll('.validate-btn').forEach(btn => btn.disabled = true);
+                }
+            }, 1000);
+        }
+
+        function updateScoreDisplay() {
+            scoreDisplay.textContent = `Điểm: ${score} / ${maxScore}`;
+        }
+        
+        function updateScore(points = 1) {
+            score += points;
+            updateScoreDisplay();
+        }
+
+        function validateRadio(questionNumber, correctAnswer) {
+            const questionBlock = document.getElementById(`q${questionNumber}`);
+            const radios = document.getElementsByName(`q${questionNumber}`);
+            const feedback = questionBlock.querySelector('.feedback');
+            const button = questionBlock.querySelector('.validate-btn');
+            let selectedAnswer = null;
+
+            radios.forEach(radio => { if (radio.checked) { selectedAnswer = radio; } });
+
+            if (selectedAnswer === null) {
+                feedback.textContent = "Vui lòng chọn một đáp án!";
+                feedback.className = 'feedback feedback-warning';
+                return;
+            }
+            
+            button.disabled = true;
+            radios.forEach(radio => radio.disabled = true);
+            const selectedLabel = selectedAnswer.parentElement;
+            const explanation = feedbackExplanations[questionNumber];
+
+            if (selectedAnswer.value === correctAnswer) {
+                feedback.textContent = explanation;
+                feedback.className = 'feedback feedback-correct';
+                selectedLabel.classList.add('correct-answer');
+                updateScore();
+            } else {
+                const cleanedExplanation = explanation.replace("Chính xác! ", "");
+                feedback.innerHTML = `<strong>Không chính xác.</strong> ${cleanedExplanation}<br>Đáp án đúng là lựa chọn <strong>"${correctAnswer.toUpperCase()}"</strong>.`;
+                feedback.className = 'feedback feedback-incorrect';
+                selectedLabel.classList.add('incorrect-answer');
+                radios.forEach(radio => { if (radio.value === correctAnswer) { radio.parentElement.classList.add('correct-answer'); } });
+            }
+        }
+    </script>
+</body>
+</html>

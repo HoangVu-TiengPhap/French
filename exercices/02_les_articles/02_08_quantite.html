@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+
+<meta name="robots" content="noindex">
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cụm từ chỉ số lượng</title>
+    <style>
+        /* CSS để làm cho trang kiểm tra đẹp hơn */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-header {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 0.95em;
+            color: #555;
+        }
+        
+        .info-header p {
+            margin: 0;
+        }
+
+        .quiz-status-bar {
+            position: sticky;
+            top: 0;
+            background-color: #4a5a7b;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            z-index: 1000;
+        }
+
+        .quiz-status-bar h1 {
+            margin: 0;
+            font-size: 1.5em;
+        }
+
+        #score-display, #timer-display {
+            font-size: 1.2em;
+            font-weight: bold;
+            background-color: #ffffff;
+            color: #4a5a7b;
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+        
+        .section-title {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+
+        .question-block {
+            margin-bottom: 25px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background-color: #fdfdfd;
+        }
+
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .question-translation {
+            font-size: 0.9em;
+            font-style: italic;
+            color: #6c757d;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .answers label {
+            display: block;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            max-width: 500px;
+        }
+
+        .answers label:hover {
+            background-color: #e9ecef;
+        }
+
+        .answers input[type="radio"] {
+            margin-right: 10px;
+        }
+        
+        .validate-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            display: block;
+            margin-top: 15px; 
+            transition: background-color 0.3s;
+        }
+
+        .validate-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .validate-btn:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+        
+        .feedback {
+            margin-top: 15px;
+            font-weight: normal;
+            font-size: 0.95em;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .feedback-correct {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .feedback-incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .feedback-warning {
+            background-color: #fffbe6;
+            color: #8a6d3b;
+        }
+
+        .correct-answer {
+            background-color: #d4edda !important;
+            border-color: #c3e6cb !important;
+        }
+
+        .incorrect-answer {
+            background-color: #f8d7da !important;
+            border-color: #f5c6cb !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="quiz-container">
+        <div class="info-header">
+            <p><strong>Enseignant:</strong> Nguyễn Hoàng Vũ</p>
+            
+        </div>
+
+        <div class="quiz-status-bar">
+            <h1>Cụm từ chỉ số lượng</h1>
+            <div>
+                <span id="score-display">Điểm: 0 / 16</span>
+                <span id="timer-display">Thời gian: 16:00</span>
+            </div>
+        </div>
+        
+        <div id="all-questions-container">
+            <h2 class="section-title">Phần A: Trạng từ chỉ số lượng</h2>
+            <div class="question-block" id="q1">
+                <p class="question-text">1. Viết lại câu sau với "un peu" (một chút): "Elle a de la fièvre."</p>
+                <p class="question-translation">(Cô ấy bị sốt.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q1" value="a"> a) Elle a un peu de la fièvre.</label>
+                    <label><input type="radio" name="q1" value="b"> b) Elle a un peu de fièvre.</label>
+                    <label><input type="radio" name="q1" value="c"> c) Elle a un peu fièvre.</label>
+                    <label><input type="radio" name="q1" value="d"> d) Elle a de fièvre un peu.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(1, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q2">
+                <p class="question-text">2. Viết lại câu sau với "assez" (đủ): "Tu as des vêtements."</p>
+                <p class="question-translation">(Bạn có quần áo.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q2" value="a"> a) Tu as assez des vêtements.</label>
+                    <label><input type="radio" name="q2" value="b"> b) Tu as de vêtements assez.</label>
+                    <label><input type="radio" name="q2" value="c"> c) Tu as assez de vêtements.</label>
+                    <label><input type="radio" name="q2" value="d"> d) Tu as assez vêtements.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(2, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q3">
+                <p class="question-text">3. Viết lại câu sau với "assez" (đủ): "Les enfants ont de la place."</p>
+                <p class="question-translation">(Bọn trẻ có chỗ.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q3" value="a"> a) Ils ont assez de la place.</label>
+                    <label><input type="radio" name="q3" value="b"> b) Ils ont de place assez.</label>
+                    <label><input type="radio" name="q3" value="c"> c) Ils ont assez de place.</label>
+                    <label><input type="radio" name="q3" value="d"> d) Ils ont assez place.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(3, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q4">
+                <p class="question-text">4. Viết lại câu sau với "beaucoup" (nhiều): "Ils ont des jouets."</p>
+                <p class="question-translation">(Chúng có đồ chơi.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q4" value="a"> a) Ils ont beaucoup de jouets.</label>
+                    <label><input type="radio" name="q4" value="b"> b) Ils ont beaucoup des jouets.</label>
+                    <label><input type="radio" name="q4" value="c"> c) Ils ont de jouets beaucoup.</label>
+                    <label><input type="radio" name="q4" value="d"> d) Ils ont beaucoup jouets.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(4, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q5">
+                <p class="question-text">5. Viết lại câu sau với "peu" (ít): "Il a de l'argent."</p>
+                <p class="question-translation">(Anh ấy có tiền.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q5" value="a"> a) Il a peu de l'argent.</label>
+                    <label><input type="radio" name="q5" value="b"> b) Il a peu d'argent.</label>
+                    <label><input type="radio" name="q5" value="c"> c) Il a peu argent.</label>
+                    <label><input type="radio" name="q5" value="d"> d) Il a de l'argent peu.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(5, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+             <div class="question-block" id="q6">
+                <p class="question-text">6. Viết lại câu sau với "trop" (quá nhiều): "Il a des problèmes."</p>
+                <p class="question-translation">(Anh ấy có những vấn đề.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q6" value="a"> a) Il a trop des problèmes.</label>
+                    <label><input type="radio" name="q6" value="b"> b) Il a de problèmes trop.</label>
+                    <label><input type="radio" name="q6" value="c"> c) Il a trop de problèmes.</label>
+                    <label><input type="radio" name="q6" value="d"> d) Il a trop problèmes.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(6, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q7">
+                <p class="question-text">7. Viết lại câu sau với "peu" (ít): "Nous avons du temps."</p>
+                <p class="question-translation">(Chúng tôi có thời gian.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q7" value="a"> a) Nous avons peu de temps.</label>
+                    <label><input type="radio" name="q7" value="b"> b) Nous avons peu du temps.</label>
+                    <label><input type="radio" name="q7" value="c"> c) Nous avons de temps peu.</label>
+                    <label><input type="radio" name="q7" value="d"> d) Nous avons peu temps.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(7, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q8">
+                <p class="question-text">8. Viết lại câu sau với "trop" (quá nhiều): "Nous avons du travail."</p>
+                <p class="question-translation">(Chúng tôi có công việc.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q8" value="a"> a) Nous avons de travail trop.</label>
+                    <label><input type="radio" name="q8" value="b"> b) Nous avons trop travail.</label>
+                    <label><input type="radio" name="q8" value="c"> c) Nous avons trop du travail.</label>
+                    <label><input type="radio" name="q8" value="d"> d) Nous avons trop de travail.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(8, 'd')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q9">
+                <p class="question-text">9. Viết lại câu sau với "assez" (đủ): "Est-ce qu'il y a de la neige ?"</p>
+                <p class="question-translation">(Có tuyết không?)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q9" value="a"> a) Est-ce qu'il y a assez de la neige ?</label>
+                    <label><input type="radio" name="q9" value="b"> b) Est-ce qu'il y a assez de neige ?</label>
+                    <label><input type="radio" name="q9" value="c"> c) Est-ce qu'il y a de neige assez ?</label>
+                    <label><input type="radio" name="q9" value="d"> d) Est-ce qu'il y a assez neige ?</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(9, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q10">
+                <p class="question-text">10. Viết lại câu sau với "beaucoup" (nhiều): "Je mets du sel."</p>
+                <p class="question-translation">(Tôi cho muối.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q10" value="a"> a) Je mets beaucoup sel.</label>
+                    <label><input type="radio" name="q10" value="b"> b) Je mets du beaucoup sel.</label>
+                    <label><input type="radio" name="q10" value="c"> c) Je mets beaucoup de sel.</label>
+                    <label><input type="radio" name="q10" value="d"> d) Je mets beaucoup du sel.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(10, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+
+            <h2 class="section-title">Phần B: Danh từ chỉ số lượng/đơn vị</h2>
+            <div class="question-block" id="q11">
+                <p class="question-text">11. Viết lại câu sau với "un morceau" (một mẩu/viên): "Voici du sucre."</p>
+                <p class="question-translation">(Đây là đường.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q11" value="a"> a) Voici un morceau du sucre.</label>
+                    <label><input type="radio" name="q11" value="b"> b) Voici un morceau de sucre.</label>
+                    <label><input type="radio" name="q11" value="c"> c) Voici un morceau sucre.</label>
+                    <label><input type="radio" name="q11" value="d"> d) Voici de sucre un morceau.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(11, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q12">
+                <p class="question-text">12. Viết lại câu sau với "deux bouteilles" (hai chai): "Voici du vin."</p>
+                <p class="question-translation">(Đây là rượu vang.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q12" value="a"> a) Voici deux bouteilles du vin.</label>
+                    <label><input type="radio" name="q12" value="b"> b) Voici deux bouteilles des vin.</label>
+                    <label><input type="radio" name="q12" value="c"> c) Voici des bouteilles de vin.</label>
+                    <label><input type="radio" name="q12" value="d"> d) Voici deux bouteilles de vin.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(12, 'd')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q13">
+                <p class="question-text">13. Viết lại câu sau với "un kilo" (một ký): "Voilà des oranges."</p>
+                <p class="question-translation">(Kia là những quả cam.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q13" value="a"> a) Voilà un kilo d'oranges.</label>
+                    <label><input type="radio" name="q13" value="b"> b) Voilà un kilo des oranges.</label>
+                    <label><input type="radio" name="q13" value="c"> c) Voilà un kilo de oranges.</label>
+                    <label><input type="radio" name="q13" value="d"> d) Voilà un kilo oranges.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(13, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q14">
+                <p class="question-text">14. Viết lại câu sau với "un pot" (một hũ): "Voici de la confiture."</p>
+                <p class="question-translation">(Đây là mứt.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q14" value="a"> a) Voici un pot de la confiture.</label>
+                    <label><input type="radio" name="q14" value="b"> b) Voici un pot confiture.</label>
+                    <label><input type="radio" name="q14" value="c"> c) Voici de la confiture un pot.</label>
+                    <label><input type="radio" name="q14" value="d"> d) Voici un pot de confiture.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(14, 'd')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q15">
+                <p class="question-text">15. Viết lại câu sau với "un litre" (một lít): "Voici de l'huile."</p>
+                <p class="question-translation">(Đây là dầu ăn.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q15" value="a"> a) Voici un litre de l'huile.</label>
+                    <label><input type="radio" name="q15" value="b"> b) Voici un litre d'huile.</label>
+                    <label><input type="radio" name="q15" value="c"> c) Voici un litre huile.</label>
+                    <label><input type="radio" name="q15" value="d"> d) Voici un litre de huile.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(15, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q16">
+                <p class="question-text">16. Viết lại câu sau với "trois tranches" (ba lát): "Voici du pain."</p>
+                <p class="question-translation">(Đây là bánh mì.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q16" value="a"> a) Voici trois tranches pain.</label>
+                    <label><input type="radio" name="q16" value="b"> b) Voici trois tranches du pain.</label>
+                    <label><input type="radio" name="q16" value="c"> c) Voici trois tranches de pain.</label>
+                    <label><input type="radio" name="q16" value="d"> d) Voici des tranches de pain.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(16, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let score = 0;
+        const maxScore = 16;
+        const scoreDisplay = document.getElementById('score-display');
+        let timeInSeconds = 960; // 16 minutes
+        let timerInterval = null;
+
+        const feedbackExplanations = {
+            1: "Chính xác! Sau trạng từ chỉ số lượng 'un peu', mạo từ bộ phận (de la) được thay thế bằng 'de'.",
+            2: "Chính xác! Sau 'assez', mạo từ (des) được thay thế bằng 'de'.",
+            3: "Chính xác! Sau 'assez', mạo từ (de la) được thay thế bằng 'de'.",
+            4: "Chính xác! Sau 'beaucoup', mạo từ (des) được thay thế bằng 'de'.",
+            5: "Chính xác! Sau 'peu', mạo từ (de l') được thay thế bằng 'd'' (vì argent bắt đầu bằng nguyên âm).",
+            6: "Chính xác! Sau 'trop', mạo từ (des) được thay thế bằng 'de'.",
+            7: "Chính xác! Sau 'peu', mạo từ (du) được thay thế bằng 'de'.",
+            8: "Chính xác! Sau 'trop', mạo từ (du) được thay thế bằng 'de'.",
+            9: "Chính xác! Trong câu hỏi với 'assez', mạo từ (de la) cũng được thay thế bằng 'de'.",
+            10: "Chính xác! Sau 'beaucoup', mạo từ (du) được thay thế bằng 'de'.",
+            11: "Chính xác! Sau danh từ chỉ đơn vị/vật chứa như 'un morceau', ta dùng 'de'.",
+            12: "Chính xác! Sau một số lượng cụ thể như 'deux bouteilles', ta dùng 'de'.",
+            13: "Chính xác! Sau 'un kilo', ta dùng 'd'' vì 'oranges' bắt đầu bằng nguyên âm.",
+            14: "Chính xác! Sau danh từ chỉ vật chứa như 'un pot', ta dùng 'de'.",
+            15: "Chính xác! Sau 'un litre', ta dùng 'd'' vì 'huile' bắt đầu bằng âm 'h' câm.",
+            16: "Chính xác! Sau một số lượng cụ thể như 'trois tranches', ta dùng 'de'."
+        };
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const today = new Date();
+            const day = String(today.getDate()).padStart(2, '0');
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const year = today.getFullYear();
+            document.getElementById('test-date').textContent = `${day}/${month}/${year}`;
+            
+            updateScoreDisplay();
+            startTimer();
+        });
+
+        function startTimer() {
+            const timerDisplay = document.getElementById('timer-display');
+            clearInterval(timerInterval); 
+            
+            timerInterval = setInterval(() => {
+                timeInSeconds--;
+                const minutes = Math.floor(timeInSeconds / 60);
+                const seconds = timeInSeconds % 60;
+                timerDisplay.textContent = `Thời gian: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                if (timeInSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    timerDisplay.textContent = "Hết giờ!";
+                    alert("Hết giờ làm bài!");
+                    document.querySelectorAll('.validate-btn').forEach(btn => btn.disabled = true);
+                }
+            }, 1000);
+        }
+
+        function updateScoreDisplay() {
+            scoreDisplay.textContent = `Điểm: ${score} / ${maxScore}`;
+        }
+        
+        function updateScore(points = 1) {
+            score += points;
+            updateScoreDisplay();
+        }
+
+        function validateRadio(questionNumber, correctAnswer) {
+            const questionBlock = document.getElementById(`q${questionNumber}`);
+            const radios = document.getElementsByName(`q${questionNumber}`);
+            const feedback = questionBlock.querySelector('.feedback');
+            const button = questionBlock.querySelector('.validate-btn');
+            let selectedAnswer = null;
+
+            radios.forEach(radio => { if (radio.checked) { selectedAnswer = radio; } });
+
+            if (selectedAnswer === null) {
+                feedback.textContent = "Vui lòng chọn một đáp án!";
+                feedback.className = 'feedback feedback-warning';
+                return;
+            }
+            
+            button.disabled = true;
+            radios.forEach(radio => radio.disabled = true);
+            const selectedLabel = selectedAnswer.parentElement;
+            const explanation = feedbackExplanations[questionNumber];
+
+            if (selectedAnswer.value === correctAnswer) {
+                feedback.textContent = explanation;
+                feedback.className = 'feedback feedback-correct';
+                selectedLabel.classList.add('correct-answer');
+                updateScore();
+            } else {
+                const cleanedExplanation = explanation.replace("Chính xác! ", "");
+                feedback.innerHTML = `<strong>Không chính xác.</strong> ${cleanedExplanation}<br>Đáp án đúng là lựa chọn <strong>"${correctAnswer.toUpperCase()}"</strong>.`;
+                feedback.className = 'feedback feedback-incorrect';
+                selectedLabel.classList.add('incorrect-answer');
+                radios.forEach(radio => { if (radio.value === correctAnswer) { radio.parentElement.classList.add('correct-answer'); } });
+            }
+        }
+    </script>
+</body>
+</html>

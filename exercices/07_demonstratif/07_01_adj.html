@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2025 by anonymous (http://jsbin.com/wevapuxizu/23/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài tập: Tính từ chỉ định</title>
+    <style>
+        /* CSS để làm cho trang kiểm tra đẹp hơn */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-header {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 0.95em;
+            color: #555;
+        }
+        
+        .info-header p {
+            margin: 0;
+        }
+
+        .quiz-status-bar {
+            position: sticky;
+            top: 0;
+            background-color: #4a5a7b;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            z-index: 1000;
+        }
+
+        .quiz-status-bar h1 {
+            margin: 0;
+            font-size: 1.5em;
+        }
+
+        #score-display, #timer-display {
+            font-size: 1.2em;
+            font-weight: bold;
+            background-color: #ffffff;
+            color: #4a5a7b;
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+
+        .section-title {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+        
+        .question-block {
+            margin-bottom: 25px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background-color: #fdfdfd;
+        }
+
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .question-translation {
+            font-size: 0.9em;
+            font-style: italic;
+            color: #6c757d;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .answers label {
+            display: block;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            max-width: 500px;
+        }
+
+        .answers label:hover {
+            background-color: #e9ecef;
+        }
+
+        .answers input[type="radio"] {
+            margin-right: 10px;
+        }
+        
+        .validate-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            display: block;
+            margin-top: 15px; 
+            transition: background-color 0.3s;
+        }
+
+        .validate-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .validate-btn:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+        
+        .feedback {
+            margin-top: 15px;
+            font-weight: normal;
+            font-size: 0.95em;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .feedback-correct {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .feedback-incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .feedback-warning {
+            background-color: #fffbe6;
+            color: #8a6d3b;
+        }
+
+        .correct-answer {
+            background-color: #d4edda !important;
+            border-color: #c3e6cb !important;
+        }
+
+        .incorrect-answer {
+            background-color: #f8d7da !important;
+            border-color: #f5c6cb !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="quiz-container">
+        <div class="info-header">
+            <p><strong>Enseignant:</strong> Nguyễn Hoàng Vũ</p>
+            <p><strong>Ngày kiểm tra:</strong> <span id="test-date"></span></p>
+        </div>
+
+        <div class="quiz-status-bar">
+            <h1>Bài tập: Tính từ chỉ định</h1>
+            <div>
+                <span id="score-display">Điểm: 0 / 19</span>
+                <span id="timer-display">Thời gian: 19:00</span>
+            </div>
+        </div>
+        
+        <div id="all-questions-container">
+            <h2 class="section-title">Phần A: Hòa hợp cơ bản</h2>
+            <div class="question-block" id="q1">
+                <p class="question-text">1. Il regarde ______ tableau et ______ affiches.</p>
+                <p class="question-translation">(Anh ấy xem bức tranh này và những tấm áp phích này.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q1" value="a"> a) ce, ces</label>
+                    <label><input type="radio" name="q1" value="b"> b) cet, ces</label>
+                    <label><input type="radio" name="q1" value="c"> c) ce, cette</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(1, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q2">
+                <p class="question-text">2. Il regarde ______ objet et ______ sculpture.</p>
+                <p class="question-translation">(Anh ấy xem đồ vật này và bức điêu khắc này.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q2" value="a"> a) ce, cette</label>
+                    <label><input type="radio" name="q2" value="b"> b) cet, cette</label>
+                    <label><input type="radio" name="q2" value="c"> c) cet, ce</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(2, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q3">
+                <p class="question-text">3. Elle écoute ______ chanson et ______ opéra.</p>
+                <p class="question-translation">(Cô ấy nghe bài hát này và vở opera này.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q3" value="a"> a) ce, cet</label>
+                    <label><input type="radio" name="q3" value="b"> b) cette, ce</label>
+                    <label><input type="radio" name="q3" value="c"> c) cette, cet</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(3, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q4">
+                <p class="question-text">4. Elle écoute ______ radio et ______ disques.</p>
+                <p class="question-translation">(Cô ấy nghe đài này và những chiếc đĩa này.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q4" value="a"> a) cette, ces</label>
+                    <label><input type="radio" name="q4" value="b"> b) ce, ces</label>
+                    <label><input type="radio" name="q4" value="c"> c) cette, ce</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(4, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+
+            <h2 class="section-title">Phần B: Hoàn thành câu</h2>
+            <div class="question-block" id="q5">
+                <p class="question-text">5. Je n'achète jamais de géraniums; je déteste ______ fleurs.</p>
+                <p class="question-translation">(Tôi không bao giờ mua hoa phong lữ; tôi ghét những bông hoa này.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q5" value="a"> a) ce</label>
+                    <label><input type="radio" name="q5" value="b"> b) cet</label>
+                    <label><input type="radio" name="q5" value="c"> c) cette</label>
+                    <label><input type="radio" name="q5" value="d"> d) ces</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(5, 'd')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q6">
+                <p class="question-text">6. Il a besoin d'un dictionnaire; il ne comprend pas ______ mots.</p>
+                <p class="question-translation">(Anh ấy cần một cuốn từ điển; anh ấy không hiểu những từ này.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q6" value="a"> a) ce</label>
+                    <label><input type="radio" name="q6" value="b"> b) cet</label>
+                    <label><input type="radio" name="q6" value="c"> c) cette</label>
+                    <label><input type="radio" name="q6" value="d"> d) ces</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(6, 'd')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q7">
+                <p class="question-text">7. En ______ moment, ils sont à Venise.</p>
+                <p class="question-translation">(Vào lúc này, họ đang ở Venice.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q7" value="a"> a) ce</label>
+                    <label><input type="radio" name="q7" value="b"> b) cet</label>
+                    <label><input type="radio" name="q7" value="c"> c) cette</label>
+                    <label><input type="radio" name="q7" value="d"> d) ces</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(7, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q8">
+                <p class="question-text">8. ______ après-midi, je dois faire des courses; ______ soir, j'ai des invités.</p>
+                <p class="question-translation">(Chiều nay, tôi phải đi mua sắm; tối nay, tôi có khách.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q8" value="a"> a) Cet, Ce</label>
+                    <label><input type="radio" name="q8" value="b"> b) Ce, Cet</label>
+                    <label><input type="radio" name="q8" value="c"> c) Cette, Ce</label>
+                    <label><input type="radio" name="q8" value="d"> d) Cet, Cette</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(8, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q9">
+                <p class="question-text">9. ______ matin, il gèle; ______ hiver, il fait vraiment froid.</p>
+                <p class="question-translation">(Sáng nay, trời đóng băng; mùa đông này, trời thật sự lạnh.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q9" value="a"> a) Cet, Ce</label>
+                    <label><input type="radio" name="q9" value="b"> b) Ce, Cet</label>
+                    <label><input type="radio" name="q9" value="c"> c) Ce, Ce</label>
+                    <label><input type="radio" name="q9" value="d"> d) Cet, Cet</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(9, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+
+            <h2 class="section-title">Phần C: Với hậu tố "-ci"</h2>
+            <div class="question-block" id="q10">
+                <p class="question-text">10. De ______ côté-ci de la rue, il n'y a pas de boutiques.</p>
+                <p class="question-translation">(Ở phía bên này của con đường, không có cửa hàng nào.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q10" value="a"> a) ce</label>
+                    <label><input type="radio" name="q10" value="b"> b) cet</label>
+                    <label><input type="radio" name="q10" value="c"> c) cette</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(10, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q11">
+                <p class="question-text">11. Le carnaval de Rio commence ______ mois-ci.</p>
+                <p class="question-translation">(Lễ hội hóa trang Rio bắt đầu vào tháng này.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q11" value="a"> a) cet</label>
+                    <label><input type="radio" name="q11" value="b"> b) ce</label>
+                    <label><input type="radio" name="q11" value="c"> c) cette</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(11, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q12">
+                <p class="question-text">12. ______ jours-ci, il pleut beaucoup.</p>
+                <p class="question-translation">(Những ngày này, trời mưa nhiều.)</p>
+                 <div class="answers">
+                    <label><input type="radio" name="q12" value="a"> a) Ce</label>
+                    <label><input type="radio" name="q12" value="b"> b) Ces</label>
+                    <label><input type="radio" name="q12" value="c"> c) Cet</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(12, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q13">
+                <p class="question-text">13. Il n'y a plus de pain et à ______ heure-ci, tous les magasins sont fermés !</p>
+                <p class="question-translation">(Không còn bánh mì và vào giờ này, tất cả các cửa hàng đều đã đóng cửa!)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q13" value="a"> a) ce</label>
+                    <label><input type="radio" name="q13" value="b"> b) cet</label>
+                    <label><input type="radio" name="q13" value="c"> c) cette</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(13, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q14">
+                <p class="question-text">14. Je téléphone, et ______ fois-ci, je fais le bon numéro.</p>
+                <p class="question-translation">(Tôi gọi điện, và lần này, tôi đã gọi đúng số.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q14" value="a"> a) ce</label>
+                    <label><input type="radio" name="q14" value="b"> b) cette</label>
+                    <label><input type="radio" name="q14" value="c"> c) cet</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(14, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            
+            <h2 class="section-title">Phần D: Với hậu tố "-là"</h2>
+            <div class="question-block" id="q15">
+                <p class="question-text">15. ______ homme-là est désagréable.</p>
+                <p class="question-translation">(Người đàn ông đó thật khó chịu.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q15" value="a"> a) Ce</label>
+                    <label><input type="radio" name="q15" value="b"> b) Cet</label>
+                    <label><input type="radio" name="q15" value="c"> c) Cette</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(15, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q16">
+                <p class="question-text">16. ______ gens-là ont l'air bizarre.</p>
+                <p class="question-translation">(Những người đó trông có vẻ kỳ lạ.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q16" value="a"> a) Ce</label>
+                    <label><input type="radio" name="q16" value="b"> b) Ces</label>
+                    <label><input type="radio" name="q16" value="c"> c) Cette</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(16, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q17">
+                <p class="question-text">17. À ______ vitesse-là, nous allons arriver en avance.</p>
+                <p class="question-translation">(Với tốc độ đó, chúng ta sẽ đến sớm.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q17" value="a"> a) ce</label>
+                    <label><input type="radio" name="q17" value="b"> b) cet</label>
+                    <label><input type="radio" name="q17" value="c"> c) cette</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(17, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q18">
+                <p class="question-text">18. À ______ prix-là, ce n'est pas cher !</p>
+                <p class="question-translation">(Với giá đó thì không đắt!)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q18" value="a"> a) ce</label>
+                    <label><input type="radio" name="q18" value="b"> b) ces</label>
+                    <label><input type="radio" name="q18" value="c"> c) cet</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(18, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q19">
+                <p class="question-text">19. Je surveille les enfants, pendant ______ temps-là, tu dors.</p>
+                <p class="question-translation">(Tôi trông bọn trẻ, trong lúc đó, bạn lại ngủ.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q19" value="a"> a) ce</label>
+                    <label><input type="radio" name="q19" value="b"> b) cet</label>
+                    <label><input type="radio" name="q19" value="c"> c) ces</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(19, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let score = 0;
+        const maxScore = 19;
+        const scoreDisplay = document.getElementById('score-display');
+        let timeInSeconds = 1140; // 19 minutes
+        let timerInterval = null;
+
+        const feedbackExplanations = {
+            1: "Chính xác! 'tableau' (m.sg) đi với 'ce'. 'affiches' (f.pl) đi với 'ces'.",
+            2: "Chính xác! 'objet' (m.sg) bắt đầu bằng nguyên âm nên đi với 'cet'. 'sculpture' (f.sg) đi với 'cette'.",
+            3: "Chính xác! 'chanson' (f.sg) đi với 'cette'. 'opéra' (m.sg) bắt đầu bằng nguyên âm nên đi với 'cet'.",
+            4: "Chính xác! 'radio' (f.sg) đi với 'cette'. 'disques' (m.pl) đi với 'ces'.",
+            5: "Chính xác! 'fleurs' là danh từ số nhiều nên dùng 'ces'.",
+            6: "Chính xác! 'mots' là danh từ số nhiều nên dùng 'ces'.",
+            7: "Chính xác! 'moment' là danh từ giống đực số ít nên dùng 'ce'.",
+            8: "Chính xác! 'après-midi' (m.) bắt đầu bằng nguyên âm nên dùng 'cet'. 'soir' (m.) bắt đầu bằng phụ âm nên dùng 'ce'.",
+            9: "Chính xác! 'matin' (m.) bắt đầu bằng phụ âm nên dùng 'ce'. 'hiver' (m.) bắt đầu bằng âm 'h' câm nên dùng 'cet'.",
+            10: "Chính xác! 'côté' là danh từ giống đực số ít nên dùng 'ce'.",
+            11: "Chính xác! 'mois' là danh từ giống đực số ít nên dùng 'ce'.",
+            12: "Chính xác! 'jours' là danh từ số nhiều nên dùng 'ces'.",
+            13: "Chính xác! 'heure' là danh từ giống cái số ít nên dùng 'cette'.",
+            14: "Chính xác! 'fois' là danh từ giống cái số ít nên dùng 'cette'.",
+            15: "Chính xác! 'homme' là danh từ giống đực bắt đầu bằng âm 'h' câm nên dùng 'cet'.",
+            16: "Chính xác! 'gens' là danh từ số nhiều nên dùng 'ces'.",
+            17: "Chính xác! 'vitesse' là danh từ giống cái số ít nên dùng 'cette'.",
+            18: "Chính xác! 'prix' là danh từ giống đực số ít (không đổi ở số nhiều) nên dùng 'ce'.",
+            19: "Chính xác! 'temps' là danh từ giống đực số ít (không đổi ở số nhiều) nên dùng 'ce'."
+        };
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const today = new Date();
+            const day = String(today.getDate()).padStart(2, '0');
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const year = today.getFullYear();
+            document.getElementById('test-date').textContent = `${day}/${month}/${year}`;
+            
+            updateScoreDisplay();
+            startTimer();
+        });
+
+        function startTimer() {
+            const timerDisplay = document.getElementById('timer-display');
+            clearInterval(timerInterval); 
+            
+            timerInterval = setInterval(() => {
+                timeInSeconds--;
+                const minutes = Math.floor(timeInSeconds / 60);
+                const seconds = timeInSeconds % 60;
+                timerDisplay.textContent = `Thời gian: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                if (timeInSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    timerDisplay.textContent = "Hết giờ!";
+                    alert("Hết giờ làm bài!");
+                    document.querySelectorAll('.validate-btn').forEach(btn => btn.disabled = true);
+                }
+            }, 1000);
+        }
+
+        function updateScoreDisplay() {
+            scoreDisplay.textContent = `Điểm: ${score} / ${maxScore}`;
+        }
+        
+        function updateScore(points = 1) {
+            score += points;
+            updateScoreDisplay();
+        }
+
+        function validateRadio(questionNumber, correctAnswer) {
+            const questionBlock = document.getElementById(`q${questionNumber}`);
+            const radios = document.getElementsByName(`q${questionNumber}`);
+            const feedback = questionBlock.querySelector('.feedback');
+            const button = questionBlock.querySelector('.validate-btn');
+            let selectedAnswer = null;
+
+            radios.forEach(radio => { if (radio.checked) { selectedAnswer = radio; } });
+
+            if (selectedAnswer === null) {
+                feedback.textContent = "Vui lòng chọn một đáp án!";
+                feedback.className = 'feedback feedback-warning';
+                return;
+            }
+            
+            button.disabled = true;
+            radios.forEach(radio => radio.disabled = true);
+            const selectedLabel = selectedAnswer.parentElement;
+            const explanation = feedbackExplanations[questionNumber];
+
+            if (selectedAnswer.value === correctAnswer) {
+                feedback.textContent = explanation;
+                feedback.className = 'feedback feedback-correct';
+                selectedLabel.classList.add('correct-answer');
+                updateScore();
+            } else {
+                const cleanedExplanation = explanation.replace("Chính xác! ", "");
+                feedback.innerHTML = `<strong>Không chính xác.</strong> ${cleanedExplanation}<br>Đáp án đúng là lựa chọn <strong>"${correctAnswer.toUpperCase()}"</strong>.`;
+                feedback.className = 'feedback feedback-incorrect';
+                radios.forEach(radio => { if (radio.value === correctAnswer) { radio.parentElement.classList.add('correct-answer'); } });
+            }
+        }
+    </script>
+</body>
+</html>

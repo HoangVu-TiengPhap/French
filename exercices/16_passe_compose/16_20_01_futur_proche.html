@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2025 by anonymous (http://jsbin.com/kigufatifi/10/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài Trắc Nghiệm: Passé Composé / Passé Récent</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .quiz-container {
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px;
+            padding: 30px 40px;
+        }
+
+        .quiz-header {
+            text-align: center;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .quiz-header h1 {
+            color: #2c3e50;
+            margin: 0;
+            font-size: 28px;
+        }
+
+        .info-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            font-size: 16px;
+            color: #555;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        #score-container {
+            background-color: #2ecc71;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+
+        .question-block {
+            margin-bottom: 25px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .question-block:last-of-type {
+            border-bottom: none;
+            margin-bottom: 15px;
+        }
+
+        .question-block .prompt {
+            font-size: 18px;
+            font-weight: 500;
+            color: #34495e;
+            margin-bottom: 5px;
+        }
+
+        .question-block .translation {
+            font-size: 16px;
+            font-style: italic;
+            color: #7f8c8d;
+            margin-top: 5px;
+            margin-bottom: 15px;
+        }
+        
+        .options label {
+            display: block;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .options label:has(input:disabled) {
+            cursor: not-allowed;
+            background-color: #f8f9fa;
+        }
+        .options label:has(input:disabled):hover {
+            border-color: #dee2e6;
+        }
+
+        .options input[type="radio"] {
+            margin-right: 12px;
+            transform: translateY(1px);
+        }
+
+        .check-btn {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #fff;
+            background-color: #3498db;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .check-btn:hover {
+            background-color: #2980b9;
+        }
+        .check-btn:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+
+        .instant-feedback {
+            margin-top: 15px;
+            font-weight: normal;
+            font-size: 15px;
+            padding: 12px;
+            border-radius: 5px;
+            text-align: left;
+            line-height: 1.5;
+        }
+        .feedback-correct {
+            background-color: #d4edda;
+            color: #155724;
+            border-left: 5px solid #28a745;
+        }
+        .feedback-incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+            border-left: 5px solid #dc3545;
+        }
+        .feedback-prompt {
+            background-color: #fff3cd;
+            color: #856404;
+            border-left: 5px solid #ffc107;
+        }
+        
+        .options label.correct {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+            font-weight: bold;
+        }
+
+        .options label.incorrect {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="quiz-container">
+        <header class="quiz-header">
+            <h1>Bài Trắc Nghiệm: Passé Composé hay Passé Récent?</h1>
+            <div class="info-bar">
+                <span>Enseignant: <strong>Nguyễn Hoàng Vũ</strong></span>
+                <div id="score-container">
+                    Điểm số: <span id="score-value">0/5</span>
+                </div>
+            </div>
+        </header>
+
+        <form id="quiz-form" onsubmit="return false;">
+            <div class="question-block">
+                <p class="prompt">1. L'avion (<i>atterrir</i>), les voyageurs se lèvent pour sortir.</p>
+                <p class="translation">(Máy bay (hạ cánh), các hành khách đứng dậy để ra ngoài.)</p>
+                <div class="options">
+                    <label><input type="radio" name="question1" value="A"> a atterri</label>
+                    <label><input type="radio" name="question1" value="B"> est atterri</label>
+                    <label><input type="radio" name="question1" value="C"> vient d'atterrir</label>
+                </div>
+                <button type="button" class="check-btn">Vérifier</button>
+                <div class="instant-feedback"></div>
+            </div>
+            
+            <div class="question-block">
+                <p class="prompt">2. Ce matin, l'avion (<i>décoller</i>) avec trente cinq minutes de retard.</p>
+                <p class="translation">(Sáng nay, máy bay (cất cánh) trễ ba mươi lăm phút.)</p>
+                <div class="options">
+                    <label><input type="radio" name="question2" value="A"> a décollé</label>
+                    <label><input type="radio" name="question2" value="B"> vient de décoller</label>
+                    <label><input type="radio" name="question2" value="C"> décollait</label>
+                </div>
+                <button type="button" class="check-btn">Vérifier</button>
+                <div class="instant-feedback"></div>
+            </div>
+            
+            <div class="question-block">
+                <p class="prompt">3. Le train (<i>partir</i>), je regarde le dernier wagon disparaître.</p>
+                <p class="translation">(Tàu (rời đi), tôi nhìn toa cuối cùng biến mất.)</p>
+                <div class="options">
+                    <label><input type="radio" name="question3" value="A"> est parti</label>
+                    <label><input type="radio" name="question3" value="B"> vient de partir</label>
+                    <label><input type="radio" name="question3" value="C"> a parti</label>
+                </div>
+                <button type="button" class="check-btn">Vérifier</button>
+                <div class="instant-feedback"></div>
+            </div>
+
+            <div class="question-block">
+                <p class="prompt">4. Elle achète sa première voiture. Elle (<i>passer</i>) son permis de conduire.</p>
+                <p class="translation">(Cô ấy mua chiếc xe hơi đầu tiên. Cô ấy (thi đỗ) bằng lái xe.)</p>
+                <div class="options">
+                    <label><input type="radio" name="question4" value="A"> a passé</label>
+                    <label><input type="radio" name="question4" value="B"> est passée</label>
+                    <label><input type="radio" name="question4" value="C"> vient de passer</label>
+                </div>
+                <button type="button" class="check-btn">Vérifier</button>
+                <div class="instant-feedback"></div>
+            </div>
+
+            <div class="question-block">
+                <p class="prompt">5. Le public du stade crie : un joueur (<i>marquer</i>) un but.</p>
+                <p class="translation">(Khán giả trên sân vận động la hét: một cầu thủ (ghi) một bàn thắng.)</p>
+                <div class="options">
+                    <label><input type="radio" name="question5" value="A"> vient de marquer</label>
+                    <label><input type="radio" name="question5" value="B"> a marqué</label>
+                    <label><input type="radio" name="question5" value="C"> est marqué</label>
+                </div>
+                <button type="button" class="check-btn">Vérifier</button>
+                <div class="instant-feedback"></div>
+            </div>
+
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const quizData = [
+                { // Q1
+                    correct: 'C',
+                    feedback: {
+                        A: "<b>Chưa chính xác.</b> Mặc dù 'a atterri' (Passé Composé) không sai về ngữ pháp, nhưng vế sau 'les voyageurs se lèvent' (hành khách đứng dậy) cho thấy một hệ quả tức thời. Do đó, Passé Récent diễn tả hành động 'vừa mới xảy ra' sẽ phù hợp hơn.",
+                        B: "<b>Không đúng.</b> Động từ 'atterrir' (hạ cánh) chia với phụ trợ 'avoir', không phải 'être'.",
+                        C: "<b>Chính xác!</b> Hành động máy bay hạ cánh vừa mới xảy ra, dẫn đến hệ quả ngay lập tức là hành khách đứng dậy. Cấu trúc 'venir de + động từ nguyên thể' (Passé Récent) là lựa chọn tốt nhất để diễn tả sự gần gũi về mặt thời gian này."
+                    }
+                },
+                { // Q2
+                    correct: 'A',
+                    feedback: {
+                        A: "<b>Chính xác!</b> 'Ce matin' (sáng nay) là một mốc thời gian đã qua trong ngày. Passé Composé được dùng để kể lại một sự kiện đã xảy ra và kết thúc trong quá khứ.",
+                        B: "<b>Chưa phù hợp.</b> 'vient de décoller' (vừa mới cất cánh) chỉ dùng khi hành động xảy ra ngay trước thời điểm nói. 'Ce matin' là một khoảng thời gian rộng hơn, nên Passé Composé phù hợp hơn.",
+                        C: "<b>Không đúng.</b> 'décollait' là thì Imparfait, dùng để mô tả một hành động kéo dài hoặc bối cảnh trong quá khứ, không phù hợp để kể lại một sự kiện đơn lẻ đã kết thúc."
+                    }
+                },
+                { // Q3
+                    correct: 'B',
+                    feedback: {
+                        A: "<b>Chưa chính xác.</b> 'est parti' (Passé Composé) đúng về ngữ pháp, nhưng vế sau 'je regarde...' (tôi đang nhìn...) cho thấy một hành động đang diễn ra ngay sau sự kiện tàu rời đi. Passé Récent thể hiện sự kết nối tức thời này tốt hơn.",
+                        B: "<b>Chính xác!</b> Hành động tàu 'vừa mới rời đi' là nguyên nhân trực tiếp của việc 'tôi đang nhìn toa cuối biến mất'. Passé Récent diễn tả hoàn hảo mối liên hệ này.",
+                        C: "<b>Không đúng.</b> Động từ 'partir' (rời đi) thuộc nhóm động từ chia với phụ trợ 'être', không phải 'avoir'."
+                    }
+                },
+                { // Q4
+                    correct: 'C',
+                    feedback: {
+                        A: "<b>Chưa phù hợp.</b> 'a passé' (Passé Composé) có nghĩa là cô ấy đã thi bằng lái xe vào một thời điểm nào đó trong quá khứ. Tuy nhiên, vế trước 'Elle achète sa première voiture' (Cô ấy mua chiếc xe đầu tiên) gợi ý một sự liên quan trực tiếp và gần gũi.",
+                        B: "<b>Không đúng.</b> Động từ 'passer' khi có nghĩa là 'trải qua, thi (một kỳ thi)' như 'passer un examen' thì sẽ chia với 'avoir'. Nó chỉ chia với 'être' khi có nghĩa là 'đi qua' (ví dụ: Elle est passée chez moi - Cô ấy đã ghé qua nhà tôi).",
+                        C: "<b>Chính xác!</b> Cô ấy mua xe vì cô ấy 'vừa mới thi đỗ' bằng lái. Passé Récent thể hiện mối quan hệ nhân quả gần gũi và tức thời giữa hai hành động."
+                    }
+                },
+                { // Q5
+                    correct: 'A',
+                    feedback: {
+                        A: "<b>Chính xác!</b> Khán giả la hét (hiện tại) vì một cầu thủ 'vừa mới ghi bàn'. Passé Récent diễn tả hoàn hảo nguyên nhân tức thời của hành động đang diễn ra.",
+                        B: "<b>Chưa chính xác.</b> 'a marqué' (Passé Composé) đúng ngữ pháp nhưng không thể hiện được sự tức thời bằng Passé Récent. Hành động la hét của khán giả xảy ra ngay lập tức sau khi bàn thắng được ghi.",
+                        C: "<b>Không đúng.</b> Động từ 'marquer' (ghi bàn) chia với phụ trợ 'avoir'."
+                    }
+                }
+            ];
+
+            const checkButtons = document.querySelectorAll('.check-btn');
+            const scoreValueElement = document.getElementById('score-value');
+            const totalQuestions = quizData.length;
+            let currentScore = 0;
+
+            checkButtons.forEach((button, index) => {
+                button.addEventListener('click', () => {
+                    const questionBlock = button.closest('.question-block');
+                    const selectedOption = questionBlock.querySelector(`input[name="question${index + 1}"]:checked`);
+                    const feedbackElement = questionBlock.querySelector('.instant-feedback');
+
+                    if (!selectedOption) {
+                        feedbackElement.innerHTML = "Veuillez sélectionner une réponse avant de vérifier.";
+                        feedbackElement.className = 'instant-feedback feedback-prompt';
+                        return;
+                    }
+
+                    const userAnswer = selectedOption.value;
+                    const questionData = quizData[index];
+                    const correctAnswer = questionData.correct;
+                    const feedbackMessage = questionData.feedback[userAnswer];
+                    const labels = questionBlock.querySelectorAll('.options label');
+                    
+                    const radioButtons = questionBlock.querySelectorAll('input[type="radio"]');
+                    radioButtons.forEach(radio => radio.disabled = true);
+                    button.disabled = true;
+                    
+                    feedbackElement.innerHTML = feedbackMessage;
+
+                    if (userAnswer === correctAnswer) {
+                        currentScore++;
+                        selectedOption.parentElement.classList.add('correct');
+                        feedbackElement.classList.add('feedback-correct');
+                    } else {
+                        selectedOption.parentElement.classList.add('incorrect');
+                        feedbackElement.classList.add('feedback-incorrect');
+                        labels.forEach(label => {
+                            if (label.querySelector('input').value === correctAnswer) {
+                                label.classList.add('correct');
+                            }
+                        });
+                    }
+
+                    scoreValueElement.textContent = `${currentScore}/${totalQuestions}`;
+                });
+            });
+        });
+    </script>
+</body>
+</html>

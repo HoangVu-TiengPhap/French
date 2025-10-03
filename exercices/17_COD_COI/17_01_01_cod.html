@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2025 by anonymous (http://jsbin.com/fizagacuno/2/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+<head>
+<title>Bài tập điền COD thích hợp</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f4f8;
+    color: #333;
+  }
+  header {
+    background-color: #e0e7ed;
+    color: #2c3e50;
+    padding: 15px 20px;
+    border-bottom: 2px solid #c0d0e0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  header h2, header p {
+    margin: 0;
+    font-size: 1.1em;
+    color: #333;
+  }
+  h1 {
+    color: #2c3e50;
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 20px;
+  }
+  .container {
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  .question-block {
+    margin-bottom: 25px;
+    padding: 20px;
+    border: 1px solid #d0dbe4;
+    border-radius: 8px;
+    background-color: #fdfefe;
+  }
+  .question {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 1.1em;
+    color: #34495e;
+  }
+  .translation {
+    font-style: italic;
+    color: #666;
+    margin-bottom: 15px;
+    font-size: 0.95em;
+  }
+  .options label {
+    display: block;
+    margin-bottom: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: color 0.3s ease;
+    padding: 5px 0;
+  }
+  .options label:hover {
+    color: #5a7d9a;
+  }
+  .options input[type="radio"] {
+    margin-right: 10px;
+    transform: scale(1.1);
+  }
+  .options label.correct-highlight {
+    background-color: #d4edda;
+    border: 2px solid #28a745;
+    border-radius: 5px;
+    padding: 5px;
+    color: #1a7e37;
+  }
+  .feedback {
+    margin-top: 15px;
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 5px;
+    width: calc(100% - 24px);
+    box-sizing: border-box;
+    display: none;
+  }
+  .feedback.active {
+      display: block;
+  }
+  .correct {
+    background-color: #e6ffe6;
+    color: #1a7e37;
+    border: 1px solid #28a745;
+  }
+  .incorrect {
+    background-color: #ffe6e6;
+    color: #dc3545;
+    border: 1px solid #dc3545;
+  }
+  .warning {
+      background-color: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffeeba;
+  }
+  .explanation {
+    font-size: 0.9em;
+    font-weight: normal;
+    color: #555;
+    margin-top: 8px;
+    font-style: italic;
+  }
+  .correct-answer-display {
+    color: dodgerblue; /* Xanh dương tươi */
+    font-weight: bold;
+    margin-top: 5px;
+    display: block;
+  }
+  .validate-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-top: 15px;
+    transition: background-color 0.3s ease;
+  }
+  .validate-btn:hover {
+    background-color: #45a049;
+  }
+  .validate-btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+  #score-area {
+    text-align: center;
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #e6f7ff;
+    border: 1px solid #b3e0ff;
+    border-radius: 8px;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #0056b3;
+    display: none;
+  }
+  .complete-test-btn {
+    display: block;
+    width: fit-content;
+    margin: 30px auto;
+    background-color: #007bff;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease;
+  }
+  .complete-test-btn:hover {
+    background-color: #0056b3;
+  }
+  @media (max-width: 600px) {
+    .container {
+      margin: 15px;
+      padding: 15px;
+    }
+    header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    header h2, header p {
+      font-size: 1em;
+      margin-bottom: 5px;
+    }
+    .question, .translation, .options label, .feedback, .validate-btn, .complete-test-btn {
+      font-size: 0.9em;
+    }
+    .feedback {
+      padding: 6px 10px;
+      width: calc(100% - 20px);
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h2>Enseignant: Nguyễn Hoàng Vũ</h2>
+  <p>Ngày: 07/07/2025</p>
+</header>
+
+<div class="container">
+  <h1>Điền Bổ ngữ trực tiếp (COD) thích hợp vào chỗ trống:</h1>
+
+  <div class="question-block" id="q1-block">
+    <div class="question">1. Ils écoutent ...</div>
+    <div class="translation">Họ nghe ...</div>
+    <div class="options" id="options-q1"></div>
+    <button class="validate-btn" onclick="checkAnswer('q1')">Valider</button>
+    <div class="feedback" id="feedback1"></div>
+  </div>
+
+  <div class="question-block" id="q2-block">
+    <div class="question">2. Nous avons visité ...</div>
+    <div class="translation">Chúng tôi đã thăm ...</div>
+    <div class="options" id="options-q2"></div>
+    <button class="validate-btn" onclick="checkAnswer('q2')">Valider</button>
+    <div class="feedback" id="feedback2"></div>
+  </div>
+
+  <div class="question-block" id="q3-block">
+    <div class="question">3. Tu n'aimes pas ...</div>
+    <div class="translation">Bạn không thích ...</div>
+    <div class="options" id="options-q3"></div>
+    <button class="validate-btn" onclick="checkAnswer('q3')">Valider</button>
+    <div class="feedback" id="feedback3"></div>
+  </div>
+
+  <div class="question-block" id="q4-block">
+    <div class="question">4. Je lirai ...</div>
+    <div class="translation">Tôi sẽ đọc ...</div>
+    <div class="options" id="options-q4"></div>
+    <button class="validate-btn" onclick="checkAnswer('q4')">Valider</button>
+    <div class="feedback" id="feedback4"></div>
+  </div>
+
+  <div class="question-block" id="q5-block">
+    <div class="question">5. Elle finissait ...</div>
+    <div class="translation">Cô ấy (đang) hoàn thành ...</div>
+    <div class="options" id="options-q5"></div>
+    <button class="validate-btn" onclick="checkAnswer('q5')">Valider</button>
+    <div class="feedback" id="feedback5"></div>
+  </div>
+
+  <button class="complete-test-btn" onclick="showScore()">Hoàn thành bài kiểm tra</button>
+
+  <div id="score-area">
+    <p>Bạn đã trả lời đúng <span id="correct-count">0</span> trên tổng số <span id="total-questions">0</span> câu.</p>
+  </div>
+
+</div>
+
+<script>
+  // Các COD có sẵn để lựa chọn
+  const availableCODs = [
+    { text: "le musée Picasso", type: "masculin singulier" },
+    { text: "cet acteur", type: "masculin singulier (voyelle)" },
+    { text: "de la musique", type: "féminin singulier" },
+    { text: "ses études", type: "pluriel" },
+    { text: "un bon roman", type: "masculin singulier" }
+  ];
+
+  // Định nghĩa dữ liệu cho mỗi câu hỏi
+  const questionsData = {
+    q1: {
+      original: "Ils écoutent ...",
+      translation: "Họ nghe ...",
+      // Động từ 'écouter' có thể đi với 'de la musique' hoặc các COD khác
+      // COD phù hợp: de la musique (là thứ họ nghe)
+      correctCod: "de la musique",
+      wrongCodCandidates: ["le musée Picasso", "cet acteur", "ses études", "un bon roman"],
+      explanation: "Động từ 'écouter' (nghe) thường đi với COD chỉ vật hoặc một thể loại (như âm nhạc). 'De la musique' là COD phù hợp."
+    },
+    q2: {
+      original: "Nous avons visité ...",
+      translation: "Chúng tôi đã thăm ...",
+      // Động từ 'visiter' thường đi với địa điểm/nơi chốn
+      // COD phù hợp: le musée Picasso (là nơi họ thăm)
+      correctCod: "le musée Picasso",
+      wrongCodCandidates: ["cet acteur", "de la musique", "ses études", "un bon roman"],
+      explanation: "Động từ 'visiter' (thăm) đi với COD là một địa điểm. 'Le musée Picasso' là COD phù hợp."
+    },
+    q3: {
+      original: "Tu n'aimes pas ...",
+      translation: "Bạn không thích ...",
+      // Động từ 'aimer' có thể đi với nhiều loại COD
+      // COD phù hợp: cet acteur (thích ai đó) hoặc un bon roman (thích cái gì đó).
+      // Để tạo sự phân biệt, ta chọn COD khác với câu 1, 2, 4, 5
+      correctCod: "cet acteur",
+      wrongCodCandidates: ["le musée Picasso", "de la musique", "ses études", "un bon roman"],
+      explanation: "Động từ 'aimer' (thích) đi với COD là người hoặc vật. 'Cet acteur' là COD phù hợp."
+    },
+    q4: {
+      original: "Je lirai ...",
+      translation: "Tôi sẽ đọc ...",
+      // Động từ 'lire' (đọc) thường đi với sách, báo, tiểu thuyết
+      // COD phù hợp: un bon roman (là thứ sẽ được đọc)
+      correctCod: "un bon roman",
+      wrongCodCandidates: ["le musée Picasso", "cet acteur", "de la musique", "ses études"],
+      explanation: "Động từ 'lire' (đọc) đi với COD là một ấn phẩm. 'Un bon roman' là COD phù hợp."
+    },
+    q5: {
+      original: "Elle finissait ...",
+      translation: "Cô ấy (đang) hoàn thành ...",
+      // Động từ 'finir' (hoàn thành) thường đi với một công việc, nhiệm vụ, học tập
+      // COD phù hợp: ses études (là thứ sẽ được hoàn thành)
+      correctCod: "ses études",
+      wrongCodCandidates: ["le musée Picasso", "cet acteur", "de la musique", "un bon roman"],
+      explanation: "Động từ 'finir' (hoàn thành) đi với COD là một nhiệm vụ hoặc quá trình. 'Ses études' là COD phù hợp."
+    }
+  };
+
+  let correctAnswersCount = 0;
+  const totalQuestions = Object.keys(questionsData).length;
+  const answeredQuestions = new Set(); 
+
+  // Hàm xáo trộn mảng Fisher-Yates
+  function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+      }
+  }
+
+  // Hàm tạo và hiển thị các lựa chọn COD cho mỗi câu hỏi
+  function generateOptions() {
+    for (const qKey in questionsData) {
+      const qData = questionsData[qKey];
+      const optionsDiv = document.getElementById(`options-${qKey}`);
+      optionsDiv.innerHTML = ''; 
+
+      // Tạo mảng COD cho câu hỏi này: 1 COD đúng + 2 COD sai ngẫu nhiên
+      const correctOption = { text: qData.correctCod, isCorrect: true };
+      
+      const wrongOptionsPool = availableCODs.filter(cod => cod.text !== qData.correctCod);
+      shuffleArray(wrongOptionsPool);
+      const selectedWrongOptions = wrongOptionsPool.slice(0, 2).map(cod => ({ text: cod.text, isCorrect: false }));
+
+      const allOptions = [correctOption, ...selectedWrongOptions];
+      shuffleArray(allOptions); 
+
+      allOptions.forEach((option, index) => {
+        const optionId = `${qKey}-${String.fromCharCode(97 + index)}`; 
+        const label = document.createElement('label');
+        label.setAttribute('for', optionId);
+        
+        const input = document.createElement('input');
+        input.type = 'radio';
+        input.name = qKey;
+        input.value = optionId;
+        input.id = optionId;
+        
+        label.appendChild(input);
+        label.appendChild(document.createTextNode(option.text));
+        
+        if (option.isCorrect) {
+          label.dataset.isCorrect = "true";
+          questionsData[qKey].correctOptionId = optionId; 
+        }
+
+        optionsDiv.appendChild(label);
+      });
+    }
+  }
+
+  // Call generateOptions when the page loads
+  document.addEventListener('DOMContentLoaded', generateOptions);
+
+
+  function checkAnswer(questionName) {
+    if (answeredQuestions.has(questionName)) {
+        return; 
+    }
+
+    const selectedOptionInput = document.querySelector(`input[name="${questionName}"]:checked`);
+    const feedbackDiv = document.getElementById(`feedback${questionName.substring(1)}`); 
+    const validateButton = event.target; 
+    
+    feedbackDiv.classList.remove('active', 'correct', 'incorrect', 'warning');
+    feedbackDiv.innerHTML = '';
+
+
+    if (!selectedOptionInput) {
+        feedbackDiv.textContent = 'Vui lòng chọn một đáp án trước khi kiểm tra.';
+        feedbackDiv.classList.add('active', 'warning');
+        return;
+    }
+
+    const qData = questionsData[questionName]; 
+
+    const correctAnswerLabel = document.querySelector(`label[for="${qData.correctOptionId}"]`);
+    if (correctAnswerLabel) {
+      correctAnswerLabel.classList.add('correct-highlight');
+    }
+
+    answeredQuestions.add(questionName);
+    
+    const selectedOptionLabel = selectedOptionInput.parentElement;
+    
+    if (selectedOptionLabel.dataset.isCorrect === "true") {
+      feedbackDiv.innerHTML = '<strong>Chính xác!</strong><br><span class="explanation">' + qData.explanation + '</span>';
+      feedbackDiv.classList.add('active', 'correct');
+      correctAnswersCount++;
+    } else {
+      const correctAnswerText = correctAnswerLabel ? correctAnswerLabel.textContent.trim() : '';
+      feedbackDiv.innerHTML = '<strong>Không chính xác.</strong><br><span class="correct-answer-display">Đáp án đúng là: ' + correctAnswerText + '</span><br><span class="explanation">' + qData.explanation + '</span>';
+      feedbackDiv.classList.add('active', 'incorrect');
+    }
+    
+    const radioButtons = document.querySelectorAll(`input[name="${questionName}"]`);
+    radioButtons.forEach(radio => radio.disabled = true);
+    validateButton.disabled = true;
+  }
+
+  function showScore() {
+    document.getElementById('correct-count').textContent = correctAnswersCount;
+    document.getElementById('total-questions').textContent = totalQuestions;
+    document.getElementById('score-area').style.display = 'block';
+  }
+</script>
+
+</body>
+</html>

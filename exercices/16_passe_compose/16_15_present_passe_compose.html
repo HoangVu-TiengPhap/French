@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+
+<meta name="robots" content="noindex">
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phủ định ở Passé Composé</title>
+    <style>
+        /* CSS để làm cho trang kiểm tra đẹp hơn */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-header {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 0.95em;
+            color: #555;
+        }
+        
+        .info-header p {
+            margin: 0;
+        }
+
+        .quiz-status-bar {
+            position: sticky;
+            top: 0;
+            background-color: #4a5a7b;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            z-index: 1000;
+        }
+
+        .quiz-status-bar h1 {
+            margin: 0;
+            font-size: 1.5em;
+        }
+
+        #score-display, #timer-display {
+            font-size: 1.2em;
+            font-weight: bold;
+            background-color: #ffffff;
+            color: #4a5a7b;
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+        
+        .question-block {
+            margin-bottom: 25px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background-color: #fdfdfd;
+        }
+
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+            font-style: italic;
+            color: #34495e;
+        }
+
+        .question-translation {
+            font-size: 0.9em;
+            font-style: italic;
+            color: #6c757d;
+            margin-top: -10px;
+            margin-bottom: 15px;
+        }
+
+        .answers label {
+            display: block;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .answers label:hover {
+            background-color: #e9ecef;
+        }
+
+        .answers input[type="radio"] {
+            margin-right: 10px;
+        }
+        
+        .validate-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            display: block;
+            margin-top: 15px; 
+            transition: background-color 0.3s;
+        }
+
+        .validate-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .validate-btn:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+        
+        .feedback {
+            margin-top: 15px;
+            font-weight: normal;
+            font-size: 0.95em;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .feedback-correct {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .feedback-incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .feedback-warning {
+            background-color: #fffbe6;
+            color: #8a6d3b;
+        }
+
+        .correct-answer {
+            background-color: #d4edda !important;
+            border-color: #c3e6cb !important;
+        }
+
+        .incorrect-answer {
+            background-color: #f8d7da !important;
+            border-color: #f5c6cb !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="quiz-container">
+        <div class="info-header">
+            <p><strong>Enseignant:</strong> Nguyễn Hoàng Vũ</p>
+          
+        </div>
+
+        <div class="quiz-status-bar">
+            <h1>Phủ định ở Passé Composé</h1>
+            <div>
+                <span id="score-display">Điểm: 0 / 10</span>
+            
+            </div>
+        </div>
+        
+        <div id="all-questions-container">
+            <div class="question-block" id="q1">
+                <p class="question-text">1. Chọn dạng Passé Composé đúng: "Elle ne sort pas ce matin. Elle ne travaille pas."</p>
+                <p class="question-translation">(Sáng nay cô ấy không ra ngoài. Cô ấy không làm việc.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q1" value="a"> a) Elle n'est pas sortie ce matin. Elle n'a pas travaillé.</label>
+                    <label><input type="radio" name="q1" value="b"> b) Elle n'a pas sortie ce matin. Elle n'est pas travaillée.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(1, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q2">
+                <p class="question-text">2. Chọn dạng Passé Composé đúng: "Elle n'a pas de chance dans la vie. Elle n'est pas heureuse."</p>
+                <p class="question-translation">(Cô ấy không có may mắn trong cuộc sống. Cô ấy không hạnh phúc.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q2" value="a"> a) Elle n'a eu aucune chance. Elle n'a pas été heureuse.</label>
+                    <label><input type="radio" name="q2" value="b"> b) Elle n'a pas eu de chance. Elle n'a pas été heureuse.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(2, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q3">
+                <p class="question-text">3. Chọn dạng Passé Composé đúng: "Il ne fume plus depuis ce jour-là."</p>
+                <p class="question-translation">(Anh ấy không hút thuốc nữa kể từ ngày đó.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q3" value="a"> a) Il n'a plus fumé depuis ce jour-là.</label>
+                    <label><input type="radio" name="q3" value="b"> b) Il n'a pas plus fumé depuis ce jour-là.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(3, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q4">
+                <p class="question-text">4. Chọn dạng Passé Composé đúng: "Je ne vois jamais de fantômes. Ils ne viennent jamais chez moi."</p>
+                <p class="question-translation">(Tôi không bao giờ thấy ma. Chúng không bao giờ đến nhà tôi.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q4" value="a"> a) Je n'ai jamais vu de fantômes. Ils ne sont jamais venus chez moi.</label>
+                    <label><input type="radio" name="q4" value="b"> b) Je n'ai jamais vu de fantômes. Ils n'ont jamais venus chez moi.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(4, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q5">
+                <p class="question-text">5. Chọn dạng Passé Composé đúng: "Je ne comprends pas encore."</p>
+                <p class="question-translation">(Tôi vẫn chưa hiểu.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q5" value="a"> a) Je n'ai pas encore compris.</label>
+                    <label><input type="radio" name="q5" value="b"> b) Je n'ai encore pas compris.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(5, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+             <div class="question-block" id="q6">
+                <p class="question-text">6. Chọn dạng Passé Composé đúng: "Il ne voit rien, il n'entend rien, il ne veut rien savoir."</p>
+                <p class="question-translation">(Anh ấy không thấy gì, không nghe gì, không muốn biết gì cả.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q6" value="a"> a) Il n'a rien vu, il n'a rien entendu, il n'a rien voulu savoir.</label>
+                    <label><input type="radio" name="q6" value="b"> b) Il n'a pas rien vu, il n'a pas rien entendu, il n'a pas rien voulu savoir.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(6, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q7">
+                <p class="question-text">7. Chọn dạng Passé Composé đúng: "Depuis ce jour-là, il ne conduit plus."</p>
+                <p class="question-translation">(Kể từ ngày đó, anh ấy không lái xe nữa.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q7" value="a"> a) Depuis ce jour-là, il n'a pas plus conduit.</label>
+                    <label><input type="radio" name="q7" value="b"> b) Depuis ce jour-là, il n'a plus conduit.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(7, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q8">
+                <p class="question-text">8. Chọn dạng Passé Composé đúng: "Nous n'avons aucun problème. Nous ne demandons rien."</p>
+                <p class="question-translation">(Chúng tôi không có vấn đề gì. Chúng tôi không yêu cầu gì cả.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q8" value="a"> a) Nous n'avons eu aucun problème. Nous n'avons rien demandé.</label>
+                    <label><input type="radio" name="q8" value="b"> b) Nous n'avons pas eu aucun problème. Nous n'avons pas rien demandé.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(8, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q9">
+                <p class="question-text">9. Chọn dạng Passé Composé đúng: "Il ne va nulle part. Il ne rencontre personne."</p>
+                <p class="question-translation">(Anh ấy không đi đâu cả. Anh ấy không gặp ai cả.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q9" value="a"> a) Il n'est allé nulle part. Il n'a rencontré personne.</label>
+                    <label><input type="radio" name="q9" value="b"> b) Il n'a allé nulle part. Il n'est rencontré personne.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(9, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q10">
+                <p class="question-text">10. Chọn dạng Passé Composé đúng: "Mon frère n'écoute personne et n'accepte aucun conseil."</p>
+                <p class="question-translation">(Anh trai tôi không nghe ai và không chấp nhận lời khuyên nào.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q10" value="a"> a) Mon frère n'a écouté personne et n'a accepté aucun conseil.</label>
+                    <label><input type="radio" name="q10" value="b"> b) Mon frère n'a pas écouté personne et n'a pas accepté aucun conseil.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(10, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let score = 0;
+        const maxScore = 10;
+        const scoreDisplay = document.getElementById('score-display');
+        let timeInSeconds = 600; // 10 minutes
+        let timerInterval = null;
+
+        const feedbackExplanations = {
+            1: "Chính xác! 'sortir' đi với 'être', 'travailler' đi với 'avoir'.",
+            2: "Chính xác! Cả 'avoir' và 'être' khi chia ở passé composé đều dùng trợ động từ 'avoir'.",
+            3: "Chính xác! Cấu trúc phủ định 'ne... plus' kẹp lấy trợ động từ 'a'.",
+            4: "Chính xác! 'voir' dùng 'avoir', 'venir' dùng 'être'. Cấu trúc 'ne... jamais' kẹp lấy trợ động từ.",
+            5: "Chính xác! Cấu trúc 'ne... pas encore' kẹp lấy trợ động từ 'ai'.",
+            6: "Chính xác! 'ne... rien' kẹp lấy trợ động từ 'a'.",
+            7: "Chính xác! Cấu trúc phủ định 'ne... plus' kẹp lấy trợ động từ 'a'.",
+            8: "Chính xác! 'ne... aucun/rien' kẹp lấy trợ động từ 'avons'.",
+            9: "Chính xác! 'aller' dùng 'être', 'rencontrer' dùng 'avoir'.",
+            10: "Chính xác! Cả hai động từ đều dùng 'avoir' và các từ phủ định kẹp lấy trợ động từ."
+        };
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const today = new Date();
+            const day = String(today.getDate()).padStart(2, '0');
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const year = today.getFullYear();
+            document.getElementById('test-date').textContent = `${day}/${month}/${year}`;
+            
+            updateScoreDisplay();
+            startTimer();
+        });
+
+        function startTimer() {
+            const timerDisplay = document.getElementById('timer-display');
+            clearInterval(timerInterval); 
+            
+            timerInterval = setInterval(() => {
+                timeInSeconds--;
+                const minutes = Math.floor(timeInSeconds / 60);
+                const seconds = timeInSeconds % 60;
+                timerDisplay.textContent = `Thời gian: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                if (timeInSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    timerDisplay.textContent = "Hết giờ!";
+                    alert("Hết giờ làm bài!");
+                    document.querySelectorAll('.validate-btn').forEach(btn => btn.disabled = true);
+                }
+            }, 1000);
+        }
+
+        function updateScoreDisplay() {
+            scoreDisplay.textContent = `Điểm: ${score} / ${maxScore}`;
+        }
+        
+        function updateScore(points = 1) {
+            score += points;
+            updateScoreDisplay();
+        }
+
+        function validateRadio(questionNumber, correctAnswer) {
+            const questionBlock = document.getElementById(`q${questionNumber}`);
+            const radios = document.getElementsByName(`q${questionNumber}`);
+            const feedback = questionBlock.querySelector('.feedback');
+            const button = questionBlock.querySelector('.validate-btn');
+            let selectedAnswer = null;
+
+            radios.forEach(radio => { if (radio.checked) { selectedAnswer = radio; } });
+
+            if (selectedAnswer === null) {
+                feedback.textContent = "Vui lòng chọn một đáp án!";
+                feedback.className = 'feedback feedback-warning';
+                return;
+            }
+            
+            button.disabled = true;
+            radios.forEach(radio => radio.disabled = true);
+            const selectedLabel = selectedAnswer.parentElement;
+            const explanation = feedbackExplanations[questionNumber];
+
+            if (selectedAnswer.value === correctAnswer) {
+                feedback.textContent = explanation;
+                feedback.className = 'feedback feedback-correct';
+                selectedLabel.classList.add('correct-answer');
+                updateScore();
+            } else {
+                const cleanedExplanation = explanation.replace("Chính xác! ", "");
+                feedback.innerHTML = `<strong>Không chính xác.</strong> ${cleanedExplanation}<br>Đáp án đúng là lựa chọn <strong>"${correctAnswer.toUpperCase()}"</strong>.`;
+                feedback.className = 'feedback feedback-incorrect';
+                radios.forEach(radio => { if (radio.value === correctAnswer) { radio.parentElement.classList.add('correct-answer'); } });
+            }
+        }
+    </script>
+</body>
+</html>

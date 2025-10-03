@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2025 by anonymous (http://jsbin.com/jefohanoka/1/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conditionnel Passé - Hypothèse dans le Passé</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif; /* Font chữ chung cho body là Arial */
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        /* Đặt font Arial/sans-serif cho toàn bộ nội dung chính (trừ feedback vẫn là Roboto) */
+        .header, .question-block, .options label {
+            font-family: Arial, sans-serif;
+        }
+
+        /* Vùng chứa chung cho header và score-container để căn giữa */
+        .page-content-wrapper {
+            max-width: 700px; /* Chiều rộng tối đa cho toàn bộ nội dung chính */
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+        .header-top {
+            display: flex;
+            justify-content: space-between; /* Căn đều hai bên */
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .header h1 {
+            text-align: center;
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+
+        /* CSS cho phần Score dính */
+        #score-container {
+            position: sticky; /* Tạo hiệu ứng dính */
+            top: 0; /* Dính vào top của viewport */
+            z-index: 1000; /* Đảm bảo nằm trên các nội dung khác */
+            background-color: #fff; /* Nền trắng như các khối div */
+            color: #007bff; /* Chữ màu blue */
+            padding: 12px 20px; /* Tăng padding để làm khung to hơn */
+            border: 1px solid #cce5ff; /* Viền xanh nhạt giống các khối khác */
+            border-radius: 8px; /* Bo tròn góc */
+            text-align: center;
+            font-family: Arial, sans-serif; /* Font chữ Arial/sans-serif */
+            font-size: 1.3em; /* Tăng kích thước font cho score */
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Bóng nhẹ */
+            max-width: 700px; /* Đặt chiều rộng bằng các khối câu hỏi */
+            margin-left: auto; /* Căn giữa */
+            margin-right: auto;
+            display: block; /* Luôn hiển thị */
+            box-sizing: border-box; /* Đảm bảo padding không làm tăng width vượt quá max-width */
+        }
+        #score-container strong {
+            color: #0056b3; /* Chữ màu blue đậm hơn cho số điểm */
+        }
+
+        #quiz-container {
+            /* max-width và margin auto sẽ được thừa kế từ .page-content-wrapper */
+        }
+        .question-block {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            /* max-width và margin auto đã có ở đây */
+        }
+        .question-text {
+            font-size: 1.1em;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .question-translation {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+        .options {
+            max-width: 500px; /* Giới hạn chiều rộng tối đa của khối đáp án */
+            margin-bottom: 15px;
+        }
+        .options label {
+            display: block;
+            margin-bottom: 10px;
+            cursor: pointer;
+            padding: 8px;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+            font-family: Arial, sans-serif; /* Font chữ của đáp án (mặc định) */
+        }
+        .options label:hover {
+                background-color: #e9e9e9;
+        }
+        .feedback {
+            margin-top: 15px;
+            font-weight: bold;
+            display: none;
+            font-family: 'Roboto', sans-serif; /* Đặt font feedback là Roboto */
+        }
+        .feedback-explanation {
+            font-weight: normal;
+            font-size: 0.9em;
+            margin-top: 5px;
+            color: #0056b3;
+        }
+        .feedback-correct-answer-text {
+            color: #0056b3;
+        }
+        .correct {
+            color: green;
+        }
+        .incorrect {
+            color: red;
+        }
+        .highlight-correct {
+            background-color: #d4edda !important;
+            border-color: #28a745 !important;
+        }
+        .highlight-incorrect-selected {
+            background-color: #f8d7da !important;
+            border-color: #dc3545 !important;
+        }
+        .validate-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 15px;
+            transition: background-color 0.3s ease;
+        }
+        .validate-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-content-wrapper">
+        <div class="header">
+            <div class="header-top">
+                <p><strong>Enseignant:</strong> Nguyễn Hoàng Vũ</p>
+                <p><strong>Jour de test:</strong> <span id="currentDate"></span></p>
+            </div>
+            <h1>Conditionnel Passé - Hypothèse dans le Passé</h1> </div>
+
+        <div id="score-container">
+            Score: <strong id="current-score-value">0</strong> / <strong id="total-questions-value">5</strong>
+        </div>
+
+        <div id="quiz-container">
+            <div class="question-block" id="q1" data-correct-answer="aurait volé | se serait sauvé">
+                <p class="question-text">1. On (voler) __________ le diamant le plus gros du monde, et le voleur (se sauver) __________.</p>
+                <p class="question-translation"><em>(Người ta lẽ ra đã lấy trộm viên kim cương lớn nhất thế giới, và tên trộm lẽ ra đã trốn thoát.)</em></p>
+                <div class="options">
+                    <label><input type="radio" name="q1" value="aurait volé | se serait sauvé"> aurait volé | se serait sauvé</label>
+                    <label><input type="radio" name="q1" value="a volé | s'est sauvé"> a volé | s'est sauvé</label>
+                    <label><input type="radio" name="q1" value="volerait | se sauverait"> volerait | se sauverait</label>
+                    <label><input type="radio" name="q1" value="avait volé | s'était sauvé"> avait volé | s'était sauvé</label>
+                </div>
+                <button class="validate-btn" onclick="checkAnswer('q1', 'Động từ &quot;voler&quot; sử dụng trợ động từ &quot;avoir&quot;, chia là &quot;aurait volé&quot;. Động từ phản thân &quot;se sauver&quot; sử dụng trợ động từ &quot;être&quot;, chia là &quot;se serait sauvé&quot;. Cả hai đều ở Conditionnel Passé.')">Valider</button>
+                <div class="feedback" id="feedback-q1"></div>
+            </div>
+
+            <div class="question-block" id="q2" data-correct-answer="se serait fâché | serait sorti">
+                <p class="question-text">2. Il (se fâcher) __________. Son fils (sortir) __________ en claquant la porte.</p>
+                <p class="question-translation"><em>(Anh ấy lẽ ra đã tức giận. Con trai anh ấy lẽ ra đã ra ngoài bằng cách đóng sầm cửa.)</em></p>
+                <div class="options">
+                    <label><input type="radio" name="q2" value="se serait fâché | serait sorti"> se serait fâché | serait sorti</label>
+                    <label><input type="radio" name="q2" value="s'est fâché | est sorti"> s'est fâché | est sorti</label>
+                    <label><input type="radio" name="q2" value="se fâcherait | sortirait"> se fâcherait | sortirait</label>
+                    <label><input type="radio" name="q2" value="s'était fâché | était sorti"> s'était fâché | était sorti</label>
+                </div>
+                <button class="validate-btn" onclick="checkAnswer('q2', 'Động từ phản thân &quot;se fâcher&quot; sử dụng trợ động từ &quot;être&quot;, chia là &quot;se serait fâché&quot;. Động từ &quot;sortir&quot; sử dụng trợ động từ &quot;être&quot;, chia là &quot;serait sorti&quot;. Cả hai đều ở Conditionnel Passé.')">Valider</button>
+                <div class="feedback" id="feedback-q2"></div>
+            </div>
+
+            <div class="question-block" id="q3" data-correct-answer="aurait paru | se serait vendu">
+                <p class="question-text">3. Ce livre (paraître) __________ il y a cinq ans chez un petit éditeur, et (se vendre) __________ bien.</p>
+                <p class="question-translation"><em>(Cuốn sách này lẽ ra đã xuất bản cách đây 5 năm ở một nhà xuất bản nhỏ, và lẽ ra đã bán rất chạy.)</em></p>
+                <div class="options">
+                    <label><input type="radio" name="q3" value="aurait paru | se serait vendu"> aurait paru | se serait vendu</label>
+                    <label><input type="radio" name="q3" value="est paru | s'est vendu"> est paru | s'est vendu</label>
+                    <label><input type="radio" name="q3" value="paraîtrait | se vendrait"> paraîtrait | se vendrait</label>
+                    <label><input type="radio" name="q3" value="avait paru | s'était vendu"> avait paru | s'était vendu</label>
+                </div>
+                <button class="validate-btn" onclick="checkAnswer('q3', 'Động từ &quot;paraître&quot; sử dụng trợ động từ &quot;avoir&quot;, chia là &quot;aurait paru&quot;. Động từ phản thân &quot;se vendre&quot; sử dụng trợ động từ &quot;être&quot;, chia là &quot;se serait vendu&quot;. Cả hai đều ở Conditionnel Passé.')">Valider</button>
+                <div class="feedback" id="feedback-q3"></div>
+            </div>
+
+            <div class="question-block" id="q4" data-correct-answer="se serait trouvée | serait resté">
+                <p class="question-text">4. Pamela (se trouver) __________ seule en face du tigre, son mari (rester) __________ caché derrière un arbre !</p>
+                <p class="question-translation"><em>(Pamela lẽ ra đã ở một mình đối mặt với con hổ, chồng cô ấy lẽ ra đã ở lại ẩn sau một cái cây!)</em></p>
+            <div class="options">
+                <label><input type="radio" name="q4" value="se serait trouvée | serait resté"> se serait trouvée | serait resté</label>
+                <label><input type="radio" name="q4" value="s'est trouvée | est resté"> s'est trouvée | est resté</label>
+                <label><input type="radio" name="q4" value="se trouverait | resterait"> se trouverait | resterait</label>
+                <label><input type="radio" name="q4" value="s'était trouvée | était resté"> s'était trouvée | était resté</label>
+            </div>
+            <button class="validate-btn" onclick="checkAnswer('q4', 'Động từ phản thân &quot;se trouver&quot; sử dụng trợ động từ &quot;être&quot;, chia là &quot;se serait trouvée&quot; (Pamela là giống cái). Động từ &quot;rester&quot; sử dụng trợ động từ &quot;être&quot;, chia là &quot;serait resté&quot;. Cả hai đều ở Conditionnel Passé.')">Valider</button>
+            <div class="feedback" id="feedback-q4"></div>
+        </div>
+
+            <div class="question-block" id="q5" data-correct-answer="aurait baissé | aurait repris">
+                <p class="question-text">5. La lire italienne (baisser) __________, la livre anglaise (reprendre) __________ de la valeur.</p>
+                <p class="question-translation"><em>(Đồng lira Ý lẽ ra đã giảm, đồng bảng Anh lẽ ra đã lấy lại giá trị.)</em></p>
+                <div class="options">
+                    <label><input type="radio" name="q5" value="aurait baissé | aurait repris"> aurait baissé | aurait repris</label>
+                    <label><input type="radio" name="q5" value="a baissé | a repris"> a baissé | a repris</label>
+                    <label><input type="radio" name="q5" value="baisserait | reprendrait"> baisserait | reprendrait</label>
+                    <label><input type="radio" name="q5" value="avait baissé | avait repris"> avait baissé | avait repris</label>
+                </div>
+                <button class="validate-btn" onclick="checkAnswer('q5', 'Động từ &quot;baisser&quot; sử dụng trợ động từ &quot;avoir&quot;, chia là &quot;aurait baissé&quot;. Động từ &quot;reprendre&quot; sử dụng trợ động từ &quot;avoir&quot;, chia là &quot;aurait repris&quot;. Cả hai đều ở Conditionnel Passé.')">Valider</button>
+                <div class="feedback" id="feedback-q5"></div>
+            </div>
+
+        </div>
+    </div> <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const date = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('currentDate').textContent = date.toLocaleDateString('fr-FR', options);
+            updateOverallScore(); // Cập nhật điểm ban đầu
+        });
+
+        const answeredQuestions = {};
+        const totalQuestions = 5;
+
+        // Lấy tham chiếu đến các phần tử hiển thị điểm
+        const currentScoreValue = document.getElementById('current-score-value');
+        const totalQuestionsValue = document.getElementById('total-questions-value');
+
+        function updateOverallScore() {
+            let correctCount = 0;
+            const allQuestionIds = ['q1', 'q2', 'q3', 'q4', 'q5'];
+            allQuestionIds.forEach(id => {
+                if (answeredQuestions[id] === true) {
+                    correctCount++;
+                }
+            });
+
+            currentScoreValue.textContent = correctCount;
+            totalQuestionsValue.textContent = totalQuestions;
+        }
+
+        function checkAnswer(questionId, explanation) {
+            const questionBlock = document.getElementById(questionId);
+            const selectedOption = questionBlock.querySelector(`input[name="${questionId}"]:checked`);
+            const feedbackDiv = questionBlock.querySelector('.feedback');
+            const optionsLabels = questionBlock.querySelectorAll('.options label');
+            const correctAnswer = questionBlock.dataset.correctAnswer;
+
+            optionsLabels.forEach(label => {
+                label.classList.remove('highlight-correct', 'highlight-incorrect-selected');
+            });
+            feedbackDiv.style.display = 'none';
+            feedbackDiv.classList.remove('correct', 'incorrect');
+            feedbackDiv.innerHTML = '';
+
+            if (!selectedOption) {
+                alert("Veuillez sélectionner une réponse avant de valider.");
+                return;
+            }
+
+            const userAnswer = selectedOption.value;
+            let feedbackMessage = "";
+
+            optionsLabels.forEach(label => {
+                if (label.querySelector('input').value === correctAnswer) {
+                    label.classList.add('highlight-correct');
+                }
+            });
+
+            if (userAnswer === correctAnswer) {
+                feedbackMessage = "<b>Chính xác!</b> Đây là đáp án đúng.";
+                feedbackDiv.classList.add('correct');
+                answeredQuestions[questionId] = true;
+            } else {
+                feedbackMessage = `<b>Không chính xác.</b> Đáp án đúng là <span class="feedback-correct-answer-text">"${correctAnswer}"</span>.`;
+                feedbackDiv.classList.add('incorrect');
+                selectedOption.closest('label').classList.add('highlight-incorrect-selected');
+                answeredQuestions[questionId] = false;
+            }
+            feedbackDiv.innerHTML = feedbackMessage + `<div class="feedback-explanation">Giải thích: ${explanation}</div>`;
+            feedbackDiv.style.display = 'block';
+
+            updateOverallScore(); // Cập nhật điểm sau mỗi lần kiểm tra
+        }
+    </script>
+</body>
+</html>

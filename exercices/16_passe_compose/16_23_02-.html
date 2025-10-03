@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2025 by anonymous (http://jsbin.com/fuvinegewi/1/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài Tập Điền Từ: Passé Composé / Imparfait</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .quiz-container {
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 900px;
+            padding: 30px 40px;
+        }
+
+        .quiz-header {
+            text-align: center;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .quiz-header h1 {
+            color: #2c3e50;
+            margin: 0;
+            font-size: 28px;
+        }
+
+        .info-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            font-size: 16px;
+            color: #555;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        #score-container {
+            background-color: #e67e22;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+
+        .special-chars-bar {
+            /* --- CSS for sticky bar --- */
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background-color: rgba(255, 255, 255, 0.95); /* Semi-transparent white background */
+            backdrop-filter: blur(5px); /* Blur effect for modern browsers */
+            -webkit-backdrop-filter: blur(5px);
+            /* --- End of sticky bar CSS --- */
+
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 20px;
+            padding: 15px 10px;
+            border-bottom: 1px solid #e9ecef;
+            border-radius: 10px;
+        }
+
+        .char-btn {
+            background-color: #f1f1f1;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 5px 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #333;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+        .char-btn:hover {
+            background-color: #e0e0e0;
+        }
+        .char-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .paragraph-container {
+            font-size: 1.2rem;
+            line-height: 3.2;
+            color: #34495e;
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px 8px 0 0;
+            border: 1px solid #e9ecef;
+            border-bottom: none;
+        }
+        
+        .translation-container {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: #555;
+            background-color: #f8f9fa;
+            padding: 15px 20px;
+            border-radius: 0 0 8px 8px;
+            border: 1px solid #e9ecef;
+            border-top: 1px dashed #ccc;
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+
+        .verb-input {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.1rem;
+            border: none;
+            border-bottom: 2px solid #3498db;
+            padding: 4px 6px;
+            text-align: center;
+            width: 140px;
+            transition: all 0.2s ease-in-out;
+            background-color: transparent;
+        }
+        .verb-input:focus {
+            outline: none;
+            border-bottom: 2px solid #e67e22;
+        }
+        .verb-input.correct {
+            border-bottom-color: #2ecc71;
+            color: #2ecc71;
+        }
+        .verb-input.incorrect {
+            border-bottom-color: #e74c3c;
+            color: #e74c3c;
+        }
+
+        .feedback-span {
+            font-size: 0.9rem;
+            margin-left: 5px;
+        }
+        .feedback-span .correct-answer {
+            font-weight: bold;
+            color: #27ae60;
+        }
+        
+        .feedback-explanation {
+            font-size: 1rem;
+            color: #34495e;
+            background-color: #e8f4fd;
+            border-left: 4px solid #0366d6;
+            padding: 15px;
+            margin-top: 20px;
+            display: none;
+            line-height: 1.7;
+        }
+        
+        .feedback-explanation strong {
+            font-size: 1.1rem;
+        }
+
+        .check-all-btn {
+            display: block;
+            width: 100%;
+            padding: 18px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;
+            background: linear-gradient(90deg, #e67e22, #d35400);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 30px;
+        }
+        .check-all-btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="quiz-container">
+        <header class="quiz-header">
+            <h1>Bài Tập Kể Chuyện: Một lần đi làm tóc</h1>
+            <div class="info-bar">
+                <span>Enseignant: <strong>Nguyễn Hoàng Vũ</strong></span>
+                <div id="score-container">
+                    Điểm: <span id="score-value">0/20</span>
+                </div>
+            </div>
+        </header>
+
+        <form id="quiz-form" onsubmit="return false;">
+            <p style="text-align: center; font-style: italic; color: #555; margin-bottom: 20px;">
+                Hoàn thành câu chuyện sau bằng cách chia các động từ trong ngoặc ở thì Passé Composé hoặc Imparfait.
+            </p>
+
+            <div id="special-chars" class="special-chars-bar">
+                <button type="button" class="char-btn">à</button>
+                <button type="button" class="char-btn">â</button>
+                <button type="button" class="char-btn">é</button>
+                <button type="button" class="char-btn">è</button>
+                <button type="button" class="char-btn">ê</button>
+                <button type="button" class="char-btn">ë</button>
+                <button type="button" class="char-btn">î</button>
+                <button type="button" class="char-btn">ï</button>
+                <button type="button" class="char-btn">ô</button>
+                <button type="button" class="char-btn">û</button>
+                <button type="button" class="char-btn">ù</button>
+                <button type="button" class="char-btn">ç</button>
+            </div>
+
+            <div class="paragraph-container">
+                Sabine <input type="text" id="q1_verb1" class="verb-input" placeholder="(détester)"> <span class="feedback-span" id="q1_feedback1"></span> aller chez le coiffeur, mais il y a trois jours, elle <input type="text" id="q1_verb2" class="verb-input" placeholder="(regarder)"> <span class="feedback-span" id="q1_feedback2"></span> ses cheveux dans une glace : ils <input type="text" id="q1_verb3" class="verb-input" placeholder="(paraître)"> <span class="feedback-span" id="q1_feedback3"></span> vraiment trop longs ! Il <input type="text" id="q1_verb4" class="verb-input" placeholder="(falloir)"> <span class="feedback-span" id="q1_feedback4"></span> faire couper tout cela. Alors, elle <input type="text" id="q1_verb5" class="verb-input" placeholder="(prendre)"> <span class="feedback-span" id="q1_feedback5"></span> rendez-vous chez le coiffeur. Quand elle <input type="text" id="q1_verb6" class="verb-input" placeholder="(arriver)"> <span class="feedback-span" id="q1_feedback6"></span>, il <input type="text" id="q1_verb7" class="verb-input" placeholder="(coiffer)"> <span class="feedback-span" id="q1_feedback7"></span> une autre cliente. Elle <input type="text" id="q1_verb8" class="verb-input" placeholder="(attendre)"> <span class="feedback-span" id="q1_feedback8"></span> un peu, elle <input type="text" id="q1_verb9" class="verb-input" placeholder="(lire)"> <span class="feedback-span" id="q1_feedback9"></span> une revue, puis le coiffeur <input type="text" id="q1_verb10" class="verb-input" placeholder="(venir)"> <span class="feedback-span" id="q1_feedback10"></span> vers elle et il <input type="text" id="q1_verb11" class="verb-input" placeholder="(demander)"> <span class="feedback-span" id="q1_feedback11"></span> comment il <input type="text" id="q1_verb12" class="verb-input" placeholder="(pouvoir)"> <span class="feedback-span" id="q1_feedback12"></span> la coiffer. Elle <input type="text" id="q1_verb13" class="verb-input" placeholder="(répondre)"> <span class="feedback-span" id="q1_feedback13"></span> qu'il <input type="text" id="q1_verb14" class="verb-input" placeholder="(devoir)"> <span class="feedback-span" id="q1_feedback14"></span> faire à son idée. À ce moment-là, il <input type="text" id="q1_verb15" class="verb-input" placeholder="(prendre)"> <span class="feedback-span" id="q1_feedback15"></span> ses ciseaux, <input type="text" id="q1_verb16" class="verb-input" placeholder="(observer)"> <span class="feedback-span" id="q1_feedback16"></span> le visage de Sabine et <input type="text" id="q1_verb17" class="verb-input" placeholder="(commencer)"> <span class="feedback-span" id="q1_feedback17"></span> à couper dans tous les sens. Pendant quelques instants, elle <input type="text" id="q1_verb18" class="verb-input" placeholder="(avoir)"> <span class="feedback-span" id="q1_feedback18"></span> un peu peur, mais après la coupe et le séchage, Sabine <input type="text" id="q1_verb19" class="verb-input" placeholder="(sourire)"> <span class="feedback-span" id="q1_feedback19"></span> à son image dans le miroir et <input type="text" id="q1_verb20" class="verb-input" placeholder="(ressortir)"> <span class="feedback-span" id="q1_feedback20"></span> contente de sa nouvelle tête !
+            </div>
+            <div class="translation-container">
+                Sabine (ghét) đi đến tiệm làm tóc, nhưng ba ngày trước, cô ấy (nhìn) tóc mình trong gương: chúng (trông) thực sự quá dài! (Cần) phải cắt hết đi. Vì vậy, cô ấy (lấy) một cuộc hẹn ở tiệm làm tóc. Khi cô ấy (đến), anh thợ (đang làm tóc) cho một khách hàng khác. Cô ấy (đợi) một chút, cô ấy (đọc) một cuốn tạp chí, sau đó người thợ làm tóc (đến) phía cô ấy và anh ấy (hỏi) xem anh ấy (có thể) làm tóc cho cô ấy như thế nào. Cô ấy (trả lời) rằng anh ấy (nên) làm theo ý của mình. Vào lúc đó, anh ấy (lấy) kéo, (quan sát) khuôn mặt của Sabine và (bắt đầu) cắt tứ tung. Trong vài khoảnh khắc, cô ấy (hơi) sợ, nhưng sau khi cắt và sấy khô, Sabine (mỉm cười) với hình ảnh của mình trong gương và (bước ra) hài lòng với cái đầu mới của mình!
+            </div>
+            <div class="feedback-explanation" id="q1_explanation"></div>
+            
+            <button id="check-all-btn" class="check-all-btn">Kiểm tra tất cả</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const solution = {
+                blanks: {
+                    q1_verb1: 'détestait',
+                    q1_verb2: 'a regardé',
+                    q1_verb3: 'paraissaient',
+                    q1_verb4: 'fallait',
+                    q1_verb5: 'a pris',
+                    q1_verb6: 'est arrivée',
+                    q1_verb7: 'coiffait',
+                    q1_verb8: 'a attendu',
+                    q1_verb9: 'a lu',
+                    q1_verb10: 'est venu',
+                    q1_verb11: 'a demandé',
+                    q1_verb12: 'pouvait',
+                    q1_verb13: 'a répondu',
+                    q1_verb14: 'devait',
+                    q1_verb15: 'a pris',
+                    q1_verb16: 'a observé',
+                    q1_verb17: 'a commencé',
+                    q1_verb18: 'avait',
+                    q1_verb19: 'a souri',
+                    q1_verb20: 'est ressortie'
+                },
+                 explanation: `
+                    <strong>Phân tích:</strong><br>
+                    - <strong>Hành động chính, đơn lẻ, hoàn tất (Passé Composé):</strong> <i>a regardé, a pris, est arrivée, a attendu, a lu, est venu, a demandé, a répondu, a pris, a observé, a commencé, a souri, est ressortie.</i> Đây là chuỗi các sự kiện chính làm nên sườn của câu chuyện.<br>
+                    - <strong>Bối cảnh, miêu tả, trạng thái, tình cảm (Imparfait):</strong> <i>détestait</i> (thói quen, cảm xúc trong quá khứ), <i>paraissaient</i> (miêu tả trạng thái của tóc), <i>fallait</i> (sự cần thiết), <i>coiffait</i> (hành động nền đang diễn ra khi cô ấy đến), <i>pouvait, devait</i> (diễn tả khả năng, sự gợi ý), <i>avait</i> (cảm giác sợ hãi kéo dài trong chốc lát).
+                `
+            };
+            
+            const totalBlanks = Object.keys(solution.blanks).length;
+
+            const checkButton = document.getElementById('check-all-btn');
+            const scoreValueElement = document.getElementById('score-value');
+            scoreValueElement.textContent = `0/${totalBlanks}`;
+            let currentScore = 0;
+            let lastActiveInput = null;
+
+            // --- Logic for Special Character Buttons ---
+            const charButtons = document.querySelectorAll('.char-btn');
+            const verbInputs = document.querySelectorAll('.verb-input');
+
+            verbInputs.forEach(input => {
+                input.addEventListener('focus', (event) => {
+                    lastActiveInput = event.target;
+                });
+            });
+            
+            charButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    if (lastActiveInput && !lastActiveInput.disabled) {
+                        const charToInsert = button.textContent;
+                        const input = lastActiveInput;
+                        const startPos = input.selectionStart;
+                        const endPos = input.selectionEnd;
+                        const originalValue = input.value;
+                        
+                        input.value = originalValue.substring(0, startPos) + charToInsert + originalValue.substring(endPos);
+                        
+                        const newPos = startPos + 1;
+                        input.selectionStart = newPos;
+                        input.selectionEnd = newPos;
+                        input.focus();
+                    }
+                });
+            });
+
+
+            // --- Logic for Checking Answers ---
+            checkButton.addEventListener('click', () => {
+                currentScore = 0;
+                
+                const explanationElement = document.getElementById('q1_explanation');
+                
+                Object.keys(solution.blanks).forEach(blankId => {
+                    const inputElement = document.getElementById(blankId);
+                    if (!inputElement) return;
+                    
+                    const feedbackElement = document.getElementById(blankId.replace('verb', 'feedback'));
+                    const userAnswer = inputElement.value.trim();
+                    const correctAnswer = solution.blanks[blankId];
+
+                    let correctAnswers = Array.isArray(correctAnswer) ? correctAnswer : [correctAnswer];
+
+                    if (correctAnswers.map(ans => ans.toLowerCase()).includes(userAnswer.toLowerCase())) {
+                        currentScore++;
+                        inputElement.value = correctAnswers[0]; 
+                        inputElement.classList.add('correct');
+                        feedbackElement.innerHTML = '✔️';
+                    } else {
+                        inputElement.classList.add('incorrect');
+                        feedbackElement.innerHTML = `❌ <span class="correct-answer">${correctAnswers[0]}</span>`;
+                    }
+                    inputElement.disabled = true;
+                });
+                
+                explanationElement.innerHTML = solution.explanation;
+                explanationElement.style.display = 'block';
+
+                scoreValueElement.textContent = `${currentScore}/${totalBlanks}`;
+                checkButton.disabled = true;
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2025 by anonymous (http://jsbin.com/webujijena/1/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2025 by anonymous (http://jsbin.com/mufileduyu/4/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test de Français</title>
+    <style>
+        /* CSS để làm cho trang kiểm tra đẹp hơn */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-header {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 0.95em;
+            color: #555;
+        }
+        
+        .info-header p {
+            margin: 0;
+        }
+
+        .quiz-status-bar {
+            position: sticky;
+            top: 0;
+            background-color: #4a5a7b;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0;
+            z-index: 1000;
+        }
+
+        .quiz-status-bar h1 {
+            margin: 0;
+            font-size: 1.5em;
+        }
+
+        #score-display, #timer-display {
+            font-size: 1.2em;
+            font-weight: bold;
+            background-color: #ffffff;
+            color: #4a5a7b;
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+        
+        #special-chars-palette {
+            position: sticky;
+            top: 75px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #e0e0e0;
+            z-index: 999;
+            text-align: center;
+            margin-left: -30px;
+            margin-right: -30px;
+            margin-bottom: 25px;
+        }
+
+        #special-chars-palette button {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 1.2em;
+            width: 35px;
+            height: 35px;
+            margin: 2px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        #special-chars-palette button:hover {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .audio-player-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            margin-right: 15px;
+            vertical-align: middle;
+        }
+
+        .audio-player-button svg {
+            width: 28px;
+            height: 28px;
+            fill: #3498db;
+            transition: fill 0.2s;
+        }
+        
+        .audio-player-button:hover svg {
+            fill: #2980b9;
+        }
+        
+         .audio-player-button.playing svg {
+            fill: #e74c3c;
+        }
+
+        .section-title {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+        
+        .reading-section-image {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .question-block {
+            margin-bottom: 25px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background-color: #fdfdfd;
+        }
+
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        /* === THAY ĐỔI: Căn lề trái cho ảnh trong câu hỏi === */
+        .question-image, .listening-image {
+            display: block;
+            height: auto;
+            margin: 20px 0; /* Bỏ 'auto' để căn lề trái */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .question-image {
+             max-width: 100%;
+        }
+
+        .listening-image {
+            max-width: 300px;
+        }
+
+        .reading-passage, .cloze-passage {
+            background-color: #eef3f8;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin-bottom: 15px;
+            font-style: italic;
+            line-height: 2.5;
+        }
+        
+        .cloze-passage input {
+            width: 120px !important;
+            max-width: none !important;
+            text-align: center;
+            font-style: normal;
+        }
+
+        .answers label {
+            display: block;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            max-width: 500px;
+        }
+
+        .answers label:hover {
+            background-color: #e9ecef;
+        }
+
+        .answers input[type="radio"] {
+            margin-right: 10px;
+        }
+        
+        .question-block input[type="text"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1em;
+            width: 100%; 
+            max-width: 400px;
+            box-sizing: border-box; 
+            margin-top: 5px;
+        }
+
+        .validate-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            display: block;
+            margin-top: 15px; 
+            transition: background-color 0.3s;
+        }
+
+        .validate-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .validate-btn:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+        
+        .show-transcription-btn {
+            background-color: #7f8c8d;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            cursor: pointer;
+            display: block;
+            margin-top: 10px;
+        }
+
+        .feedback {
+            margin-top: 15px;
+            font-weight: normal;
+            font-size: 0.95em;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .transcription-text {
+            background-color: #f5f5f5;
+            border-left: 4px solid #7f8c8d;
+            padding: 10px 15px;
+            margin-top: 15px;
+            font-style: italic;
+            color: #34495e;
+        }
+        
+        .feedback-correct {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .feedback-incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .feedback-warning {
+            background-color: #fffbe6;
+            color: #8a6d3b;
+        }
+
+        .correct-answer {
+            background-color: #d4edda !important;
+            border-color: #c3e6cb !important;
+        }
+
+        .incorrect-answer {
+            background-color: #f8d7da !important;
+            border-color: #f5c6cb !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="quiz-container">
+        <div class="info-header">
+            <p><strong>Enseignant:</strong> Nguyễn Hoàng Vũ</p>
+            <p><strong>Étudiant:</strong> Lê Văn Hòa</p>            
+            <p><strong>Ngày kiểm tra:</strong> <span id="test-date"></span></p>
+        </div>
+
+        <div class="quiz-status-bar">
+            <h1>Test de Français 01</h1>
+            <div>
+                <span id="score-display">Điểm: 0 / 29</span>
+                <span id="timer-display">Thời gian: 10:00</span>
+            </div>
+        </div>
+        
+        <div id="special-chars-palette">
+            <button type="button" onclick="insertChar('é')">é</button>
+            <button type="button" onclick="insertChar('è')">è</button>
+            <button type="button" onclick="insertChar('ê')">ê</button>
+            <button type="button" onclick="insertChar('à')">à</button>
+            <button type="button" onclick="insertChar('â')">â</button>
+            <button type="button" onclick="insertChar('ô')">ô</button>
+            <button type="button" onclick="insertChar('û')">û</button>
+            <button type="button" onclick="insertChar('ç')">ç</button>
+            <button type="button" onclick="insertChar('ë')">ë</button>
+            <button type="button" onclick="insertChar('ï')">ï</button>
+            <button type="button" onclick="insertChar('ü')">ü</button>
+        </div>
+
+        <div id="all-questions-container">
+            <h2 class="section-title">Niveau A1</h2>
+            <div class="question-block" id="q1">
+                <p class="question-text">1. Et toi ? Tu... le sport à la télé ?</p>
+                <div class="answers">
+                    <label><input type="radio" name="q1" value="a"> a) apprends</label>
+                    <label><input type="radio" name="q1" value="b"> b) fais</label>
+                    <label><input type="radio" name="q1" value="c"> c) joues</label>
+                    <label><input type="radio" name="q1" value="d"> d) regardes</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(1, 'd')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q2">
+                <p class="question-text">2. Tu as vu Paul ! Il est arrivé… Paris ?</p>
+                <div class="answers">
+                    <label><input type="radio" name="q2" value="a"> a) à</label>
+                    <label><input type="radio" name="q2" value="b"> b) en</label>
+                    <label><input type="radio" name="q2" value="c"> c) où</label>
+                    <label><input type="radio" name="q2" value="d"> d) quand</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(2, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          <h2 class="section-title">Niveau A2</h2>
+          <div class="question-block" id="q3">
+                <p class="question-text">3. Au revoir Karim, on se voit le mois…</p>
+                <div class="answers">
+                    <label><input type="radio" name="q3" value="a"> a) dernier ?</label>
+                    <label><input type="radio" name="q3" value="b"> b) passé ?</label>
+                    <label><input type="radio" name="q3" value="c"> c) prochain ?</label>
+                    <label><input type="radio" name="q3" value="d"> d) suivant ?</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(3, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          <div class="question-block" id="q4">
+                <p class="question-text">4. Elle est en… <br/> Il y a un problème de transports.</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q4" value="a"> a) maladie.</label>
+                    <label><input type="radio" name="q4" value="b"> b) retard.</label>
+                    <label><input type="radio" name="q4" value="c"> c) réunion.</label>
+                    <label><input type="radio" name="q4" value="d"> d) vacances.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(4, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          <div class="question-block" id="q5">
+                <p class="question-text">5. Nous avons organisé une réunion mais … collègue n’est venu</p>               
+                <div class="answers">
+                    <label><input type="radio" name="q5" value="a"> a) aucun</label>
+                    <label><input type="radio" name="q5" value="b"> b) chacun</label>
+                    <label><input type="radio" name="q5" value="c"> c) personne</label>
+                    <label><input type="radio" name="q5" value="d"> d) plusieurs</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(5, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          <h2 class="section-title">Niveau B1</h2>
+          <div class="question-block" id="q6">
+                <p class="question-text">6. Je dois faire vite car Marius m’… pour partir et je suis déjà très en retard.</p>             
+                <div class="answers">
+                    <label><input type="radio" name="q6" value="a"> a) attendaient</label>
+                    <label><input type="radio" name="q6" value="b"> b) attend</label>
+                    <label><input type="radio" name="q6" value="c"> c) a attendu</label>
+                    <label><input type="radio" name="q6" value="d"> d) allait t‘attendre</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(6, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+        
+          <div class="question-block" id="q7">
+                <p class="question-text">7. Ma dent me fait mal. … un cachet, ça ira mieux.</p>               
+                <div class="answers">
+                    <label><input type="radio" name="q7" value="a"> a) Avoir pris</label>
+                    <label><input type="radio" name="q7" value="b"> b) En prenant</label>
+                    <label><input type="radio" name="q7" value="c"> c) Prendre</label>
+                    <label><input type="radio" name="q7" value="d"> d) Pris</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(7, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+           <div class="question-block" id="q8">
+                <p class="question-text">8. L’homme … il est question dans ce film n’est pas si mauvais.</p>               
+                <div class="answers">
+                    <label><input type="radio" name="q8" value="a"> a) dont</label>
+                    <label><input type="radio" name="q8" value="b"> b) où</label>
+                    <label><input type="radio" name="q8" value="c"> c) qu'</label>
+                    <label><input type="radio" name="q8" value="d"> d) qui</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(8, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          <div class="question-block" id="q9">
+                <p class="question-text">9. Si ...  l‘argent nécessaire, je ferais ce voyage avec toi. </p>                
+                <div class="answers">
+                    <label><input type="radio" name="q9" value="a"> a) j’ai</label>
+                    <label><input type="radio" name="q9" value="b"> b) j’aurai</label>
+                    <label><input type="radio" name="q9" value="c"> c) j‘aurais</label>
+                    <label><input type="radio" name="q9" value="d"> d) j’avais</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(9, 'd')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          <div class="question-block" id="q10">
+                <p class="question-text">10. Je n’ai pas vu Samuel depuis deux ans ! … qu’il viendra à la fête ce soir.</p>      
+                <div class="answers">
+                    <label><input type="radio" name="q10" value="a"> a) J’attends</label>
+                    <label><input type="radio" name="q10" value="b"> b) J’espère</label>
+                    <label><input type="radio" name="q10" value="c"> c) Je désire</label>
+                    <label><input type="radio" name="q10" value="d"> d) Je souhaite</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(10, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          <h2 class="section-title">Niveau B2</h2>
+            <div class="question-block" id="q11">
+                <p class="question-text">11. Que signifie le mot « conditionné » ?</p>
+                <div class="answers">
+                    <label><input type="radio" name="q11" value="a"> a) chauffé.</label>
+                    <label><input type="radio" name="q11" value="b"> b) contrôlé.</label>
+                    <label><input type="radio" name="q11" value="c"> c) distribué.</label>
+                    <label><input type="radio" name="q11" value="d"> d) emballé.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(11, 'd')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+           <div class="question-block" id="q12">
+                <p class="question-text">12. ...  nous ne soyons pas toujours d’accord, nous sommes bons amis. </p>                
+                <div class="answers">
+                    <label><input type="radio" name="q12" value="a"> a) À condition que</label>
+                    <label><input type="radio" name="q12" value="b"> b) À moins que</label>
+                    <label><input type="radio" name="q12" value="c"> c) Bien que</label>
+                    <label><input type="radio" name="q12" value="d"> d) Même si</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(12, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+           <div class="question-block" id="q13">
+                <p class="question-text">13. Ils se sont … les mains avant le déjeuner.</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q13" value="a"> a) lavé</label>
+                    <label><input type="radio" name="q13" value="b"> b) lavée</label>
+                    <label><input type="radio" name="q13" value="c"> c) lavées</label>
+                    <label><input type="radio" name="q13" value="d"> d) lavés</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(13, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          <div class="question-block" id="q14">
+                <p class="question-text">14. Appelle-moi …  tu voudrais m'accompagner au cinéma.</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q14" value="a"> a) au cas où</label>
+                    <label><input type="radio" name="q14" value="b"> b) dès que</label>
+                    <label><input type="radio" name="q14" value="c"> c) quand</label>
+                    <label><input type="radio" name="q14" value="d"> d) si</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(14, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+           <div class="question-block" id="q15">
+                <p class="question-text">15. Cette nouvelle situation politique n’est jamais arrivée. Elle est très intéressante … analyser.</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q15" value="a"> a) à</label>
+                    <label><input type="radio" name="q15" value="b"> b) d'</label>
+                    <label><input type="radio" name="q15" value="c"> c) par</label>
+                    <label><input type="radio" name="q15" value="d"> d) pour</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(15, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          <h2 class="section-title">Niveau C1</h2>
+          <div class="question-block" id="q16">
+                <p class="question-text">16. Je serais venue t’aider à déménager, mais pour ça il … que tu me préviennes.</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q16" value="a"> a) aura fallu</label>
+                    <label><input type="radio" name="q16" value="b"> b) aurait fallu</label>
+                    <label><input type="radio" name="q16" value="c"> c) avait fallu</label>
+                    <label><input type="radio" name="q16" value="d"> d) eut fallu</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(16, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          <div class="question-block" id="q17">
+                <p class="question-text">17. Que signifie le mot « prompt » ?<br/>« Nous partîmes cinq cents ; mais par un <span style="color: green">prompt</span> renfort<br/>
+Nous nous vîmes trois mille en arrivant au port… »</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q17" value="a"> a) Conséquent.</label>
+                    <label><input type="radio" name="q17" value="b"> b) Empressé.</label>
+                    <label><input type="radio" name="q17" value="c"> c) Important.</label>
+                    <label><input type="radio" name="q17" value="d"> d) Opportun.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(17, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+              <div class="question-block" id="q18">
+                <p class="question-text">18. Que signifie l’expression « dépose le bilan » ?<br/>Alors que l’entreprise était dans une relative bonne santé financière ces deux dernières années, elle se retrouve aujourd’hui dans la tourmente et <span style="color: green">dépose le bilan</span>.</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q18" value="a"> a) Délocaliser.</label>
+                    <label><input type="radio" name="q18" value="b"> b) Entreprendre.</label>
+                    <label><input type="radio" name="q18" value="c"> c) Faire faillite.</label>
+                    <label><input type="radio" name="q18" value="d"> d) Se développer.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(18, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <h2 class="section-title">Niveau C2</h2>
+            <div class="question-block" id="q19">
+                <p class="question-text">19. Suite à une série de retards, cet employé a été mis … pour une durée indéterminée.</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q19" value="a"> a) à pied</label>
+                    <label><input type="radio" name="q19" value="b"> b) au pied</label>
+                    <label><input type="radio" name="q19" value="c"> c) en pied</label>
+                    <label><input type="radio" name="q19" value="d"> d) sur pied</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(19, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q20">
+                <p class="question-text">20. Quel est le mot manquant ? ?<br/>Cette série documentaire en trois volets retrace un siècle d’histoire de la Chine en détaillant son ... vers le statut de superpuissance.</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q20" value="a"> a) accession</label>
+                    <label><input type="radio" name="q20" value="b"> b) adhésion</label>
+                    <label><input type="radio" name="q20" value="c"> c) ascension</label>
+                    <label><input type="radio" name="q20" value="d"> d) aversion</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(20, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            
+           
+        </div>
+    </div>
+
+    <script>
+        let score = 0;
+        let lastFocusedInput = null;
+        let timeInSeconds = 1200;
+        let timerInterval = null;
+
+        const clozeAnswers = [
+            ['me lève', 'croissants', 'bus', 'économie', 'livre'],
+            ['marché', 'tomates', 'pommes', 'animé'],
+            ['chien', 'intelligent', 'rouge', 'dort']
+        ];
+        
+        const maxScore = 20  //clozeAnswers.flat().length; // 16 câu đơn + 13 chỗ trống = 29 điểm
+
+        const transcriptionData = {
+            900: "Le train pour Lyon partira à quinze heures trente du quai numéro sept.",
+            1000: "N'oubliez pas d'acheter du pain, du lait et trois croissants pour le petit-déjeuner."
+        };
+        const feedbackExplanations = {
+            1: "Chính xác! ",
+            2: "Chính xác! ",
+            3: "Chính xác! ",
+            4: "Chính xác! ",
+            5: "Chính xác! ",
+            6: "Chính xác! ",
+            7: "Chính xác! ",
+            8: "Chính xác! ",
+            9: "Chính xác! ",
+            10: "Chính xác! ",
+            11: "Chính xác! ",
+            12: "Chính xác! ",
+            13: "Chính xác! ",
+            14: "Chính xác! ",
+            15: "Chính xác! ",
+            16: "Chính xác! ",
+            17: "Chính xác! ",
+            18: "Chính xác! ",
+            19: "Chính xác! ",
+            20: "Chính xác! ",
+            
+           
+        };
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const today = new Date();
+            const day = String(today.getDate()).padStart(2, '0');
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const year = today.getFullYear();
+            document.getElementById('test-date').textContent = `${day}/${month}/${year}`;
+            
+            updateScoreDisplay();
+            startTimer();
+        });
+
+        function startTimer() {
+            const timerDisplay = document.getElementById('timer-display');
+            clearInterval(timerInterval); 
+            
+            timerInterval = setInterval(() => {
+                timeInSeconds--;
+                const minutes = Math.floor(timeInSeconds / 60);
+                const seconds = timeInSeconds % 60;
+                timerDisplay.textContent = `Thời gian: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                if (timeInSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    timerDisplay.textContent = "Hết giờ!";
+                    alert("Hết giờ làm bài!");
+                    document.querySelectorAll('.validate-btn').forEach(btn => btn.disabled = true);
+                }
+            }, 1000);
+        }
+
+        function updateScoreDisplay() {
+            const scoreDisplay = document.getElementById('score-display');
+            scoreDisplay.textContent = `Điểm: ${score} / ${maxScore}`;
+        }
+        
+        function updateScore(points = 1) {
+            score += points;
+            updateScoreDisplay();
+        }
+        
+        function setLastFocused(element) {
+            lastFocusedInput = element;
+        }
+
+        function insertChar(char) {
+            if (lastFocusedInput) {
+                const startPos = lastFocusedInput.selectionStart;
+                const endPos = lastFocusedInput.selectionEnd;
+                const value = lastFocusedInput.value;
+                lastFocusedInput.value = value.substring(0, startPos) + char + value.substring(endPos, value.length);
+                lastFocusedInput.focus();
+                lastFocusedInput.selectionStart = startPos + 1;
+                lastFocusedInput.selectionEnd = startPos + 1;
+            }
+        }
+        
+        function playAudio(questionNumber, buttonElement) {
+            const audioPlayer = document.getElementById(`audio-player-${questionNumber}`);
+            if (audioPlayer) {
+                audioPlayer.play();
+                buttonElement.classList.add('playing');
+                buttonElement.disabled = true;
+                audioPlayer.onended = () => {
+                    buttonElement.classList.remove('playing');
+                    buttonElement.disabled = false;
+                };
+            }
+        }
+
+        function showTranscription(questionNumber) {
+            const transcriptText = transcriptionData[questionNumber];
+            const transcriptContainer = document.getElementById(`transcription-${questionNumber}`);
+            const transcriptButton = document.getElementById(`show-transcription-btn-${questionNumber}`);
+
+            if (transcriptText && transcriptContainer) {
+                transcriptContainer.textContent = transcriptText;
+                transcriptContainer.style.display = 'block';
+                if(transcriptButton) transcriptButton.style.display = 'none';
+            }
+        }
+
+        function validateRadio(questionNumber, correctAnswer) {
+            const questionBlock = document.getElementById(`q${questionNumber}`);
+            const radios = document.getElementsByName(`q${questionNumber}`);
+            const feedback = questionBlock.querySelector('.feedback');
+            const button = questionBlock.querySelector('.validate-btn');
+            let selectedAnswer = null;
+
+            radios.forEach(radio => { if (radio.checked) { selectedAnswer = radio; } });
+
+            if (selectedAnswer === null) {
+                feedback.textContent = "Vui lòng chọn một đáp án!";
+                feedback.className = 'feedback feedback-warning';
+                return;
+            }
+            
+            button.disabled = true;
+            radios.forEach(radio => radio.disabled = true);
+            const selectedLabel = selectedAnswer.parentElement;
+            const explanation = feedbackExplanations[questionNumber];
+
+            if (selectedAnswer.value === correctAnswer) {
+                feedback.textContent = explanation;
+                feedback.className = 'feedback feedback-correct';
+                selectedLabel.classList.add('correct-answer');
+                updateScore();
+            } else {
+                const cleanedExplanation = explanation.replace("Chính xác! ", "");
+                feedback.innerHTML = `<strong>Không chính xác.</strong> ${cleanedExplanation}<br>Đáp án đúng là lựa chọn <strong>"${correctAnswer.toUpperCase()}"</strong>.`;
+                feedback.className = 'feedback feedback-incorrect';
+                selectedLabel.classList.add('incorrect-answer');
+                radios.forEach(radio => { if (radio.value === correctAnswer) { radio.parentElement.classList.add('correct-answer'); } });
+            }
+
+            if (document.getElementById(`audio-player-${questionNumber}`)) {
+                const transcriptBtn = document.getElementById(`show-transcription-btn-${questionNumber}`);
+                if (transcriptBtn) {
+                    transcriptBtn.style.display = 'block';
+                }
+            }
+        }
+        
+        function validateText(questionNumber, correctAnswer) {
+            const questionBlock = document.getElementById(`q${questionNumber}`);
+            const inputField = questionBlock.querySelector('input[type="text"]');
+            const feedback = questionBlock.querySelector('.feedback');
+            const button = questionBlock.querySelector('.validate-btn');
+            const userAnswer = inputField.value.trim();
+
+            if (userAnswer === "") {
+                feedback.textContent = "Vui lòng điền câu trả lời của bạn.";
+                feedback.className = 'feedback feedback-warning';
+                return;
+            }
+            
+            const explanation = feedbackExplanations[questionNumber];
+            
+            button.disabled = true;
+            inputField.disabled = true;
+
+            if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
+                feedback.textContent = explanation;
+                feedback.className = 'feedback feedback-correct';
+                inputField.classList.add('correct-answer');
+                updateScore();
+            } else {
+                const cleanedExplanation = explanation.replace("Chính xác! ", "");
+                feedback.innerHTML = `<strong>Không chính xác.</strong> ${cleanedExplanation}<br>Đáp án đúng phải là: <strong>${correctAnswer}</strong>`;
+                feedback.className = 'feedback feedback-incorrect';
+                inputField.classList.add('incorrect-answer');
+            }
+        }
+
+        function validateCloze(clozeSetIndex, questionId) {
+            const currentAnswers = clozeAnswers[clozeSetIndex - 1]; 
+            const questionBlock = document.getElementById(`q${questionId}`);
+            const button = questionBlock.querySelector('.validate-btn');
+            const feedback = questionBlock.querySelector('.feedback');
+            let correctCount = 0;
+
+            for (let i = 0; i < currentAnswers.length; i++) {
+                const inputId = `cloze-${clozeSetIndex}-${i + 1}`;
+                const inputElement = document.getElementById(inputId);
+                if (inputElement.value.trim() === "") {
+                    feedback.textContent = "Vui lòng điền đầy đủ tất cả các chỗ trống.";
+                    feedback.className = 'feedback feedback-warning';
+                    return;
+                }
+            }
+
+            for (let i = 0; i < currentAnswers.length; i++) {
+                const inputId = `cloze-${clozeSetIndex}-${i + 1}`;
+                const inputElement = document.getElementById(inputId);
+                
+                const userAnswer = inputElement.value.trim().toLowerCase();
+                const correctAnswer = currentAnswers[i].toLowerCase();
+
+                if (userAnswer === correctAnswer) {
+                    inputElement.classList.add('correct-answer');
+                    correctCount++;
+                } else {
+                    inputElement.classList.add('incorrect-answer');
+                    inputElement.value = currentAnswers[i];
+                }
+                
+                inputElement.disabled = true;
+            }
+
+            if (correctCount > 0) {
+                updateScore(correctCount);
+            }
+            
+            feedback.textContent = `Bạn đã điền đúng ${correctCount} trên ${currentAnswers.length} từ.`;
+            feedback.className = 'feedback feedback-correct';
+            
+            button.disabled = true;
+        }
+
+    </script>
+</body>
+</html>

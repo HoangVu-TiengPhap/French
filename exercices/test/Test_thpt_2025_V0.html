@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2025 by anonymous (http://jsbin.com/pewusasaku/10/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2025 by anonymous (http://jsbin.com/mufileduyu/4/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test de Français</title>
+    <style>
+        /* CSS để làm cho trang kiểm tra đẹp hơn */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-header {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 0.95em;
+            color: #555;
+        }
+        
+        .info-header p {
+            margin: 0;
+        }
+
+        .quiz-status-bar {
+            position: sticky;
+            top: 0;
+            background-color: #4a5a7b;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0;
+            z-index: 1000;
+        }
+
+        .quiz-status-bar h1 {
+            margin: 0;
+            font-size: 1.5em;
+        }
+
+        #score-display, #timer-display {
+            font-size: 1.2em;
+            font-weight: bold;
+            background-color: #ffffff;
+            color: #4a5a7b;
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+        
+        #special-chars-palette {
+            position: sticky;
+            top: 75px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #e0e0e0;
+            z-index: 999;
+            text-align: center;
+            margin-left: -30px;
+            margin-right: -30px;
+            margin-bottom: 25px;
+        }
+
+        #special-chars-palette button {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 1.2em;
+            width: 35px;
+            height: 35px;
+            margin: 2px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        #special-chars-palette button:hover {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .audio-player-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            margin-right: 15px;
+            vertical-align: middle;
+        }
+
+        .audio-player-button svg {
+            width: 28px;
+            height: 28px;
+            fill: #3498db;
+            transition: fill 0.2s;
+        }
+        
+        .audio-player-button:hover svg {
+            fill: #2980b9;
+        }
+        
+         .audio-player-button.playing svg {
+            fill: #e74c3c;
+        }
+
+        .section-title {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+        
+        .reading-section-image {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .question-block {
+            margin-bottom: 25px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background-color: #fdfdfd;
+        }
+
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        /* === THAY ĐỔI: Căn lề trái cho ảnh trong câu hỏi === */
+        .question-image, .listening-image {
+            display: block;
+            height: auto;
+            margin: 20px 0; /* Bỏ 'auto' để căn lề trái */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .question-image {
+             max-width: 100%;
+        }
+
+        .listening-image {
+            max-width: 300px;
+        }
+
+        .reading-passage, .cloze-passage {
+            background-color: #eef3f8;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin-bottom: 15px;
+            font-style: italic;
+            line-height: 2.5;
+        }
+        
+        .cloze-passage input {
+            width: 120px !important;
+            max-width: none !important;
+            text-align: center;
+            font-style: normal;
+        }
+
+        .answers label {
+            display: block;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            max-width: 500px;
+        }
+
+        .answers label:hover {
+            background-color: #e9ecef;
+        }
+
+        .answers input[type="radio"] {
+            margin-right: 10px;
+        }
+        
+        .question-block input[type="text"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1em;
+            width: 100%; 
+            max-width: 400px;
+            box-sizing: border-box; 
+            margin-top: 5px;
+        }
+
+        .validate-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            display: block;
+            margin-top: 15px; 
+            transition: background-color 0.3s;
+        }
+
+        .validate-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .validate-btn:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+        
+        .show-transcription-btn {
+            background-color: #7f8c8d;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            cursor: pointer;
+            display: block;
+            margin-top: 10px;
+        }
+
+        .feedback {
+            margin-top: 15px;
+            font-weight: normal;
+            font-size: 0.95em;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .transcription-text {
+            background-color: #f5f5f5;
+            border-left: 4px solid #7f8c8d;
+            padding: 10px 15px;
+            margin-top: 15px;
+            font-style: italic;
+            color: #34495e;
+        }
+        
+        .feedback-correct {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .feedback-incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .feedback-warning {
+            background-color: #fffbe6;
+            color: #8a6d3b;
+        }
+
+        .correct-answer {
+            background-color: #d4edda !important;
+            border-color: #c3e6cb !important;
+        }
+
+        .incorrect-answer {
+            background-color: #f8d7da !important;
+            border-color: #f5c6cb !important;
+        }
+      #myUniqueList {
+            padding: 0;
+            margin: 0;
+            list-style: none; /* Bỏ dấu chấm mặc định của li */
+            text-align: center; /* Để căn giữa các thẻ li nếu muốn */
+        }
+
+        /* Định kiểu cho các li bên trong ul có ID là myUniqueList */
+        #myUniqueList .list-item-frame {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 5px; /* Thêm margin để tạo khoảng cách giữa các thẻ */
+            display: inline-block; /* Giúp thẻ nằm ngang và vẫn có thể điều chỉnh width/height */
+            box-sizing: border-box; /* Đảm bảo padding và border không làm tăng kích thước tổng thể */
+            border-radius: 8px; /* Bo tròn các góc với bán kính 8px */
+            width: 250px; /* Chiều rộng mặc định 200px */
+            height: 330px; /* Chiều cao cố định 200px */
+            vertical-align: top; /* Căn chỉnh các inline-block item theo phía trên, tránh khoảng trống dưới cùng */
+            
+            /* Thuộc tính để căn đều chữ */
+            text-align: justify; /* Căn đều chữ hai bên */
+            line-height: 1.25;
+            /* Bỏ màu nền */
+            /* background-color: #f0fff0; */ /* Dòng này đã được bình luận để bỏ màu nền */
+            
+            /* Thêm overflow để xử lý nội dung dài hơn chiều cao */
+            overflow: auto; /* Hiển thị thanh cuộn nếu nội dung quá dài */
+        }
+
+        /* Định kiểu riêng cho 2 li cuối cùng */
+        #myUniqueList .list-item-frame:nth-last-child(1), /* Chọn li cuối cùng */
+        #myUniqueList .list-item-frame:nth-last-child(2) { /* Chọn li thứ hai từ cuối lên */
+            width: 370px; /* Đặt chiều rộng 320px */
+            
+        }
+    </style>
+</head>
+<body>
+
+    <div class="quiz-container">
+        <div class="info-header">
+            <p><strong>Enseignant:</strong> Nguyễn Hoàng Vũ</p>
+                      
+            <p><strong>Ngày kiểm tra:</strong> <span id="test-date"></span></p>
+        </div>
+
+        <div class="quiz-status-bar">
+            <h1>Test de Français 2025</h1>
+            <div>
+                <span id="score-display">Điểm: 0 / 29</span>
+                <span id="timer-display">Thời gian: 10:00</span>
+            </div>
+        </div>
+        
+        <div id="special-chars-palette">
+            <button type="button" onclick="insertChar('é')">é</button>
+            <button type="button" onclick="insertChar('è')">è</button>
+            <button type="button" onclick="insertChar('ê')">ê</button>
+            <button type="button" onclick="insertChar('à')">à</button>
+            <button type="button" onclick="insertChar('â')">â</button>
+            <button type="button" onclick="insertChar('ô')">ô</button>
+            <button type="button" onclick="insertChar('û')">û</button>
+            <button type="button" onclick="insertChar('ç')">ç</button>
+            <button type="button" onclick="insertChar('ë')">ë</button>
+            <button type="button" onclick="insertChar('ï')">ï</button>
+            <button type="button" onclick="insertChar('ü')">ü</button>
+        </div>
+
+        <div id="all-questions-container">
+           
+            <p class="question-text">Lisez le texte et répondez aux questions en choisissant la bonne réponse.</p>
+          
+          <p style="text-align: center; color: darkgreen"><b>Les criquets pèlerins devraient profiter du réchauffement climatique</b></p> 
+          
+          <p>Le réchauffement climatique menace certaines espèces mais pourrait bien <span style="color: green">en</span> favoriser d'autres. 
+              Et ce n'est pas forcément une bonne nouvelle pour les hommes. Selon une étude publiée dans Science Advances, 
+              les invasions de criquets pèlerins pourraient <span style="color: green">prendre de l'ampleur</span>. 
+              En effet, un essaim* d'un kilomètre carré peut consommer en un jour suffisamment de nourriture pour nourrir 35 000 personnes.
+          </p>
+            <p>  
+              Des nuages sombres de criquets pourraient bientôt menacer de nouveaux pays. 
+              Selon une étude publiée dans Science Advances, les essaims géants de criquets pèlerins pourraient devenir plus fréquents, 
+              d'après les prévisions pour la période 2065-2100. 
+              Deux scénarios ont été étudiés. 
+              Même dans un scénario de réduction importante des émissions de gaz à effet de serre, 
+              le risque restera fort pour les zones déjà concernées par des invasions comme 
+              la corne de l'Afrique ou le Nord-Ouest de ce continent et l'habitat des criquets pèlerins 
+              devrait s'étendre de 5%. 
+              Dans le scénario d'une économie basée sur les énergies fossiles, les zones envahies par 
+              ces insectes pourraient augmenter de 13 à 25%. Des pays pas habitués à ces insectes 
+              comme l'ouest de l'Inde, l'Iran, l'Afghanistan ou le Turkménistan pourraient être gagnés. 
+              Selon l'étude, les zones sèches frappées par des pluies extrêmes sont particulièrement favorables 
+              aux attaques de criquets pèlerins. Avec l'humidité du sol, les œufs finissent par 
+              se développer et la végétation dont se nourrissent les larves pousse. 
+              Or, <span style="color: green">le réchauffement climatique tendra à accroître les sécheresses</span> et l'intensité des pluies extrêmes. 
+              La température joue, elle, un rôle sur l'incubation des œufs et sur les vols massifs: 
+              les criquets doivent avoir suffisamment chaud pour battre des ailes. 
+              Les chercheurs alertent également contre le risque d'attaques synchronisées dans plusieurs pays 
+              à la faveur des inondations et des vents. Un danger supplémentaire en termes de sécurité alimentaire.
+          </p>
+          <p style="text-align: right;"><i>D'après rfi.fr, Pauline Gleize, le 17 février 2024</i></p>
+          <ul>
+            <li>Criquet pèlerin: châu chấu di cư</li>
+            <li>Essaim : bầy, đàn</li>
+            <li>Énergies fossiles : năng lượng hóa thạch</li>
+            <li>Incubation: sự ấp trứng</li>
+        </ul>        
+          
+          <div class="question-block" id="q1">
+                <p class="question-text">Question 1. Ce document pourrait appartenir à la rubrique «______»</p>
+                <div class="answers">
+                    <label><input type="radio" name="q1" value="a"> a) Sport</label>
+                    <label><input type="radio" name="q1" value="b"> b) Éducation</label>
+                    <label><input type="radio" name="q1" value="c"> c) Environnement</label>
+                    <label><input type="radio" name="q1" value="d"> d) Culture</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(1, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q2">
+                <p class="question-text">Question 2. En un jour, un essaim de criquets pèlerins d'un kilomètre carré peut</p>
+                <div class="answers">
+                    <label><input type="radio" name="q2" value="a"> a) envahir l'habitat de 35 000 personnes</label>
+                    <label><input type="radio" name="q2" value="b"> b) consommer l'équivalent de la nourriture de 35 000 personnes</label>
+                    <label><input type="radio" name="q2" value="c"> c) menacer certaines espèces dans le ciel en temps de pluie</label>
+                    <label><input type="radio" name="q2" value="d"> d) se loger dans des nuages sombres</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(2, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          <div class="question-block" id="q3">
+                <p class="question-text">Question 3. Quels pays sont déjà concernés par les attaques de criquets pèlerins?</p>
+                <div class="answers">
+                    <label><input type="radio" name="q3" value="a"> a) Les pays de la corne et du Nord-Ouest de l'Afrique.</label>
+                    <label><input type="radio" name="q3" value="b"> b) Les pays situés dans les zones de climat tempéré.</label>
+                    <label><input type="radio" name="q3" value="c"> c) L'Inde, l'Iran, l'Afghanistan et le Turkménistan.</label>
+                    <label><input type="radio" name="q3" value="d"> d) Les pays qui se trouvent dans le Nord-Ouest de l'Europe.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(3, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          <div class="question-block" id="q4">
+                <p class="question-text">Question 4. Quels lieux favorisent les attaques de criquets pèlerins?</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q4" value="a"> a) Des zones sèches avec des pluies extrêmes.</label>
+                    <label><input type="radio" name="q4" value="b"> b) Des sols chauds et totalement secs.</label>
+                    <label><input type="radio" name="q4" value="c"> c) Des régions avec peu de végétation.</label>
+                    <label><input type="radio" name="q4" value="d"> d) Des régions froides avec beaucoup de pluies.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(4, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          <div class="question-block" id="q5">
+                <p class="question-text">Question 5. D'après le texte, la température peut</p>               
+                <div class="answers">
+                    <label><input type="radio" name="q5" value="a"> a) empêcher les criquets pèlerins de voler</label>
+                    <label><input type="radio" name="q5" value="b"> b) diminuer la vitesse de vol des criquets</label>
+                    <label><input type="radio" name="q5" value="c"> c) affecter le développement des œufs des criquets</label>
+                    <label><input type="radio" name="q5" value="d"> d) casser les ailes de tous les jeunes criquets</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(5, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          <div class="question-block" id="q6">
+                <p class="question-text">Question 6. Que désigne le pronom « en » dans le premier paragraphe ?</p>             
+                <div class="answers">
+                    <label><input type="radio" name="q6" value="a"> a) Des espèces.</label>
+                    <label><input type="radio" name="q6" value="b"> b) Des criquets pèlerins.</label>
+                    <label><input type="radio" name="q6" value="c"> c) Du réchauffement.</label>
+                    <label><input type="radio" name="q6" value="d"> d) Des invasions.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(6, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+         
+          <div class="question-block" id="q7">
+                <p class="question-text">Question 7. Que signifie l'expression « prendre de l'ampleur » dans le premier paragraphe ?</p>               
+                <div class="answers">
+                    <label><input type="radio" name="q7" value="a"> a) Souffrir.</label>
+                    <label><input type="radio" name="q7" value="b"> b) Changer.</label>
+                    <label><input type="radio" name="q7" value="c"> c) Augmenter.</label>
+                    <label><input type="radio" name="q7" value="d"> d) Diminuer.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(7, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+           <div class="question-block" id="q8">
+                <p class="question-text">Question 8. La phrase « Le réchauffement climatique tendra à accroître les sécheresses » correspond à «_____»</p>               
+                <div class="answers">
+                    <label><input type="radio" name="q8" value="a"> a) L'augmentation des sécheresses entraînera le réchauffement climatique</label>
+                    <label><input type="radio" name="q8" value="b"> b) L'accroissement des sécheresses contribuera au réchauffement climatique</label>
+                    <label><input type="radio" name="q8" value="c"> c) Les sécheresses s'accroîtront malgré la baisse du réchauffement climatique</label>
+                    <label><input type="radio" name="q8" value="d"> d) Les sécheresses seront accrues à cause du réchauffement climatique</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(8, 'd')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          <p class="question-text">Complétez le texte en choisissant la bonne réponse.</p> 
+          <p style="text-align: center; color: darkgreen">
+            <b>Retour des vacances: la situation après le COVID-19</b>
+          </p>
+          <p>
+            En France, on se prépare aux vacances. Elles vont (9) _____ d'ici deux semaines.
+            Et malgré l'inflation et la perte de pouvoir d'achat, la (l') (10) _____ touristique
+            se présente bien. Deux millions de Français qui n'étaient pas partis l'année dernière,
+            ayant lutté contre le COVID-19, ont décidé de s'offrir des (11) _____ cette année. 
+            Les touristes qui n'ont pas eu la chance de voyager à cause de cette (12) _____ sont 
+            aussi de retour. Les professionnels du secteur prévoient donc une belle saison. 
+            Mais il ne faudra pas être trop optimiste et pressé pour boire un verre au bar 
+            de la plage ou suivre une visite guidée, car les employeurs trouvent qu'il est (13) _____ 
+            de recruter: ils craignent de manquer de personnel.
+          </p>
+          
+          <div class="question-block" id="q9">
+                <p class="question-text">Question 9. </p>                
+                <div class="answers">
+                    <label><input type="radio" name="q9" value="a"> a) organiser</label>
+                    <label><input type="radio" name="q9" value="b"> b) commencer</label>
+                    <label><input type="radio" name="q9" value="c"> c) annuler</label>
+                    <label><input type="radio" name="q9" value="d"> d) atteindre</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(9, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          <div class="question-block" id="q10">
+                <p class="question-text">Question 10. </p>      
+                <div class="answers">
+                    <label><input type="radio" name="q10" value="a"> a) réduction</label>
+                    <label><input type="radio" name="q10" value="b"> b) difficulté</label>
+                    <label><input type="radio" name="q10" value="c"> c) saison</label>
+                    <label><input type="radio" name="q10" value="d"> d) obstacle</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(10, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q11">
+                <p class="question-text">Question 11.</p>
+                <div class="answers">
+                    <label><input type="radio" name="q11" value="a"> a) voyages</label>
+                    <label><input type="radio" name="q11" value="b"> b) repas</label>
+                    <label><input type="radio" name="q11" value="c"> c) plats</label>
+                    <label><input type="radio" name="q11" value="d"> d) ventes</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(11, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+           <div class="question-block" id="q12">
+                <p class="question-text">Question 12. </p>                
+                <div class="answers">
+                    <label><input type="radio" name="q12" value="a"> a) vie</label>
+                    <label><input type="radio" name="q12" value="b"> b) guérison</label>
+                    <label><input type="radio" name="q12" value="c"> c) pandémie</label>
+                    <label><input type="radio" name="q12" value="d"> d) naissance</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(12, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+           <div class="question-block" id="q13">
+                <p class="question-text">Question 13.</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q13" value="a"> a) ordinaire</label>
+                    <label><input type="radio" name="q13" value="b"> b) facile</label>
+                    <label><input type="radio" name="q13" value="c"> c) difficile</label>
+                    <label><input type="radio" name="q13" value="d"> d) possible</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(13, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          
+          <div class="question-block" id="q14">
+                <p class="question-text">Question 14. Mettez les phrases suivantes en ordre en choisissant la bonne réponse.</p>   
+            <p>
+              a) - Moi aussi! Par contre, le tarif est élevé, 500 € par nuitée...<br/>
+              b) - Oui, je l'ai vue. Ça a l'air intéressant! J'adore faire de la voile et du surf.<br/>
+              c) - Tu as vu la publicité du séjour à la plage de Saint-Tropez?<br/>
+              d) - C'est vrai, mais ça vaut peut-être le coup pour une expérience magnifique.<br/>
+            </p>
+                <div class="answers">
+                    <label><input type="radio" name="q14" value="a"> a) c-a-b-d</label>
+                    <label><input type="radio" name="q14" value="b"> b) d-b-c-a</label>
+                    <label><input type="radio" name="q14" value="c"> c) c-d-b-a</label>
+                    <label><input type="radio" name="q14" value="d"> d) c-b-a-d</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(14, 'd')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+         
+          <div class="question-block" id="q15">
+                <p class="question-text">Question 15. Mettez les phrases suivantes en ordre en choisissant la bonne réponse.</p>  
+            <p>
+              a) - Lucien, on fait quoi ce week-end? Je n'aime pas rester à la maison!<br/>
+              b) - Excellente idée ! J'ai entendu dire que les nems y sont délicieux. On y va vendredi soir?<br/>
+              c) - D'accord. On va manger dehors? Je connais le restaurant Bambou dans le quartier Latin.<br/>
+              d) - Parfait! J'ai très envie de manger des plats vietnamiens.<br/>
+            </p>
+                <div class="answers">
+                    <label><input type="radio" name="q15" value="a"> a) a-d-b-c</label>
+                    <label><input type="radio" name="q15" value="b"> b) d-b-c-a</label>
+                    <label><input type="radio" name="q15" value="c"> c) a-c-b-d</label>
+                    <label><input type="radio" name="q15" value="d"> d) b-d-a-c</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(15, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          <p class="question-text">Complétez le texte en choisissant la bonne réponse.</p> 
+          <p style="text-align: center; color: darkgreen">
+            <b>Loisirs</b>
+          </p>
+          <p>
+            Les loisirs occupent une place importante dans notre vie quotidienne. 
+            Ils permettent de se libérer du stress et des obligations, offrant ainsi 
+            un équilibre entre travail et détente. (16) _____ chacun a besoin de moments 
+            de pause pour se ressourcer et préserver sa santé mentale. 
+            Les activités de loisir sont diverses: certains (17) _____ les loisirs en plein air 
+            comme le sport, la randonnée ou le jardinage, tandis que d'autres apprécient 
+            les loisirs plus calmes, tels que la lecture, la peinture ou les jeux de société, 
+            (18) _____ sont favorables à la détente et à la réflexion. 
+            Aujourd'hui, les loisirs numériques, comme les jeux vidéo ou les réseaux sociaux, 
+            gagnent en popularité, surtout chez les jeunes. Cependant, il est essentiel de ne pas 
+            négliger les interactions (19) _____ et de varier les activités. 
+            Ainsi, les loisirs permettent non seulement de se divertir (20) _____ aussi de 
+            développer des compétences et de renforcer les liens sociaux, contribuant ainsi à une vie équilibrée et enrichissante.
+          </p>
+          <p style="text-align: right;"><i>D'après loisirs.com</i></p>
+          
+          <div class="question-block" id="q16">
+                <p class="question-text">Question 16.</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q16" value="a"> a) Même si</label>
+                    <label><input type="radio" name="q16" value="b"> b) Car</label>
+                    <label><input type="radio" name="q16" value="c"> c) Pourtant</label>
+                    <label><input type="radio" name="q16" value="d"> d) Alors</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(16, 'd')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          <div class="question-block" id="q17">
+                <p class="question-text">Question 17.</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q17" value="a"> a) préfères</label>
+                    <label><input type="radio" name="q17" value="b"> b) préférez</label>
+                    <label><input type="radio" name="q17" value="c"> c) préfèrent</label>
+                    <label><input type="radio" name="q17" value="d"> d) préfère</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(17, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+              <div class="question-block" id="q18">
+                <p class="question-text">Question 18.</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q18" value="a"> a) où</label>
+                    <label><input type="radio" name="q18" value="b"> b) qui</label>
+                    <label><input type="radio" name="q18" value="c"> c) que</label>
+                    <label><input type="radio" name="q18" value="d"> d) dont</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(18, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q19">
+                <p class="question-text">Question 19.</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q19" value="a"> a) réelle</label>
+                    <label><input type="radio" name="q19" value="b"> b) réelles</label>
+                    <label><input type="radio" name="q19" value="c"> c) réel</label>
+                    <label><input type="radio" name="q19" value="d"> d) réels</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(19, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q20">
+                <p class="question-text">Question 20.</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q20" value="a"> a) surtout</label>
+                    <label><input type="radio" name="q20" value="b"> b) encore</label>
+                    <label><input type="radio" name="q20" value="c"> c) et</label>
+                    <label><input type="radio" name="q20" value="d"> d) mais</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(20, 'd')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+         <p style="text-align: center; color: darkgreen">
+            <b>Paul et sa femme Julie partiront en vacances. </b>
+          </p>
+          <p>Lisez les annonces suivantes et répondez aux questions en choisissant la bonne réponse.</p>
+         <ul id="myUniqueList">
+            <li class="list-item-frame">
+              <p style="text-align: center; color: darkgreen"><b>Offre 1</b></p>
+              <p>ESCAPADE EN PROVENCE</p>
+              <p>Venez passer un séjour relaxant dans une charmante maison provençale, entourée de champs de lavande. 
+                Profitez des activités comme le vélo, la randonnée et des soirées dégustation de vins locaux. 
+                Tarif préférentiel pour couple (250 €). <p>Tarif: 150 €/pers/nuitée. </p>
+              </p>
+            </li>
+            <li class="list-item-frame">
+              <p style="text-align: center; color: darkgreen"><b>Offre 2</b></p>
+              <p>LUXE ET PLAGE AUX MALDIVES</p>
+              <p>Situé à deux pas de la plage, hôtel 5 étoiles avec spa de luxe et excursions 
+              en bateau pour explorer les îles paradisiaques.
+              Animaux acceptés. Idéal pour une escapade romantique ou 
+              un voyage en famille. Navette aéroport offerte. <p>Tarif: 500 €/pers/nuitée.</p>
+              </p>
+           </li>
+            <li class="list-item-frame">
+              <p style="text-align: center; color: darkgreen"><b>Offre 3</b></p>
+              <p>AVENTURE DANS LES PYRÉNÉES</p>
+              <p>Package complet: nuit en camping, balades en vélo tout-terrain et 
+                observation des étoiles dans un cadre naturel préservé, repas offert. 
+                Attention: sac de couchage non inclus, nombre de places limité. 
+                <p>Tarif: 50 €/pers/nuitée.</p>
+              </p>
+           </li>
+            <li class="list-item-frame">
+              <p style="text-align: center; color: darkgreen"><b>Offre 4</b></p>
+              <p>WEEK-END RELAXANT EN BRETAGNE</p>
+            <p>Reposez-vous dans une auberge pittoresque située au bord de la mer. 
+              Profitez des séances de massage aux huiles essentielles, de la cuisine 
+              locale et de promenades sur la plage. <p>Tarif 130 €/pers/nuitée 
+              (paiement sur place et en espèces uniquement, pas de virement* bancaire).<br/>* Virement: chuyển khoản</p>
+              </p>
+           
+           </li>
+            <li class="list-item-frame">
+              <p style="text-align: center; color: darkgreen"><b>Offre 5</b></p>
+              <p>DÉTENTE SUR LA CÔTE D'AZUR</p>
+            <p>Séjournez dans un hôtel en bord de mer sur la magnifique Côte d'Azur. 
+              Profitez du soleil, de la plage et des sports nautiques comme la voile 
+              et le paddle. Le soir, découvrez la cuisine 
+              méditerranéenne dans des restaurants typiques. Idéal pour un séjour 
+              estival. <p>Tarif: 200 €/pers/nuitée.</p>
+              </p>
+           </li>
+        </ul>
+            <div class="question-block" id="q21">
+                <p class="question-text">Question 21. Julie aime beaucoup la mer. Elle peut choisir les offres</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q21" value="a"> a) 2, 3, 5</label>
+                    <label><input type="radio" name="q21" value="b"> b) 1, 3, 4</label>
+                    <label><input type="radio" name="q21" value="c"> c) 2, 4, 5</label>
+                    <label><input type="radio" name="q21" value="d"> d) 1, 2, 3</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(21, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            
+             <div class="question-block" id="q22">
+                <p class="question-text">Question 22. Quel endroit a des champs de lavande?</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q22" value="a"> a) Les Pyrénées.</label>
+                    <label><input type="radio" name="q22" value="b"> b) La Bretagne.</label>
+                    <label><input type="radio" name="q22" value="c"> c) La Provence.</label>
+                    <label><input type="radio" name="q22" value="d"> d) La Côte d'Azur.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(22, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+                          
+            <div class="question-block" id="q23">
+                <p class="question-text">Question 23. Si le couple choisit les Maldives, où séjournera-t-il?</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q23" value="a"> a) Dans une maison typique.</label>
+                    <label><input type="radio" name="q23" value="b"> b) Dans une auberge.</label>
+                    <label><input type="radio" name="q23" value="c"> c) Dans un hôtel 5 étoiles.</label>
+                    <label><input type="radio" name="q23" value="d"> d) En camping.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(23, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q24">
+                <p class="question-text">Question 24. Si Paul et Julie veulent payer via smartphone, ils ne choisiront pas l'offre</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q24" value="a"> a) 5</label>
+                    <label><input type="radio" name="q24" value="b"> b) 4</label>
+                    <label><input type="radio" name="q24" value="c"> c) 3</label>
+                    <label><input type="radio" name="q24" value="d"> d) 2</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(24, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q25">
+                <p class="question-text">Question 25. Pour faire une aventure dans les Pyrénées, Paul et Julie doivent</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q25" value="a"> a) préparer des sacs de couchage</label>
+                    <label><input type="radio" name="q25" value="b"> b) s'occuper des animaux</label>
+                    <label><input type="radio" name="q25" value="c"> c) apporter des nourritures</label>
+                    <label><input type="radio" name="q25" value="d"> d) acheter des vins locaux</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(25, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q26">
+                <p class="question-text">Question 26. Paul adore faire du vélo. Il peut choisir les offres</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q26" value="a"> a) 1, 4</label>
+                    <label><input type="radio" name="q26" value="b"> b) 1, 3</label>
+                    <label><input type="radio" name="q26" value="c"> c) 3, 5</label>
+                    <label><input type="radio" name="q26" value="d"> d) 4, 5</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(26, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q27">
+                <p class="question-text">Question 27. En Bretagne, le couple peut</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q27" value="a"> a) avoir des séances de massage aux huiles</label>
+                    <label><input type="radio" name="q27" value="b"> b) explorer des îles magnifiques</label>
+                    <label><input type="radio" name="q27" value="c"> c) déguster la cuisine méditerranéenne</label>
+                    <label><input type="radio" name="q27" value="d"> d) faire du camping la nuit</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(27, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q28">
+                <p class="question-text">Question 28. Paul et sa femme Julie ont un budget total de 250 euros pour une nuitée. Les offres leur conviennent.</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q28" value="a"> a) 4, 5</label>
+                    <label><input type="radio" name="q28" value="b"> b) 2, 5</label>
+                    <label><input type="radio" name="q28" value="c"> c) 1, 3</label>
+                    <label><input type="radio" name="q28" value="d"> d) 2, 3</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(28, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            
+             <div class="question-block" id="q29">
+                <p class="question-text">Question 29. Quel est le synonyme de l'adjectif « préférentiel » dans l'offre 1?</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q29" value="a"> a) Élevé.</label>
+                    <label><input type="radio" name="q29" value="b"> b) Normal.</label>
+                    <label><input type="radio" name="q29" value="c"> c) Réduit.</label>
+                    <label><input type="radio" name="q29" value="d"> d) Moyen.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(29, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q30">
+                <p class="question-text">Question 30. Que signifie l'expression « des sports nautiques » dans l'offre 5?</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q30" value="a"> a) Des sports d'équipe.</label>
+                    <label><input type="radio" name="q30" value="b"> b) Des sports pratiqués dans l'eau.</label>
+                    <label><input type="radio" name="q30" value="c"> c) Des sports pratiqués dans l'air.</label>
+                    <label><input type="radio" name="q30" value="d"> d) Des sports de combat.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(30, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+         
+
+        <p class="question-text">Lisez le texte et répondez aux questions en choisissant la bonne réponse.</p> 
+          <p style="text-align: center; color: darkgreen">
+            <b>Bac 2024: À quelles primes ont droit les bacheliers, avec ou sans mention?</b>
+          </p>
+            
+        <p>Les plus de 700.000 candidats du baccalauréat 2024 seront fixés sur leur sort à partir du lundi 8 juillet. 
+          En plus du bonheur de se savoir enfin diplômés, les bacheliers peuvent également obtenir des aides et 
+          des primes de différents organismes. Certaines d'entre elles ne nécessitent d'ailleurs pas de mention. 
+          Voici tout ce qu'il faut savoir sur ces dispositifs.</p>
+        <p><b>Les primes des banques</b></p>
+        <p>Il s'agit certainement du dispositif le plus connu en la matière, de nombreuses publicités ayant été faites à ce sujet. 
+          Si elles sont en diminution, quatre banques proposent toujours ce type de coup de pouce destiné 
+          aux bacheliers sur présentation du relevé de notes. 
+          La première est la Société Générale. Elle offre du premier juillet au 31 octobre 2024 une prime de 
+          80 euros à ses clients bacheliers. On retrouve aussi un bonus à l'ouverture de compte au 
+          Crédit Agricole, mais au cas par cas, en fonction des caisses régionales. En 2023, les primes allaient de 
+          50 euros pour une mention « assez bien » à 250 euros pour une mention « très bien ». 
+          Chez CIC, le bonus bachelier à l'ouverture d'un compte est de 40 euros pour une mention « assez bien », 
+          80 euros pour une mention « bien » et 160 euros pour une mention « très bien ». L'offre est valable 
+          jusqu'au 30 septembre 2024, et un formulaire en ligne est à remplir. Enfin, la Banque Populaire 
+          récompense cette année tous ses clients diplômés d'une prime de 50 euros, à condition qu'ils disposent 
+          d'un compte dans la banque et qu'ils soient âgés de 18 à 28 ans. L'offre vaut jusqu'au 30 septembre 2024.
+        </p>
+        
+        <p style="text-align: right;"><i>D'après 20minutes.fr, publié le 04 juillet 2024</i></p>
+        <p>* Prime : tiền thưởng</p>
+
+
+              <div class="question-block" id="q31">
+                <p class="question-text">Question 31. Cet article pourrait appartenir à la rubrique «______».</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q31" value="a"> a) Culture</label>
+                    <label><input type="radio" name="q31" value="b"> b) Transport</label>
+                    <label><input type="radio" name="q31" value="c"> c) Sport</label>
+                    <label><input type="radio" name="q31" value="d"> d) Éducation</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(31, 'd')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+             <div class="question-block" id="q32">
+                <p class="question-text">Question 32. Cet article parle principalement</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q32" value="a"> a) des différentes banques en France</label>
+                    <label><input type="radio" name="q32" value="b"> b) des aides financières pour les bacheliers</label>
+                    <label><input type="radio" name="q32" value="c"> c) des critères d'admission à l'université</label>
+                    <label><input type="radio" name="q32" value="d"> d) du système du baccalauréat en France</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(32, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q33">
+                <p class="question-text">Question 33. Le nombre de banques qui offrent des primes aux bacheliers</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q33" value="a"> a) monte légèrement</label>
+                    <label><input type="radio" name="q33" value="b"> b) est en baisse</label>
+                    <label><input type="radio" name="q33" value="c"> c) est en augmentation</label>
+                    <label><input type="radio" name="q33" value="d"> d) reste constant</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(33, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q34">
+                <p class="question-text">Question 34. Quelles banques proposent une prime à leurs clients diplômés sans aborder la mention?</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q34" value="a"> a) La Société Générale et la Banque Populaire.</label>
+                    <label><input type="radio" name="q34" value="b"> b) Le Crédit Agricole et la Banque Populaire.</label>
+                    <label><input type="radio" name="q34" value="c"> c) La Société Générale et Le Crédit Agricole.</label>
+                    <label><input type="radio" name="q34" value="d"> d) La Société Générale et CIC.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(34, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            
+            <div class="question-block" id="q35">
+                <p class="question-text">Question 35. Quelle banque offre une prime valable jusqu'en octobre 2024 ?</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q35" value="a"> a) CIC.</label>
+                    <label><input type="radio" name="q35" value="b"> b) La Banque Populaire.</label>
+                    <label><input type="radio" name="q35" value="c"> c) La Société Générale.</label>
+                    <label><input type="radio" name="q35" value="d"> d) Le Crédit Agricole.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(35, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q36">
+                <p class="question-text">Question 36. La phrase « Il s'agit certainement du dispositif le plus connu en la matière, de nombreuses  publicités ayant été faites à ce sujet » correspond à «_____».</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q36" value="a"> a) Ce dispositif est certainement le plus connu en la matière sans beaucoup de publicités faites à ce sujet</label>
+                    <label><input type="radio" name="q36" value="b"> b) Avec peu de publicités réalisées à ce sujet, ce dispositif est quand même le plus connu en la matière</label>
+                    <label><input type="radio" name="q36" value="c"> c) Ce dispositif est certainement le plus connu en la matière grâce à la multitude de publicités réalisées au sujet</label>
+                    <label><input type="radio" name="q36" value="d"> d) Malgré le manque de publicités faites au sujet, ce dispositif est le plus connu en la matière</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(36, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q37">
+                <p class="question-text">Question 37. Quel est le synonyme du verbe « obtenir » dans le premier paragraphe ?</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q37" value="a"> a) Recevoir.</label>
+                    <label><input type="radio" name="q37" value="b"> b) Manquer.</label>
+                    <label><input type="radio" name="q37" value="c"> c) Refuser.</label>
+                    <label><input type="radio" name="q37" value="d"> d) Demander.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(37, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q38">
+                <p class="question-text">Question 38. Que signifie l'expression « coup de pouce » dans le deuxième paragraphe ?</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q38" value="a"> a) Un soutien financier.</label>
+                    <label><input type="radio" name="q38" value="b"> b) Un service public.</label>
+                    <label><input type="radio" name="q38" value="c"> c) Un conseil précieux.</label>
+                    <label><input type="radio" name="q38" value="d"> d) Un renseignement pratique.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(38, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+
+            <div class="question-block" id="q39">
+              <p class="question-text">Question 39. Complétez le dialogue en choisissant la bonne réponse.</p>
+                <p>- Ça te dit de sortir avec moi ce soir ?</p>
+                <p>- Tu veux aller où ?</p>
+                <p>- Pourquoi on ne va pas au cinéma ?</p>
+                <p>- ______________</p>
+              <div class="answers">
+                    <label><input type="radio" name="q39" value="a"> a) Pas mal! Je vais y aller demain avec mes amis</label>
+                    <label><input type="radio" name="q39" value="b"> b) Le cinéma, ça ne me dit rien</label>
+                    <label><input type="radio" name="q39" value="c"> c) Super! J'ai un dîner en famille ce soir</label>
+                    <label><input type="radio" name="q39" value="d"> d) Bonne idée ! Dis-moi quel film tu aimerais voir</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(39, 'd')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q40">
+                <p class="question-text">Question 40. Complétez le dialogue en choisissant la bonne réponse.</p>                
+                  <p>- Pardon Monsieur, je cherche la rue Clémenceau.</p>
+                  <p>- _____________</p>
+                  <p>- Est-ce que c'est loin?</p>
+                  <p>- Non, environ 100 mètres, au bout de cette rue.</p>
+                  <p>- Merci, bonne journée.</p>
+              
+              <div class="answers">
+                    <label><input type="radio" name="q40" value="a"> a) Désolé ! Je ne suis pas d'ici</label>
+                    <label><input type="radio" name="q40" value="b"> b) C'est dans cette direction</label>
+                    <label><input type="radio" name="q40" value="c"> c) Il est tout près d'ici</label>
+                    <label><input type="radio" name="q40" value="d"> d) L'arrêt de bus ? C'est à 50 mètres</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(40, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+           
+        </div>
+    </div>
+
+    <script>
+        let score = 0;
+        let lastFocusedInput = null;
+        let timeInSeconds = 5400;
+        let timerInterval = null;
+
+        const clozeAnswers = [
+            ['me lève', 'croissants', 'bus', 'économie', 'livre'],
+            ['marché', 'tomates', 'pommes', 'animé'],
+            ['chien', 'intelligent', 'rouge', 'dort']
+        ];
+        
+        const maxScore = 40  //clozeAnswers.flat().length; // 16 câu đơn + 13 chỗ trống = 29 điểm
+
+        const transcriptionData = {
+            900: "Le train pour Lyon partira à quinze heures trente du quai numéro sept.",
+            1000: "N'oubliez pas d'acheter du pain, du lait et trois croissants pour le petit-déjeuner."
+        };
+        const feedbackExplanations = {
+            1: "Chính xác! ",
+            2: "Chính xác! ",
+            3: "Chính xác! ",
+            4: "Chính xác! ",
+            5: "Chính xác! ",
+            6: "Chính xác! ",
+            7: "Chính xác! ",
+            8: "Chính xác! ",
+            9: "Chính xác! ",
+            10: "Chính xác! ",
+            11: "Chính xác! ",
+            12: "Chính xác! ",
+            13: "Chính xác! ",
+            14: "Chính xác! ",
+            15: "Chính xác! ",
+            16: "Chính xác! ",
+            17: "Chính xác! ",
+            18: "Chính xác! ",
+            19: "Chính xác! ",
+            20: "Chính xác! ",
+            21: "Chính xác! ",
+            22: "Chính xác! ",
+            23: "Chính xác! ",
+            24: "Chính xác! ",
+            25: "Chính xác! ",
+            26: "Chính xác! ",
+            27: "Chính xác! ",
+            28: "Chính xác! ",
+            29: "Chính xác! ",
+            30: "Chính xác! ",
+            31: "Chính xác! ",
+            32: "Chính xác! ",
+            33: "Chính xác! ",
+            34: "Chính xác! ",
+            35: "Chính xác! ",
+            36: "Chính xác! ",
+            37: "Chính xác! ",
+            38: "Chính xác! ",
+            39: "Chính xác! ",
+            40: "Chính xác! "
+           
+        };
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const today = new Date();
+            const day = String(today.getDate()).padStart(2, '0');
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const year = today.getFullYear();
+            document.getElementById('test-date').textContent = `${day}/${month}/${year}`;
+            
+            updateScoreDisplay();
+            startTimer();
+        });
+
+        function startTimer() {
+            const timerDisplay = document.getElementById('timer-display');
+            clearInterval(timerInterval); 
+            
+            timerInterval = setInterval(() => {
+                timeInSeconds--;
+                const minutes = Math.floor(timeInSeconds / 60);
+                const seconds = timeInSeconds % 60;
+                timerDisplay.textContent = `Thời gian: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                if (timeInSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    timerDisplay.textContent = "Hết giờ!";
+                    alert("Hết giờ làm bài!");
+                    document.querySelectorAll('.validate-btn').forEach(btn => btn.disabled = true);
+                }
+            }, 1000);
+        }
+
+        function updateScoreDisplay() {
+            const scoreDisplay = document.getElementById('score-display');
+            scoreDisplay.textContent = `Điểm: ${score} / ${maxScore}`;
+        }
+        
+        function updateScore(points = 1) {
+            score += points;
+            updateScoreDisplay();
+        }
+        
+        function setLastFocused(element) {
+            lastFocusedInput = element;
+        }
+
+        function insertChar(char) {
+            if (lastFocusedInput) {
+                const startPos = lastFocusedInput.selectionStart;
+                const endPos = lastFocusedInput.selectionEnd;
+                const value = lastFocusedInput.value;
+                lastFocusedInput.value = value.substring(0, startPos) + char + value.substring(endPos, value.length);
+                lastFocusedInput.focus();
+                lastFocusedInput.selectionStart = startPos + 1;
+                lastFocusedInput.selectionEnd = startPos + 1;
+            }
+        }
+        
+        function playAudio(questionNumber, buttonElement) {
+            const audioPlayer = document.getElementById(`audio-player-${questionNumber}`);
+            if (audioPlayer) {
+                audioPlayer.play();
+                buttonElement.classList.add('playing');
+                buttonElement.disabled = true;
+                audioPlayer.onended = () => {
+                    buttonElement.classList.remove('playing');
+                    buttonElement.disabled = false;
+                };
+            }
+        }
+
+        function showTranscription(questionNumber) {
+            const transcriptText = transcriptionData[questionNumber];
+            const transcriptContainer = document.getElementById(`transcription-${questionNumber}`);
+            const transcriptButton = document.getElementById(`show-transcription-btn-${questionNumber}`);
+
+            if (transcriptText && transcriptContainer) {
+                transcriptContainer.textContent = transcriptText;
+                transcriptContainer.style.display = 'block';
+                if(transcriptButton) transcriptButton.style.display = 'none';
+            }
+        }
+
+        function validateRadio(questionNumber, correctAnswer) {
+            const questionBlock = document.getElementById(`q${questionNumber}`);
+            const radios = document.getElementsByName(`q${questionNumber}`);
+            const feedback = questionBlock.querySelector('.feedback');
+            const button = questionBlock.querySelector('.validate-btn');
+            let selectedAnswer = null;
+
+            radios.forEach(radio => { if (radio.checked) { selectedAnswer = radio; } });
+
+            if (selectedAnswer === null) {
+                feedback.textContent = "Vui lòng chọn một đáp án!";
+                feedback.className = 'feedback feedback-warning';
+                return;
+            }
+            
+            button.disabled = true;
+            radios.forEach(radio => radio.disabled = true);
+            const selectedLabel = selectedAnswer.parentElement;
+            const explanation = feedbackExplanations[questionNumber];
+
+            if (selectedAnswer.value === correctAnswer) {
+                feedback.textContent = explanation;
+                feedback.className = 'feedback feedback-correct';
+                selectedLabel.classList.add('correct-answer');
+                updateScore();
+            } else {
+                const cleanedExplanation = explanation.replace("Chính xác! ", "");
+                feedback.innerHTML = `<strong>Không chính xác.</strong> ${cleanedExplanation}<br>Đáp án đúng là lựa chọn <strong>"${correctAnswer.toUpperCase()}"</strong>.`;
+                feedback.className = 'feedback feedback-incorrect';
+                selectedLabel.classList.add('incorrect-answer');
+                radios.forEach(radio => { if (radio.value === correctAnswer) { radio.parentElement.classList.add('correct-answer'); } });
+            }
+
+            if (document.getElementById(`audio-player-${questionNumber}`)) {
+                const transcriptBtn = document.getElementById(`show-transcription-btn-${questionNumber}`);
+                if (transcriptBtn) {
+                    transcriptBtn.style.display = 'block';
+                }
+            }
+        }
+        
+        function validateText(questionNumber, correctAnswer) {
+            const questionBlock = document.getElementById(`q${questionNumber}`);
+            const inputField = questionBlock.querySelector('input[type="text"]');
+            const feedback = questionBlock.querySelector('.feedback');
+            const button = questionBlock.querySelector('.validate-btn');
+            const userAnswer = inputField.value.trim();
+
+            if (userAnswer === "") {
+                feedback.textContent = "Vui lòng điền câu trả lời của bạn.";
+                feedback.className = 'feedback feedback-warning';
+                return;
+            }
+            
+            const explanation = feedbackExplanations[questionNumber];
+            
+            button.disabled = true;
+            inputField.disabled = true;
+
+            if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
+                feedback.textContent = explanation;
+                feedback.className = 'feedback feedback-correct';
+                inputField.classList.add('correct-answer');
+                updateScore();
+            } else {
+                const cleanedExplanation = explanation.replace("Chính xác! ", "");
+                feedback.innerHTML = `<strong>Không chính xác.</strong> ${cleanedExplanation}<br>Đáp án đúng phải là: <strong>${correctAnswer}</strong>`;
+                feedback.className = 'feedback feedback-incorrect';
+                inputField.classList.add('incorrect-answer');
+            }
+        }
+
+        function validateCloze(clozeSetIndex, questionId) {
+            const currentAnswers = clozeAnswers[clozeSetIndex - 1]; 
+            const questionBlock = document.getElementById(`q${questionId}`);
+            const button = questionBlock.querySelector('.validate-btn');
+            const feedback = questionBlock.querySelector('.feedback');
+            let correctCount = 0;
+
+            for (let i = 0; i < currentAnswers.length; i++) {
+                const inputId = `cloze-${clozeSetIndex}-${i + 1}`;
+                const inputElement = document.getElementById(inputId);
+                if (inputElement.value.trim() === "") {
+                    feedback.textContent = "Vui lòng điền đầy đủ tất cả các chỗ trống.";
+                    feedback.className = 'feedback feedback-warning';
+                    return;
+                }
+            }
+
+            for (let i = 0; i < currentAnswers.length; i++) {
+                const inputId = `cloze-${clozeSetIndex}-${i + 1}`;
+                const inputElement = document.getElementById(inputId);
+                
+                const userAnswer = inputElement.value.trim().toLowerCase();
+                const correctAnswer = currentAnswers[i].toLowerCase();
+
+                if (userAnswer === correctAnswer) {
+                    inputElement.classList.add('correct-answer');
+                    correctCount++;
+                } else {
+                    inputElement.classList.add('incorrect-answer');
+                    inputElement.value = currentAnswers[i];
+                }
+                
+                inputElement.disabled = true;
+            }
+
+            if (correctCount > 0) {
+                updateScore(correctCount);
+            }
+            
+            feedback.textContent = `Bạn đã điền đúng ${correctCount} trên ${currentAnswers.length} từ.`;
+            feedback.className = 'feedback feedback-correct';
+            
+            button.disabled = true;
+        }
+
+    </script>
+</body>
+</html>

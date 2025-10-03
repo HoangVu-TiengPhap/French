@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2025 by anonymous (http://jsbin.com/wevapuxizu/6/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài tập: Chia động từ (Hiện tại)</title>
+    <style>
+        /* CSS để làm cho trang kiểm tra đẹp hơn */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-header {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 0.95em;
+            color: #555;
+        }
+        
+        .info-header p {
+            margin: 0;
+        }
+
+        .quiz-status-bar {
+            position: sticky;
+            top: 0;
+            background-color: #4a5a7b;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            z-index: 1000;
+        }
+
+        .quiz-status-bar h1 {
+            margin: 0;
+            font-size: 1.5em;
+        }
+
+        #score-display, #timer-display {
+            font-size: 1.2em;
+            font-weight: bold;
+            background-color: #ffffff;
+            color: #4a5a7b;
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+
+        .section-title {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+        
+        .question-block {
+            margin-bottom: 25px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background-color: #fdfdfd;
+        }
+
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .question-translation {
+            font-size: 0.9em;
+            font-style: italic;
+            color: #6c757d;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .answers label {
+            display: block;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            max-width: 500px;
+        }
+
+        .answers label:hover {
+            background-color: #e9ecef;
+        }
+
+        .answers input[type="radio"] {
+            margin-right: 10px;
+        }
+        
+        .validate-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            display: block;
+            margin-top: 15px; 
+            transition: background-color 0.3s;
+        }
+
+        .validate-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .validate-btn:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+        
+        .feedback {
+            margin-top: 15px;
+            font-weight: normal;
+            font-size: 0.95em;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .feedback-correct {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .feedback-incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .feedback-warning {
+            background-color: #fffbe6;
+            color: #8a6d3b;
+        }
+
+        .correct-answer {
+            background-color: #d4edda !important;
+            border-color: #c3e6cb !important;
+        }
+
+        .incorrect-answer {
+            background-color: #f8d7da !important;
+            border-color: #f5c6cb !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="quiz-container">
+        <div class="info-header">
+            <p><strong>Enseignant:</strong> Nguyễn Hoàng Vũ</p>
+            <p><strong>Ngày kiểm tra:</strong> <span id="test-date"></span></p>
+        </div>
+
+        <div class="quiz-status-bar">
+            <h1>Bài tập: Chia động từ (đuôi -é-er)</h1>
+            <div>
+                <span id="score-display">Điểm: 0 / 9</span>
+                <span id="timer-display">Thời gian: 9:00</span>
+            </div>
+        </div>
+        
+        <div id="all-questions-container">
+            <h2 class="section-title">Phần A: Thêm dấu nếu cần thiết</h2>
+            <div class="question-block" id="q1">
+                <p class="question-text">1. Tu ______ une belle collection. (posséder)</p>
+                <p class="question-translation">(Bạn sở hữu một bộ sưu tập đẹp.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q1" value="a">a) possedes</label>
+                    <label><input type="radio" name="q1" value="b">b) possèdes</label>
+                    <label><input type="radio" name="q1" value="c">c) possèdons</label>
+                    <label><input type="radio" name="q1" value="d">d) possédons</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(1, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q2">
+                <p class="question-text">2. Ils ______ la main pour poser une question. (lever)</p>
+                <p class="question-translation">(Họ giơ tay để đặt câu hỏi.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q2" value="a">a) levent</label>
+                    <label><input type="radio" name="q2" value="b">b) lèvent</label>
+                    <label><input type="radio" name="q2" value="c">c) levons</label>
+                    <label><input type="radio" name="q2" value="d">d) lèvons</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(2, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q3">
+                <p class="question-text">3. Nous ______ un chien et deux chats. (posséder)</p>
+                <p class="question-translation">(Chúng tôi có một con chó và hai con mèo.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q3" value="a">a) possèdons</label>
+                    <label><input type="radio" name="q3" value="b">b) possédons</label>
+                    <label><input type="radio" name="q3" value="c">c) possèdent</label>
+                    <label><input type="radio" name="q3" value="d">d) possedent</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(3, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q4">
+                <p class="question-text">4. Vous ______ le camp demain matin. (lever)</p>
+                <p class="question-translation">(Các bạn sẽ dời đi vào sáng mai.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q4" value="a">a) lèvez</label>
+                    <label><input type="radio" name="q4" value="b">b) levez</label>
+                    <label><input type="radio" name="q4" value="c">c) levent</label>
+                    <label><input type="radio" name="q4" value="d">d) lèvent</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(4, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            
+            <h2 class="section-title">Phần B: Chia động từ trong câu</h2>
+            <div class="question-block" id="q5">
+                <p class="question-text">5. Ils (posséder) une grande maison et nous (posséder) un petit appartement.</p>
+                <p class="question-translation">(Họ sở hữu một ngôi nhà lớn và chúng tôi sở hữu một căn hộ nhỏ.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q5" value="a">a) possèdent, possèdons</label>
+                    <label><input type="radio" name="q5" value="b">b) possedent, possédons</label>
+                    <label><input type="radio" name="q5" value="c">c) possèdent, possédons</label>
+                    <label><input type="radio" name="q5" value="d">d) possèdents, possèdons</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(5, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q6">
+                <p class="question-text">6. Vous (espérer) avoir une lettre, j'(espérer) aussi.</p>
+                <p class="question-translation">(Bạn hy vọng có một lá thư, tôi cũng hy vọng vậy.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q6" value="a">a) espérez, espère</label>
+                    <label><input type="radio" name="q6" value="b">b) espèrez, espére</label>
+                    <label><input type="radio" name="q6" value="c">c) esperez, espere</label>
+                    <label><input type="radio" name="q6" value="d">d) espérer, espérer</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(6, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q7">
+                <p class="question-text">7. Tu (soulever) la valise. Elle (peser) vingt kilos.</p>
+                <p class="question-translation">(Bạn nhấc chiếc vali lên. Nó nặng hai mươi kg.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q7" value="a">a) soulèves, pèse</label>
+                    <label><input type="radio" name="q7" value="b">b) soulève, pèses</label>
+                    <label><input type="radio" name="q7" value="c">c) soulèves, pèse</label>
+                    <label><input type="radio" name="q7" value="d">d) soulève, pèse</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(7, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q8">
+                <p class="question-text">8. Il (répéter) la question. Nous (répéter) la réponse.</p>
+                <p class="question-translation">(Anh ấy lặp lại câu hỏi. Chúng tôi lặp lại câu trả lời.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q8" value="a">a) répète, répétons</label>
+                    <label><input type="radio" name="q8" value="b">b) répéte, répétons</label>
+                    <label><input type="radio" name="q8" value="c">c) répète, répètons</label>
+                    <label><input type="radio" name="q8" value="d">d) répéte, répètons</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(8, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q9">
+                <p class="question-text">9. Elle (lever) la tête, nous (lever) la tête aussi; nous regardons les étoiles.</p>
+                <p class="question-translation">(Cô ấy ngẩng đầu lên, chúng tôi cũng ngẩng đầu lên; chúng tôi ngắm những vì sao.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q9" value="a">a) lève, levons</label>
+                    <label><input type="radio" name="q9" value="b">b) leve, levons</label>
+                    <label><input type="radio" name="q9" value="c">c) lève, lèvons</label>
+                    <label><input type="radio" name="q9" value="d">d) leve, lèvons</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(9, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let score = 0;
+        const maxScore = 9;
+        const scoreDisplay = document.getElementById('score-display');
+        let timeInSeconds = 540; // 9 minutes
+        let timerInterval = null;
+
+        const feedbackExplanations = {
+            1: "Chính xác! Với 'posséder', dấu huyền (è) xuất hiện ở ngôi 'tu'.",
+            2: "Chính xác! Với 'lever', dấu huyền (è) xuất hiện ở ngôi 'ils'.",
+            3: "Chính xác! Ngôi 'nous' không có sự thay đổi về dấu: possédons.",
+            4: "Chính xác! Ngôi 'vous' không có sự thay đổi về dấu: levez.",
+            5: "Chính xác! 'Ils possèdent' và 'nous possédons'.",
+            6: "Chính xác! 'Vous espérez' và 'j'espère'.",
+            7: "Chính xác! 'Tu soulèves' và 'elle pèse'. Cả hai đều có sự thay đổi dấu ở thân động từ.",
+            8: "Chính xác! 'Il répète' (đổi dấu) và 'nous répétons' (giữ nguyên dấu).",
+            9: "Chính xác! 'Elle lève' (đổi dấu) và 'nous levons' (không đổi dấu)."
+        };
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const today = new Date();
+            const day = String(today.getDate()).padStart(2, '0');
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const year = today.getFullYear();
+            document.getElementById('test-date').textContent = `${day}/${month}/${year}`;
+            
+            updateScoreDisplay();
+            startTimer();
+        });
+
+        function startTimer() {
+            const timerDisplay = document.getElementById('timer-display');
+            clearInterval(timerInterval); 
+            
+            timerInterval = setInterval(() => {
+                timeInSeconds--;
+                const minutes = Math.floor(timeInSeconds / 60);
+                const seconds = timeInSeconds % 60;
+                timerDisplay.textContent = `Thời gian: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                if (timeInSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    timerDisplay.textContent = "Hết giờ!";
+                    alert("Hết giờ làm bài!");
+                    document.querySelectorAll('.validate-btn').forEach(btn => btn.disabled = true);
+                }
+            }, 1000);
+        }
+
+        function updateScoreDisplay() {
+            scoreDisplay.textContent = `Điểm: ${score} / ${maxScore}`;
+        }
+        
+        function updateScore(points = 1) {
+            score += points;
+            updateScoreDisplay();
+        }
+
+        function validateRadio(questionNumber, correctAnswer) {
+            const questionBlock = document.getElementById(`q${questionNumber}`);
+            const radios = document.getElementsByName(`q${questionNumber}`);
+            const feedback = questionBlock.querySelector('.feedback');
+            const button = questionBlock.querySelector('.validate-btn');
+            let selectedAnswer = null;
+
+            radios.forEach(radio => { if (radio.checked) { selectedAnswer = radio; } });
+
+            if (selectedAnswer === null) {
+                feedback.textContent = "Vui lòng chọn một đáp án!";
+                feedback.className = 'feedback feedback-warning';
+                return;
+            }
+            
+            button.disabled = true;
+            radios.forEach(radio => radio.disabled = true);
+            const selectedLabel = selectedAnswer.parentElement;
+            const explanation = feedbackExplanations[questionNumber];
+
+            if (selectedAnswer.value === correctAnswer) {
+                feedback.textContent = explanation;
+                feedback.className = 'feedback feedback-correct';
+                selectedLabel.classList.add('correct-answer');
+                updateScore();
+            } else {
+                const cleanedExplanation = explanation.replace("Chính xác! ", "");
+                feedback.innerHTML = `<strong>Không chính xác.</strong> ${cleanedExplanation}<br>Đáp án đúng là lựa chọn <strong>"${correctAnswer.toUpperCase()}"</strong>.`;
+                feedback.className = 'feedback feedback-incorrect';
+                selectedLabel.classList.add('incorrect-answer');
+                radios.forEach(radio => { if (radio.value === correctAnswer) { radio.parentElement.classList.add('correct-answer'); } });
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2025 by anonymous (http://jsbin.com/qolizofobu/1/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subjonctif - Il faut que... (Suite)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif; /* Font chữ chung cho body là Arial */
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        /* Đặt font Arial/sans-serif cho toàn bộ nội dung chính (trừ feedback vẫn là Roboto) */
+        .header, .question-block, .options label {
+            font-family: Arial, sans-serif;
+        }
+
+        /* Vùng chứa chung cho header và score-container để căn giữa */
+        .page-content-wrapper {
+            max-width: 700px; /* Chiều rộng tối đa cho toàn bộ nội dung chính */
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+        .header-top {
+            display: flex;
+            justify-content: space-between; /* Căn đều hai bên */
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .header h1 {
+            text-align: center;
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+
+        /* CSS cho phần Score dính */
+        #score-container {
+            position: sticky; /* Tạo hiệu ứng dính */
+            top: 0; /* Dính vào top của viewport */
+            z-index: 1000; /* Đảm bảo nằm trên các nội dung khác */
+            background-color: #fff; /* Nền trắng như các khối div */
+            color: #007bff; /* Chữ màu blue */
+            padding: 12px 20px; /* Tăng padding để làm khung to hơn */
+            border: 1px solid #cce5ff; /* Viền xanh nhạt giống các khối khác */
+            border-radius: 8px; /* Bo tròn góc */
+            text-align: center;
+            font-family: Arial, sans-serif; /* Font chữ Arial/sans-serif */
+            font-size: 1.3em; /* Tăng kích thước font cho score */
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Bóng nhẹ */
+            max-width: 700px; /* Đặt chiều rộng bằng các khối câu hỏi */
+            margin-left: auto; /* Căn giữa */
+            margin-right: auto;
+            display: block; /* Luôn hiển thị */
+            box-sizing: border-box; /* Đảm bảo padding không làm tăng width vượt quá max-width */
+        }
+        #score-container strong {
+            color: #0056b3; /* Chữ màu blue đậm hơn cho số điểm */
+        }
+
+        #quiz-container {
+            /* max-width và margin auto sẽ được thừa kế từ .page-content-wrapper */
+        }
+        .question-block {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            /* max-width và margin auto đã có ở đây */
+        }
+        .question-text {
+            font-size: 1.1em;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .question-translation {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+        .options {
+            max-width: 500px; /* Giới hạn chiều rộng tối đa của khối đáp án */
+            margin-bottom: 15px;
+        }
+        .options label {
+            display: block;
+            margin-bottom: 10px;
+            cursor: pointer;
+            padding: 8px;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+            font-family: Arial, sans-serif; /* Font chữ của đáp án (mặc định) */
+        }
+        .options label:hover {
+                background-color: #e9e9e9;
+        }
+        .feedback {
+            margin-top: 15px;
+            font-weight: bold;
+            display: none;
+            font-family: 'Roboto', sans-serif; /* Đặt font feedback là Roboto */
+        }
+        .feedback-explanation {
+            font-weight: normal;
+            font-size: 0.9em;
+            margin-top: 5px;
+            color: #0056b3;
+        }
+        .feedback-correct-answer-text {
+            color: #0056b3;
+        }
+        .correct {
+            color: green;
+        }
+        .incorrect {
+            color: red;
+        }
+        .highlight-correct {
+            background-color: #d4edda !important;
+            border-color: #28a745 !important;
+        }
+        .highlight-incorrect-selected {
+            background-color: #f8d7da !important;
+            border-color: #dc3545 !important;
+        }
+        .validate-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 15px;
+            transition: background-color 0.3s ease;
+        }
+        .validate-btn:hover {
+            background-color: #0056b3;
+        }
+        /* CSS cho thông báo lỗi */
+        .validation-error {
+            background-color: #fff3cd; /* Màu vàng nhạt */
+            color: #856404; /* Màu chữ vàng đậm */
+            border: 1px solid #ffeeba;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 15px;
+            font-weight: normal;
+            display: none; /* Ẩn ban đầu */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-content-wrapper">
+        <div class="header">
+            <div class="header-top">
+                <p><strong>Enseignant:</strong> Nguyễn Hoàng Vũ</p>
+                <p><strong>Jour de test:</strong> <span id="currentDate"></span></p>
+            </div>
+            <h1>Subjonctif - Il faut que... (Verbes Variés)</h1> </div>
+
+        <div id="score-container">
+            Score: <strong id="current-score-value">0</strong> / <strong id="total-questions-value">12</strong>
+        </div>
+
+        <div id="quiz-container">
+            <div class="question-block" id="q1" data-correct-answer="aille | allions">
+                <p class="question-text">1. (aller) Il faut que j'__________ chez vous et que nous __________ ensemble voir cette exposition.</p>
+                <p class="question-translation"><em>(Tôi cần phải đến nhà bạn và chúng ta cần cùng nhau đi xem triển lãm này.)</em></p>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q1', 'Động từ &quot;aller&quot; với chủ ngữ &quot;je&quot; ở Subjonctif là &quot;aille&quot;. Với chủ ngữ &quot;nous&quot; là &quot;allions&quot;.', 'error-q1')">Valider</button>
+                <div class="feedback" id="feedback-q1"></div>
+                <div class="validation-error" id="error-q1">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+            <div class="question-block" id="q2" data-correct-answer="fasse | fassiez">
+                <p class="question-text">2. (faire) Il faut que je __________ attention, que vous __________ un effort.</p>
+                <p class="question-translation"><em>(Tôi cần phải chú ý, bạn cần phải cố gắng.)</em></p>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q2', 'Động từ &quot;faire&quot; với chủ ngữ &quot;je&quot; ở Subjonctif là &quot;fasse&quot;. Với chủ ngữ &quot;vous&quot; là &quot;fassiez&quot;.', 'error-q2')">Valider</button>
+                <div class="feedback" id="feedback-q2"></div>
+                <div class="validation-error" id="error-q2">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+            <div class="question-block" id="q3" data-correct-answer="puisse | puissions">
+                <p class="question-text">3. (pouvoir) Il faut qu'elle __________ tout traduire et que nous __________ comprendre.</p>
+                <p class="question-translation"><em>(Cô ấy cần phải dịch được tất cả và chúng ta cần phải hiểu được.)</em></p>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q3', 'Động từ &quot;pouvoir&quot; với chủ ngữ &quot;elle&quot; ở Subjonctif là &quot;puisse&quot;. Với chủ ngữ &quot;nous&quot; là &quot;puissions&quot;.', 'error-q3')">Valider</button>
+                <div class="feedback" id="feedback-q3"></div>
+                <div class="validation-error" id="error-q3">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+            <div class="question-block" id="q4" data-correct-answer="saches | sachions">
+                <p class="question-text">4. (savoir) Il faut que tu __________ la suite et que nous __________ la fin de cette histoire.</p>
+                <p class="question-translation"><em>(Bạn cần phải biết phần tiếp theo và chúng ta cần phải biết kết thúc câu chuyện này.)</em></p>
+            <div class="options">
+                </div>
+            <button class="validate-btn" onclick="checkAnswer('q4', 'Động từ &quot;savoir&quot; với chủ ngữ &quot;tu&quot; ở Subjonctif là &quot;saches&quot;. Với chủ ngữ &quot;nous&quot; là &quot;sachions&quot;.', 'error-q4')">Valider</button>
+            <div class="feedback" id="feedback-q4"></div>
+            <div class="validation-error" id="error-q4">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+        </div>
+
+            <div class="question-block" id="q5" data-correct-answer="veuille | vouliez">
+                <p class="question-text">5. (vouloir) Il faut qu'elle __________ guérir et que vous __________ la sauver.</p>
+                <p class="question-translation"><em>(Cô ấy cần phải muốn lành bệnh và bạn cần phải muốn cứu cô ấy.)</em></p>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q5', 'Động từ &quot;vouloir&quot; với chủ ngữ &quot;elle&quot; ở Subjonctif là &quot;veuille&quot;. Với chủ ngữ &quot;vous&quot; là &quot;vouliez&quot;.', 'error-q5')">Valider</button>
+                <div class="feedback" id="feedback-q5"></div>
+                <div class="validation-error" id="error-q5">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+            <div class="question-block" id="q6" data-correct-answer="pleuve">
+                <p class="question-text">6. (pleuvoir) Il ne faut pas qu'il __________ trop ce soir.</p>
+                <p class="question-translation"><em>(Trời không được mưa quá nhiều tối nay.)</em></p>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q6', 'Động từ &quot;pleuvoir&quot; (động từ vô nhân xưng) ở Subjonctif là &quot;pleuve&quot;.', 'error-q6')">Valider</button>
+                <div class="feedback" id="feedback-q6"></div>
+                <div class="validation-error" id="error-q6">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+            <div class="question-block" id="q7" data-correct-answer="prenne | preniez">
+                <p class="question-text">7. (prendre) Il faut que je __________ des photos et que vous __________ un film.</p>
+                <p class="question-translation"><em>(Tôi cần phải chụp ảnh và bạn cần phải quay phim.)</em></p>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q7', 'Động từ &quot;prendre&quot; với chủ ngữ &quot;je&quot; ở Subjonctif là &quot;prenne&quot;. Với chủ ngữ &quot;vous&quot; là &quot;preniez&quot;.', 'error-q7')">Valider</button>
+                <div class="feedback" id="feedback-q7"></div>
+                <div class="validation-error" id="error-q7">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+            <div class="question-block" id="q8" data-correct-answer="croies | croyiez">
+                <p class="question-text">8. (croire) Il faut absolument que tu le __________ et que vous le __________ aussi.</p>
+                <p class="question-translation"><em>(Bạn tuyệt đối cần phải tin điều đó và bạn cũng cần phải tin điều đó.)</em></p>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q8', 'Động từ &quot;croire&quot; với chủ ngữ &quot;tu&quot; ở Subjonctif là &quot;croies&quot;. Với chủ ngữ &quot;vous&quot; là &quot;croyiez&quot;.', 'error-q8')">Valider</button>
+                <div class="feedback" id="feedback-q8"></div>
+                <div class="validation-error" id="error-q8">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+            <div class="question-block" id="q9" data-correct-answer="voie | voyions">
+                <p class="question-text">9. (voir) Il faut que je __________ la secrétaire et que nous __________ ensuite le directeur.</p>
+                <p class="question-translation"><em>(Tôi cần phải gặp thư ký và chúng ta cần phải gặp giám đốc sau đó.)</em></p>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q9', 'Động từ &quot;voir&quot; với chủ ngữ &quot;je&quot; ở Subjonctif là &quot;voie&quot;. Với chủ ngữ &quot;nous&quot; là &quot;voyions&quot;.', 'error-q9')">Valider</button>
+                <div class="feedback" id="feedback-q9"></div>
+                <div class="validation-error" id="error-q9">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+            <div class="question-block" id="q10" data-correct-answer="reçoive | receviez">
+                <p class="question-text">10. (recevoir) Il faudrait que je __________ un fax ou que vous __________ une lettre.</p>
+                <p class="question-translation"><em>(Tôi cần nhận một fax hoặc bạn cần nhận một lá thư.)</em></p>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q10', 'Động từ &quot;recevoir&quot; với chủ ngữ &quot;je&quot; ở Subjonctif là &quot;reçoive&quot;. Với chủ ngữ &quot;vous&quot; là &quot;receviez&quot;.', 'error-q10')">Valider</button>
+                <div class="feedback" id="feedback-q10"></div>
+                <div class="validation-error" id="error-q10">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+            <div class="question-block" id="q11" data-correct-answer="viennes | veniez">
+                <p class="question-text">11. (venir) Il faut que tu __________ chez moi, que vous __________ tous pour faire la fête.</p>
+                <p class="question-translation"><em>(Bạn cần phải đến nhà tôi, bạn cần tất cả đến để dự tiệc.)</em></p>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q11', 'Động từ &quot;venir&quot; với chủ ngữ &quot;tu&quot; ở Subjonctif là &quot;viennes&quot;. Với chủ ngữ &quot;vous&quot; là &quot;veniez&quot;.', 'error-q11')">Valider</button>
+                <div class="feedback" id="feedback-q11"></div>
+                <div class="validation-error" id="error-q11">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+            <div class="question-block" id="q12" data-correct-answer="tienne | tenions">
+                <p class="question-text">12. (tenir) Il faut que je __________ le chien et que nous __________ la porte fermée.</p>
+                <p class="question-translation"><em>(Tôi cần phải giữ chó và chúng ta cần phải giữ cửa đóng.)</em></p>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q12', 'Động từ &quot;tenir&quot; với chủ ngữ &quot;je&quot; ở Subjonctif là &quot;tienne&quot;. Với chủ ngữ &quot;nous&quot; là &quot;tenions&quot;.', 'error-q12')">Valider</button>
+                <div class="feedback" id="feedback-q12"></div>
+                <div class="validation-error" id="error-q12">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+        </div>
+    </div> <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const date = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('currentDate').textContent = date.toLocaleDateString('fr-FR', options);
+            
+            // Định nghĩa các câu hỏi và đáp án cho việc xáo trộn
+            const questionsData = {
+                q1: {
+                    correct: 'aille | allions',
+                    options: ['aille | allions', 'aillent | allions', 'allais | allions', 'irais | irions']
+                },
+                q2: {
+                    correct: 'fasse | fassiez',
+                    options: ['fasse | fassiez', 'fasses | fassiez', 'fait | faites', 'ferais | feriez']
+                },
+                q3: {
+                    correct: 'puisse | puissions',
+                    options: ['puisse | puissions', 'puisses | puissions', 'peut | pouvons', 'pourrais | pourrions']
+                },
+                q4: {
+                    correct: 'saches | sachions',
+                    options: ['saches | sachions', 'sache | sachions', 'sais | savons', 'saurais | saurions']
+                },
+                q5: {
+                    correct: 'veuille | vouliez',
+                    options: ['veuille | vouliez', 'veuilles | vouliez', 'veut | voulez', 'voudrais | voudriez']
+                },
+                q6: {
+                    correct: 'pleuve',
+                    options: ['pleuve', 'pleut', 'pleuvra', 'pleuvrait']
+                },
+                q7: {
+                    correct: 'prenne | preniez',
+                    options: ['prenne | preniez', 'prennes | preniez', 'prends | prenez', 'prendrais | prendriez']
+                },
+                q8: {
+                    correct: 'croies | croyiez',
+                    options: ['croies | croyiez', 'croie | croyiez', 'crois | croyez', 'croirais | croiriez']
+                },
+                q9: {
+                    correct: 'voie | voyions',
+                    options: ['voie | voyions', 'voies | voyions', 'vois | voyons', 'verrais | verrions']
+                },
+                q10: {
+                    correct: 'reçoive | receviez',
+                    options: ['reçoive | receviez', 'reçoives | receviez', 'reçois | recevez', 'recevrais | recevriez']
+                },
+                q11: {
+                    correct: 'viennes | veniez',
+                    options: ['viennes | veniez', 'vienne | veniez', 'viens | venez', 'viendrais | viendriez']
+                },
+                q12: {
+                    correct: 'tienne | tenions',
+                    options: ['tienne | tenions', 'tiennes | tenions', 'tiens | tenons', 'tiendrais | tiendrions']
+                }
+            };
+
+            // Hàm xáo trộn mảng
+            function shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]]; // Hoán đổi vị trí
+                }
+            }
+
+            // Tạo và xáo trộn các lựa chọn đáp án cho mỗi câu hỏi
+            for (const qId in questionsData) {
+                const questionBlock = document.getElementById(qId);
+                const optionsDiv = questionBlock.querySelector('.options');
+                
+                // Lấy tất cả các đáp án cho câu hỏi này
+                let currentOptions = [...questionsData[qId].options]; // Tạo bản sao để xáo trộn
+                shuffleArray(currentOptions); // Xáo trộn
+
+                // Xóa các lựa chọn cũ (nếu có) và tạo mới
+                optionsDiv.innerHTML = '';
+                currentOptions.forEach(optionText => {
+                    const label = document.createElement('label');
+                    const input = document.createElement('input');
+                    input.type = 'radio';
+                    input.name = qId; // Name group cho radio buttons
+                    input.value = optionText;
+                    label.appendChild(input);
+                    label.appendChild(document.createTextNode(' ' + optionText)); // Thêm khoảng trắng và text
+                    optionsDiv.appendChild(label);
+                });
+            }
+
+            updateOverallScore(); // Cập nhật điểm ban đầu
+        });
+
+        const answeredQuestions = {};
+        const totalQuestions = 12; // Tổng số câu hỏi từ 1 đến 12
+
+        const currentScoreValue = document.getElementById('current-score-value');
+        const totalQuestionsValue = document.getElementById('total-questions-value');
+
+        function updateOverallScore() {
+            let correctCount = 0;
+            const allQuestionIds = ['q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8', 'q9', 'q10', 'q11', 'q12']; // Cập nhật ID câu hỏi
+            allQuestionIds.forEach(id => {
+                if (answeredQuestions[id] === true) {
+                    correctCount++;
+                }
+            });
+
+            currentScoreValue.textContent = correctCount;
+            totalQuestionsValue.textContent = totalQuestions;
+        }
+
+        function checkAnswer(questionId, explanation, errorDivId) { // Thêm errorDivId
+            const questionBlock = document.getElementById(questionId);
+            const selectedOption = questionBlock.querySelector(`input[name="${questionId}"]:checked`);
+            const feedbackDiv = questionBlock.querySelector('.feedback');
+            const optionsLabels = questionBlock.querySelectorAll('.options label');
+            const correctAnswer = questionBlock.dataset.correctAnswer;
+            const errorDiv = document.getElementById(errorDivId); // Lấy div lỗi
+
+            // Ẩn tất cả các thông báo lỗi trước khi kiểm tra
+            document.querySelectorAll('.validation-error').forEach(div => {
+                div.style.display = 'none';
+            });
+
+            optionsLabels.forEach(label => {
+                label.classList.remove('highlight-correct', 'highlight-incorrect-selected');
+            });
+            feedbackDiv.style.display = 'none';
+            feedbackDiv.classList.remove('correct', 'incorrect');
+            feedbackDiv.innerHTML = '';
+
+            if (!selectedOption) {
+                errorDiv.style.display = 'block'; // Hiển thị thông báo lỗi
+                setTimeout(() => {
+                    errorDiv.style.display = 'none'; // Ẩn sau 3 giây
+                }, 3000);
+                return;
+            }
+
+            const userAnswer = selectedOption.value;
+            let feedbackMessage = "";
+
+            optionsLabels.forEach(label => {
+                if (label.querySelector('input').value === correctAnswer) {
+                    label.classList.add('highlight-correct');
+                }
+            });
+
+            if (userAnswer === correctAnswer) {
+                feedbackMessage = "<b>Chính xác!</b> Đây là đáp án đúng.";
+                feedbackDiv.classList.add('correct');
+                answeredQuestions[questionId] = true;
+            } else {
+                feedbackMessage = `<b>Không chính xác.</b> Đáp án đúng là <span class="feedback-correct-answer-text">"${correctAnswer}"</span>.`;
+                feedbackDiv.classList.add('incorrect');
+                selectedOption.closest('label').classList.add('highlight-incorrect-selected');
+                answeredQuestions[questionId] = false;
+            }
+            feedbackDiv.innerHTML = feedbackMessage + `<div class="feedback-explanation">Giải thích: ${explanation}</div>`;
+            feedbackDiv.style.display = 'block';
+
+            updateOverallScore(); // Cập nhật điểm sau mỗi lần kiểm tra
+        }
+    </script>
+</body>
+</html>

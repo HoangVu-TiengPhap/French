@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2025 by anonymous (http://jsbin.com/kikefenivu/12/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài tập: Thành lập Trạng từ</title>
+    <style>
+        /* CSS để làm cho trang kiểm tra đẹp hơn */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-header {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 0.95em;
+            color: #555;
+        }
+        
+        .info-header p {
+            margin: 0;
+        }
+
+        .quiz-status-bar {
+            position: sticky;
+            top: 0;
+            background-color: #4a5a7b;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            z-index: 1000;
+        }
+
+        .quiz-status-bar h1 {
+            margin: 0;
+            font-size: 1.5em;
+        }
+
+        #score-display, #timer-display {
+            font-size: 1.2em;
+            font-weight: bold;
+            background-color: #ffffff;
+            color: #4a5a7b;
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+        
+        .question-block {
+            margin-bottom: 25px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background-color: #fdfdfd;
+        }
+
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .answers label {
+            display: block;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            max-width: 500px;
+        }
+
+        .answers label:hover {
+            background-color: #e9ecef;
+        }
+
+        .answers input[type="radio"] {
+            margin-right: 10px;
+        }
+        
+        .validate-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            display: block;
+            margin-top: 15px; 
+            transition: background-color 0.3s;
+        }
+
+        .validate-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .validate-btn:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+        
+        .feedback {
+            margin-top: 15px;
+            font-weight: normal;
+            font-size: 0.95em;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .feedback-correct {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .feedback-incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .feedback-warning {
+            background-color: #fffbe6;
+            color: #8a6d3b;
+        }
+
+        .correct-answer {
+            background-color: #d4edda !important;
+            border-color: #c3e6cb !important;
+        }
+
+        .incorrect-answer {
+            background-color: #f8d7da !important;
+            border-color: #f5c6cb !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="quiz-container">
+        <div class="info-header">
+            <p><strong>Enseignant:</strong> Nguyễn Hoàng Vũ</p>
+            <p><strong>Ngày kiểm tra:</strong> <span id="test-date"></span></p>
+        </div>
+
+        <div class="quiz-status-bar">
+            <h1>Bài tập: Thành lập Trạng từ</h1>
+            <div>
+                <span id="score-display">Điểm: 0 / 16</span>
+                <span id="timer-display">Thời gian: 16:00</span>
+            </div>
+        </div>
+        
+        <div id="all-questions-container">
+            </div>
+    </div>
+
+    <script>
+        let score = 0;
+        const maxScore = 16;
+        const scoreDisplay = document.getElementById('score-display');
+        let timeInSeconds = 960; // 16 minutes
+        let timerInterval = null;
+
+        const questionsData = [
+            { id: 1, adj: 'certain', meaning: 'chắc chắn', adverb: 'certainement', distractors: ['certainment', 'certaine'] },
+            { id: 2, adj: 'normal', meaning: 'bình thường', adverb: 'normalement', distractors: ['normalment', 'normale'] },
+            { id: 3, adj: 'rare', meaning: 'hiếm hoi', adverb: 'rarement', distractors: ['rarement', 'rare'] }, // duplicate to ensure 3 options
+            { id: 4, adj: 'rapide', meaning: 'nhanh chóng', adverb: 'rapidement', distractors: ['rapidement', 'rapide'] }, // duplicate
+            { id: 5, adj: 'facile', meaning: 'dễ dàng', adverb: 'facilement', distractors: ['facilement', 'facile'] }, // duplicate
+            { id: 6, adj: 'naturel', meaning: 'tự nhiên', adverb: 'naturellement', distractors: ['naturelment', 'naturelle'] },
+            { id: 7, adj: 'seul', meaning: 'một mình', adverb: 'seulement', distractors: ['seulment', 'seule'] },
+            { id: 8, adj: 'heureux', meaning: 'hạnh phúc', adverb: 'heureusement', distractors: ['heureuxment', 'heureuse'] },
+            { id: 9, adj: 'complet', meaning: 'hoàn toàn', adverb: 'complètement', distractors: ['completment', 'complète'] },
+            { id: 10, adj: 'entier', meaning: 'toàn bộ', adverb: 'entièrement', distractors: ['entierment', 'entière'] },
+            { id: 11, adj: 'léger', meaning: 'nhẹ nhàng', adverb: 'légèrement', distractors: ['légerment', 'légère'] },
+            { id: 12, adj: 'premier', meaning: 'đầu tiên', adverb: 'premièrement', distractors: ['premierment', 'première'] },
+            { id: 13, adj: 'lent', meaning: 'chậm chạp', adverb: 'lentement', distractors: ['lentment', 'lente'] },
+            { id: 14, adj: 'sûr', meaning: 'chắc chắn', adverb: 'sûrement', distractors: ['sûrment', 'sûre'] },
+            { id: 15, adj: 'doux', meaning: 'dịu dàng', adverb: 'doucement', distractors: ['douxment', 'douce'] },
+            { id: 16, adj: 'réel', meaning: 'thực sự', adverb: 'réellement', distractors: ['réelment', 'réelle'] }
+        ];
+
+        const feedbackExplanations = {
+            1: "Chính xác! Quy tắc chung: thêm '-ment' vào dạng giống cái của tính từ (certaine) ➞ certainement.",
+            2: "Chính xác! normale + ment ➞ normalement.",
+            3: "Chính xác! Tính từ kết thúc bằng nguyên âm (rare) chỉ cần thêm '-ment' ➞ rarement.",
+            4: "Chính xác! rapide + ment ➞ rapidement.",
+            5: "Chính xác! facile + ment ➞ facilement.",
+            6: "Chính xác! naturelle + ment ➞ naturellement.",
+            7: "Chính xác! seule + ment ➞ seulement.",
+            8: "Chính xác! Dạng giống cái là 'heureuse' + ment ➞ heureusement.",
+            9: "Chính xác! Dạng giống cái là 'complète' + ment ➞ complètement.",
+            10: "Chính xác! Dạng giống cái là 'entière' + ment ➞ entièrement.",
+            11: "Chính xác! Dạng giống cái là 'légère' + ment ➞ légèrement.",
+            12: "Chính xác! Dạng giống cái là 'première' + ment ➞ premièrement.",
+            13: "Chính xác! Dạng giống cái là 'lente' + ment ➞ lentement.",
+            14: "Chính xác! Dạng giống cái là 'sûre' + ment ➞ sûrement.",
+            15: "Chính xác! Dạng giống cái là 'douce' + ment ➞ doucement.",
+            16: "Chính xác! Dạng giống cái là 'réelle' + ment ➞ réellement."
+        };
+
+        function createAllQuestions() {
+            const container = document.getElementById('all-questions-container');
+            let allQuestionsHTML = '';
+            questionsData.forEach(q => {
+                let options = [q.adverb, q.distractors[0], q.distractors[1]];
+                options = options.filter((v, i, a) => a.indexOf(v) === i); // Remove duplicates
+                while (options.length < 3) {
+                    options.push(`${q.adj}ly`); // Add a placeholder if needed
+                }
+                options.sort(() => Math.random() - 0.5); 
+                
+                let optionsHTML = '';
+                options.forEach((option, index) => {
+                    const letter = String.fromCharCode(97 + index); // a, b, c
+                    optionsHTML += `<label><input type="radio" name="q${q.id}" value="${letter}"> ${letter}) ${option}</label>`;
+                });
+                
+                const correctAnswerLetter = String.fromCharCode(97 + options.indexOf(q.adverb));
+
+                allQuestionsHTML += `
+                    <div class="question-block" id="q${q.id}">
+                        <p class="question-text">${q.id}. Chọn trạng từ đúng của tính từ "${q.adj}" (${q.meaning}).</p>
+                        <div class="answers">${optionsHTML}</div>
+                        <button class="validate-btn" onclick="validateRadio(${q.id}, '${correctAnswerLetter}')">Valider</button>
+                        <div class="feedback"></div>
+                    </div>
+                `;
+            });
+            container.innerHTML = allQuestionsHTML;
+        }
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const today = new Date();
+            const day = String(today.getDate()).padStart(2, '0');
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const year = today.getFullYear();
+            document.getElementById('test-date').textContent = `${day}/${month}/${year}`;
+            
+            createAllQuestions();
+            updateScoreDisplay();
+            startTimer();
+        });
+
+        function startTimer() {
+            const timerDisplay = document.getElementById('timer-display');
+            clearInterval(timerInterval); 
+            
+            timerInterval = setInterval(() => {
+                timeInSeconds--;
+                const minutes = Math.floor(timeInSeconds / 60);
+                const seconds = timeInSeconds % 60;
+                timerDisplay.textContent = `Thời gian: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                if (timeInSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    timerDisplay.textContent = "Hết giờ!";
+                    alert("Hết giờ làm bài!");
+                    document.querySelectorAll('.validate-btn').forEach(btn => btn.disabled = true);
+                }
+            }, 1000);
+        }
+
+        function updateScoreDisplay() {
+            scoreDisplay.textContent = `Điểm: ${score} / ${maxScore}`;
+        }
+        
+        function updateScore(points = 1) {
+            score += points;
+            updateScoreDisplay();
+        }
+
+        function validateRadio(questionNumber, correctAnswer) {
+            const questionBlock = document.getElementById(`q${questionNumber}`);
+            const radios = document.getElementsByName(`q${questionNumber}`);
+            const feedback = questionBlock.querySelector('.feedback');
+            const button = questionBlock.querySelector('.validate-btn');
+            let selectedAnswer = null;
+
+            radios.forEach(radio => { if (radio.checked) { selectedAnswer = radio; } });
+
+            if (selectedAnswer === null) {
+                feedback.textContent = "Vui lòng chọn một đáp án!";
+                feedback.className = 'feedback feedback-warning';
+                return;
+            }
+            
+            button.disabled = true;
+            radios.forEach(radio => radio.disabled = true);
+            const selectedLabel = selectedAnswer.parentElement;
+            const explanation = feedbackExplanations[questionNumber];
+
+            if (selectedAnswer.value === correctAnswer) {
+                feedback.textContent = explanation;
+                feedback.className = 'feedback feedback-correct';
+                selectedLabel.classList.add('correct-answer');
+                updateScore();
+            } else {
+                const cleanedExplanation = explanation.replace("Chính xác! ", "");
+                feedback.innerHTML = `<strong>Không chính xác.</strong> ${cleanedExplanation}<br>Đáp án đúng là lựa chọn <strong>"${correctAnswer.toUpperCase()}"</strong>.`;
+                feedback.className = 'feedback feedback-incorrect';
+                radios.forEach(radio => { if (radio.value === correctAnswer) { radio.parentElement.classList.add('correct-answer'); } });
+            }
+        }
+    </script>
+</body>
+</html>

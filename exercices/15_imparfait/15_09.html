@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+
+<meta name="robots" content="noindex">
+<html>
+<head>
+<title>-oir, -evoir ở  Imparfait</title>
+<style>
+ body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0; /* Đã sửa: Loại bỏ khoảng trống đầu trang */
+    padding: 0;
+    background-color: #f0f4f8;
+    color: #333;
+  }
+  
+  /* CHỈNH SỬA QUAN TRỌNG: Đặt chiều rộng và box-sizing để khớp container */
+  header {
+    width: 800px; /* Chiều rộng cố định, bằng container */
+    margin: 0 auto; /* Căn giữa và sát lề trên */
+    background-color: #e0e7ed;
+    color: #2c3e50;
+    padding: 15px 20px;
+    /* border-bottom: 2px solid #c0d0e0; */ /* Đã bỏ border-bottom cũ */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Thay bằng đổ bóng nhẹ */
+    border-radius: 8px 8px 0 0; /* Đã sửa: Bo tròn góc trên */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box; /* Đã sửa: Đảm bảo padding nằm trong 800px */
+  }
+  
+  header h2, header p {
+    margin: 0;
+    font-size: 1.1em;
+    color: #333;
+  }
+  
+  h1 {
+    color: #2c3e50;
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 20px;
+  }
+  
+  .container {
+    width: 800px; /* Đã sửa: Đặt width cố định để khớp Header */
+    margin: 0 auto 30px auto; /* Đã sửa: margin-top: 0 để sát Header */
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 0 0 10px 10px; /* Đã sửa: Bỏ bo góc trên */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box; /* Đã sửa: Đảm bảo padding nằm trong 800px */
+  }
+  
+  .question-block {
+    margin-bottom: 25px;
+    padding: 20px;
+    border: 1px solid #d0dbe4;
+    border-radius: 8px;
+    background-color: #fdfefe;
+  }
+  .question {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 1.1em;
+    color: #34495e;
+  }
+  .translation {
+    font-style: italic;
+    color: #666;
+    margin-bottom: 15px;
+    font-size: 0.95em;
+  }
+  .options label {
+    display: block;
+    margin-bottom: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: color 0.3s ease;
+    padding: 5px 0;
+  }
+  .options label:hover {
+    color: #5a7d9a;
+  }
+  .options input[type="radio"] {
+    margin-right: 10px;
+    transform: scale(1.1);
+  }
+  .options label.correct-highlight {
+    background-color: #d4edda;
+    border: 2px solid #28a745;
+    border-radius: 5px;
+    padding: 5px;
+    color: #1a7e37;
+  }
+  .feedback {
+    margin-top: 15px;
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 5px;
+    width: calc(100% - 24px);
+    box-sizing: border-box;
+    display: none;
+  }
+  .feedback.active {
+      display: block;
+  }
+  .correct {
+    background-color: #e6ffe6;
+    color: #1a7e37;
+    border: 1px solid #28a745;
+  }
+  .incorrect {
+    background-color: #ffe6e6;
+    color: #dc3545;
+    border: 1px solid #dc3545;
+  }
+  .warning {
+      background-color: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffeeba;
+  }
+  .explanation {
+    font-size: 0.9em;
+    font-weight: normal;
+    color: #555;
+    margin-top: 8px;
+    font-style: italic;
+  }
+  .correct-answer-display {
+    color: dodgerblue; /* Xanh dương tươi */
+    font-weight: bold;
+    margin-top: 5px;
+    display: block;
+  }
+  .validate-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-top: 15px;
+    transition: background-color 0.3s ease;
+  }
+  .validate-btn:hover {
+    background-color: #45a049;
+  }
+  .validate-btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+  #score-area {
+    text-align: center;
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #e6f7ff;
+    border: 1px solid #b3e0ff;
+    border-radius: 8px;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #0056b3;
+    display: none;
+  }
+  .complete-test-btn {
+    display: block;
+    width: fit-content;
+    margin: 30px auto;
+    background-color: #007bff;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease;
+  }
+  .complete-test-btn:hover {
+    background-color: #0056b3;
+  }
+  @media (max-width: 600px) {
+    /* Đảm bảo responsive vẫn hoạt động tốt */
+    header, .container {
+        width: 90%; 
+        max-width: 90%;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 15px;
+        box-sizing: border-box;
+    }
+    header {
+      border-radius: 8px 8px 0 0;
+      margin-top: 0;
+    }
+    .container {
+      margin-top: 0;
+      margin-bottom: 15px;
+      border-radius: 0 0 10px 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    header h2, header p {
+      font-size: 1em;
+      margin-bottom: 5px;
+    }
+    .question, .translation, .options label, .feedback, .validate-btn, .complete-test-btn {
+      font-size: 0.9em;
+    }
+    .feedback {
+      padding: 6px 10px;
+      width: calc(100% - 20px);
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h2>Enseignant: Nguyễn Hoàng Vũ</h2>
+ 
+</header>
+
+<div class="container">
+  <h1>-oir, -evoir ở  Imparfait</h1>
+
+  <h2>Phần A</h2>
+  <div class="question-block" id="qA1-block">
+    <div class="question">1. (savoir) tu ..., vous ...</div>
+    <div class="translation">(biết) bạn..., bạn (số nhiều/lịch sự)...</div>
+    <div class="options" id="options-A1"></div>
+    <button class="validate-btn" onclick="checkAnswer('A1')">Valider</button>
+    <div class="feedback" id="feedbackA1"></div>
+  </div>
+
+  <div class="question-block" id="qA2-block">
+    <div class="question">2. (devoir) elle ..., nous ...</div>
+    <div class="translation">(phải) cô ấy..., chúng tôi...</div>
+    <div class="options" id="options-A2"></div>
+    <button class="validate-btn" onclick="checkAnswer('A2')">Valider</button>
+    <div class="feedback" id="feedbackA2"></div>
+  </div>
+
+  <div class="question-block" id="qA3-block">
+    <div class="question">3. (apercevoir) je ..., ils ...</div>
+    <div class="translation">(nhận thấy) tôi..., họ...</div>
+    <div class="options" id="options-A3"></div>
+    <button class="validate-btn" onclick="checkAnswer('A3')">Valider</button>
+    <div class="feedback" id="feedbackA3"></div>
+  </div>
+
+  <div class="question-block" id="qA4-block">
+    <div class="question">4. (recevoir) tu ..., vous ...</div>
+    <div class="translation">(nhận) bạn..., bạn (số nhiều/lịch sự)...</div>
+    <div class="options" id="options-A4"></div>
+    <button class="validate-btn" onclick="checkAnswer('A4')">Valider</button>
+    <div class="feedback" id="feedbackA4"></div>
+  </div>
+
+  <div class="question-block" id="qA5-block">
+    <div class="question">5. (vouloir) il ..., elles ...</div>
+    <div class="translation">(muốn) anh ấy..., họ (nữ)...</div>
+    <div class="options" id="options-A5"></div>
+    <button class="validate-btn" onclick="checkAnswer('A5')">Valider</button>
+    <div class="feedback" id="feedbackA5"></div>
+  </div>
+
+  <hr style="margin: 40px 0; border: 0; border-top: 1px solid #ccc;">
+
+  <h2>Phần B</h2>
+  <div class="question-block" id="qB1-block">
+    <div class="question">6. Nous ne (pouvoir) pas passer.</div>
+    <div class="translation">Chúng tôi không (đã) thể đi qua.</div>
+    <div class="options" id="options-B1"></div>
+    <button class="validate-btn" onclick="checkAnswer('B1')">Valider</button>
+    <div class="feedback" id="feedbackB1"></div>
+  </div>
+
+  <div class="question-block" id="qB2-block">
+    <div class="question">7. Est-ce que cela (valoir) la peine ?</div>
+    <div class="translation">Điều đó (đã) có đáng không?</div>
+    <div class="options" id="options-B2"></div>
+    <button class="validate-btn" onclick="checkAnswer('B2')">Valider</button>
+    <div class="feedback" id="feedbackB2"></div>
+  </div>
+
+  <div class="question-block" id="qB3-block">
+    <div class="question">8. Tu (devoir) arriver plus tôt.</div>
+    <div class="translation">Bạn (đã) phải đến sớm hơn.</div>
+    <div class="options" id="options-B3"></div>
+    <button class="validate-btn" onclick="checkAnswer('B3')">Valider</button>
+    <div class="feedback" id="feedbackB3"></div>
+  </div>
+
+  <div class="question-block" id="qB4-block">
+    <div class="question">9. Il ne (pleuvoir) plus.</div>
+    <div class="translation">Trời không (đã) còn mưa nữa.</div>
+    <div class="options" id="options-B4"></div>
+    <button class="validate-btn" onclick="checkAnswer('B4')">Valider</button>
+    <div class="feedback" id="feedbackB4"></div>
+  </div>
+
+  <div class="question-block" id="qB5-block">
+    <div class="question">10. Il (falloir) répondre très vite.</div>
+    <div class="translation">Cần (đã) trả lời rất nhanh.</div>
+    <div class="options" id="options-B5"></div>
+    <button class="validate-btn" onclick="checkAnswer('B5')">Valider</button>
+    <div class="feedback" id="feedbackB5"></div>
+  </div>
+
+  <button class="complete-test-btn" onclick="showScore()">Hoàn thành bài kiểm tra</button>
+
+  <div id="score-area">
+    <p>Bạn đã trả lời đúng <span id="correct-count">0</span> trên tổng số <span id="total-questions">0</span> câu.</p>
+  </div>
+
+</div>
+
+<script>
+  // Định nghĩa dữ liệu cho mỗi câu hỏi
+  const questionsData = {
+    // Phần A
+    'A1': {
+      original: "(savoir) tu ..., vous ...",
+      translation: "(biết) bạn..., bạn (số nhiều/lịch sự)...",
+      correct: "savais, saviez",
+      wrong: ["savait, savaient", "saviez, savais"],
+      explanation: "Động từ 'savoir'. Gốc Imparfait là 'sav-' (từ 'nous savons'). Thêm đuôi '-ais' cho 'Tu', '-iez' cho 'Vous'."
+    },
+    'A2': {
+      original: "(devoir) elle ..., nous ...",
+      translation: "(phải) cô ấy..., chúng tôi...",
+      correct: "devait, devions",
+      wrong: ["devais, devaient", "devions, deviez"],
+      explanation: "Động từ 'devoir'. Gốc Imparfait là 'dev-' (từ 'nous devons'). Thêm đuôi '-ait' cho 'Elle', '-ions' cho 'Nous'."
+    },
+    'A3': {
+      original: "(apercevoir) je ..., ils ...",
+      translation: "(nhận thấy) tôi..., họ...",
+      correct: "apercevais, apercevaient",
+      wrong: ["apercevait, apercevaient", "aperceviez, apercevions"],
+      explanation: "Động từ 'apercevoir'. Gốc Imparfait là 'apercev-' (từ 'nous apercevons'). Thêm đuôi '-ais' cho 'Je', '-aient' cho 'Ils'."
+    },
+    'A4': {
+      original: "(recevoir) tu ..., vous ...",
+      translation: "(nhận) bạn..., bạn (số nhiều/lịch sự)...",
+      correct: "recevais, receviez",
+      wrong: ["recevait, recevaient", "recevions, receviez"],
+      explanation: "Động từ 'recevoir'. Gốc Imparfait là 'recev-' (từ 'nous recevons'). Thêm đuôi '-ais' cho 'Tu', '-iez' cho 'Vous'."
+    },
+    'A5': {
+      original: "(vouloir) il ..., elles ...",
+      translation: "(muốn) anh ấy..., họ (nữ)...",
+      correct: "voulait, voulaient",
+      wrong: ["voulais, voulaient", "vouliez, voulions"],
+      explanation: "Động từ 'vouloir'. Gốc Imparfait là 'voul-' (từ 'nous voulons'). Thêm đuôi '-ait' cho 'Il', '-aient' cho 'Elles'."
+    },
+    // Phần B
+    'B1': {
+      original: "Nous ne (pouvoir) pas passer.",
+      translation: "Chúng tôi không (đã) thể đi qua.",
+      correct: "pouvions pas passer",
+      wrong: ["pouvais pas passer", "pouvaient pas passer"],
+      explanation: "Động từ 'pouvoir'. Gốc Imparfait là 'pouv-' (từ 'nous pouvons'). Thêm đuôi '-ions' cho 'Nous'. Phần phủ định 'ne...pas' bao quanh động từ."
+    },
+    'B2': {
+      original: "Est-ce que cela (valoir) la peine ?",
+      translation: "Điều đó (đã) có đáng không?",
+      correct: "valait la peine",
+      wrong: ["valais la peine", "valaient la peine"],
+      explanation: "Động từ 'valoir'. Gốc Imparfait là 'val-' (từ 'nous valons'). Thêm đuôi '-ait' cho 'Cela' (tương đương 'Il')."
+    },
+    'B3': {
+      original: "Tu (devoir) arriver plus tôt.",
+      translation: "Bạn (đã) phải đến sớm hơn.",
+      correct: "devais arriver plus tôt",
+      wrong: ["devait arriver plus tôt", "devaient arriver plus tôt"],
+      explanation: "Động từ 'devoir'. Gốc Imparfait là 'dev-' (từ 'nous devons'). Thêm đuôi '-ais' cho 'Tu'."
+    },
+    'B4': {
+      original: "Il ne (pleuvoir) plus.",
+      translation: "Trời không (đã) còn mưa nữa.",
+      correct: "ne pleuvait plus",
+      wrong: ["ne pleuvais plus", "ne pleuvent plus"],
+      explanation: "Động từ 'pleuvoir' (khuyết ngôi). Gốc Imparfait là 'pleuv-' (từ 'il pleut'). Thêm đuôi '-ait' cho ngôi 'Il'. Phần phủ định 'ne...plus' bao quanh động từ."
+    },
+    'B5': {
+      original: "Il (falloir) répondre très vite.",
+      translation: "Cần (đã) trả lời rất nhanh.",
+      correct: "fallait répondre très vite",
+      wrong: ["fallais répondre très vite", "fallait répondre très vite (sai gốc)"],
+      explanation: "Động từ khuyết ngôi 'falloir'. Gốc Imparfait là 'fall-' (từ 'il faut'). Thêm đuôi '-ait' cho ngôi 'Il'."
+    }
+  };
+
+  let correctAnswersCount = 0;
+  const totalQuestions = Object.keys(questionsData).length;
+  const answeredQuestions = new Set(); 
+
+  // Hàm xáo trộn mảng Fisher-Yates
+  function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+      }
+  }
+
+  // Hàm tạo và hiển thị các lựa chọn
+  function generateOptions() {
+    for (const qKey in questionsData) {
+      const qData = questionsData[qKey];
+      const optionsDiv = document.getElementById(`options-${qKey}`);
+      optionsDiv.innerHTML = ''; 
+
+      const allOptions = [{text: qData.correct, isCorrect: true}];
+      qData.wrong.slice(0, 2).forEach(w => allOptions.push({text: w, isCorrect: false})); 
+
+      shuffleArray(allOptions); 
+
+      allOptions.forEach((option, index) => {
+        const optionId = `${qKey}-${String.fromCharCode(97 + index)}`; 
+        const label = document.createElement('label');
+        label.setAttribute('for', optionId);
+        
+        const input = document.createElement('input');
+        input.type = 'radio';
+        input.name = qKey;
+        input.value = optionId;
+        input.id = optionId;
+        
+        label.appendChild(input);
+        label.appendChild(document.createTextNode(option.text));
+        
+        if (option.isCorrect) {
+          label.dataset.isCorrect = "true";
+          questionsData[qKey].correctOptionId = optionId; 
+        }
+
+        optionsDiv.appendChild(label);
+      });
+    }
+  }
+
+  // Call generateOptions when the page loads
+  document.addEventListener('DOMContentLoaded', generateOptions);
+
+
+  function checkAnswer(questionName) {
+    if (answeredQuestions.has(questionName)) {
+        return; 
+    }
+
+    const selectedOptionInput = document.querySelector(`input[name="${questionName}"]:checked`);
+    const feedbackDiv = document.getElementById(`feedback${questionName}`); 
+    const validateButton = event.target; 
+    
+    feedbackDiv.classList.remove('active', 'correct', 'incorrect', 'warning');
+    feedbackDiv.innerHTML = '';
+
+
+    if (!selectedOptionInput) {
+        feedbackDiv.textContent = 'Vui lòng chọn một đáp án trước khi kiểm tra.';
+        feedbackDiv.classList.add('active', 'warning');
+        return;
+    }
+
+    const qData = questionsData[questionName]; 
+
+    const correctAnswerLabel = document.querySelector(`label[for="${qData.correctOptionId}"]`);
+    if (correctAnswerLabel) {
+      correctAnswerLabel.classList.add('correct-highlight');
+    }
+
+    answeredQuestions.add(questionName);
+    
+    const selectedOptionLabel = selectedOptionInput.parentElement;
+    
+    if (selectedOptionLabel.dataset.isCorrect === "true") {
+      feedbackDiv.innerHTML = '<strong>Chính xác!</strong><br><span class="explanation">' + qData.explanation + '</span>';
+      feedbackDiv.classList.add('active', 'correct');
+      correctAnswersCount++;
+    } else {
+      const correctAnswerText = correctAnswerLabel ? correctAnswerLabel.textContent.trim() : '';
+      feedbackDiv.innerHTML = '<strong>Không chính xác.</strong><br><span class="correct-answer-display">Đáp án đúng là: ' + correctAnswerText + '</span><br><span class="explanation">' + qData.explanation + '</span>';
+      feedbackDiv.classList.add('active', 'incorrect');
+    }
+    
+    const radioButtons = document.querySelectorAll(`input[name="${questionName}"]`);
+    radioButtons.forEach(radio => radio.disabled = true);
+    validateButton.disabled = true;
+  }
+
+  function showScore() {
+    document.getElementById('correct-count').textContent = correctAnswersCount;
+    document.getElementById('total-questions').textContent = totalQuestions;
+    document.getElementById('score-area').style.display = 'block';
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2025 by anonymous (http://jsbin.com/yequruteku/1/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài tập: Giới từ chỉ thời gian</title>
+    <style>
+        /* CSS để làm cho trang kiểm tra đẹp hơn */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-header {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 0.95em;
+            color: #555;
+        }
+        
+        .info-header p {
+            margin: 0;
+        }
+
+        .quiz-status-bar {
+            position: sticky;
+            top: 0;
+            background-color: #4a5a7b;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            z-index: 1000;
+        }
+
+        .quiz-status-bar h1 {
+            margin: 0;
+            font-size: 1.5em;
+        }
+
+        #score-display, #timer-display {
+            font-size: 1.2em;
+            font-weight: bold;
+            background-color: #ffffff;
+            color: #4a5a7b;
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+        
+        .question-block {
+            margin-bottom: 25px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background-color: #fdfdfd;
+        }
+
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .question-translation {
+            font-size: 0.9em;
+            font-style: italic;
+            color: #6c757d;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .answers label {
+            display: block;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            max-width: 500px;
+        }
+
+        .answers label:hover {
+            background-color: #e9ecef;
+        }
+
+        .answers input[type="radio"] {
+            margin-right: 10px;
+        }
+        
+        .validate-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            display: block;
+            margin-top: 15px; 
+            transition: background-color 0.3s;
+        }
+
+        .validate-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .validate-btn:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+        
+        .feedback {
+            margin-top: 15px;
+            font-weight: normal;
+            font-size: 0.95em;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .feedback-correct {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .feedback-incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .feedback-warning {
+            background-color: #fffbe6;
+            color: #8a6d3b;
+        }
+
+        .correct-answer {
+            background-color: #d4edda !important;
+            border-color: #c3e6cb !important;
+        }
+
+        .incorrect-answer {
+            background-color: #f8d7da !important;
+            border-color: #f5c6cb !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="quiz-container">
+        <div class="info-header">
+            <p><strong>Enseignant:</strong> Nguyễn Hoàng Vũ</p>
+            <p><strong>Ngày kiểm tra:</strong> <span id="test-date"></span></p>
+        </div>
+
+        <div class="quiz-status-bar">
+            <h1>Bài tập: Giới từ chỉ thời gian</h1>
+            <div>
+                <span id="score-display">Điểm: 0 / 10</span>
+                <span id="timer-display">Thời gian: 10:00</span>
+            </div>
+        </div>
+        
+        <div id="all-questions-container">
+            </div>
+    </div>
+
+    <script>
+        let score = 0;
+        const maxScore = 10;
+        const scoreDisplay = document.getElementById('score-display');
+        let timeInSeconds = 600; // 10 minutes
+        let timerInterval = null;
+
+        const questionsData = [
+            { id: 1, text: "Tu as dormi ______ deux heures.", translation: "(Bạn đã ngủ trong hai tiếng.)", options: { a: "pendant", b: "depuis", c: "pour" }, correct: 'a' },
+            { id: 2, text: "Tu as dormi ______ dix heures du soir ______ neuf heures du matin.", translation: "(Bạn đã ngủ từ 10 giờ tối đến 9 giờ sáng.)", options: { a: "de ... à", b: "pendant ... à", c: "depuis ... à" }, correct: 'a' },
+            { id: 3, text: "______ quelques jours, la température est montée.", translation: "(Từ vài ngày nay, nhiệt độ đã tăng lên.)", options: { a: "Pendant", b: "En", c: "Depuis" }, correct: 'c' },
+            { id: 4, text: "Ce bateau a fait le tour du monde ______ quatre-vingts jours.", translation: "(Con tàu này đã đi vòng quanh thế giới trong tám mươi ngày.)", options: { a: "en", b: "dans", c: "depuis" }, correct: 'a' },
+            { id: 5, text: "Nous partons vivre à Tahiti ______ deux ans.", translation: "(Chúng tôi sẽ đi sống ở Tahiti trong hai năm.)", options: { a: "pendant", b: "pour", c: "depuis" }, correct: 'b' },
+            { id: 6, text: "Notre avion décolle demain matin ______ huit heures.", translation: "(Máy bay của chúng tôi cất cánh vào sáng mai lúc tám giờ.)", options: { a: "en", b: "dans", c: "à" }, correct: 'c' },
+            { id: 7, text: "Nous reviendrons sans doute ______ trois ans.", translation: "(Chúng tôi chắc chắn sẽ trở lại trong ba năm nữa.)", options: { a: "dans", b: "en", c: "pendant" }, correct: 'a' },
+            { id: 8, text: "______ plusieurs jours, il fait un temps horrible.", translation: "(Từ vài ngày nay, thời tiết thật kinh khủng.)", options: { a: "Pendant", b: "Dans", c: "Depuis" }, correct: 'c' },
+            { id: 9, text: "Il a trouvé la solution de ce problème ______ trois minutes.", translation: "(Anh ấy đã tìm ra giải pháp cho vấn đề này trong ba phút.)", options: { a: "dans", b: "pendant", c: "en" }, correct: 'c' },
+            { id: 10, text: "Tu n'es pas prête ! Je viendrai te chercher ______ un quart d'heure.", translation: "(Bạn chưa sẵn sàng! Tôi sẽ đến đón bạn trong một phần tư giờ nữa.)", options: { a: "en", b: "dans", c: "pendant" }, correct: 'b' }
+        ];
+        
+        const feedbackExplanations = {
+            1: "Chính xác! 'pendant' được dùng để chỉ khoảng thời gian một hành động đã xảy ra và kết thúc trong quá khứ.",
+            2: "Chính xác! Cấu trúc 'de ... à ...' được dùng để chỉ khoảng thời gian từ lúc này đến lúc khác.",
+            3: "Chính xác! 'Depuis' được dùng với thì quá khứ để chỉ một hành động bắt đầu trong quá khứ và vẫn còn ảnh hưởng/tiếp diễn đến hiện tại.",
+            4: "Chính xác! 'En' được dùng để chỉ khoảng thời gian cần thiết để hoàn thành một hành động.",
+            5: "Chính xác! 'Pour' được dùng để chỉ một khoảng thời gian dự định trong tương lai.",
+            6: "Chính xác! 'à' được dùng trước một giờ cụ thể.",
+            7: "Chính xác! 'Dans' được dùng để chỉ một thời điểm trong tương lai (sau ba năm nữa).",
+            8: "Chính xác! 'Depuis' chỉ một hành động/trạng thái bắt đầu trong quá khứ và vẫn tiếp diễn.",
+            9: "Chính xác! 'En' được dùng để chỉ khoảng thời gian cần thiết để hoàn thành một hành động.",
+            10: "Chính xác! 'Dans' được dùng để chỉ một thời điểm trong tương lai (sau một phần tư giờ nữa)."
+        };
+
+        function createAllQuestionsHTML() {
+            const container = document.getElementById('all-questions-container');
+            let allQuestionsHTML = '';
+            questionsData.forEach(q => {
+                let optionsHTML = '';
+                for (const key in q.options) {
+                     optionsHTML += `<label><input type="radio" name="q${q.id}" value="${key}"> ${key}) ${q.options[key]}</label>`;
+                }
+                allQuestionsHTML += `
+                    <div class="question-block" id="q${q.id}">
+                        <p class="question-text">${q.id}. ${q.text}</p>
+                        <p class="question-translation">${q.translation}</p>
+                        <div class="answers">${optionsHTML}</div>
+                        <button class="validate-btn" onclick="validateRadio(${q.id}, '${q.correct}')">Valider</button>
+                        <div class="feedback"></div>
+                    </div>
+                `;
+            });
+            container.innerHTML = allQuestionsHTML;
+        }
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const today = new Date();
+            const day = String(today.getDate()).padStart(2, '0');
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const year = today.getFullYear();
+            document.getElementById('test-date').textContent = `${day}/${month}/${year}`;
+            
+            createAllQuestionsHTML();
+            updateScoreDisplay();
+            startTimer();
+        });
+
+        function startTimer() {
+            const timerDisplay = document.getElementById('timer-display');
+            clearInterval(timerInterval); 
+            
+            timerInterval = setInterval(() => {
+                timeInSeconds--;
+                const minutes = Math.floor(timeInSeconds / 60);
+                const seconds = timeInSeconds % 60;
+                timerDisplay.textContent = `Thời gian: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                if (timeInSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    timerDisplay.textContent = "Hết giờ!";
+                    alert("Hết giờ làm bài!");
+                    document.querySelectorAll('.validate-btn').forEach(btn => btn.disabled = true);
+                }
+            }, 1000);
+        }
+
+        function updateScoreDisplay() {
+            const scoreDisplay = document.getElementById('score-display');
+            scoreDisplay.textContent = `Điểm: ${score} / ${maxScore}`;
+        }
+        
+        function updateScore(points = 1) {
+            score += points;
+            updateScoreDisplay();
+        }
+
+        function validateRadio(questionNumber, correctAnswer) {
+            const questionBlock = document.getElementById(`q${questionNumber}`);
+            const radios = document.getElementsByName(`q${questionNumber}`);
+            const feedback = questionBlock.querySelector('.feedback');
+            const button = questionBlock.querySelector('.validate-btn');
+            let selectedAnswer = null;
+
+            radios.forEach(radio => { if (radio.checked) { selectedAnswer = radio; } });
+
+            if (selectedAnswer === null) {
+                feedback.textContent = "Vui lòng chọn một đáp án!";
+                feedback.className = 'feedback feedback-warning';
+                return;
+            }
+            
+            button.disabled = true;
+            radios.forEach(radio => radio.disabled = true);
+            const selectedLabel = selectedAnswer.parentElement;
+            const explanation = feedbackExplanations[questionNumber];
+
+            if (selectedAnswer.value === correctAnswer) {
+                feedback.textContent = explanation;
+                feedback.className = 'feedback feedback-correct';
+                selectedLabel.classList.add('correct-answer');
+                updateScore();
+            } else {
+                const cleanedExplanation = explanation.replace("Chính xác! ", "");
+                feedback.innerHTML = `<strong>Không chính xác.</strong> ${cleanedExplanation}<br>Đáp án đúng là lựa chọn <strong>"${correctAnswer.toUpperCase()}"</strong>.`;
+                feedback.className = 'feedback feedback-incorrect';
+                radios.forEach(radio => { if (radio.value === correctAnswer) { radio.parentElement.classList.add('correct-answer'); } });
+            }
+        }
+    </script>
+</body>
+</html>

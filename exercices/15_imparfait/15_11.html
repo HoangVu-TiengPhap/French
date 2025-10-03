@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+
+<meta name="robots" content="noindex">
+<html>
+<head>
+<title>Imparfait</title>
+<style>
+ body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0; /* Đã sửa: Loại bỏ khoảng trống đầu trang */
+    padding: 0;
+    background-color: #f0f4f8;
+    color: #333;
+  }
+  
+  /* CHỈNH SỬA QUAN TRỌNG: Đặt chiều rộng và box-sizing để khớp container */
+  header {
+    width: 800px; /* Chiều rộng cố định, bằng container */
+    margin: 0 auto; /* Căn giữa và sát lề trên */
+    background-color: #e0e7ed;
+    color: #2c3e50;
+    padding: 15px 20px;
+    /* border-bottom: 2px solid #c0d0e0; */ /* Đã bỏ border-bottom cũ */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Thay bằng đổ bóng nhẹ */
+    border-radius: 8px 8px 0 0; /* Đã sửa: Bo tròn góc trên */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box; /* Đã sửa: Đảm bảo padding nằm trong 800px */
+  }
+  
+  header h2, header p {
+    margin: 0;
+    font-size: 1.1em;
+    color: #333;
+  }
+  
+  h1 {
+    color: #2c3e50;
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 20px;
+  }
+  
+  .container {
+    width: 800px; /* Đã sửa: Đặt width cố định để khớp Header */
+    margin: 0 auto 30px auto; /* Đã sửa: margin-top: 0 để sát Header */
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 0 0 10px 10px; /* Đã sửa: Bỏ bo góc trên */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box; /* Đã sửa: Đảm bảo padding nằm trong 800px */
+  }
+  
+  .question-block {
+    margin-bottom: 25px;
+    padding: 20px;
+    border: 1px solid #d0dbe4;
+    border-radius: 8px;
+    background-color: #fdfefe;
+  }
+  .question {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 1.1em;
+    color: #34495e;
+  }
+  .translation {
+    font-style: italic;
+    color: #666;
+    margin-bottom: 15px;
+    font-size: 0.95em;
+  }
+  .options label {
+    display: block;
+    margin-bottom: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: color 0.3s ease;
+    padding: 5px 0;
+  }
+  .options label:hover {
+    color: #5a7d9a;
+  }
+  .options input[type="radio"] {
+    margin-right: 10px;
+    transform: scale(1.1);
+  }
+  .options label.correct-highlight {
+    background-color: #d4edda;
+    border: 2px solid #28a745;
+    border-radius: 5px;
+    padding: 5px;
+    color: #1a7e37;
+  }
+  .feedback {
+    margin-top: 15px;
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 5px;
+    width: calc(100% - 24px);
+    box-sizing: border-box;
+    display: none;
+  }
+  .feedback.active {
+      display: block;
+  }
+  .correct {
+    background-color: #e6ffe6;
+    color: #1a7e37;
+    border: 1px solid #28a745;
+  }
+  .incorrect {
+    background-color: #ffe6e6;
+    color: #dc3545;
+    border: 1px solid #dc3545;
+  }
+  .warning {
+      background-color: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffeeba;
+  }
+  .explanation {
+    font-size: 0.9em;
+    font-weight: normal;
+    color: #555;
+    margin-top: 8px;
+    font-style: italic;
+  }
+  .correct-answer-display {
+    color: dodgerblue; /* Xanh dương tươi */
+    font-weight: bold;
+    margin-top: 5px;
+    display: block;
+  }
+  .validate-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-top: 15px;
+    transition: background-color 0.3s ease;
+  }
+  .validate-btn:hover {
+    background-color: #45a049;
+  }
+  .validate-btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+  #score-area {
+    text-align: center;
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #e6f7ff;
+    border: 1px solid #b3e0ff;
+    border-radius: 8px;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #0056b3;
+    display: none;
+  }
+  .complete-test-btn {
+    display: block;
+    width: fit-content;
+    margin: 30px auto;
+    background-color: #007bff;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease;
+  }
+  .complete-test-btn:hover {
+    background-color: #0056b3;
+  }
+  @media (max-width: 600px) {
+    /* Đảm bảo responsive vẫn hoạt động tốt */
+    header, .container {
+        width: 90%; 
+        max-width: 90%;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 15px;
+        box-sizing: border-box;
+    }
+    header {
+      border-radius: 8px 8px 0 0;
+      margin-top: 0;
+    }
+    .container {
+      margin-top: 0;
+      margin-bottom: 15px;
+      border-radius: 0 0 10px 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    header h2, header p {
+      font-size: 1em;
+      margin-bottom: 5px;
+    }
+    .question, .translation, .options label, .feedback, .validate-btn, .complete-test-btn {
+      font-size: 0.9em;
+    }
+    .feedback {
+      padding: 6px 10px;
+      width: calc(100% - 20px);
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h2>Enseignant: Nguyễn Hoàng Vũ</h2>
+
+</header>
+
+<div class="container">
+  <h1>Xác định cách dùng của thì Imparfait trong các câu sau:</h1>
+
+  <div class="question-block" id="q1-block">
+    <div class="question">1. C'était un soir de fête. Il y avait des lumières et des orchestres partout.</div>
+    <div class="translation">Đó là một buổi tối lễ hội. Khắp nơi có đèn và các ban nhạc.</div>
+    <div class="options" id="options-q1"></div>
+    <button class="validate-btn" onclick="checkAnswer('q1')">Valider</button>
+    <div class="feedback" id="feedback1"></div>
+  </div>
+
+  <div class="question-block" id="q2-block">
+    <div class="question">2. Tous les soirs, avant le repas, je buvais un whisky.</div>
+    <div class="translation">Mỗi tối, trước bữa ăn, tôi thường uống một ly whisky.</div>
+    <div class="options" id="options-q2"></div>
+    <button class="validate-btn" onclick="checkAnswer('q2')">Valider</button>
+    <div class="feedback" id="feedback2"></div>
+  </div>
+
+  <div class="question-block" id="q3-block">
+    <div class="question">3. Il marchait sur la plage et, en même temps, il réfléchissait.</div>
+    <div class="translation">Anh ấy đang đi trên bãi biển và, đồng thời, anh ấy đang suy nghĩ.</div>
+    <div class="options" id="options-q3"></div>
+    <button class="validate-btn" onclick="checkAnswer('q3')">Valider</button>
+    <div class="feedback" id="feedback3"></div>
+  </div>
+
+  <div class="question-block" id="q4-block">
+    <div class="question">4. Elle était très belle. Elle plaisait aux hommes.</div>
+    <div class="translation">Cô ấy rất đẹp. Cô ấy làm hài lòng đàn ông.</div>
+    <div class="options" id="options-q4"></div>
+    <button class="validate-btn" onclick="checkAnswer('q4')">Valider</button>
+    <div class="feedback" id="feedback4"></div>
+  </div>
+
+  <div class="question-block" id="q5-block">
+    <div class="question">5. Tu répondais toujours non à mes questions.</div>
+    <div class="translation">Bạn luôn trả lời không cho câu hỏi của tôi.</div>
+    <div class="options" id="options-q5"></div>
+    <button class="validate-btn" onclick="checkAnswer('q5')">Valider</button>
+    <div class="feedback" id="feedback5"></div>
+  </div>
+
+  <div class="question-block" id="q6-block">
+    <div class="question">6. A mon arrivée, ils finissaient de dîner.</div>
+    <div class="translation">Khi tôi đến, họ đang ăn tối xong.</div>
+    <div class="options" id="options-q6"></div>
+    <button class="validate-btn" onclick="checkAnswer('q6')">Valider</button>
+    <div class="feedback" id="feedback6"></div>
+  </div>
+
+  <div class="question-block" id="q7-block">
+    <div class="question">7. Il paraissait triste. Il restait silencieux.</div>
+    <div class="translation">Anh ấy có vẻ buồn. Anh ấy vẫn im lặng.</div>
+    <div class="options" id="options-q7"></div>
+    <button class="validate-btn" onclick="checkAnswer('q7')">Valider</button>
+    <div class="feedback" id="feedback7"></div>
+  </div>
+
+  <div class="question-block" id="q8-block">
+    <div class="question">8. Nous traversions toujours la Seine par le pont Mirabeau.</div>
+    <div class="translation">Chúng tôi luôn đi qua sông Seine bằng cầu Mirabeau.</div>
+    <div class="options" id="options-q8"></div>
+    <button class="validate-btn" onclick="checkAnswer('q8')">Valider</button>
+    <div class="feedback" id="feedback8"></div>
+  </div>
+
+  <div class="question-block" id="q9-block">
+    <div class="question">9. Il pleuvait sur la mer, les vagues grossissaient, le tonnerre grondait.</div>
+    <div class="translation">Trời mưa trên biển, sóng lớn dần, sấm gầm.</div>
+    <div class="options" id="options-q9"></div>
+    <button class="validate-btn" onclick="checkAnswer('q9')">Valider</button>
+    <div class="feedback" id="feedback9"></div>
+  </div>
+
+  <div class="question-block" id="q10-block">
+    <div class="question">10. Le bébé dormait et, pendant ce temps, je téléphonais.</div>
+    <div class="translation">Em bé đang ngủ và, trong lúc đó, tôi đang gọi điện.</div>
+    <div class="options" id="options-q10"></div>
+    <button class="validate-btn" onclick="checkAnswer('q10')">Valider</button>
+    <div class="feedback" id="feedback10"></div>
+  </div>
+
+  <button class="complete-test-btn" onclick="showScore()">Hoàn thành bài kiểm tra</button>
+
+  <div id="score-area">
+    <p>Bạn đã trả lời đúng <span id="correct-count">0</span> trên tổng số <span id="total-questions">0</span> câu.</p>
+  </div>
+
+</div>
+
+<script>
+  // Định nghĩa dữ liệu cho mỗi câu hỏi
+  const questionsData = {
+    q1: {
+      original: "C'était un soir de fête. Il y avait des lumières et des orchestres partout.",
+      translation: "Đó là một buổi tối lễ hội. Khắp nơi có đèn và các ban nhạc.",
+      correct: "A. Description dans le passé",
+      wrong: ["B. Habitude dans le passé", "C. Actions simultanées en train de se faire dans le passé"],
+      explanation: "Câu này miêu tả một tình huống, không khí trong quá khứ."
+    },
+    q2: {
+      original: "Tous les soirs, avant le repas, je buvais un whisky.",
+      translation: "Mỗi tối, trước bữa ăn, tôi thường uống một ly whisky.",
+      correct: "B. Habitude dans le passé",
+      wrong: ["A. Description dans le passé", "C. Actions simultanées en train de se faire dans le passé"],
+      explanation: "Cụm từ 'Tous les soirs' (mỗi tối) và hành động lặp lại 'je buvais' (tôi thường uống) chỉ thói quen trong quá khứ."
+    },
+    q3: {
+      original: "Il marchait sur la plage et, en même temps, il réfléchissait.",
+      translation: "Anh ấy đang đi trên bãi biển và, đồng thời, anh ấy đang suy nghĩ.",
+      correct: "C. Actions simultanées en train de se faire dans le passé",
+      wrong: ["A. Description dans le passé", "B. Habitude dans le passé"],
+      explanation: "Có hai hành động ('marchait' và 'réfléchissait') xảy ra 'en même temps' (đồng thời) trong quá khứ."
+    },
+    q4: {
+      original: "Elle était très belle. Elle plaisait aux hommes.",
+      translation: "Cô ấy rất đẹp. Cô ấy làm hài lòng đàn ông.",
+      correct: "A. Description dans le passé",
+      wrong: ["B. Habitude dans le passé", "C. Actions simultanées en train de se faire dans le passé"],
+      explanation: "Cả hai động từ 'était' và 'plaisait' đều dùng để miêu tả phẩm chất và đặc điểm của cô ấy trong quá khứ."
+    },
+    q5: {
+      original: "Tu répondais toujours non à mes questions.",
+      translation: "Bạn luôn trả lời không cho câu hỏi của tôi.",
+      correct: "B. Habitude dans le passé",
+      wrong: ["A. Description dans le passé", "C. Actions simultanées en train de se faire dans le passé"],
+      explanation: "Từ 'toujours' (luôn luôn) và hành động lặp lại 'répondais' chỉ một thói quen trong quá khứ."
+    },
+    q6: {
+      original: "A mon arrivée, ils finissaient de dîner.",
+      translation: "Khi tôi đến, họ đang ăn tối xong.",
+      correct: "C. Actions simultanées en train de se faire dans le passé",
+      wrong: ["A. Description dans le passé", "B. Habitude dans le passé"],
+      explanation: "Hành động 'finissaient de dîner' (đang ăn tối xong) đang diễn ra khi một hành động khác (tôi đến - à mon arrivée) xen vào."
+    },
+    q7: {
+      original: "Il paraissait triste. Il restait silencieux.",
+      translation: "Anh ấy có vẻ buồn. Anh ấy vẫn im lặng.",
+      correct: "A. Description dans le passé",
+      wrong: ["B. Habitude dans le passé", "C. Actions simultanées en train de se faire dans le passé"],
+      explanation: "Cả hai động từ 'paraissait' và 'restait' đều miêu tả trạng thái và đặc điểm của anh ấy trong quá khứ."
+    },
+    q8: {
+      original: "Nous traversions toujours la Seine par le pont Mirabeau.",
+      translation: "Chúng tôi luôn đi qua sông Seine bằng cầu Mirabeau.",
+      correct: "B. Habitude dans le passé",
+      wrong: ["A. Description dans le passé", "C. Actions simultanées en train de se faire dans le passé"],
+      explanation: "Từ 'toujours' (luôn luôn) và hành động lặp lại 'traversions' chỉ một thói quen trong quá khứ."
+    },
+    q9: {
+      original: "Il pleuvait sur la mer, les vagues grossissaient, le tonnerre grondait.",
+      translation: "Trời mưa trên biển, sóng lớn dần, sấm gầm.",
+      correct: "C. Actions simultanées en train de se faire dans le passé",
+      wrong: ["A. Description dans le passé", "B. Habitude dans le passé"],
+      explanation: "Ba hành động ('pleuvait', 'grossissaient', 'grondait') đang diễn ra đồng thời trong quá khứ."
+    },
+    q10: {
+      original: "Le bébé dormait et, pendant ce temps, je téléphonais.",
+      translation: "Em bé đang ngủ và, trong lúc đó, tôi đang gọi điện.",
+      correct: "C. Actions simultanées en train de se faire dans le passé",
+      wrong: ["A. Description dans le passé", "B. Habitude dans le passé"],
+      explanation: "Hai hành động ('dormait' và 'téléphonais') đang diễn ra đồng thời trong quá khứ, được nhấn mạnh bởi 'pendant ce temps' (trong lúc đó)."
+    }
+  };
+
+  let correctAnswersCount = 0;
+  const totalQuestions = Object.keys(questionsData).length;
+  const answeredQuestions = new Set(); 
+
+  // Hàm xáo trộn mảng Fisher-Yates
+  function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+      }
+  }
+
+  // Hàm tạo và hiển thị các lựa chọn
+  function generateOptions() {
+    for (const qKey in questionsData) {
+      const qData = questionsData[qKey];
+      const optionsDiv = document.getElementById(`options-${qKey}`);
+      optionsDiv.innerHTML = ''; 
+
+      const allOptions = [{text: qData.correct, isCorrect: true}];
+      qData.wrong.slice(0, 2).forEach(w => allOptions.push({text: w, isCorrect: false})); 
+
+      shuffleArray(allOptions); 
+
+      allOptions.forEach((option, index) => {
+        const optionId = `${qKey}-${String.fromCharCode(97 + index)}`; 
+        const label = document.createElement('label');
+        label.setAttribute('for', optionId);
+        
+        const input = document.createElement('input');
+        input.type = 'radio';
+        input.name = qKey;
+        input.value = optionId;
+        input.id = optionId;
+        
+        label.appendChild(input);
+        label.appendChild(document.createTextNode(option.text));
+        
+        if (option.isCorrect) {
+          label.dataset.isCorrect = "true";
+          questionsData[qKey].correctOptionId = optionId; 
+        }
+
+        optionsDiv.appendChild(label);
+      });
+    }
+  }
+
+  // Call generateOptions when the page loads
+  document.addEventListener('DOMContentLoaded', generateOptions);
+
+
+  function checkAnswer(questionName) {
+    if (answeredQuestions.has(questionName)) {
+        return; 
+    }
+
+    const selectedOptionInput = document.querySelector(`input[name="${questionName}"]:checked`);
+    const feedbackDiv = document.getElementById(`feedback${questionName.substring(1)}`); 
+    const validateButton = event.target; 
+    
+    feedbackDiv.classList.remove('active', 'correct', 'incorrect', 'warning');
+    feedbackDiv.innerHTML = '';
+
+
+    if (!selectedOptionInput) {
+        feedbackDiv.textContent = 'Vui lòng chọn một đáp án trước khi kiểm tra.';
+        feedbackDiv.classList.add('active', 'warning');
+        return;
+    }
+
+    const qData = questionsData[questionName]; 
+
+    const correctAnswerLabel = document.querySelector(`label[for="${qData.correctOptionId}"]`);
+    if (correctAnswerLabel) {
+      correctAnswerLabel.classList.add('correct-highlight');
+    }
+
+    answeredQuestions.add(questionName);
+    
+    const selectedOptionLabel = selectedOptionInput.parentElement;
+    
+    if (selectedOptionLabel.dataset.isCorrect === "true") {
+      feedbackDiv.innerHTML = '<strong>Chính xác!</strong><br><span class="explanation">' + qData.explanation + '</span>';
+      feedbackDiv.classList.add('active', 'correct');
+      correctAnswersCount++;
+    } else {
+      const correctAnswerText = correctAnswerLabel ? correctAnswerLabel.textContent.trim() : '';
+      feedbackDiv.innerHTML = '<strong>Không chính xác.</strong><br><span class="correct-answer-display">Đáp án đúng là: ' + correctAnswerText + '</span><br><span class="explanation">' + qData.explanation + '</span>';
+      feedbackDiv.classList.add('active', 'incorrect');
+    }
+    
+    const radioButtons = document.querySelectorAll(`input[name="${questionName}"]`);
+    radioButtons.forEach(radio => radio.disabled = true);
+    validateButton.disabled = true;
+  }
+
+  function showScore() {
+    document.getElementById('correct-count').textContent = correctAnswersCount;
+    document.getElementById('total-questions').textContent = totalQuestions;
+    document.getElementById('score-area').style.display = 'block';
+  }
+</script>
+
+</body>
+</html>

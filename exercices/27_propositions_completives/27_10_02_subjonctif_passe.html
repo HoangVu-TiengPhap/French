@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2025 by anonymous (http://jsbin.com/faqawowapa/4/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subjonctif Passé - Émotion/Opinion (Suite)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .header, .question-block, .options label {
+            font-family: Arial, sans-serif;
+        }
+
+        .page-content-wrapper {
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .header h1 {
+            text-align: center;
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+
+        #score-container {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color: #fff;
+            color: #007bff;
+            padding: 12px 20px;
+            border: 1px solid #cce5ff;
+            border-radius: 8px;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            font-size: 1.3em;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+            box-sizing: border-box;
+        }
+        #score-container strong {
+            color: #0056b3;
+        }
+
+        #quiz-container {
+        }
+        .question-block {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .question-text {
+            font-size: 1.1em;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .question-translation {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+        .options {
+            max-width: 500px;
+            margin-bottom: 15px;
+        }
+        .options label {
+            display: block;
+            margin-bottom: 10px;
+            cursor: pointer;
+            padding: 8px;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+            font-family: Arial, sans-serif;
+        }
+        .options label:hover {
+                background-color: #e9e9e9;
+        }
+        .feedback {
+            margin-top: 15px;
+            font-weight: bold;
+            display: none;
+            font-family: 'Roboto', sans-serif;
+        }
+        .feedback-explanation {
+            font-weight: normal;
+            font-size: 0.9em;
+            margin-top: 5px;
+            color: #0056b3;
+        }
+        .feedback-correct-answer-text {
+            color: #0056b3;
+        }
+        .correct {
+            color: green;
+        }
+        .incorrect {
+            color: red;
+        }
+        .highlight-correct {
+            background-color: #d4edda !important;
+            border-color: #28a745 !important;
+        }
+        .highlight-incorrect-selected {
+            background-color: #f8d7da !important;
+            border-color: #dc3545 !important;
+        }
+        .validate-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 15px;
+            transition: background-color 0.3s ease;
+        }
+        .validate-btn:hover {
+            background-color: #0056b3;
+        }
+        .validation-error {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 15px;
+            font-weight: normal;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-content-wrapper">
+        <div class="header">
+            <div class="header-top">
+                <p><strong>Enseignant:</strong> Nguyễn Hoàng Vũ</p>
+                <p><strong>Jour de test:</strong> <span id="currentDate"></span></p>
+            </div>
+            <h1>Subjonctif Passé - Émotion/Opinion (Suite)</h1> </div>
+
+        <div id="score-container">
+            Score: <strong id="current-score-value">0</strong> / <strong id="total-questions-value">5</strong>
+        </div>
+
+        <div id="quiz-container">
+            <div class="question-block" id="q1" data-correct-answer="Il est dommage que tu sois arrivé en retard.">
+                <p class="question-text">1. Il est dommage / tu (arriver) en retard.</p>
+                <p class="question-translation"><em>(Thật đáng tiếc là bạn đã đến muộn.)</em></p>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q1', 'Cấu trúc &quot;il est dommage que&quot; (thật đáng tiếc rằng) đòi hỏi Subjonctif. Hành động trong quá khứ (&quot;tu as arrivé&quot;) sẽ được chia ở Subjonctif Passé là &quot;tu sois arrivé&quot; (động từ &quot;arriver&quot; dùng trợ động từ &quot;être&quot; và hợp giống số).', 'error-q1')">Valider</button>
+                <div class="feedback" id="feedback-q1"></div>
+                <div class="validation-error" id="error-q1">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+            <div class="question-block" id="q2" data-correct-answer="Tu ne comprends pas qu'il ait pu te mentir.">
+                <p class="question-text">2. Tu ne comprends pas / il (pouvoir) te mentir.</p>
+                <p class="question-translation"><em>(Bạn không hiểu sao anh ấy lại có thể nói dối bạn.)</em></p>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q2', 'Cấu trúc phủ định &quot;ne pas comprendre que&quot; (không hiểu rằng) đòi hỏi Subjonctif. Hành động trong quá khứ (&quot;il a pu&quot;) sẽ được chia ở Subjonctif Passé là &quot;il ait pu&quot;.', 'error-q2')">Valider</button>
+                <div class="feedback" id="feedback-q2"></div>
+                <div class="validation-error" id="error-q2">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+            <div class="question-block" id="q3" data-correct-answer="Pedro attend qu'elles aient fini de bavarder au téléphone.">
+                <p class="question-text">3. Pedro attend / elles (finir) de bavarder au téléphone.</p>
+                <p class="question-translation"><em>(Pedro đợi họ đã nói chuyện điện thoại xong.)</em></p>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q3', 'Động từ &quot;attendre que&quot; (chờ đợi rằng) đòi hỏi Subjonctif. Hành động trong quá khứ (&quot;elles ont fini&quot;) sẽ được chia ở Subjonctif Passé là &quot;elles aient fini&quot;.', 'error-q3')">Valider</button>
+                <div class="feedback" id="feedback-q3"></div>
+                <div class="validation-error" id="error-q3">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+            <div class="question-block" id="q4" data-correct-answer="Je regrette que vous ne soyez pas venu hier soir.">
+                <p class="question-text">4. Je regrette / vous (ne pas venir) hier soir.</p>
+                <p class="question-translation"><em>(Tôi tiếc là bạn đã không đến tối qua.)</em></p>
+            <div class="options">
+                </div>
+            <button class="validate-btn" onclick="checkAnswer('q4', 'Động từ &quot;regretter que&quot; (tiếc rằng) đòi hỏi Subjonctif. Hành động trong quá khứ (&quot;vous n\'êtes pas venu&quot;) sẽ được chia ở Subjonctif Passé là &quot;vous ne soyez pas venu&quot; (động từ &quot;venir&quot; dùng trợ động từ &quot;être&quot; và hợp giống số).', 'error-q4')">Valider</button>
+            <div class="feedback" id="feedback-q4"></div>
+            <div class="validation-error" id="error-q4">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+        </div>
+
+            <div class="question-block" id="q5" data-correct-answer="Nous sommes désolés que vous ayez eu des ennuis.">
+                <p class="question-text">5. Nous sommes désolés / vous (avoir) des ennuis.</p>
+                <p class="question-translation"><em>(Chúng tôi rất tiếc là bạn đã gặp rắc rối.)</em></p>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q5', 'Động từ &quot;être désolé que&quot; (tiếc rằng) đòi hỏi Subjonctif. Hành động trong quá khứ (&quot;vous avez eu&quot;) sẽ được chia ở Subjonctif Passé là &quot;vous ayez eu&quot;.', 'error-q5')">Valider</button>
+                <div class="feedback" id="feedback-q5"></div>
+                <div class="validation-error" id="error-q5">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+        </div>
+    </div> <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const date = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('currentDate').textContent = date.toLocaleDateString('fr-FR', options);
+            
+            // Định nghĩa các câu hỏi và đáp án cho việc xáo trộn
+            const questionsData = {
+                q1: {
+                    correct: 'Il est dommage que tu sois arrivé en retard.',
+                    options: [
+                        'Il est dommage que tu sois arrivé en retard.',
+                        'Il est dommage que tu es arrivé en retard.',
+                        'Il est dommage que tu arrives en retard.',
+                        'Il est dommage que tu aies arrivé en retard.' // Sai trợ động từ
+                    ]
+                },
+                q2: {
+                    correct: 'Tu ne comprends pas qu\'il ait pu te mentir.',
+                    options: [
+                        'Tu ne comprends pas qu\'il ait pu te mentir.',
+                        'Tu ne comprends pas qu\'il a pu te mentir.',
+                        'Tu ne comprends pas qu\'il puisse te mentir.',
+                        'Tu ne comprends pas qu\'il aura pu te mentir.'
+                    ]
+                },
+                q3: {
+                    correct: 'Pedro attend qu\'elles aient fini de bavarder au téléphone.',
+                    options: [
+                        'Pedro attend qu\'elles aient fini de bavarder au téléphone.',
+                        'Pedro attend qu\'elles ont fini de bavarder au téléphone.',
+                        'Pedro attend qu\'elles finissent de bavarder au téléphone.',
+                        'Pedro attend qu\'elles auront fini de bavarder au téléphone.'
+                    ]
+                },
+                q4: {
+                    correct: 'Je regrette que vous ne soyez pas venu hier soir.',
+                    options: [
+                        'Je regrette que vous ne soyez pas venu hier soir.',
+                        'Je regrette que vous n\'êtes pas venu hier soir.',
+                        'Je regrette que vous ne veniez pas hier soir.',
+                        'Je regrette que vous n\'auriez pas venu hier soir.' // Sai trợ động từ
+                    ]
+                },
+                q5: {
+                    correct: 'Nous sommes désolés que vous ayez eu des ennuis.',
+                    options: [
+                        'Nous sommes désolés que vous ayez eu des ennuis.',
+                        'Nous sommes désolés que vous avez eu des ennuis.',
+                        'Nous sommes désolés que vous ayez des ennuis.',
+                        'Nous sommes désolés que vous aurez eu des ennuis.'
+                    ]
+                }
+            };
+
+            // Hàm xáo trộn mảng
+            function shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]]; // Hoán đổi vị trí
+                }
+            }
+
+            // Tạo và xáo trộn các lựa chọn đáp án cho mỗi câu hỏi
+            for (const qId in questionsData) {
+                const questionBlock = document.getElementById(qId);
+                const optionsDiv = questionBlock.querySelector('.options');
+                
+                let currentOptions = [...questionsData[qId].options];
+                shuffleArray(currentOptions);
+
+                optionsDiv.innerHTML = '';
+                currentOptions.forEach(optionText => {
+                    const label = document.createElement('label');
+                    const input = document.createElement('input');
+                    input.type = 'radio';
+                    input.name = qId;
+                    input.value = optionText; // Giá trị radio button là toàn bộ chuỗi
+                    label.appendChild(input);
+                    label.innerHTML += ' ' + optionText; // Thêm nội dung vào label
+                    optionsDiv.appendChild(label);
+                });
+            }
+
+            updateOverallScore();
+        });
+
+        const answeredQuestions = {};
+        const totalQuestions = 5; 
+
+        const currentScoreValue = document.getElementById('current-score-value');
+        const totalQuestionsValue = document.getElementById('total-questions-value');
+
+        function updateOverallScore() {
+            let correctCount = 0;
+            const allQuestionIds = ['q1', 'q2', 'q3', 'q4', 'q5'];
+            allQuestionIds.forEach(id => {
+                if (answeredQuestions[id] === true) {
+                    correctCount++;
+                }
+            });
+
+            currentScoreValue.textContent = correctCount;
+            totalQuestionsValue.textContent = totalQuestions;
+        }
+
+        function checkAnswer(questionId, explanation, errorDivId) {
+            const questionBlock = document.getElementById(questionId);
+            const selectedOption = questionBlock.querySelector(`input[name="${questionId}"]:checked`);
+            const feedbackDiv = questionBlock.querySelector('.feedback');
+            const optionsLabels = questionBlock.querySelectorAll('.options label');
+            const correctAnswer = questionBlock.dataset.correctAnswer;
+            const errorDiv = document.getElementById(errorDivId);
+
+            document.querySelectorAll('.validation-error').forEach(div => {
+                div.style.display = 'none';
+            });
+
+            optionsLabels.forEach(label => {
+                label.classList.remove('highlight-correct', 'highlight-incorrect-selected');
+            });
+            feedbackDiv.style.display = 'none';
+            feedbackDiv.classList.remove('correct', 'incorrect');
+            feedbackDiv.innerHTML = '';
+
+            if (!selectedOption) {
+                errorDiv.style.display = 'block';
+                setTimeout(() => {
+                    errorDiv.style.display = 'none';
+                }, 3000);
+                return;
+            }
+
+            const userAnswer = selectedOption.value;
+            let feedbackMessage = "";
+
+            optionsLabels.forEach(label => {
+                if (label.querySelector('input').value === correctAnswer) {
+                    label.classList.add('highlight-correct');
+                }
+            });
+
+            if (userAnswer === correctAnswer) {
+                feedbackMessage = "<b>Chính xác!</b> Đây là đáp án đúng.";
+                feedbackDiv.classList.add('correct');
+                answeredQuestions[questionId] = true;
+            } else {
+                feedbackMessage = `<b>Không chính xác.</b> Đáp án đúng là <span class="feedback-correct-answer-text">"${correctAnswer}"</span>.`;
+                feedbackDiv.classList.add('incorrect');
+                selectedOption.closest('label').classList.add('highlight-incorrect-selected');
+                answeredQuestions[questionId] = false;
+            }
+            feedbackDiv.innerHTML = feedbackMessage + `<div class="feedback-explanation">Giải thích: ${explanation}</div>`;
+            feedbackDiv.style.display = 'block';
+
+            updateOverallScore();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2025 by anonymous (http://jsbin.com/fizagacuno/6/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+<head>
+<title>Bài tập điền giới từ (à, de, không)</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f4f8;
+    color: #333;
+  }
+  header {
+    background-color: #e0e7ed;
+    color: #2c3e50;
+    padding: 15px 20px;
+    border-bottom: 2px solid #c0d0e0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  header h2, header p {
+    margin: 0;
+    font-size: 1.1em;
+    color: #333;
+  }
+  h1 {
+    color: #2c3e50;
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 20px;
+  }
+  .container {
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  .question-block {
+    margin-bottom: 25px;
+    padding: 20px;
+    border: 1px solid #d0dbe4;
+    border-radius: 8px;
+    background-color: #fdfefe;
+  }
+  .question {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 1.1em;
+    color: #34495e;
+  }
+  .translation {
+    font-style: italic;
+    color: #666;
+    margin-bottom: 15px;
+    font-size: 0.95em;
+  }
+  .options label {
+    display: block;
+    margin-bottom: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: color 0.3s ease;
+    padding: 5px 0;
+  }
+  .options label:hover {
+    color: #5a7d9a;
+  }
+  .options input[type="radio"] {
+    margin-right: 10px;
+    transform: scale(1.1);
+  }
+  .options label.correct-highlight {
+    background-color: #d4edda;
+    border: 2px solid #28a745;
+    border-radius: 5px;
+    padding: 5px;
+    color: #1a7e37;
+  }
+  .feedback {
+    margin-top: 15px;
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 5px;
+    width: calc(100% - 24px);
+    box-sizing: border-box;
+    display: none;
+  }
+  .feedback.active {
+      display: block;
+  }
+  .correct {
+    background-color: #e6ffe6;
+    color: #1a7e37;
+    border: 1px solid #28a745;
+  }
+  .incorrect {
+    background-color: #ffe6e6;
+    color: #dc3545;
+    border: 1px solid #dc3545;
+  }
+  .warning {
+      background-color: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffeeba;
+  }
+  .explanation {
+    font-size: 0.9em;
+    font-weight: normal;
+    color: #555;
+    margin-top: 8px;
+    font-style: italic;
+  }
+  .correct-answer-display {
+    color: dodgerblue; /* Xanh dương tươi */
+    font-weight: bold;
+    margin-top: 5px;
+    display: block;
+  }
+  .validate-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-top: 15px;
+    transition: background-color 0.3s ease;
+  }
+  .validate-btn:hover {
+    background-color: #45a049;
+  }
+  .validate-btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+  #score-area {
+    text-align: center;
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #e6f7ff;
+    border: 1px solid #b3e0ff;
+    border-radius: 8px;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #0056b3;
+    display: none;
+  }
+  .complete-test-btn {
+    display: block;
+    width: fit-content;
+    margin: 30px auto;
+    background-color: #007bff;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease;
+  }
+  .complete-test-btn:hover {
+    background-color: #0056b3;
+  }
+  @media (max-width: 600px) {
+    .container {
+      margin: 15px;
+      padding: 15px;
+    }
+    header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    header h2, header p {
+      font-size: 1em;
+      margin-bottom: 5px;
+    }
+    .question, .translation, .options label, .feedback, .validate-btn, .complete-test-btn {
+      font-size: 0.9em;
+    }
+    .feedback {
+      padding: 6px 10px;
+      width: calc(100% - 20px);
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h2>Enseignant: Nguyễn Hoàng Vũ</h2>
+  <p>Ngày: 07/07/2025</p>
+</header>
+
+<div class="container">
+  <h1>Chọn giới từ (à, de) hoặc không điền gì cho các câu sau:</h1>
+
+  <div class="question-block" id="q1-block">
+    <div class="question">1. Il pleut. Nous avons besoin ... un parapluie.</div>
+    <div class="translation">Trời mưa. Chúng tôi cần ... một cây dù.</div>
+    <div class="options" id="options-q1"></div>
+    <button class="validate-btn" onclick="checkAnswer('q1')">Valider</button>
+    <div class="feedback" id="feedback1"></div>
+  </div>
+
+  <div class="question-block" id="q2-block">
+    <div class="question">2. J'ai assisté ... une conférence sur le Sida.</div>
+    <div class="translation">Tôi đã tham dự ... một hội nghị về AIDS.</div>
+    <div class="options" id="options-q2"></div>
+    <button class="validate-btn" onclick="checkAnswer('q2')">Valider</button>
+    <div class="feedback" id="feedback2"></div>
+  </div>
+
+  <div class="question-block" id="q3-block">
+    <div class="question">3. La France fait partie ... la Communauté Economique Européenne.</div>
+    <div class="translation">Pháp là một phần ... Cộng đồng Kinh tế Châu Âu.</div>
+    <div class="options" id="options-q3"></div>
+    <button class="validate-btn" onclick="checkAnswer('q3')">Valider</button>
+    <div class="feedback" id="feedback3"></div>
+  </div>
+
+  <div class="question-block" id="q4-block">
+    <div class="question">4. Que pensez-vous ... ce musicien?</div>
+    <div class="translation">Bạn nghĩ gì ... nhạc sĩ này?</div>
+    <div class="options" id="options-q4"></div>
+    <button class="validate-btn" onclick="checkAnswer('q4')">Valider</button>
+    <div class="feedback" id="feedback4"></div>
+  </div>
+
+  <div class="question-block" id="q5-block">
+    <div class="question">5. Ils ont refusé ... mon invitation.</div>
+    <div class="translation">Họ đã từ chối ... lời mời của tôi.</div>
+    <div class="options" id="options-q5"></div>
+    <button class="validate-btn" onclick="checkAnswer('q5')">Valider</button>
+    <div class="feedback" id="feedback5"></div>
+  </div>
+
+  <div class="question-block" id="q6-block">
+    <div class="question">6. Ce cadeau a fait plaisir ... Laurence.</div>
+    <div class="translation">Món quà này đã làm hài lòng ... Laurence.</div>
+    <div class="options" id="options-q6"></div>
+    <button class="validate-btn" onclick="checkAnswer('q6')">Valider</button>
+    <div class="feedback" id="feedback6"></div>
+  </div>
+
+  <div class="question-block" id="q7-block">
+    <div class="question">7. Les caissières rendent ... la monnaie.</div>
+    <div class="translation">Các nhân viên thu ngân trả lại ... tiền thừa.</div>
+    <div class="options" id="options-q7"></div>
+    <button class="validate-btn" onclick="checkAnswer('q7')">Valider</button>
+    <div class="feedback" id="feedback7"></div>
+  </div>
+
+  <div class="question-block" id="q8-block">
+    <div class="question">8. Est-ce que le mariage fait peur ... tous les jeunes ?</div>
+    <div class="translation">Hôn nhân có làm cho ... tất cả người trẻ sợ hãi không?</div>
+    <div class="options" id="options-q8"></div>
+    <button class="validate-btn" onclick="checkAnswer('q8')">Valider</button>
+    <div class="feedback" id="feedback8"></div>
+  </div>
+
+  <div class="question-block" id="q9-block">
+    <div class="question">9. Elle regrette ... le départ de son copain.</div>
+    <div class="translation">Cô ấy hối tiếc ... sự ra đi của bạn trai mình.</div>
+    <div class="options" id="options-q9"></div>
+    <button class="validate-btn" onclick="checkAnswer('q9')">Valider</button>
+    <div class="feedback" id="feedback9"></div>
+  </div>
+
+  <div class="question-block" id="q10-block">
+    <div class="question">10. Le dimanche, elle va voir ... sa grand-mère.</div>
+    <div class="translation">Chủ nhật, cô ấy sẽ đi thăm ... bà của mình.</div>
+    <div class="options" id="options-q10"></div>
+    <button class="validate-btn" onclick="checkAnswer('q10')">Valider</button>
+    <div class="feedback" id="feedback10"></div>
+  </div>
+
+  <button class="complete-test-btn" onclick="showScore()">Hoàn thành bài kiểm tra</button>
+
+  <div id="score-area">
+    <p>Bạn đã trả lời đúng <span id="correct-count">0</span> trên tổng số <span id="total-questions">0</span> câu.</p>
+  </div>
+
+</div>
+
+<script>
+  // Các lựa chọn giới từ
+  const prepositions = ["à", "de", "ø"]; // ø đại diện cho không có giới từ
+
+  // Định nghĩa dữ liệu cho mỗi câu hỏi
+  const questionsData = {
+    q1: {
+      original: "Il pleut. Nous avons besoin ... un parapluie.",
+      translation: "Trời mưa. Chúng tôi cần ... một cây dù.",
+      correct: "de",
+      wrong: ["à", "ø"],
+      explanation: "Cấu trúc 'avoir besoin de' (cần cái gì đó)."
+    },
+    q2: {
+      original: "J'ai assisté ... une conférence sur le Sida.",
+      translation: "Tôi đã tham dự ... một hội nghị về AIDS.",
+      correct: "à",
+      wrong: ["de", "ø"],
+      explanation: "Động từ 'assister à' (tham dự cái gì đó)."
+    },
+    q3: {
+      original: "La France fait partie ... la Communauté Economique Européenne.",
+      translation: "Pháp là một phần ... Cộng đồng Kinh tế Châu Âu.",
+      correct: "de",
+      wrong: ["à", "ø"],
+      explanation: "Cấu trúc 'faire partie de' (là một phần của cái gì đó)."
+    },
+    q4: {
+      original: "Que pensez-vous ... ce musicien?",
+      translation: "Bạn nghĩ gì ... nhạc sĩ này?",
+      correct: "de",
+      wrong: ["à", "ø"],
+      explanation: "Động từ 'penser de' (nghĩ về ai/cái gì)."
+    },
+    q5: {
+      original: "Ils ont refusé ... mon invitation.",
+      translation: "Họ đã từ chối ... lời mời của tôi.",
+      correct: "ø", // refuser quelque chose (COD)
+      wrong: ["à", "de"],
+      explanation: "Động từ 'refuser' (từ chối) là động từ trực tiếp, cần COD ('refuser quelque chose')."
+    },
+    q6: {
+      original: "Ce cadeau a fait plaisir ... Laurence.",
+      translation: "Món quà này đã làm hài lòng ... Laurence.",
+      correct: "à",
+      wrong: ["de", "ø"],
+      explanation: "Cấu trúc 'faire plaisir à quelqu'un' (làm hài lòng ai đó)."
+    },
+    q7: {
+      original: "Les caissières rendent ... la monnaie.",
+      translation: "Các nhân viên thu ngân trả lại ... tiền thừa.",
+      correct: "ø", // rendre quelque chose (COD)
+      wrong: ["à", "de"],
+      explanation: "Động từ 'rendre' (trả lại) là động từ trực tiếp, cần COD ('rendre quelque chose')."
+    },
+    q8: {
+      original: "Est-ce que le mariage fait peur ... tous les jeunes ?",
+      translation: "Hôn nhân có làm cho ... tất cả người trẻ sợ hãi không?",
+      correct: "à",
+      wrong: ["de", "ø"],
+      explanation: "Cấu trúc 'faire peur à quelqu'un' (làm ai đó sợ)."
+    },
+    q9: {
+      original: "Elle regrette ... le départ de son copain.",
+      translation: "Cô ấy hối tiếc ... sự ra đi của bạn trai mình.",
+      correct: "ø", // regretter quelque chose (COD)
+      wrong: ["à", "de"],
+      explanation: "Động từ 'regretter' (hối tiếc) là động từ trực tiếp, cần COD ('regretter quelque chose')."
+    },
+    q10: {
+      original: "Le dimanche, elle va voir ... sa grand-mère.",
+      translation: "Chủ nhật, cô ấy sẽ đi thăm ... bà của mình.",
+      correct: "ø", // voir quelqu'un (COD)
+      wrong: ["à", "de"],
+      explanation: "Động từ 'voir' (thăm/gặp gỡ) là động từ trực tiếp, cần COD ('voir quelqu'un')."
+    }
+  };
+
+  let correctAnswersCount = 0;
+  const totalQuestions = Object.keys(questionsData).length;
+  const answeredQuestions = new Set(); 
+
+  // Hàm xáo trộn mảng Fisher-Yates
+  function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+      }
+  }
+
+  // Hàm tạo và hiển thị các lựa chọn giới từ cho mỗi câu hỏi
+  function generateOptions() {
+    for (const qKey in questionsData) {
+      const qData = questionsData[qKey];
+      const optionsDiv = document.getElementById(`options-${qKey}`);
+      optionsDiv.innerHTML = ''; 
+
+      const allOptions = [{text: qData.correct, isCorrect: true}];
+      // Lấy 2 lựa chọn sai từ mảng 'prepositions' (trừ đáp án đúng)
+      const wrongOptionsPool = prepositions.filter(p => p !== qData.correct);
+      shuffleArray(wrongOptionsPool);
+      wrongOptionsPool.slice(0, 2).forEach(p => allOptions.push({text: p, isCorrect: false})); 
+
+      shuffleArray(allOptions); 
+
+      allOptions.forEach((option, index) => {
+        const optionText = (option.text === "ø") ? "Không điền gì" : option.text; // Hiển thị "Không điền gì" thay vì "ø"
+        const optionId = `${qKey}-${String.fromCharCode(97 + index)}`; 
+        const label = document.createElement('label');
+        label.setAttribute('for', optionId);
+        
+        const input = document.createElement('input');
+        input.type = 'radio';
+        input.name = qKey;
+        input.value = option.text; // Lưu giá trị thực sự (à, de, ø)
+        input.id = optionId;
+        
+        label.appendChild(input);
+        label.appendChild(document.createTextNode(optionText));
+        
+        if (option.isCorrect) {
+          label.dataset.isCorrect = "true";
+          questionsData[qKey].correctOptionId = option.text; // Lưu giá trị đúng
+        }
+
+        optionsDiv.appendChild(label);
+      });
+    }
+  }
+
+  // Call generateOptions when the page loads
+  document.addEventListener('DOMContentLoaded', generateOptions);
+
+
+  function checkAnswer(questionName) {
+    if (answeredQuestions.has(questionName)) {
+        return; 
+    }
+
+    const selectedOptionInput = document.querySelector(`input[name="${questionName}"]:checked`);
+    const feedbackDiv = document.getElementById(`feedback${questionName.substring(1)}`); 
+    const validateButton = event.target; 
+    
+    feedbackDiv.classList.remove('active', 'correct', 'incorrect', 'warning');
+    feedbackDiv.innerHTML = '';
+
+
+    if (!selectedOptionInput) {
+        feedbackDiv.textContent = 'Vui lòng chọn một đáp án trước khi kiểm tra.';
+        feedbackDiv.classList.add('active', 'warning');
+        return;
+    }
+
+    const qData = questionsData[questionName]; 
+    const selectedValue = selectedOptionInput.value;
+
+    // Tìm label của đáp án đúng để highlight
+    let correctAnswerLabel = null;
+    const allLabels = document.querySelectorAll(`#options-${questionName} label`);
+    allLabels.forEach(label => {
+        if (label.dataset.isCorrect === "true") {
+            correctAnswerLabel = label;
+        }
+    });
+
+    if (correctAnswerLabel) {
+        correctAnswerLabel.classList.add('correct-highlight');
+    }
+
+    answeredQuestions.add(questionName);
+    
+    if (selectedValue === qData.correct) {
+      feedbackDiv.innerHTML = '<strong>Chính xác!</strong><br><span class="explanation">' + qData.explanation + '</span>';
+      feedbackDiv.classList.add('active', 'correct');
+      correctAnswersCount++;
+    } else {
+      const correctTextToDisplay = (qData.correct === "ø") ? "Không điền gì" : qData.correct;
+      feedbackDiv.innerHTML = '<strong>Không chính xác.</strong><br><span class="correct-answer-display">Đáp án đúng là: ' + correctTextToDisplay + '</span><br><span class="explanation">' + qData.explanation + '</span>';
+      feedbackDiv.classList.add('active', 'incorrect');
+    }
+    
+    const radioButtons = document.querySelectorAll(`input[name="${questionName}"]`);
+    radioButtons.forEach(radio => radio.disabled = true);
+    validateButton.disabled = true;
+  }
+
+  function showScore() {
+    document.getElementById('correct-count').textContent = correctAnswersCount;
+    document.getElementById('total-questions').textContent = totalQuestions;
+    document.getElementById('score-area').style.display = 'block';
+  }
+</script>
+
+</body>
+</html>

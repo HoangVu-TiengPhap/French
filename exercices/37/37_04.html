@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2025 by anonymous (http://jsbin.com/fizagacuno/16/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+<head>
+<title>Bài tập điền giới từ (à, de) trong đoạn văn</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f4f8;
+    color: #333;
+  }
+  header {
+    background-color: #e0e7ed;
+    color: #2c3e50;
+    padding: 15px 20px;
+    border-bottom: 2px solid #c0d0e0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  header h2, header p {
+    margin: 0;
+    font-size: 1.1em;
+    color: #333;
+  }
+  h1 {
+    color: #2c3e50;
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 20px;
+  }
+  .container {
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  .original-text {
+    background-color: #eaf3f8;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    font-style: italic;
+    line-height: 1.6;
+    color: #4a6a8b;
+  }
+  .question-block {
+    margin-bottom: 25px;
+    padding: 20px;
+    border: 1px solid #d0dbe4;
+    border-radius: 8px;
+    background-color: #fdfefe;
+  }
+  .question {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 1.1em;
+    color: #34495e;
+  }
+  .translation {
+    font-style: italic;
+    color: #666;
+    margin-bottom: 15px;
+    font-size: 0.95em;
+  }
+  .options label {
+    display: block;
+    margin-bottom: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: color 0.3s ease;
+    padding: 5px 0;
+  }
+  .options label:hover {
+    color: #5a7d9a;
+  }
+  .options input[type="radio"] {
+    margin-right: 10px;
+    transform: scale(1.1);
+  }
+  .options label.correct-highlight {
+    background-color: #d4edda;
+    border: 2px solid #28a745;
+    border-radius: 5px;
+    padding: 5px;
+    color: #1a7e37;
+  }
+  .feedback {
+    margin-top: 15px;
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 5px;
+    width: calc(100% - 24px);
+    box-sizing: border-box;
+    display: none;
+  }
+  .feedback.active {
+      display: block;
+  }
+  .correct {
+    background-color: #e6ffe6;
+    color: #1a7e37;
+    border: 1px solid #28a745;
+  }
+  .incorrect {
+    background-color: #ffe6e6;
+    color: #dc3545;
+    border: 1px solid #dc3545;
+  }
+  .warning {
+      background-color: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffeeba;
+  }
+  .explanation {
+    font-size: 0.9em;
+    font-weight: normal;
+    color: #555;
+    margin-top: 8px;
+    font-style: italic;
+  }
+  .correct-answer-display {
+    color: dodgerblue; /* Xanh dương tươi */
+    font-weight: bold;
+    margin-top: 5px;
+    display: block;
+  }
+  .validate-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-top: 15px;
+    transition: background-color 0.3s ease;
+  }
+  .validate-btn:hover {
+    background-color: #45a049;
+  }
+  .validate-btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+  #score-area {
+    text-align: center;
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #e6f7ff;
+    border: 1px solid #b3e0ff;
+    border-radius: 8px;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #0056b3;
+    display: none;
+  }
+  .complete-test-btn {
+    display: block;
+    width: fit-content;
+    margin: 30px auto;
+    background-color: #007bff;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease;
+  }
+  .complete-test-btn:hover {
+    background-color: #0056b3;
+  }
+  @media (max-width: 600px) {
+    .container {
+      margin: 15px;
+      padding: 15px;
+    }
+    header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    header h2, header p {
+      font-size: 1em;
+      margin-bottom: 5px;
+    }
+    .question, .translation, .options label, .feedback, .validate-btn, .complete-test-btn {
+      font-size: 0.9em;
+    }
+    .feedback {
+      padding: 6px 10px;
+      width: calc(100% - 20px);
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h2>Enseignant: Nguyễn Hoàng Vũ</h2>
+  <p>Ngày: 07/07/2025</p>
+</header>
+
+<div class="container">
+  <h1>Điền giới từ (à, de) hoặc không điền gì (ø) vào chỗ trống:</h1>
+
+  <div class="original-text">
+    Le boulanger finit `de` travailler à 6 heures, la boulangère commence [1]_____ travailler [2]_____ 8 heures et tous les deux sont obligés [3]_____ travailler le samedi et le dimanche ! Ils ont envie [4]_____ changer de métier, mais ils hésitent [5]_____ vendre leur petit magasin. Leur fille aînée les aide parfois [6]_____ servir les clients, mais elle rêve [7]_____ devenir médecin et elle ne doit pas négliger ses études. Le boulanger espère [8]_____ trouver un apprenti, mais beaucoup de jeunes refusent [9]_____ travailler pendant le week-end. La boulangère est parfois triste [10]_____ voir si peu son mari, mais elle adore [11]_____ voir beaucoup de monde et elle est fière [12]_____ vendre un bon pain artisanal.
+  </div>
+
+  <div class="question-block" id="q1-block">
+    <div class="question">1. Le boulanger finit `de` travailler à 6 heures, la boulangère commence ... (travailler).</div>
+    <div class="translation">Người thợ bánh hoàn thành việc làm lúc 6 giờ, người vợ thợ bánh bắt đầu ... làm việc.</div>
+    <div class="options" id="options-q1"></div>
+    <button class="validate-btn" onclick="checkAnswer('q1')">Valider</button>
+    <div class="feedback" id="feedback1"></div>
+  </div>
+
+  <div class="question-block" id="q2-block">
+    <div class="question">2. ... (commencer...) travailler ... 8 heures.</div>
+    <div class="translation">... (bắt đầu...) làm việc ... 8 giờ.</div>
+    <div class="options" id="options-q2"></div>
+    <button class="validate-btn" onclick="checkAnswer('q2')">Valider</button>
+    <div class="feedback" id="feedback2"></div>
+  </div>
+
+  <div class="question-block" id="q3-block">
+    <div class="question">3. ... et tous les deux sont obligés ... travailler le samedi et le dimanche !</div>
+    <div class="translation">... và cả hai đều buộc phải ... làm việc vào thứ Bảy và Chủ nhật !</div>
+    <div class="options" id="options-q3"></div>
+    <button class="validate-btn" onclick="checkAnswer('q3')">Valider</button>
+    <div class="feedback" id="feedback3"></div>
+  </div>
+
+  <div class="question-block" id="q4-block">
+    <div class="question">4. Ils ont envie ... changer de métier.</div>
+    <div class="translation">Họ muốn ... đổi nghề.</div>
+    <div class="options" id="options-q4"></div>
+    <button class="validate-btn" onclick="checkAnswer('q4')">Valider</button>
+    <div class="feedback" id="feedback4"></div>
+  </div>
+
+  <div class="question-block" id="q5-block">
+    <div class="question">5. ... mais ils hésitent ... vendre leur petit magasin.</div>
+    <div class="translation">... nhưng họ ngần ngại ... bán cửa hàng nhỏ của mình.</div>
+    <div class="options" id="options-q5"></div>
+    <button class="validate-btn" onclick="checkAnswer('q5')">Valider</button>
+    <div class="feedback" id="feedback5"></div>
+  </div>
+
+  <div class="question-block" id="q6-block">
+    <div class="question">6. Leur fille aînée les aide parfois ... servir les clients.</div>
+    <div class="translation">Con gái lớn của họ đôi khi giúp họ ... phục vụ khách hàng.</div>
+    <div class="options" id="options-q6"></div>
+    <button class="validate-btn" onclick="checkAnswer('q6')">Valider</button>
+    <div class="feedback" id="feedback6"></div>
+  </div>
+
+  <div class="question-block" id="q7-block">
+    <div class="question">7. ... mais elle rêve ... devenir médecin.</div>
+    <div class="translation">... nhưng cô ấy mơ ... trở thành bác sĩ.</div>
+    <div class="options" id="options-q7"></div>
+    <button class="validate-btn" onclick="checkAnswer('q7')">Valider</button>
+    <div class="feedback" id="feedback7"></div>
+  </div>
+
+  <div class="question-block" id="q8-block">
+    <div class="question">8. Le boulanger espère ... trouver un apprenti.</div>
+    <div class="translation">Người thợ bánh hy vọng ... tìm được một người học việc.</div>
+    <div class="options" id="options-q8"></div>
+    <button class="validate-btn" onclick="checkAnswer('q8')">Valider</button>
+    <div class="feedback" id="feedback8"></div>
+  </div>
+
+  <div class="question-block" id="q9-block">
+    <div class="question">9. ... mais beaucoup de jeunes refusent ... travailler pendant le week-end.</div>
+    <div class="translation">... nhưng nhiều người trẻ từ chối ... làm việc vào cuối tuần.</div>
+    <div class="options" id="options-q9"></div>
+    <button class="validate-btn" onclick="checkAnswer('q9')">Valider</button>
+    <div class="feedback" id="feedback9"></div>
+  </div>
+
+  <div class="question-block" id="q10-block">
+    <div class="question">10. La boulangère est parfois triste ... voir si peu son mari.</div>
+    <div class="translation">Người vợ thợ bánh đôi khi buồn ... nhìn thấy chồng mình ít như vậy.</div>
+    <div class="options" id="options-q10"></div>
+    <button class="validate-btn" onclick="checkAnswer('q10')">Valider</button>
+    <div class="feedback" id="feedback10"></div>
+  </div>
+
+  <div class="question-block" id="q11-block">
+    <div class="question">11. ... mais elle adore ... voir beaucoup de monde.</div>
+    <div class="translation">... nhưng cô ấy rất thích ... nhìn thấy nhiều người.</div>
+    <div class="options" id="options-q11"></div>
+    <button class="validate-btn" onclick="checkAnswer('q11')">Valider</button>
+    <div class="feedback" id="feedback11"></div>
+  </div>
+
+  <div class="question-block" id="q12-block">
+    <div class="question">12. ... et elle est fière ... vendre un bon pain artisanal.</div>
+    <div class="translation">... và cô ấy tự hào ... bán một loại bánh mì thủ công ngon.</div>
+    <div class="options" id="options-q12"></div>
+    <button class="validate-btn" onclick="checkAnswer('q12')">Valider</button>
+    <div class="feedback" id="feedback12"></div>
+  </div>
+
+  <button class="complete-test-btn" onclick="showScore()">Hoàn thành bài kiểm tra</button>
+
+  <div id="score-area">
+    <p>Bạn đã trả lời đúng <span id="correct-count">0</span> trên tổng số <span id="total-questions">0</span> câu.</p>
+  </div>
+
+</div>
+
+<script>
+  // Các lựa chọn giới từ
+  const prepositions = ["à", "de", "ø"]; // ø đại diện cho không có giới từ
+
+  // Định nghĩa dữ liệu cho mỗi câu hỏi
+  const questionsData = {
+    q1: {
+      original: "Le boulanger finit de travailler à 6 heures, la boulangère commence [1]_____ travailler [2]_____ 8 heures.",
+      translation: "Người thợ bánh hoàn thành việc làm lúc 6 giờ, người vợ thợ bánh bắt đầu ... làm việc.",
+      correct: "à",
+      wrong: ["de", "ø"],
+      explanation: "Cấu trúc: 'commencer à faire quelque chose' (bắt đầu làm gì đó)."
+    },
+    q2: {
+      original: "travailler [2]_____ 8 heures",
+      translation: "làm việc ... 8 giờ.",
+      correct: "à",
+      wrong: ["de", "ø"],
+      explanation: "Giới từ 'à' dùng để chỉ thời điểm."
+    },
+    q3: {
+      original: "tous les deux sont obligés [3]_____ travailler le samedi et le dimanche !",
+      translation: "cả hai đều buộc phải ... làm việc vào thứ Bảy và Chủ nhật !",
+      correct: "de",
+      wrong: ["à", "ø"],
+      explanation: "Cấu trúc: 'être obligé de faire quelque chose' (buộc phải làm gì đó)."
+    },
+    q4: {
+      original: "Ils ont envie [4]_____ changer de métier",
+      translation: "Họ muốn ... đổi nghề",
+      correct: "de",
+      wrong: ["à", "ø"],
+      explanation: "Cấu trúc: 'avoir envie de faire quelque chose' (muốn làm gì đó)."
+    },
+    q5: {
+      original: "ils hésitent [5]_____ vendre leur petit magasin.",
+      translation: "họ ngần ngại ... bán cửa hàng nhỏ của mình.",
+      correct: "à", // hésiter à faire qch
+      wrong: ["de", "ø"],
+      explanation: "Cấu trúc: 'hésiter à faire quelque chose' (ngần ngại làm gì đó)."
+    },
+    q6: {
+      original: "Leur fille aînée les aide parfois [6]_____ servir les clients",
+      translation: "Con gái lớn của họ đôi khi giúp họ ... phục vụ khách hàng.",
+      correct: "à",
+      wrong: ["de", "ø"],
+      explanation: "Cấu trúc: 'aider quelqu'un à faire quelque chose' (giúp ai đó làm gì đó)."
+    },
+    q7: {
+      original: "elle rêve [7]_____ devenir médecin",
+      translation: "cô ấy mơ ... trở thành bác sĩ",
+      correct: "de",
+      wrong: ["à", "ø"],
+      explanation: "Cấu trúc: 'rêver de faire quelque chose' (mơ làm gì đó)."
+    },
+    q8: {
+      original: "Le boulanger espère [8]_____ trouver un apprenti",
+      translation: "Người thợ bánh hy vọng ... tìm được một người học việc",
+      correct: "ø", // espérer + infinitif sans préposition
+      wrong: ["à", "de"],
+      explanation: "Động từ 'espérer' (hy vọng) theo sau trực tiếp bởi động từ nguyên mẫu mà không cần giới từ."
+    },
+    q9: {
+      original: "beaucoup de jeunes refusent [9]_____ travailler pendant le week-end.",
+      translation: "nhiều người trẻ từ chối ... làm việc vào cuối tuần.",
+      correct: "de",
+      wrong: ["à", "ø"],
+      explanation: "Cấu trúc: 'refuser de faire quelque chose' (từ chối làm gì đó)."
+    },
+    q10: {
+      original: "La boulangère est parfois triste [10]_____ voir si peu son mari",
+      translation: "Người vợ thợ bánh đôi khi buồn ... nhìn thấy chồng mình ít như vậy.",
+      correct: "de",
+      wrong: ["à", "ø"],
+      explanation: "Tính từ chỉ cảm xúc (triste) theo sau bởi 'de' + động từ nguyên mẫu (voir)."
+    },
+    q11: {
+      original: "elle adore [11]_____ voir beaucoup de monde",
+      translation: "cô ấy rất thích ... nhìn thấy nhiều người",
+      correct: "ø", // adorer + infinitif sans préposition
+      wrong: ["à", "de"],
+      explanation: "Động từ 'adorer' (rất thích) theo sau trực tiếp bởi động từ nguyên mẫu mà không cần giới từ."
+    },
+    q12: {
+      original: "elle est fière [12]_____ vendre un bon pain artisanal.",
+      translation: "cô ấy tự hào ... bán một loại bánh mì thủ công ngon.",
+      correct: "de",
+      wrong: ["à", "ø"],
+      explanation: "Tính từ chỉ cảm xúc/trạng thái (fière) theo sau bởi 'de' + động từ nguyên mẫu (vendre)."
+    }
+  };
+
+  let correctAnswersCount = 0;
+  const totalQuestions = Object.keys(questionsData).length;
+  const answeredQuestions = new Set(); 
+
+  // Hàm xáo trộn mảng Fisher-Yates
+  function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+      }
+  }
+
+  // Hàm tạo và hiển thị các lựa chọn giới từ cho mỗi câu hỏi
+  function generateOptions() {
+    for (const qKey in questionsData) {
+      const qData = questionsData[qKey];
+      const optionsDiv = document.getElementById(`options-${qKey}`);
+      optionsDiv.innerHTML = ''; 
+
+      const allOptions = [{text: qData.correct, isCorrect: true}];
+      // Lấy 2 lựa chọn sai từ mảng 'prepositions' (trừ đáp án đúng)
+      const wrongOptionsPool = prepositions.filter(p => p !== qData.correct);
+      shuffleArray(wrongOptionsPool);
+      wrongOptionsPool.slice(0, 2).forEach(p => allOptions.push({text: p, isCorrect: false})); 
+
+      shuffleArray(allOptions); 
+
+      allOptions.forEach((option, index) => {
+        const optionText = (option.text === "ø") ? "Không điền gì" : option.text; // Hiển thị "Không điền gì" thay vì "ø"
+        const optionId = `${qKey}-${String.fromCharCode(97 + index)}`; 
+        const label = document.createElement('label');
+        label.setAttribute('for', optionId);
+        
+        const input = document.createElement('input');
+        input.type = 'radio';
+        input.name = qKey;
+        input.value = option.text; // Lưu giá trị thực sự (à, de, ø)
+        input.id = optionId;
+        
+        label.appendChild(input);
+        label.appendChild(document.createTextNode(optionText));
+        
+        if (option.isCorrect) {
+          label.dataset.isCorrect = "true";
+          questionsData[qKey].correctOptionId = option.text; // Lưu giá trị đúng
+        }
+
+        optionsDiv.appendChild(label);
+      });
+    }
+  }
+
+  // Call generateOptions when the page loads
+  document.addEventListener('DOMContentLoaded', generateOptions);
+
+
+  function checkAnswer(questionName) {
+    if (answeredQuestions.has(questionName)) {
+        return; 
+    }
+
+    const selectedOptionInput = document.querySelector(`input[name="${questionName}"]:checked`);
+    const feedbackDiv = document.getElementById(`feedback${questionName.substring(1)}`); 
+    const validateButton = event.target; 
+    
+    feedbackDiv.classList.remove('active', 'correct', 'incorrect', 'warning');
+    feedbackDiv.innerHTML = '';
+
+
+    if (!selectedOptionInput) {
+        feedbackDiv.textContent = 'Vui lòng chọn một đáp án trước khi kiểm tra.';
+        feedbackDiv.classList.add('active', 'warning');
+        return;
+    }
+
+    const qData = questionsData[questionName]; 
+    const selectedValue = selectedOptionInput.value;
+
+    // Tìm label của đáp án đúng để highlight
+    let correctAnswerLabel = null;
+    const allLabels = document.querySelectorAll(`#options-${questionName} label`);
+    allLabels.forEach(label => {
+        if (label.dataset.isCorrect === "true") {
+            correctAnswerLabel = label;
+        }
+    });
+
+    if (correctAnswerLabel) {
+        correctAnswerLabel.classList.add('correct-highlight');
+    }
+
+    answeredQuestions.add(questionName);
+    
+    if (selectedValue === qData.correct) {
+      feedbackDiv.innerHTML = '<strong>Chính xác!</strong><br><span class="explanation">' + qData.explanation + '</span>';
+      feedbackDiv.classList.add('active', 'correct');
+      correctAnswersCount++;
+    } else {
+      const correctTextToDisplay = (qData.correct === "ø") ? "Không điền gì" : qData.correct;
+      feedbackDiv.innerHTML = '<strong>Không chính xác.</strong><br><span class="correct-answer-display">Đáp án đúng là: ' + correctTextToDisplay + '</span><br><span class="explanation">' + qData.explanation + '</span>';
+      feedbackDiv.classList.add('active', 'incorrect');
+    }
+    
+    const radioButtons = document.querySelectorAll(`input[name="${questionName}"]`);
+    radioButtons.forEach(radio => radio.disabled = true);
+    validateButton.disabled = true;
+  }
+
+  function showScore() {
+    document.getElementById('correct-count').textContent = correctAnswersCount;
+    document.getElementById('total-questions').textContent = totalQuestions;
+    document.getElementById('score-area').style.display = 'block';
+  }
+</script>
+
+</body>
+</html>

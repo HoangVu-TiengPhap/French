@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2025 by anonymous (http://jsbin.com/laxuzisape/2/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2025 by anonymous (http://jsbin.com/mufileduyu/4/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test de Français</title>
+    <style>
+        /* CSS để làm cho trang kiểm tra đẹp hơn */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-header {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 0.95em;
+            color: #555;
+        }
+        
+        .info-header p {
+            margin: 0;
+        }
+
+        .quiz-status-bar {
+            position: sticky;
+            top: 0;
+            background-color: #4a5a7b;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0;
+            z-index: 1000;
+        }
+
+        .quiz-status-bar h1 {
+            margin: 0;
+            font-size: 1.5em;
+        }
+
+        #score-display, #timer-display {
+            font-size: 1.2em;
+            font-weight: bold;
+            background-color: #ffffff;
+            color: #4a5a7b;
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+        
+        #special-chars-palette {
+            position: sticky;
+            top: 75px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #e0e0e0;
+            z-index: 999;
+            text-align: center;
+            margin-left: -30px;
+            margin-right: -30px;
+            margin-bottom: 25px;
+        }
+
+        #special-chars-palette button {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 1.2em;
+            width: 35px;
+            height: 35px;
+            margin: 2px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        #special-chars-palette button:hover {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .audio-player-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            margin-right: 15px;
+            vertical-align: middle;
+        }
+
+        .audio-player-button svg {
+            width: 28px;
+            height: 28px;
+            fill: #3498db;
+            transition: fill 0.2s;
+        }
+        
+        .audio-player-button:hover svg {
+            fill: #2980b9;
+        }
+        
+         .audio-player-button.playing svg {
+            fill: #e74c3c;
+        }
+
+        .section-title {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+        
+        .reading-section-image {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .question-block {
+            margin-bottom: 25px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background-color: #fdfdfd;
+        }
+
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        /* === THAY ĐỔI: Căn lề trái cho ảnh trong câu hỏi === */
+        .question-image, .listening-image {
+            display: block;
+            height: auto;
+            margin: 20px 0; /* Bỏ 'auto' để căn lề trái */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .question-image {
+             max-width: 100%;
+        }
+
+        .listening-image {
+            max-width: 300px;
+        }
+
+        .reading-passage, .cloze-passage {
+            background-color: #eef3f8;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin-bottom: 15px;
+            font-style: italic;
+            line-height: 2.5;
+        }
+        
+        .cloze-passage input {
+            width: 120px !important;
+            max-width: none !important;
+            text-align: center;
+            font-style: normal;
+        }
+
+        .answers label {
+            display: block;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            max-width: 500px;
+        }
+
+        .answers label:hover {
+            background-color: #e9ecef;
+        }
+
+        .answers input[type="radio"] {
+            margin-right: 10px;
+        }
+        
+        .question-block input[type="text"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1em;
+            width: 100%; 
+            max-width: 400px;
+            box-sizing: border-box; 
+            margin-top: 5px;
+        }
+
+        .validate-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            display: block;
+            margin-top: 15px; 
+            transition: background-color 0.3s;
+        }
+
+        .validate-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .validate-btn:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+        
+        .show-transcription-btn {
+            background-color: #7f8c8d;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            cursor: pointer;
+            display: block;
+            margin-top: 10px;
+        }
+
+        .feedback {
+            margin-top: 15px;
+            font-weight: normal;
+            font-size: 0.95em;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .transcription-text {
+            background-color: #f5f5f5;
+            border-left: 4px solid #7f8c8d;
+            padding: 10px 15px;
+            margin-top: 15px;
+            font-style: italic;
+            color: #34495e;
+        }
+        
+        .feedback-correct {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .feedback-incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .feedback-warning {
+            background-color: #fffbe6;
+            color: #8a6d3b;
+        }
+
+        .correct-answer {
+            background-color: #d4edda !important;
+            border-color: #c3e6cb !important;
+        }
+
+        .incorrect-answer {
+            background-color: #f8d7da !important;
+            border-color: #f5c6cb !important;
+        }
+      #myUniqueList {
+            padding: 0;
+            margin: 0;
+            list-style: none; /* Bỏ dấu chấm mặc định của li */
+            text-align: center; /* Để căn giữa các thẻ li nếu muốn */
+        }
+
+        /* Định kiểu cho các li bên trong ul có ID là myUniqueList */
+        #myUniqueList .list-item-frame {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 5px; /* Thêm margin để tạo khoảng cách giữa các thẻ */
+            display: inline-block; /* Giúp thẻ nằm ngang và vẫn có thể điều chỉnh width/height */
+            box-sizing: border-box; /* Đảm bảo padding và border không làm tăng kích thước tổng thể */
+            border-radius: 8px; /* Bo tròn các góc với bán kính 8px */
+            width: 250px; /* Chiều rộng mặc định 200px */
+            height: 330px; /* Chiều cao cố định 200px */
+            vertical-align: top; /* Căn chỉnh các inline-block item theo phía trên, tránh khoảng trống dưới cùng */
+            
+            /* Thuộc tính để căn đều chữ */
+            text-align: justify; /* Căn đều chữ hai bên */
+            line-height: 1.25;
+            /* Bỏ màu nền */
+            /* background-color: #f0fff0; */ /* Dòng này đã được bình luận để bỏ màu nền */
+            
+            /* Thêm overflow để xử lý nội dung dài hơn chiều cao */
+            overflow: auto; /* Hiển thị thanh cuộn nếu nội dung quá dài */
+        }
+
+        /* Định kiểu riêng cho 2 li cuối cùng */
+        #myUniqueList .list-item-frame:nth-last-child(1), /* Chọn li cuối cùng */
+        #myUniqueList .list-item-frame:nth-last-child(2) { /* Chọn li thứ hai từ cuối lên */
+            width: 370px; /* Đặt chiều rộng 320px */
+            
+        }
+    </style>
+</head>
+<body>
+
+    <div class="quiz-container">
+        <div class="info-header">
+            <p><strong>Enseignant:</strong> Nguyễn Hoàng Vũ</p>
+                      
+            <p><strong>Ngày kiểm tra:</strong> <span id="test-date"></span></p>
+        </div>
+
+        <div class="quiz-status-bar">
+            <h1>Relations logiques</h1>
+            <div>
+                <span id="score-display">Điểm: 0 / 29</span>
+                <span id="timer-display">Thời gian: 10:00</span>
+            </div>
+        </div>
+        
+        <div id="special-chars-palette">
+            <button type="button" onclick="insertChar('é')">é</button>
+            <button type="button" onclick="insertChar('è')">è</button>
+            <button type="button" onclick="insertChar('ê')">ê</button>
+            <button type="button" onclick="insertChar('à')">à</button>
+            <button type="button" onclick="insertChar('â')">â</button>
+            <button type="button" onclick="insertChar('ô')">ô</button>
+            <button type="button" onclick="insertChar('û')">û</button>
+            <button type="button" onclick="insertChar('ç')">ç</button>
+            <button type="button" onclick="insertChar('ë')">ë</button>
+            <button type="button" onclick="insertChar('ï')">ï</button>
+            <button type="button" onclick="insertChar('ü')">ü</button>
+        </div>
+
+        <div id="all-questions-container">          
+            
+          <div class="question-block" id="q1">
+                <p class="question-text">1. Jean et Thérèse ont économisé __________ leurs enfants fassent des études. <br/><em>(Jean và Thérèse đã tiết kiệm để các con của họ học hành.)</em></p>
+               
+              <div class="answers">
+                    <label><input type="radio" name="q1" value="a"> a) pour que</label>
+                    <label><input type="radio" name="q1" value="b"> b) dès que</label>
+                    <label><input type="radio" name="q1" value="c"> c) quand</label>
+                    <label><input type="radio" name="q1" value="d"> d) comme</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(1, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q2">
+                <p class="question-text">2. Il vaut mieux que nous abandonnions ce projet __________ il soit trop tard. <br/><em>(Tốt hơn là chúng ta nên từ bỏ dự án này trước khi quá muộn.)</em></p>
+                <div class="answers">
+                    <label><input type="radio" name="q2" value="a"> a) comme</label>
+                    <label><input type="radio" name="q2" value="b"> b) parce qu'</label>
+                    <label><input type="radio" name="q2" value="c"> c) avant qu'</label>
+                    <label><input type="radio" name="q2" value="d"> d) afin qu'</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(2, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          <div class="question-block" id="q3">
+                <p class="question-text">3. Les enfants peuvent rester dans la salle __________ ils ne fassent pas de bruit.<br/><em>(Trẻ em có thể ở lại trong phòng với điều kiện chúng không gây ồn.)</em></p>
+                <div class="answers">
+                    <label><input type="radio" name="q3" value="a"> a) à condition qu'</label>
+                    <label><input type="radio" name="q3" value="b"> b) jusqu'à ce qu'</label>
+                    <label><input type="radio" name="q3" value="c"> c) pour qu'</label>
+                    <label><input type="radio" name="q3" value="d"> d) aussitôt qu'.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(3, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          <div class="question-block" id="q4">
+                <p class="question-text">4. __________ ce restaurant soit très cher, il y a toujours beaucoup de monde.<br/><em>(Mặc dù nhà hàng này rất đắt, nhưng vẫn luôn có rất nhiều người.)</em></p>                
+                <div class="answers">
+                    <label><input type="radio" name="q4" value="a"> a) Afin que</label>
+                    <label><input type="radio" name="q4" value="b"> b) Bien que</label>
+                    <label><input type="radio" name="q4" value="c"> c) Une fois que</label>
+                    <label><input type="radio" name="q4" value="d"> d) Dès que</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(4, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          <div class="question-block" id="q5">
+                <p class="question-text">5. __________ nous soyons à l'heure à la gare, il faut partir maintenant.<br/><em>(Để chúng ta đến ga đúng giờ, bây giờ phải đi.)</em></p>             
+                <div class="answers">
+                    <label><input type="radio" name="q5" value="a"> a) Pourvu que</label>
+                    <label><input type="radio" name="q5" value="b"> b) Bien que</label>
+                    <label><input type="radio" name="q5" value="c"> c) Pour que</label>
+                    <label><input type="radio" name="q5" value="d"> d) Apès que</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(5, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          <div class="question-block" id="q6">
+                <p class="question-text">6. Nous ne prendrons pas de décisions __________ tout le monde ne soit là.<br/><em>(Chúng tôi sẽ không đưa ra quyết định nào trước khi mọi người có mặt.)</em></p>            
+                <div class="answers">
+                    <label><input type="radio" name="q6" value="a"> a) à moins que</label>
+                    <label><input type="radio" name="q6" value="b"> b) avant que</label>
+                    <label><input type="radio" name="q6" value="c"> c) tandis que</label>
+                    <label><input type="radio" name="q6" value="d"> d) de sorte que</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(6, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+         
+          <div class="question-block" id="q7">
+                <p class="question-text">7. Voulez-vous prendre un café, __________ ma fille soit prête ?<br/><em>(Bạn có muốn uống cà phê không, trong khi chờ con gái tôi sẵn sàng?)</em></p>             
+                <div class="answers">
+                    <label><input type="radio" name="q7" value="a"> a) alors que</label>
+                    <label><input type="radio" name="q7" value="b"> b) quand</label>
+                    <label><input type="radio" name="q7" value="c"> c) à condition que</label>
+                    <label><input type="radio" name="q7" value="d"> d) en attendant que</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(7, 'd')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+           <div class="question-block" id="q8">
+                <p class="question-text">8. Nous travaillerons __________ tout soit terminé.<br/><em>(Chúng tôi sẽ làm việc cho đến khi mọi thứ hoàn thành.)</em></p>             
+                <div class="answers">
+                    <label><input type="radio" name="q8" value="a"> a) parce que</label>
+                    <label><input type="radio" name="q8" value="b"> b) si bien que</label>
+                    <label><input type="radio" name="q8" value="c"> c) de sorte que</label>
+                    <label><input type="radio" name="q8" value="d"> d) jusqu'à ce que</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(8, 'd')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+                   
+          <div class="question-block" id="q9">
+                <p class="question-text">9. Les gens du Nord consomment du beurre__________ Les gens du Sud consomment de l'huile d'olive.<br/><em>(Người miền Bắc dùng bơ trong khi người miền Nam dùng dầu ô-liu)</em></p>                 
+                <div class="answers">
+                    <label><input type="radio" name="q9" value="a"> a) pour que</label>
+                    <label><input type="radio" name="q9" value="b"> b) tandis que</label>
+                    <label><input type="radio" name="q9" value="c"> c) bien que</label>
+                    <label><input type="radio" name="q9" value="d"> d) pourvu que</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(9, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          <div class="question-block" id="q10">
+                <p class="question-text">10. La Grande-Bretagne est une monarchie__________ La France est une République.<br/><em>(Anh là một nước quân chủ trong khi Pháp là một nước cộng hòa)</em></p>       
+                <div class="answers">
+                    <label><input type="radio" name="q10" value="a"> a) afin que</label>
+                    <label><input type="radio" name="q10" value="b"> b) puisque</label>
+                    <label><input type="radio" name="q10" value="c"> c) alors que</label>
+                    <label><input type="radio" name="q10" value="d"> d) dès que</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(10, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q11">
+                <p class="question-text">11. Tu as fait une erreur de calcul __________ ton résultat est faux.<br/><em>(Bạn đã làm sai một phép tính, vì vậy kết quả bạn sai)</em></p>   
+                <div class="answers">
+                    <label><input type="radio" name="q11" value="a"> a) donc</label>
+                    <label><input type="radio" name="q11" value="b"> b) mais</label>
+                    <label><input type="radio" name="q11" value="c"> c) ou</label>
+                    <label><input type="radio" name="q11" value="d"> d) alor</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(11, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+           <div class="question-block" id="q12">
+                <p class="question-text">12. Nos frais ont augmenté __________ nous devons ajuster nos prix<br/><em>(Chi phí của chúng tôi tăng lên, vì vậy chúng tôi phải điều chỉnh giá)</em></p>               
+                <div class="answers">
+                    <label><input type="radio" name="q12" value="a"> a) alors</label>
+                    <label><input type="radio" name="q12" value="b"> b) pourtant</label>
+                    <label><input type="radio" name="q12" value="c"> c) par conséquent</label>
+                    <label><input type="radio" name="q12" value="d"> d) comme</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(12, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+           <div class="question-block" id="q13">
+                <p class="question-text">13. La télé est en panne __________ on va au cinéma!<br/><em>(TV đang bị hư, thế nên chúng ta đi xem xi-nê thôi!)</em></p>                 
+                <div class="answers">
+                    <label><input type="radio" name="q13" value="a"> a) car</label>
+                    <label><input type="radio" name="q13" value="b"> b) mais</label>
+                    <label><input type="radio" name="q13" value="c"> c) alors</label>
+                    <label><input type="radio" name="q13" value="d"> d) pourtant</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(13, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          
+          <div class="question-block" id="q14">
+                <p class="question-text">14. Votre dossier a été remis après la date limite __________ nous ne pouvons l'accepter<br/><em>(Bài của bạn đã được nộp sau ngày nộp bài, đó là lý do chúng tôi không thể chấp nhận nó)</em></p>  
+                <div class="answers">
+                    <label><input type="radio" name="q14" value="a"> a) à condition que</label>
+                    <label><input type="radio" name="q14" value="b"> b) si bien que</label>
+                    <label><input type="radio" name="q14" value="c"> c) alors que</label>
+                    <label><input type="radio" name="q14" value="d"> d) c'est la raison pour laquelle</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(14, 'd')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+         
+          <div class="question-block" id="q15">
+                <p class="question-text">14. Nous réservons nos billets de train à l'avance __________ de bons prix.<br/><em>(Chúng tôi đặt trước vé tàu để có được giá tốt)</em></p>   
+                 <div class="answers">
+                    <label><input type="radio" name="q15" value="a"> a) par conséquent</label>
+                    <label><input type="radio" name="q15" value="b"> b) parce que</label>
+                    <label><input type="radio" name="q15" value="c"> c) pour avoir</label>
+                    <label><input type="radio" name="q15" value="d"> d) par contre</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(15, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          
+           
+        </div>
+    </div>
+
+    <script>
+        let score = 0;
+        let lastFocusedInput = null;
+        let timeInSeconds = 900;
+        let timerInterval = null;
+
+        const clozeAnswers = [
+            ['me lève', 'croissants', 'bus', 'économie', 'livre'],
+            ['marché', 'tomates', 'pommes', 'animé'],
+            ['chien', 'intelligent', 'rouge', 'dort']
+        ];
+        
+        const maxScore = 15  //clozeAnswers.flat().length; // 16 câu đơn + 13 chỗ trống = 29 điểm
+
+        const transcriptionData = {
+            900: "Le train pour Lyon partira à quinze heures trente du quai numéro sept.",
+            1000: "N'oubliez pas d'acheter du pain, du lait et trois croissants pour le petit-déjeuner."
+        };
+        const feedbackExplanations = {
+            1: "Chính xác! ",
+            2: "Chính xác! ",
+            3: "Chính xác! ",
+            4: "Chính xác! ",
+            5: "Chính xác! ",
+            6: "Chính xác! ",
+            7: "Chính xác! ",
+            8: "Chính xác! ",
+            9: "Chính xác! ",
+            10: "Chính xác! ",
+            11: "Chính xác! ",
+            12: "Chính xác! ",
+            13: "Chính xác! ",
+            14: "Chính xác! ",
+            15: "Chính xác! ",
+            16: "Chính xác! ",
+            17: "Chính xác! ",
+            18: "Chính xác! ",
+            19: "Chính xác! ",
+            20: "Chính xác! ",
+            21: "Chính xác! ",
+            22: "Chính xác! ",
+            23: "Chính xác! ",
+            24: "Chính xác! ",
+            25: "Chính xác! ",
+            26: "Chính xác! ",
+            27: "Chính xác! ",
+            28: "Chính xác! ",
+            29: "Chính xác! ",
+            30: "Chính xác! ",
+            31: "Chính xác! ",
+            32: "Chính xác! ",
+            33: "Chính xác! ",
+            34: "Chính xác! ",
+            35: "Chính xác! ",
+            36: "Chính xác! ",
+            37: "Chính xác! ",
+            38: "Chính xác! ",
+            39: "Chính xác! ",
+            40: "Chính xác! "
+           
+        };
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const today = new Date();
+            const day = String(today.getDate()).padStart(2, '0');
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const year = today.getFullYear();
+            document.getElementById('test-date').textContent = `${day}/${month}/${year}`;
+            
+            updateScoreDisplay();
+            startTimer();
+        });
+
+        function startTimer() {
+            const timerDisplay = document.getElementById('timer-display');
+            clearInterval(timerInterval); 
+            
+            timerInterval = setInterval(() => {
+                timeInSeconds--;
+                const minutes = Math.floor(timeInSeconds / 60);
+                const seconds = timeInSeconds % 60;
+                timerDisplay.textContent = `Thời gian: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                if (timeInSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    timerDisplay.textContent = "Hết giờ!";
+                    alert("Hết giờ làm bài!");
+                    document.querySelectorAll('.validate-btn').forEach(btn => btn.disabled = true);
+                }
+            }, 1000);
+        }
+
+        function updateScoreDisplay() {
+            const scoreDisplay = document.getElementById('score-display');
+            scoreDisplay.textContent = `Điểm: ${score} / ${maxScore}`;
+        }
+        
+        function updateScore(points = 1) {
+            score += points;
+            updateScoreDisplay();
+        }
+        
+        function setLastFocused(element) {
+            lastFocusedInput = element;
+        }
+
+        function insertChar(char) {
+            if (lastFocusedInput) {
+                const startPos = lastFocusedInput.selectionStart;
+                const endPos = lastFocusedInput.selectionEnd;
+                const value = lastFocusedInput.value;
+                lastFocusedInput.value = value.substring(0, startPos) + char + value.substring(endPos, value.length);
+                lastFocusedInput.focus();
+                lastFocusedInput.selectionStart = startPos + 1;
+                lastFocusedInput.selectionEnd = startPos + 1;
+            }
+        }
+        
+        function playAudio(questionNumber, buttonElement) {
+            const audioPlayer = document.getElementById(`audio-player-${questionNumber}`);
+            if (audioPlayer) {
+                audioPlayer.play();
+                buttonElement.classList.add('playing');
+                buttonElement.disabled = true;
+                audioPlayer.onended = () => {
+                    buttonElement.classList.remove('playing');
+                    buttonElement.disabled = false;
+                };
+            }
+        }
+
+        function showTranscription(questionNumber) {
+            const transcriptText = transcriptionData[questionNumber];
+            const transcriptContainer = document.getElementById(`transcription-${questionNumber}`);
+            const transcriptButton = document.getElementById(`show-transcription-btn-${questionNumber}`);
+
+            if (transcriptText && transcriptContainer) {
+                transcriptContainer.textContent = transcriptText;
+                transcriptContainer.style.display = 'block';
+                if(transcriptButton) transcriptButton.style.display = 'none';
+            }
+        }
+
+        function validateRadio(questionNumber, correctAnswer) {
+            const questionBlock = document.getElementById(`q${questionNumber}`);
+            const radios = document.getElementsByName(`q${questionNumber}`);
+            const feedback = questionBlock.querySelector('.feedback');
+            const button = questionBlock.querySelector('.validate-btn');
+            let selectedAnswer = null;
+
+            radios.forEach(radio => { if (radio.checked) { selectedAnswer = radio; } });
+
+            if (selectedAnswer === null) {
+                feedback.textContent = "Vui lòng chọn một đáp án!";
+                feedback.className = 'feedback feedback-warning';
+                return;
+            }
+            
+            button.disabled = true;
+            radios.forEach(radio => radio.disabled = true);
+            const selectedLabel = selectedAnswer.parentElement;
+            const explanation = feedbackExplanations[questionNumber];
+
+            if (selectedAnswer.value === correctAnswer) {
+                feedback.textContent = explanation;
+                feedback.className = 'feedback feedback-correct';
+                selectedLabel.classList.add('correct-answer');
+                updateScore();
+            } else {
+                const cleanedExplanation = explanation.replace("Chính xác! ", "");
+                feedback.innerHTML = `<strong>Không chính xác.</strong> ${cleanedExplanation}<br>Đáp án đúng là lựa chọn <strong>"${correctAnswer.toUpperCase()}"</strong>.`;
+                feedback.className = 'feedback feedback-incorrect';
+                selectedLabel.classList.add('incorrect-answer');
+                radios.forEach(radio => { if (radio.value === correctAnswer) { radio.parentElement.classList.add('correct-answer'); } });
+            }
+
+            if (document.getElementById(`audio-player-${questionNumber}`)) {
+                const transcriptBtn = document.getElementById(`show-transcription-btn-${questionNumber}`);
+                if (transcriptBtn) {
+                    transcriptBtn.style.display = 'block';
+                }
+            }
+        }
+        
+        function validateText(questionNumber, correctAnswer) {
+            const questionBlock = document.getElementById(`q${questionNumber}`);
+            const inputField = questionBlock.querySelector('input[type="text"]');
+            const feedback = questionBlock.querySelector('.feedback');
+            const button = questionBlock.querySelector('.validate-btn');
+            const userAnswer = inputField.value.trim();
+
+            if (userAnswer === "") {
+                feedback.textContent = "Vui lòng điền câu trả lời của bạn.";
+                feedback.className = 'feedback feedback-warning';
+                return;
+            }
+            
+            const explanation = feedbackExplanations[questionNumber];
+            
+            button.disabled = true;
+            inputField.disabled = true;
+
+            if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
+                feedback.textContent = explanation;
+                feedback.className = 'feedback feedback-correct';
+                inputField.classList.add('correct-answer');
+                updateScore();
+            } else {
+                const cleanedExplanation = explanation.replace("Chính xác! ", "");
+                feedback.innerHTML = `<strong>Không chính xác.</strong> ${cleanedExplanation}<br>Đáp án đúng phải là: <strong>${correctAnswer}</strong>`;
+                feedback.className = 'feedback feedback-incorrect';
+                inputField.classList.add('incorrect-answer');
+            }
+        }
+
+        function validateCloze(clozeSetIndex, questionId) {
+            const currentAnswers = clozeAnswers[clozeSetIndex - 1]; 
+            const questionBlock = document.getElementById(`q${questionId}`);
+            const button = questionBlock.querySelector('.validate-btn');
+            const feedback = questionBlock.querySelector('.feedback');
+            let correctCount = 0;
+
+            for (let i = 0; i < currentAnswers.length; i++) {
+                const inputId = `cloze-${clozeSetIndex}-${i + 1}`;
+                const inputElement = document.getElementById(inputId);
+                if (inputElement.value.trim() === "") {
+                    feedback.textContent = "Vui lòng điền đầy đủ tất cả các chỗ trống.";
+                    feedback.className = 'feedback feedback-warning';
+                    return;
+                }
+            }
+
+            for (let i = 0; i < currentAnswers.length; i++) {
+                const inputId = `cloze-${clozeSetIndex}-${i + 1}`;
+                const inputElement = document.getElementById(inputId);
+                
+                const userAnswer = inputElement.value.trim().toLowerCase();
+                const correctAnswer = currentAnswers[i].toLowerCase();
+
+                if (userAnswer === correctAnswer) {
+                    inputElement.classList.add('correct-answer');
+                    correctCount++;
+                } else {
+                    inputElement.classList.add('incorrect-answer');
+                    inputElement.value = currentAnswers[i];
+                }
+                
+                inputElement.disabled = true;
+            }
+
+            if (correctCount > 0) {
+                updateScore(correctCount);
+            }
+            
+            feedback.textContent = `Bạn đã điền đúng ${correctCount} trên ${currentAnswers.length} từ.`;
+            feedback.className = 'feedback feedback-correct';
+            
+            button.disabled = true;
+        }
+
+    </script>
+</body>
+</html>

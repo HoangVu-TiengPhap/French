@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2025 by anonymous (http://jsbin.com/kikefenivu/7/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>04_Pro_possessifs</title>
+    <style>
+        /* CSS để làm cho trang kiểm tra đẹp hơn */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-header {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 0.95em;
+            color: #555;
+        }
+        
+        .info-header p {
+            margin: 0;
+        }
+
+        .quiz-status-bar {
+            position: sticky;
+            top: 0;
+            background-color: #4a5a7b;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            z-index: 1000;
+        }
+
+        .quiz-status-bar h1 {
+            margin: 0;
+            font-size: 1.5em;
+        }
+
+        #score-display, #timer-display {
+            font-size: 1.2em;
+            font-weight: bold;
+            background-color: #ffffff;
+            color: #4a5a7b;
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+        
+        .question-block {
+            margin-bottom: 25px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background-color: #fdfdfd;
+        }
+
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .question-translation {
+            font-size: 0.9em;
+            font-style: italic;
+            color: #6c757d;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .answers label {
+            display: block;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .answers label:hover {
+            background-color: #e9ecef;
+        }
+
+        .answers input[type="radio"] {
+            margin-right: 10px;
+        }
+        
+        .validate-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            display: block;
+            margin-top: 15px; 
+            transition: background-color 0.3s;
+        }
+
+        .validate-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .validate-btn:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+        
+        .feedback {
+            margin-top: 15px;
+            font-weight: normal;
+            font-size: 0.95em;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .feedback-correct {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .feedback-incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .feedback-warning {
+            background-color: #fffbe6;
+            color: #8a6d3b;
+        }
+
+        .correct-answer {
+            background-color: #d4edda !important;
+            border-color: #c3e6cb !important;
+        }
+
+        .incorrect-answer {
+            background-color: #f8d7da !important;
+            border-color: #f5c6cb !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="quiz-container">
+        <div class="info-header">
+            <p><strong>Enseignant:</strong> Nguyễn Hoàng Vũ</p>
+            <p><strong>Ngày kiểm tra:</strong> <span id="test-date"></span></p>
+        </div>
+
+        <div class="quiz-status-bar">
+            <h1>Bài tập: Đại từ sở hữu</h1>
+            <div>
+                <span id="score-display">Điểm: 0 / 18</span>
+                <span id="timer-display">Thời gian: 18:00</span>
+            </div>
+        </div>
+        
+        <div id="all-questions-container">
+            <div class="question-block" id="q1">
+                <p class="question-text">1. Biến đổi câu: "C'est mon quartier."</p>
+                <p class="question-translation">(Đây là khu phố của tôi.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q1" value="a"> a) c'est le mien</label>
+                    <label><input type="radio" name="q1" value="b"> b) c'est la mienne</label>
+                    <label><input type="radio" name="q1" value="c"> c) ce sont les miens</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(1, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q2">
+                <p class="question-text">2. Biến đổi câu: "C'est ma rue."</p>
+                <p class="question-translation">(Đây là con đường của tôi.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q2" value="a"> a) c'est le mien</label>
+                    <label><input type="radio" name="q2" value="b"> b) c'est la mienne</label>
+                    <label><input type="radio" name="q2" value="c"> c) ce sont les miennes</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(2, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q3">
+                <p class="question-text">3. Biến đổi câu: "Ce sont mes voisins."</p>
+                <p class="question-translation">(Họ là hàng xóm của tôi.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q3" value="a"> a) ce sont les miens</label>
+                    <label><input type="radio" name="q3" value="b"> b) ce sont les miennes</label>
+                    <label><input type="radio" name="q3" value="c"> c) c'est le mien</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(3, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q4">
+                <p class="question-text">4. Biến đổi câu: "C'est ton pays."</p>
+                <p class="question-translation">(Đây là đất nước của bạn.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q4" value="a"> a) c'est la tienne</label>
+                    <label><input type="radio" name="q4" value="b"> b) ce sont les tiens</label>
+                    <label><input type="radio" name="q4" value="c"> c) c'est le tien</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(4, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q5">
+                <p class="question-text">5. Biến đổi câu: "C'est ta ville."</p>
+                <p class="question-translation">(Đây là thành phố của bạn.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q5" value="a"> a) c'est la tienne</label>
+                    <label><input type="radio" name="q5" value="b"> b) c'est le tien</label>
+                    <label><input type="radio" name="q5" value="c"> c) ce sont les tiennes</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(5, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+             <div class="question-block" id="q6">
+                <p class="question-text">6. Biến đổi câu: "Ce sont tes souvenirs."</p>
+                <p class="question-translation">(Đây là những kỷ niệm của bạn.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q6" value="a"> a) c'est le tien</label>
+                    <label><input type="radio" name="q6" value="b"> b) ce sont les tiennes</label>
+                    <label><input type="radio" name="q6" value="c"> c) ce sont les tiens</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(6, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q7">
+                <p class="question-text">7. Biến đổi câu: "C'est son immeuble."</p>
+                <p class="question-translation">(Đây là tòa nhà của anh ấy/cô ấy.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q7" value="a"> a) c'est le sien</label>
+                    <label><input type="radio" name="q7" value="b"> b) c'est la sienne</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(7, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q8">
+                <p class="question-text">8. Biến đổi câu: "C'est sa maison."</p>
+                <p class="question-translation">(Đây là ngôi nhà của anh ấy/cô ấy.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q8" value="a"> a) c'est le sien</label>
+                    <label><input type="radio" name="q8" value="b"> b) c'est la sienne</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(8, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q9">
+                <p class="question-text">9. Biến đổi câu: "Ce sont ses meubles."</p>
+                <p class="question-translation">(Đây là đồ đạc của anh ấy/cô ấy.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q9" value="a"> a) ce sont les siens</label>
+                    <label><input type="radio" name="q9" value="b"> b) ce sont les siennes</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(9, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q10">
+                <p class="question-text">10. Biến đổi câu: "C'est notre médecin."</p>
+                <p class="question-translation">(Đây là bác sĩ của chúng tôi.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q10" value="a"> a) c'est le nôtre</label>
+                    <label><input type="radio" name="q10" value="b"> b) c'est la nôtre</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(10, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q11">
+                <p class="question-text">11. Biến đổi câu: "C'est votre pharmacien."</p>
+                <p class="question-translation">(Đây là dược sĩ của bạn.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q11" value="a"> a) c'est la vôtre</label>
+                    <label><input type="radio" name="q11" value="b"> b) c'est le vôtre</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(11, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q12">
+                <p class="question-text">12. Biến đổi câu: "C'est leur avocat."</p>
+                 <p class="question-translation">(Đây là luật sư của họ.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q12" value="a"> a) c'est le leur</label>
+                    <label><input type="radio" name="q12" value="b"> b) c'est la leur</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(12, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q13">
+                <p class="question-text">13. Biến đổi câu: "Ce sont nos problèmes."</p>
+                <p class="question-translation">(Đây là những vấn đề của chúng tôi.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q13" value="a"> a) ce sont les nôtres</label>
+                    <label><input type="radio" name="q13" value="b"> b) ce sont les vôtres</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(13, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q14">
+                <p class="question-text">14. Biến đổi câu: "Ce sont vos ennuis."</p>
+                <p class="question-translation">(Đây là những rắc rối của bạn.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q14" value="a"> a) ce sont les nôtres</label>
+                    <label><input type="radio" name="q14" value="b"> b) ce sont les vôtres</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(14, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q15">
+                <p class="question-text">15. Biến đổi câu: "Ce sont leurs difficultés."</p>
+                <p class="question-translation">(Đây là những khó khăn của họ.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q15" value="a"> a) ce sont les leurs</label>
+                    <label><input type="radio" name="q15" value="b"> b) ce sont les leur</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(15, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+             <div class="question-block" id="q16">
+                <p class="question-text">16. Biến đổi câu: "C'est son histoire."</p>
+                <p class="question-translation">(Đây là câu chuyện của anh ấy/cô ấy.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q16" value="a"> a) c'est le sien</label>
+                    <label><input type="radio" name="q16" value="b"> b) c'est la sienne</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(16, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+             <div class="question-block" id="q17">
+                <p class="question-text">17. Biến đổi câu: "Ce sont ses affaires."</p>
+                <p class="question-translation">(Đây là những việc của anh ấy/cô ấy.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q17" value="a"> a) ce sont les siens</label>
+                    <label><input type="radio" name="q17" value="b"> b) ce sont les siennes</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(17, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+             <div class="question-block" id="q18">
+                <p class="question-text">18. Biến đổi câu: "Ce sont leurs affaires."</p>
+                <p class="question-translation">(Đây là những việc của họ.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q18" value="a"> a) ce sont les leurs</label>
+                    <label><input type="radio" name="q18" value="b"> b) ce sont les leur</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(18, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let score = 0;
+        const maxScore = 18;
+        const scoreDisplay = document.getElementById('score-display');
+        let timeInSeconds = 1080; // 18 minutes
+        let timerInterval = null;
+
+        const feedbackExplanations = {
+            1: "Chính xác! 'mon quartier' (m.sg) ➞ 'le mien'.",
+            2: "Chính xác! 'ma rue' (f.sg) ➞ 'la mienne'.",
+            3: "Chính xác! 'mes voisins' (m.pl) ➞ 'les miens'.",
+            4: "Chính xác! 'ton pays' (m.sg) ➞ 'le tien'.",
+            5: "Chính xác! 'ta ville' (f.sg) ➞ 'la tienne'.",
+            6: "Chính xác! 'tes souvenirs' (m.pl) ➞ 'les tiens'.",
+            7: "Chính xác! 'son immeuble' (m.sg) ➞ 'le sien'.",
+            8: "Chính xác! 'sa maison' (f.sg) ➞ 'la sienne'.",
+            9: "Chính xác! 'ses meubles' (m.pl) ➞ 'les siens'.",
+            10: "Chính xác! 'notre médecin' (m.sg) ➞ 'le nôtre'.",
+            11: "Chính xác! 'votre pharmacien' (m.sg) ➞ 'le vôtre'.",
+            12: "Chính xác! 'leur avocat' (m.sg) ➞ 'le leur'.",
+            13: "Chính xác! 'nos problèmes' (m.pl) ➞ 'les nôtres'.",
+            14: "Chính xác! 'vos ennuis' (m.pl) ➞ 'les vôtres'.",
+            15: "Chính xác! 'leurs difficultés' (f.pl) ➞ 'les leurs'.",
+            16: "Chính xác! 'son histoire' (f.sg) ➞ 'la sienne'.",
+            17: "Chính xác! 'ses affaires' (f.pl) ➞ 'les siennes'.",
+            18: "Chính xác! 'leurs affaires' (f.pl) ➞ 'les leurs'."
+        };
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const today = new Date();
+            const day = String(today.getDate()).padStart(2, '0');
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const year = today.getFullYear();
+            document.getElementById('test-date').textContent = `${day}/${month}/${year}`;
+            
+            updateScoreDisplay();
+            startTimer();
+        });
+
+        function startTimer() {
+            const timerDisplay = document.getElementById('timer-display');
+            clearInterval(timerInterval); 
+            
+            timerInterval = setInterval(() => {
+                timeInSeconds--;
+                const minutes = Math.floor(timeInSeconds / 60);
+                const seconds = timeInSeconds % 60;
+                timerDisplay.textContent = `Thời gian: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                if (timeInSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    timerDisplay.textContent = "Hết giờ!";
+                    alert("Hết giờ làm bài!");
+                    document.querySelectorAll('.validate-btn').forEach(btn => btn.disabled = true);
+                }
+            }, 1000);
+        }
+
+        function updateScoreDisplay() {
+            scoreDisplay.textContent = `Điểm: ${score} / ${maxScore}`;
+        }
+        
+        function updateScore(points = 1) {
+            score += points;
+            updateScoreDisplay();
+        }
+
+        function validateRadio(questionNumber, correctAnswer) {
+            const questionBlock = document.getElementById(`q${questionNumber}`);
+            const radios = document.getElementsByName(`q${questionNumber}`);
+            const feedback = questionBlock.querySelector('.feedback');
+            const button = questionBlock.querySelector('.validate-btn');
+            let selectedAnswer = null;
+
+            radios.forEach(radio => { if (radio.checked) { selectedAnswer = radio; } });
+
+            if (selectedAnswer === null) {
+                feedback.textContent = "Vui lòng chọn một đáp án!";
+                feedback.className = 'feedback feedback-warning';
+                return;
+            }
+            
+            button.disabled = true;
+            radios.forEach(radio => radio.disabled = true);
+            const selectedLabel = selectedAnswer.parentElement;
+            const explanation = feedbackExplanations[questionNumber];
+
+            if (selectedAnswer.value === correctAnswer) {
+                feedback.textContent = explanation;
+                feedback.className = 'feedback feedback-correct';
+                selectedLabel.classList.add('correct-answer');
+                updateScore();
+            } else {
+                const cleanedExplanation = explanation.replace("Chính xác! ", "");
+                feedback.innerHTML = `<strong>Không chính xác.</strong> ${cleanedExplanation}<br>Đáp án đúng là lựa chọn <strong>"${correctAnswer.toUpperCase()}"</strong>.`;
+                feedback.className = 'feedback feedback-incorrect';
+                radios.forEach(radio => { if (radio.value === correctAnswer) { radio.parentElement.classList.add('correct-answer'); } });
+            }
+        }
+    </script>
+</body>
+</html>

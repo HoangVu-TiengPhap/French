@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+
+<meta name="robots" content="noindex">
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Từ trái nghĩa (Tính từ)</title>
+    <style>
+        /* CSS để làm cho trang kiểm tra đẹp hơn */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-header {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 0.95em;
+            color: #555;
+        }
+        
+        .info-header p {
+            margin: 0;
+        }
+
+        .quiz-status-bar {
+            position: sticky;
+            top: 0;
+            background-color: #4a5a7b;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            z-index: 1000;
+        }
+
+        .quiz-status-bar h1 {
+            margin: 0;
+            font-size: 1.5em;
+        }
+
+        #score-display, #timer-display {
+            font-size: 1.2em;
+            font-weight: bold;
+            background-color: #ffffff;
+            color: #4a5a7b;
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+        
+        .question-block {
+            margin-bottom: 25px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background-color: #fdfdfd;
+        }
+
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .question-translation {
+            font-size: 0.9em;
+            font-style: italic;
+            color: #6c757d;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .answers label {
+            display: block;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            max-width: 500px;
+        }
+
+        .answers label:hover {
+            background-color: #e9ecef;
+        }
+
+        .answers input[type="radio"] {
+            margin-right: 10px;
+        }
+        
+        .validate-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            display: block;
+            margin-top: 15px; 
+            transition: background-color 0.3s;
+        }
+
+        .validate-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .validate-btn:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+        
+        .feedback {
+            margin-top: 15px;
+            font-weight: normal;
+            font-size: 0.95em;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .feedback-correct {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .feedback-incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .feedback-warning {
+            background-color: #fffbe6;
+            color: #8a6d3b;
+        }
+
+        .correct-answer {
+            background-color: #d4edda !important;
+            border-color: #c3e6cb !important;
+        }
+
+        .incorrect-answer {
+            background-color: #f8d7da !important;
+            border-color: #f5c6cb !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="quiz-container">
+        <div class="info-header">
+            <p><strong>Enseignant:</strong> Nguyễn Hoàng Vũ</p>
+            <p><strong>Ngày kiểm tra:</strong> <span id="test-date"></span></p>
+        </div>
+
+        <div class="quiz-status-bar">
+            <h1>Từ trái nghĩa (Tính từ)</h1>
+            <div>
+                <span id="score-display">Điểm: 0 / 16</span>
+                <span id="timer-display">Thời gian: 16:00</span>
+            </div>
+        </div>
+        
+        <div id="all-questions-container">
+            <div class="question-block" id="q1">
+                <p class="question-text">1. Tìm từ trái nghĩa của "honnête" trong câu: "C'est un homme politique <u>honnête</u>."</p>
+                <p class="question-translation">(Đây là một chính trị gia trung thực.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q1" value="a"> a) malhonnête</label>
+                    <label><input type="radio" name="q1" value="b"> b) inhonnête</label>
+                    <label><input type="radio" name="q1" value="c"> c) déshonnête</label>
+                    <label><input type="radio" name="q1" value="d"> d) pas honnête</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(1, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q2">
+                <p class="question-text">2. Tìm từ trái nghĩa của "sympathique" trong câu: "C'est un garçon <u>sympathique</u>."</p>
+                <p class="question-translation">(Đó là một cậu bé dễ mến.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q2" value="a"> a) dissympathique</label>
+                    <label><input type="radio" name="q2" value="b"> b) malsympathique</label>
+                    <label><input type="radio" name="q2" value="c"> c) antipathique</label>
+                    <label><input type="radio" name="q2" value="d"> d) insympathique</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(2, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q3">
+                <p class="question-text">3. Tìm từ trái nghĩa của "agréable" trong câu: "C'est un camarade <u>agréable</u>."</p>
+                <p class="question-translation">(Đó là một người bạn dễ chịu.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q3" value="a"> a) inagréable</label>
+                    <label><input type="radio" name="q3" value="b"> b) malagréable</label>
+                    <label><input type="radio" name="q3" value="c"> c) désagréable</label>
+                    <label><input type="radio" name="q3" value="d"> d) antiagréable</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(3, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q4">
+                <p class="question-text">4. Tìm từ trái nghĩa của "facile" trong câu: "C'est un exercice <u>facile</u>."</p>
+                <p class="question-translation">(Đây là một bài tập dễ.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q4" value="a"> a) difficile</label>
+                    <label><input type="radio" name="q4" value="b"> b) infacile</label>
+                    <label><input type="radio" name="q4" value="c"> c) malfacile</label>
+                    <label><input type="radio" name="q4" value="d"> d) dur</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(4, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q5">
+                <p class="question-text">5. Tìm từ trái nghĩa của "content" trong câu: "Tu es <u>content</u>."</p>
+                <p class="question-translation">(Bạn vui.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q5" value="a"> a) triste</label>
+                    <label><input type="radio" name="q5" value="b"> b) décontent</label>
+                    <label><input type="radio" name="q5" value="c"> c) mécontent</label>
+                    <label><input type="radio" name="q5" value="d"> d) incontent</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(5, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+             <div class="question-block" id="q6">
+                <p class="question-text">6. Tìm từ trái nghĩa của "supérieure" trong câu: "C'est une qualité <u>supérieure</u>."</p>
+                <p class="question-translation">(Đây là một chất lượng vượt trội.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q6" value="a"> a) postérieure</label>
+                    <label><input type="radio" name="q6" value="b"> b) inférieure</label>
+                    <label><input type="radio" name="q6" value="c"> c) extérieure</label>
+                    <label><input type="radio" name="q6" value="d"> d) intérieure</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(6, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q7">
+                <p class="question-text">7. Tìm từ trái nghĩa của "normale" trong câu: "La situation semble <u>normale</u>."</p>
+                <p class="question-translation">(Tình hình có vẻ bình thường.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q7" value="a"> a) innormale</label>
+                    <label><input type="radio" name="q7" value="b"> b) anormale</label>
+                    <label><input type="radio" name="q7" value="c"> c) dénormale</label>
+                    <label><input type="radio" name="q7" value="d"> d) pas normale</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(7, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q8">
+                <p class="question-text">8. Tìm từ trái nghĩa của "égal" trong câu: "Le partage est <u>égal</u>."</p>
+                <p class="question-translation">(Sự chia sẻ là công bằng.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q8" value="a"> a) inégal</label>
+                    <label><input type="radio" name="q8" value="b"> b) dégal</label>
+                    <label><input type="radio" name="q8" value="c"> c) malégal</label>
+                    <label><input type="radio" name="q8" value="d"> d) pas égal</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(8, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q9">
+                <p class="question-text">9. Tìm từ trái nghĩa của "prudent" trong câu: "C'est un adolescent <u>prudent</u>."</p>
+                <p class="question-translation">(Đây là một thiếu niên thận trọng.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q9" value="a"> a) déprudent</label>
+                    <label><input type="radio" name="q9" value="b"> b) malprudent</label>
+                    <label><input type="radio" name="q9" value="c"> c) imprudent</label>
+                    <label><input type="radio" name="q9" value="d"> d) aprudent</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(9, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q10">
+                <p class="question-text">10. Tìm từ trái nghĩa của "directe" trong câu: "C'est une réponse <u>directe</u>."</p>
+                <p class="question-translation">(Đây là một câu trả lời trực tiếp.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q10" value="a"> a) indirecte</label>
+                    <label><input type="radio" name="q10" value="b"> b) maldirecte</label>
+                    <label><input type="radio" name="q10" value="c"> c) adirecte</label>
+                    <label><input type="radio" name="q10" value="d"> d) dédirecte</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(10, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q11">
+                <p class="question-text">11. Tìm từ trái nghĩa của "riche" trong câu: "C'est une famille <u>riche</u>."</p>
+                <p class="question-translation">(Đây là một gia đình giàu có.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q11" value="a"> a) pauvre</label>
+                    <label><input type="radio" name="q11" value="b"> b) simple</label>
+                    <label><input type="radio" name="q11" value="c"> c) modeste</label>
+                    <label><input type="radio" name="q11" value="d"> d) inriche</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(11, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q12">
+                <p class="question-text">12. Tìm từ trái nghĩa của "optimiste" trong câu: "Vous êtes <u>optimiste</u>."</p>
+                <p class="question-translation">(Bạn là người lạc quan.)</p>
+                 <div class="answers">
+                    <label><input type="radio" name="q12" value="a"> a) triste</label>
+                    <label><input type="radio" name="q12" value="b"> b) réaliste</label>
+                    <label><input type="radio" name="q12" value="c"> c) pessimiste</label>
+                    <label><input type="radio" name="q12" value="d"> d) inoptimiste</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(12, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q13">
+                <p class="question-text">13. Tìm từ trái nghĩa của "vraie" trong câu: "L'histoire est <u>vraie</u>."</p>
+                <p class="question-translation">(Câu chuyện là có thật.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q13" value="a"> a) fausse</label>
+                    <label><input type="radio" name="q13" value="b"> b) imaginaire</label>
+                    <label><input type="radio" name="q13" value="c"> c) irréelle</label>
+                    <label><input type="radio" name="q13" value="d"> d) invraie</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(13, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q14">
+                <p class="question-text">14. Tìm từ trái nghĩa của "méchant" trong câu: "C'est un <u>méchant</u> garçon."</p>
+                <p class="question-translation">(Đó là một cậu bé xấu tính.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q14" value="a"> a) bon</label>
+                    <label><input type="radio" name="q14" value="b"> b) gentil</label>
+                    <label><input type="radio" name="q14" value="c"> c) sage</label>
+                    <label><input type="radio" name="q14" value="d"> d) imméchant</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(14, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q15">
+                <p class="question-text">15. Tìm từ trái nghĩa của "possible" trong câu: "C'est <u>possible</u>."</p>
+                <p class="question-translation">(Điều đó là có thể.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q15" value="a"> a) dépossible</label>
+                    <label><input type="radio" name="q15" value="b"> b) malpossible</label>
+                    <label><input type="radio" name="q15" value="c"> c) pas possible</label>
+                    <label><input type="radio" name="q15" value="d"> d) impossible</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(15, 'd')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q16">
+                <p class="question-text">16. Tìm từ trái nghĩa của "intérieur" trong câu: "Il y a un escalier <u>intérieur</u>."</p>
+                <p class="question-translation">(Có một cầu thang bên trong.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q16" value="a"> a) postérieur</label>
+                    <label><input type="radio" name="q16" value="b"> b) extérieur</label>
+                    <label><input type="radio" name="q16" value="c"> c) antérieur</label>
+                    <label><input type="radio" name="q16" value="d"> d) inintérieur</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(16, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let score = 0;
+        const maxScore = 16;
+        const scoreDisplay = document.getElementById('score-display');
+        let timeInSeconds = 960; // 16 minutes
+        let timerInterval = null;
+
+        const feedbackExplanations = {
+            1: "Chính xác! Trái nghĩa của 'honnête' (trung thực) là 'malhonnête' (không trung thực).",
+            2: "Chính xác! Trái nghĩa của 'sympathique' (dễ mến) là 'antipathique' (khó ưa).",
+            3: "Chính xác! Trái nghĩa của 'agréable' (dễ chịu) là 'désagréable' (khó chịu).",
+            4: "Chính xác! Trái nghĩa của 'facile' (dễ) là 'difficile' (khó).",
+            5: "Chính xác! Trái nghĩa của 'content' (hài lòng) là 'mécontent' (bất mãn).",
+            6: "Chính xác! Trái nghĩa của 'supérieure' (vượt trội, cao cấp hơn) là 'inférieure' (thấp kém hơn).",
+            7: "Chính xác! Trái nghĩa của 'normale' (bình thường) là 'anormale' (bất thường).",
+            8: "Chính xác! Trái nghĩa của 'égal' (công bằng) là 'inégal' (bất công).",
+            9: "Chính xác! Trái nghĩa của 'prudent' (thận trọng) là 'imprudent' (bất cẩn).",
+            10: "Chính xác! Trái nghĩa của 'directe' (trực tiếp) là 'indirecte' (gián tiếp).",
+            11: "Chính xác! Trái nghĩa của 'riche' (giàu) là 'pauvre' (nghèo).",
+            12: "Chính xác! Trái nghĩa của 'optimiste' (lạc quan) là 'pessimiste' (bi quan).",
+            13: "Chính xác! Trái nghĩa của 'vraie' (thật) là 'fausse' (giả).",
+            14: "Chính xác! Trái nghĩa của 'méchant' (xấu tính) là 'gentil' (tốt bụng).",
+            15: "Chính xác! Trái nghĩa của 'possible' (có thể) là 'impossible' (không thể).",
+            16: "Chính xác! Trái nghĩa của 'intérieur' (bên trong) là 'extérieur' (bên ngoài)."
+        };
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const today = new Date();
+            const day = String(today.getDate()).padStart(2, '0');
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const year = today.getFullYear();
+            document.getElementById('test-date').textContent = `${day}/${month}/${year}`;
+            
+            updateScoreDisplay();
+            startTimer();
+        });
+
+        function startTimer() {
+            const timerDisplay = document.getElementById('timer-display');
+            clearInterval(timerInterval); 
+            
+            timerInterval = setInterval(() => {
+                timeInSeconds--;
+                const minutes = Math.floor(timeInSeconds / 60);
+                const seconds = timeInSeconds % 60;
+                timerDisplay.textContent = `Thời gian: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                if (timeInSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    timerDisplay.textContent = "Hết giờ!";
+                    alert("Hết giờ làm bài!");
+                    document.querySelectorAll('.validate-btn').forEach(btn => btn.disabled = true);
+                }
+            }, 1000);
+        }
+
+        function updateScoreDisplay() {
+            scoreDisplay.textContent = `Điểm: ${score} / ${maxScore}`;
+        }
+        
+        function updateScore(points = 1) {
+            score += points;
+            updateScoreDisplay();
+        }
+
+        function validateRadio(questionNumber, correctAnswer) {
+            const questionBlock = document.getElementById(`q${questionNumber}`);
+            const radios = document.getElementsByName(`q${questionNumber}`);
+            const feedback = questionBlock.querySelector('.feedback');
+            const button = questionBlock.querySelector('.validate-btn');
+            let selectedAnswer = null;
+
+            radios.forEach(radio => { if (radio.checked) { selectedAnswer = radio; } });
+
+            if (selectedAnswer === null) {
+                feedback.textContent = "Vui lòng chọn một đáp án!";
+                feedback.className = 'feedback feedback-warning';
+                return;
+            }
+            
+            button.disabled = true;
+            radios.forEach(radio => radio.disabled = true);
+            const selectedLabel = selectedAnswer.parentElement;
+            const explanation = feedbackExplanations[questionNumber];
+
+            if (selectedAnswer.value === correctAnswer) {
+                feedback.textContent = explanation;
+                feedback.className = 'feedback feedback-correct';
+                selectedLabel.classList.add('correct-answer');
+                updateScore();
+            } else {
+                const cleanedExplanation = explanation.replace("Chính xác! ", "");
+                feedback.innerHTML = `<strong>Không chính xác.</strong> ${cleanedExplanation}<br>Đáp án đúng là lựa chọn <strong>"${correctAnswer.toUpperCase()}"</strong>.`;
+                feedback.className = 'feedback feedback-incorrect';
+                selectedLabel.classList.add('incorrect-answer');
+                radios.forEach(radio => { if (radio.value === correctAnswer) { radio.parentElement.classList.add('correct-answer'); } });
+            }
+        }
+    </script>
+</body>
+</html>

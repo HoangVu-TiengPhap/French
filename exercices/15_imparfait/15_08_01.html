@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+
+<meta name="robots" content="noindex">
+<html>
+<head>
+<title>Imparfait de l'indicatif : Groupe 3</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0; /* Đã sửa: Loại bỏ khoảng trống đầu trang */
+    padding: 0;
+    background-color: #f0f4f8;
+    color: #333;
+  }
+  
+  /* CHỈNH SỬA QUAN TRỌNG: Đặt chiều rộng và box-sizing để khớp container */
+  header {
+    width: 800px; /* Chiều rộng cố định, bằng container */
+    margin: 0 auto; /* Căn giữa và sát lề trên */
+    background-color: #e0e7ed;
+    color: #2c3e50;
+    padding: 15px 20px;
+    /* border-bottom: 2px solid #c0d0e0; */ /* Đã bỏ border-bottom cũ */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Thay bằng đổ bóng nhẹ */
+    border-radius: 8px 8px 0 0; /* Đã sửa: Bo tròn góc trên */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box; /* Đã sửa: Đảm bảo padding nằm trong 800px */
+  }
+  
+  header h2, header p {
+    margin: 0;
+    font-size: 1.1em;
+    color: #333;
+  }
+  
+  h1 {
+    color: #2c3e50;
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 20px;
+  }
+  
+  .container {
+    width: 800px; /* Đã sửa: Đặt width cố định để khớp Header */
+    margin: 0 auto 30px auto; /* Đã sửa: margin-top: 0 để sát Header */
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 0 0 10px 10px; /* Đã sửa: Bỏ bo góc trên */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box; /* Đã sửa: Đảm bảo padding nằm trong 800px */
+  }
+  
+  .question-block {
+    margin-bottom: 25px;
+    padding: 20px;
+    border: 1px solid #d0dbe4;
+    border-radius: 8px;
+    background-color: #fdfefe;
+  }
+  .question {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 1.1em;
+    color: #34495e;
+  }
+  .translation {
+    font-style: italic;
+    color: #666;
+    margin-bottom: 15px;
+    font-size: 0.95em;
+  }
+  .options label {
+    display: block;
+    margin-bottom: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: color 0.3s ease;
+    padding: 5px 0;
+  }
+  .options label:hover {
+    color: #5a7d9a;
+  }
+  .options input[type="radio"] {
+    margin-right: 10px;
+    transform: scale(1.1);
+  }
+  .options label.correct-highlight {
+    background-color: #d4edda;
+    border: 2px solid #28a745;
+    border-radius: 5px;
+    padding: 5px;
+    color: #1a7e37;
+  }
+  .feedback {
+    margin-top: 15px;
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 5px;
+    width: calc(100% - 24px);
+    box-sizing: border-box;
+    display: none;
+  }
+  .feedback.active {
+      display: block;
+  }
+  .correct {
+    background-color: #e6ffe6;
+    color: #1a7e37;
+    border: 1px solid #28a745;
+  }
+  .incorrect {
+    background-color: #ffe6e6;
+    color: #dc3545;
+    border: 1px solid #dc3545;
+  }
+  .warning {
+      background-color: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffeeba;
+  }
+  .explanation {
+    font-size: 0.9em;
+    font-weight: normal;
+    color: #555;
+    margin-top: 8px;
+    font-style: italic;
+  }
+  .correct-answer-display {
+    color: dodgerblue; /* Xanh dương tươi */
+    font-weight: bold;
+    margin-top: 5px;
+    display: block;
+  }
+  .validate-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-top: 15px;
+    transition: background-color 0.3s ease;
+  }
+  .validate-btn:hover {
+    background-color: #45a049;
+  }
+  .validate-btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+  #score-area {
+    text-align: center;
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #e6f7ff;
+    border: 1px solid #b3e0ff;
+    border-radius: 8px;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #0056b3;
+    display: none;
+  }
+  .complete-test-btn {
+    display: block;
+    width: fit-content;
+    margin: 30px auto;
+    background-color: #007bff;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease;
+  }
+  .complete-test-btn:hover {
+    background-color: #0056b3;
+  }
+  @media (max-width: 600px) {
+    /* Đảm bảo responsive vẫn hoạt động tốt */
+    header, .container {
+        width: 90%; 
+        max-width: 90%;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 15px;
+        box-sizing: border-box;
+    }
+    header {
+      border-radius: 8px 8px 0 0;
+      margin-top: 0;
+    }
+    .container {
+      margin-top: 0;
+      margin-bottom: 15px;
+      border-radius: 0 0 10px 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    header h2, header p {
+      font-size: 1em;
+      margin-bottom: 5px;
+    }
+    .question, .translation, .options label, .feedback, .validate-btn, .complete-test-btn {
+      font-size: 0.9em;
+    }
+    .feedback {
+      padding: 6px 10px;
+      width: calc(100% - 20px);
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h2>Enseignant: Nguyễn Hoàng Vũ</h2>
+
+</header>
+
+<div class="container">
+  <h1>Imparfait de l'indicatif : Groupe 3</h1>
+
+  <h2>Phần 1: Động từ kết thúc bằng -ire và -re khác</h2>
+  <div class="question-block" id="q1-block">
+    <div class="question">1. (dire) tu ...</div>
+    <div class="translation">(nói) bạn...</div>
+    <div class="options" id="options-q1"></div>
+    <button class="validate-btn" onclick="checkAnswer('q1')">Valider</button>
+    <div class="feedback" id="feedback1"></div>
+  </div>
+
+  <div class="question-block" id="q2-block">
+    <div class="question">2. (traduire) je ...</div>
+    <div class="translation">(dịch) tôi...</div>
+    <div class="options" id="options-q2"></div>
+    <button class="validate-btn" onclick="checkAnswer('q2')">Valider</button>
+    <div class="feedback" id="feedback2"></div>
+  </div>
+
+  <div class="question-block" id="q3-block">
+    <div class="question">3. (plaire) ils ...</div>
+    <div class="translation">(làm hài lòng) họ...</div>
+    <div class="options" id="options-q3"></div>
+    <button class="validate-btn" onclick="checkAnswer('q3')">Valider</button>
+    <div class="feedback" id="feedback3"></div>
+  </div>
+
+  <div class="question-block" id="q4-block">
+    <div class="question">4. (retire) nous ...</div>
+    <div class="translation">(rút lại) chúng tôi...</div>
+    <div class="options" id="options-q4"></div>
+    <button class="validate-btn" onclick="checkAnswer('q4')">Valider</button>
+    <div class="feedback" id="feedback4"></div>
+  </div>
+
+  <div class="question-block" id="q5-block">
+    <div class="question">5. (suffire) cela ...</div>
+    <div class="translation">(đủ) điều đó...</div>
+    <div class="options" id="options-q5"></div>
+    <button class="validate-btn" onclick="checkAnswer('q5')">Valider</button>
+    <div class="feedback" id="feedback5"></div>
+  </div>
+
+  <div class="question-block" id="q6-block">
+    <div class="question">6. (interdire) vous ...</div>
+    <div class="translation">(cấm) bạn (số nhiều/lịch sự)...</div>
+    <div class="options" id="options-q6"></div>
+    <button class="validate-btn" onclick="checkAnswer('q6')">Valider</button>
+    <div class="feedback" id="feedback6"></div>
+  </div>
+
+  <hr style="margin: 40px 0; border: 0; border-top: 1px solid #ccc;">
+
+  <h2>Phần 2: Động từ kết thúc bằng -aindre, -eindre, -oindre</h2>
+  <div class="question-block" id="q7-block">
+    <div class="question">7. (craindre) je ..., elles ...</div>
+    <div class="translation">(sợ) tôi..., họ (nữ)...</div>
+    <div class="options" id="options-q7"></div>
+    <button class="validate-btn" onclick="checkAnswer('q7')">Valider</button>
+    <div class="feedback" id="feedback7"></div>
+  </div>
+
+  <div class="question-block" id="q8-block">
+    <div class="question">8. (peindre) elle ..., nous ...</div>
+    <div class="translation">(sơn/vẽ) cô ấy..., chúng tôi...</div>
+    <div class="options" id="options-q8"></div>
+    <button class="validate-btn" onclick="checkAnswer('q8')">Valider</button>
+    <div class="feedback" id="feedback8"></div>
+  </div>
+
+  <div class="question-block" id="q9-block">
+    <div class="question">9. (éteindre) tu ..., vous ...</div>
+    <div class="translation">(tắt) bạn..., bạn (số nhiều/lịch sự)...</div>
+    <div class="options" id="options-q9"></div>
+    <button class="validate-btn" onclick="checkAnswer('q9')">Valider</button>
+    <div class="feedback" id="feedback9"></div>
+  </div>
+
+  <hr style="margin: 40px 0; border: 0; border-top: 1px solid #ccc;">
+
+  <h2>Phần 3: Động từ kết thúc bằng -aître</h2>
+  <div class="question-block" id="q10-block">
+    <div class="question">10. (paraître) tu ..., ils ...</div>
+    <div class="translation">(xuất hiện) bạn..., họ...</div>
+    <div class="options" id="options-q10"></div>
+    <button class="validate-btn" onclick="checkAnswer('q10')">Valider</button>
+    <div class="feedback" id="feedback10"></div>
+  </div>
+
+  <div class="question-block" id="q11-block">
+    <div class="question">11. (reconnaître) je ..., nous ...</div>
+    <div class="translation">(nhận ra) tôi..., chúng tôi...</div>
+    <div class="options" id="options-q11"></div>
+    <button class="validate-btn" onclick="checkAnswer('q11')">Valider</button>
+    <div class="feedback" id="feedback11"></div>
+  </div>
+
+  <div class="question-block" id="q12-block">
+    <div class="question">12. (disparaître) il ..., vous ...</div>
+    <div class="translation">(biến mất) anh ấy..., bạn (số nhiều/lịch sự)...</div>
+    <div class="options" id="options-q12"></div>
+    <button class="validate-btn" onclick="checkAnswer('q12')">Valider</button>
+    <div class="feedback" id="feedback12"></div>
+  </div>
+
+  <button class="complete-test-btn" onclick="showScore()">Hoàn thành bài kiểm tra</button>
+
+  <div id="score-area">
+    <p>Bạn đã trả lời đúng <span id="correct-count">0</span> trên tổng số <span id="total-questions">0</span> câu.</p>
+  </div>
+
+</div>
+
+<script>
+  // Định nghĩa dữ liệu cho mỗi câu hỏi
+  const questionsData = {
+    // Phần 1 (image_538a8b.png)
+    q1: {
+      original: "(dire) tu ...",
+      translation: "(nói) bạn...",
+      correct: "disais",
+      wrong: ["disait", "disaient"],
+      explanation: "Động từ 'dire'. Gốc Imparfait là 'dis-' (từ 'nous disons'). Thêm đuôi '-ais' cho 'Tu'."
+    },
+    q2: {
+      original: "(traduire) je ...",
+      translation: "(dịch) tôi...",
+      correct: "traduisais",
+      wrong: ["traduisait", "traduisiez"],
+      explanation: "Động từ 'traduire'. Gốc Imparfait là 'traduis-' (từ 'nous traduisons'). Thêm đuôi '-ais' cho 'Je'."
+    },
+    q3: {
+      original: "(plaire) ils ...",
+      translation: "(làm hài lòng) họ...",
+      correct: "plaisaient",
+      wrong: ["plaisais", "plaisissaient"],
+      explanation: "Động từ 'plaire'. Gốc Imparfait là 'plais-' (từ 'nous plaisons'). Thêm đuôi '-aient' cho 'Ils'."
+    },
+    q4: {
+      original: "(retire) nous ...", // Đây là 'retire', có thể là lỗi chính tả và ý là 'retirer' hoặc một động từ có gốc 'retir-'
+      translation: "(rút lại) chúng tôi...",
+      correct: "retirions",
+      wrong: ["retirons", "retiraient"],
+      explanation: "Động từ 'retirer'. Gốc Imparfait là 'retir-' (từ 'nous retirons'). Thêm đuôi '-ions' cho 'Nous'."
+    },
+    q5: {
+      original: "(suffire) cela ...",
+      translation: "(đủ) điều đó...",
+      correct: "suffisait",
+      wrong: ["suffisais", "suffisaient"],
+      explanation: "Động từ 'suffire'. Gốc Imparfait là 'suffis-' (từ 'nous suffisons'). Thêm đuôi '-ait' cho 'Cela' (tương đương 'Il')."
+    },
+    q6: {
+      original: "(interdire) vous ...",
+      translation: "(cấm) bạn (số nhiều/lịch sự)...",
+      correct: "interdisiez",
+      wrong: ["interdisais", "interdisait"],
+      explanation: "Động từ 'interdire'. Gốc Imparfait là 'interdis-' (từ 'nous interdisons'). Thêm đuôi '-iez' cho 'Vous'."
+    },
+    // Phần 2 (image_538a2a.png)
+    q7: {
+      original: "(craindre) je ..., elles ...",
+      translation: "(sợ) tôi..., họ (nữ)...",
+      correct: "craignais, craignaient",
+      wrong: ["craignais, craignait", "craigniez, craignaient"],
+      explanation: "Động từ 'craindre'. Gốc Imparfait là 'craign-' (từ 'nous craignons'). Thêm đuôi '-ais' cho 'Je' và '-aient' cho 'Elles'."
+    },
+    q8: {
+      original: "(peindre) elle ..., nous ...",
+      translation: "(sơn/vẽ) cô ấy..., chúng tôi...",
+      correct: "peignait, peignions",
+      wrong: ["peignais, peignais", "peignais, peigniez"],
+      explanation: "Động từ 'peindre'. Gốc Imparfait là 'peign-' (từ 'nous peignons'). Thêm đuôi '-ait' cho 'Elle' và '-ions' cho 'Nous'."
+    },
+    q9: {
+      original: "(éteindre) tu ..., vous ...",
+      translation: "(tắt) bạn..., bạn (số nhiều/lịch sự)...",
+      correct: "éteignais, éteigniez",
+      wrong: ["éteignait, éteignaient", "éteignais, éteignaient"],
+      explanation: "Động từ 'éteindre'. Gốc Imparfait là 'éteign-' (từ 'nous éteignons'). Thêm đuôi '-ais' cho 'Tu' và '-iez' cho 'Vous'."
+    },
+    // Phần 3 (image_538a64.png)
+    q10: {
+      original: "(paraître) tu ..., ils ...",
+      translation: "(xuất hiện) bạn..., họ...",
+      correct: "paraissais, paraissaient",
+      wrong: ["paraissais, paraissiez", "paraissait, paraissaient"],
+      explanation: "Động từ 'paraître'. Gốc Imparfait là 'paraiss-' (từ 'nous paraissons'). Thêm đuôi '-ais' cho 'Tu' và '-aient' cho 'Ils'."
+    },
+    q11: {
+      original: "(reconnaître) je ..., nous ...",
+      translation: "(nhận ra) tôi..., chúng tôi...",
+      correct: "reconnaissais, reconnaissions",
+      wrong: ["reconnaissait, reconnaissaient", "reconnaissais, reconnaissiez"],
+      explanation: "Động từ 'reconnaître'. Gốc Imparfait là 'reconnaiss-' (từ 'nous reconnaissons'). Thêm đuôi '-ais' cho 'Je' và '-ions' cho 'Nous'."
+    },
+    q12: {
+      original: "(disparaître) il ..., vous ...",
+      translation: "(biến mất) anh ấy..., bạn (số nhiều/lịch sự)...",
+      correct: "disparaissait, disparaissiez",
+      wrong: ["disparaissais, disparaissaient", "disparaissait, disparaissaient"],
+      explanation: "Động từ 'disparaître'. Gốc Imparfait là 'disparaiss-' (từ 'nous disparaissons'). Thêm đuôi '-ait' cho 'Il' và '-iez' cho 'Vous'."
+    }
+  };
+
+  let correctAnswersCount = 0;
+  const totalQuestions = Object.keys(questionsData).length;
+  const answeredQuestions = new Set(); 
+
+  // Hàm xáo trộn mảng Fisher-Yates
+  function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+      }
+  }
+
+  // Hàm tạo và hiển thị các lựa chọn
+  function generateOptions() {
+    for (const qKey in questionsData) {
+      const qData = questionsData[qKey];
+      const optionsDiv = document.getElementById(`options-${qKey}`);
+      optionsDiv.innerHTML = ''; 
+
+      const allOptions = [{text: qData.correct, isCorrect: true}];
+      qData.wrong.slice(0, 2).forEach(w => allOptions.push({text: w, isCorrect: false})); 
+
+      shuffleArray(allOptions); 
+
+      allOptions.forEach((option, index) => {
+        const optionId = `${qKey}-${String.fromCharCode(97 + index)}`; 
+        const label = document.createElement('label');
+        label.setAttribute('for', optionId);
+        
+        const input = document.createElement('input');
+        input.type = 'radio';
+        input.name = qKey;
+        input.value = optionId;
+        input.id = optionId;
+        
+        label.appendChild(input);
+        label.appendChild(document.createTextNode(option.text));
+        
+        if (option.isCorrect) {
+          label.dataset.isCorrect = "true";
+          questionsData[qKey].correctOptionId = optionId; 
+        }
+
+        optionsDiv.appendChild(label);
+      });
+    }
+  }
+
+  // Call generateOptions when the page loads
+  document.addEventListener('DOMContentLoaded', generateOptions);
+
+
+  function checkAnswer(questionName) {
+    if (answeredQuestions.has(questionName)) {
+        return; 
+    }
+
+    const selectedOptionInput = document.querySelector(`input[name="${questionName}"]:checked`);
+    const feedbackDiv = document.getElementById(`feedback${questionName.substring(1)}`); 
+    const validateButton = event.target; 
+    
+    feedbackDiv.classList.remove('active', 'correct', 'incorrect', 'warning');
+    feedbackDiv.innerHTML = '';
+
+
+    if (!selectedOptionInput) {
+        feedbackDiv.textContent = 'Vui lòng chọn một đáp án trước khi kiểm tra.';
+        feedbackDiv.classList.add('active', 'warning');
+        return;
+    }
+
+    const qData = questionsData[questionName]; 
+
+    const correctAnswerLabel = document.querySelector(`label[for="${qData.correctOptionId}"]`);
+    if (correctAnswerLabel) {
+      correctAnswerLabel.classList.add('correct-highlight');
+    }
+
+    answeredQuestions.add(questionName);
+    
+    const selectedOptionLabel = selectedOptionInput.parentElement;
+    
+    if (selectedOptionLabel.dataset.isCorrect === "true") {
+      feedbackDiv.innerHTML = '<strong>Chính xác!</strong><br><span class="explanation">' + qData.explanation + '</span>';
+      feedbackDiv.classList.add('active', 'correct');
+      correctAnswersCount++;
+    } else {
+      const correctAnswerText = correctAnswerLabel ? correctAnswerLabel.textContent.trim() : '';
+      feedbackDiv.innerHTML = '<strong>Không chính xác.</strong><br><span class="correct-answer-display">Đáp án đúng là: ' + correctAnswerText + '</span><br><span class="explanation">' + qData.explanation + '</span>';
+      feedbackDiv.classList.add('active', 'incorrect');
+    }
+    
+    const radioButtons = document.querySelectorAll(`input[name="${questionName}"]`);
+    radioButtons.forEach(radio => radio.disabled = true);
+    validateButton.disabled = true;
+  }
+
+  function showScore() {
+    document.getElementById('correct-count').textContent = correctAnswersCount;
+    document.getElementById('total-questions').textContent = totalQuestions;
+    document.getElementById('score-area').style.display = 'block';
+  }
+</script>
+
+</body>
+</html>
