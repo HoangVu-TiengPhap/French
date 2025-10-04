@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2025 by anonymous (http://jsbin.com/robavoniye/2/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercice - Le Plus-que-parfait (Partie 5)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .header, .question-block, .options label {
+            font-family: Arial, sans-serif;
+        }
+
+        .page-content-wrapper {
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .header h1 {
+            text-align: center;
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+
+        #score-container {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color: #fff;
+            color: #007bff;
+            padding: 12px 20px;
+            border: 1px solid #cce5ff;
+            border-radius: 8px;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            font-size: 1.3em;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+            box-sizing: border-box;
+        }
+        #score-container strong {
+            color: #0056b3;
+        }
+
+        #quiz-container {
+        }
+        .question-block {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .question-text {
+            font-size: 1.1em;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .question-translation {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+        .rephrased-sentence-container {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border: 1px solid #e2e3e5;
+            border-radius: 5px;
+            font-size: 0.95em;
+        }
+        .rephrased-sentence-container p {
+            margin: 5px 0;
+        }
+        .placeholder {
+            color: #dc3545;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+        .options {
+            max-width: 500px;
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+        .options label {
+            display: block;
+            margin-bottom: 10px;
+            cursor: pointer;
+            padding: 8px;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+            font-family: Arial, sans-serif;
+        }
+        .options label:hover {
+                background-color: #e9e9e9;
+        }
+        .feedback {
+            margin-top: 15px;
+            font-weight: bold;
+            display: none;
+            font-family: 'Roboto', sans-serif;
+        }
+        .feedback-explanation {
+            font-weight: normal;
+            font-size: 0.9em;
+            margin-top: 5px;
+            color: #0056b3;
+        }
+        .feedback-correct-answer-text {
+            color: #0056b3;
+        }
+        .correct {
+            color: green;
+        }
+        .incorrect {
+            color: red;
+        }
+        .highlight-correct {
+            background-color: #d4edda !important;
+            border-color: #28a745 !important;
+        }
+        .highlight-incorrect-selected {
+            background-color: #f8d7da !important;
+            border-color: #dc3545 !important;
+        }
+        .validate-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 15px;
+            transition: background-color 0.3s ease;
+        }
+        .validate-btn:hover {
+            background-color: #0056b3;
+        }
+        .validation-error {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 15px;
+            font-weight: normal;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-content-wrapper">
+        <div class="header">
+            <div class="header-top">
+                <p><strong>Enseignant:</strong> Nguyễn Hoàng Vũ</p>
+                <p><strong>Jour de test:</strong> <span id="currentDate"></span></p>
+            </div>
+            <h1>Exercice - Le Plus-que-parfait (Partie 5)</h1> </div>
+
+        <div id="score-container">
+            Score: <strong id="current-score-value">0</strong> / <strong id="total-questions-value">10</strong>
+        </div>
+
+        <div id="quiz-container">
+            <div class="question-block" id="q1a" data-correct-answer="avaient sorti">
+                <p class="question-text">1. Ils (sortir) __________ la voiture du garage.</p>
+                <p class="question-translation"><em>(Họ đã đưa xe ra khỏi gara.)</em></p>
+                <div class="rephrased-sentence-container">
+                    <p>Ils <span class="placeholder" id="q1a_p1_placeholder">__________</span> la voiture du garage.</p>
+                </div>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q1a', 'Động từ &quot;sortir&quot; dùng trợ động từ &quot;être&quot;. Với chủ ngữ &quot;Ils&quot; (đực, nhiều), Plus-que-parfait là &quot;étaient sortis&quot;.', 'error-q1a')">Valider</button>
+                <div class="feedback" id="feedback-q1a"></div>
+                <div class="validation-error" id="error-q1a">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+            <div class="question-block" id="q1b" data-correct-answer="avaient roulé">
+                <p class="question-text">1. Ils (rouler) __________ une heure.</p>
+                <p class="question-translation"><em>(Họ đã lái xe một giờ.)</em></p>
+                <div class="rephrased-sentence-container">
+                    <p>Ils <span class="placeholder" id="q1b_p1_placeholder">__________</span> une heure.</p>
+                </div>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q1b', 'Động từ &quot;rouler&quot; dùng trợ động từ &quot;avoir&quot;. Với chủ ngữ &quot;Ils&quot;, Plus-que-parfait là &quot;avaient roulé&quot;.', 'error-q1b')">Valider</button>
+                <div class="feedback" id="feedback-q1b"></div>
+                <div class="validation-error" id="error-q1b">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+            <div class="question-block" id="q1c" data-correct-answer="avaient suivi">
+                <p class="question-text">1. Ils (suivre) __________ attentivement le plan.</p>
+                <p class="question-translation"><em>(Họ đã tuân thủ kế hoạch một cách cẩn thận.)</em></p>
+                <div class="rephrased-sentence-container">
+                    <p>Ils <span class="placeholder" id="q1c_p1_placeholder">__________</span> attentivement le plan.</p>
+                </div>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q1c', 'Động từ &quot;suivre&quot; dùng trợ động từ &quot;avoir&quot;. Với chủ ngữ &quot;Ils&quot;, Plus-que-parfait là &quot;avaient suivi&quot;.', 'error-q1c')">Valider</button>
+                <div class="feedback" id="feedback-q1c"></div>
+                <div class="validation-error" id="error-q1c">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+            <div class="question-block" id="q1d" data-correct-answer="ne s'étaient pas trompés">
+                <p class="question-text">1. Ils (ne pas se tromper) __________.</p>
+                <p class="question-translation"><em>(Họ đã không nhầm lẫn.)</em></p>
+                <div class="rephrased-sentence-container">
+                    <p>Ils <span class="placeholder" id="q1d_p1_placeholder">__________</span>.</p>
+                </div>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q1d', 'Động từ phản thân &quot;se tromper&quot; dùng trợ động từ &quot;être&quot;. Với chủ ngữ &quot;Ils&quot; (đực, nhiều) và ở dạng phủ định, Plus-que-parfait là &quot;ne s\'étaient pas trompés&quot;.', 'error-q1d')">Valider</button>
+                <div class="feedback" id="feedback-q1d"></div>
+                <div class="validation-error" id="error-q1d">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+            <div class="question-block" id="q1e" data-correct-answer="étaient arrivés">
+                <p class="question-text">1. Ils (arriver) __________ à l'heure.</p>
+                <p class="question-translation"><em>(Họ đã đến đúng giờ.)</em></p>
+                <div class="rephrased-sentence-container">
+                    <p>Ils <span class="placeholder" id="q1e_p1_placeholder">__________</span> à l'heure.</p>
+                </div>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q1e', 'Động từ &quot;arriver&quot; dùng trợ động từ &quot;être&quot;. Với chủ ngữ &quot;Ils&quot; (đực, nhiều), Plus-que-parfait là &quot;étaient arrivés&quot;.', 'error-q1e')">Valider</button>
+                <div class="feedback" id="feedback-q1e"></div>
+                <div class="validation-error" id="error-q1e">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+            <div class="question-block" id="q2a" data-correct-answer="étais parti">
+                <p class="question-text">2. Ce jour-là, je (partir) __________ à la plage avec des amis.</p>
+                <p class="question-translation"><em>(Ngày hôm đó, tôi đã đi biển với bạn bè.)</em></p>
+                <div class="rephrased-sentence-container">
+                    <p>Ce jour-là, je <span class="placeholder" id="q2a_p1_placeholder">__________</span> à la plage avec des amis.</p>
+                </div>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q2a', 'Động từ &quot;partir&quot; dùng trợ động từ &quot;être&quot;. Với chủ ngữ &quot;je&quot; (giả định đực, ít), Plus-que-parfait là &quot;étais parti&quot;.', 'error-q2a')">Valider</button>
+                <div class="feedback" id="feedback-q2a"></div>
+                <div class="validation-error" id="error-q2a">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+            <div class="question-block" id="q2b" data-correct-answer="nous nous étions baignés">
+                <p class="question-text">2. Nous (se baigner) __________.</p>
+                <p class="question-translation"><em>(Chúng tôi đã tắm.)</em></p>
+                <div class="rephrased-sentence-container">
+                    <p>Nous <span class="placeholder" id="q2b_p1_placeholder">__________</span>.</p>
+                </div>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q2b', 'Động từ phản thân &quot;se baigner&quot; dùng trợ động từ &quot;être&quot;. Với chủ ngữ &quot;nous&quot; (giả định đực, nhiều), Plus-que-parfait là &quot;nous nous étions baignés&quot;.', 'error-q2b')">Valider</button>
+                <div class="feedback" id="feedback-q2b"></div>
+                <div class="validation-error" id="error-q2b">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+            <div class="question-block" id="q2c" data-correct-answer="avions piqueniqué">
+                <p class="question-text">2. Nous (piqueniquer) __________.</p>
+                <p class="question-translation"><em>(Chúng tôi đã dã ngoại.)</em></p>
+                <div class="rephrased-sentence-container">
+                    <p>Nous <span class="placeholder" id="q2c_p1_placeholder">__________</span>.</p>
+                </div>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q2c', 'Động từ &quot;piqueniquer&quot; dùng trợ động từ &quot;avoir&quot;. Với chủ ngữ &quot;nous&quot;, Plus-que-parfait là &quot;avions piqueniqué&quot;.', 'error-q2c')">Valider</button>
+                <div class="feedback" id="feedback-q2c"></div>
+                <div class="validation-error" id="error-q2c">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+            <div class="question-block" id="q2d" data-correct-answer="avions passé">
+                <p class="question-text">2. Nous (passer) __________ une bonne après-midi.</p>
+                <p class="question-translation"><em>(Chúng tôi đã có một buổi chiều vui vẻ.)</em></p>
+                <div class="rephrased-sentence-container">
+                    <p>Nous <span class="placeholder" id="q2d_p1_placeholder">__________</span> une bonne après-midi.</p>
+                </div>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q2d', 'Động từ &quot;passer&quot; dùng trợ động từ &quot;avoir&quot;. Với chủ ngữ &quot;nous&quot;, Plus-que-parfait là &quot;avions passé&quot;.', 'error-q2d')">Valider</button>
+                <div class="feedback" id="feedback-q2d"></div>
+                <div class="validation-error" id="error-q2d">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+            <div class="question-block" id="q2e" data-correct-answer="étions allés">
+                <p class="question-text">2. Le soir, nous (aller) __________ danser dans une discothèque.</p>
+                <p class="question-translation"><em>(Buổi tối, chúng tôi đã đi nhảy ở một vũ trường.)</em></p>
+                <div class="rephrased-sentence-container">
+                    <p>Le soir, nous <span class="placeholder" id="q2e_p1_placeholder">__________</span> danser dans une discothèque.</p>
+                </div>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q2e', 'Động từ &quot;aller&quot; dùng trợ động từ &quot;être&quot;. Với chủ ngữ &quot;nous&quot; (giả định đực, nhiều), Plus-que-parfait là &quot;étions allés&quot;.', 'error-q2e')">Valider</button>
+                <div class="feedback" id="feedback-q2e"></div>
+                <div class="validation-error" id="error-q2e">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+        </div>
+    </div> <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const date = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('currentDate').textContent = date.toLocaleDateString('fr-FR', options);
+            
+            // Định nghĩa các câu hỏi và đáp án cho việc xáo trộn
+            const questionsData = {
+                q1a: {
+                    original_text: '1a. Ils (sortir) __________ la voiture du garage.',
+                    translation_text: 'Họ đã đưa xe ra khỏi gara.',
+                    rephrased_template: 'Ils <span class="placeholder" id="q1a_p1_placeholder">__________</span> la voiture du garage.',
+                    correct: 'avaient sorti',
+                    p1_text_original: 'sortir',
+                    options: [
+                        'étaient sortis',
+                        'avaient sorti',
+                        'sont sortis',
+                        'avaient sortis'
+                    ]
+                },
+                q1b: {
+                    original_text: '1b. Ils (rouler) __________ une heure.',
+                    translation_text: 'Họ đã lái xe một giờ.',
+                    rephrased_template: 'Ils <span class="placeholder" id="q1b_p1_placeholder">__________</span> une heure.',
+                    correct: 'avaient roulé',
+                    p1_text_original: 'rouler',
+                    options: [
+                        'avaient roulé',
+                        'étaient roulés',
+                        'ont roulé',
+                        'avaient roulés'
+                    ]
+                },
+                q1c: {
+                    original_text: '1c. Ils (suivre) __________ attentivement le plan.',
+                    translation_text: 'Họ đã tuân thủ kế hoạch một cách cẩn thận.',
+                    rephrased_template: 'Ils <span class="placeholder" id="q1c_p1_placeholder">__________</span> attentivement le plan.',
+                    correct: 'avaient suivi',
+                    p1_text_original: 'suivre',
+                    options: [
+                        'avaient suivi',
+                        'étaient suivis',
+                        'ont suivi',
+                        'avaient suivis'
+                    ]
+                },
+                q1d: {
+                    original_text: '1d. Ils (ne pas se tromper) __________.',
+                    translation_text: 'Họ đã không nhầm lẫn.',
+                    rephrased_template: 'Ils <span class="placeholder" id="q1d_p1_placeholder">__________</span>.',
+                    correct: 'ne s\'étaient pas trompés',
+                    p1_text_original: 'ne pas se tromper',
+                    options: [
+                        'ne s\'étaient pas trompés',
+                        'ne s\'avaient pas trompés',
+                        'ne se sont pas trompés',
+                        'ne s\'était pas trompé'
+                    ]
+                },
+                q1e: {
+                    original_text: '1e. Ils (arriver) __________ à l\'heure.',
+                    translation_text: 'Họ đã đến đúng giờ.',
+                    rephrased_template: 'Ils <span class="placeholder" id="q1e_p1_placeholder">__________</span> à l\'heure.',
+                    correct: 'étaient arrivés',
+                    p1_text_original: 'arriver',
+                    options: [
+                        'étaient arrivés',
+                        'avaient arrivé',
+                        'sont arrivés',
+                        'étaient arrivées'
+                    ]
+                },
+                q2a: {
+                    original_text: '2a. Ce jour-là, je (partir) __________ à la plage avec des amis.',
+                    translation_text: 'Ngày hôm đó, tôi đã đi biển với bạn bè.',
+                    rephrased_template: 'Ce jour-là, je <span class="placeholder" id="q2a_p1_placeholder">__________</span> à la plage avec des amis.',
+                    correct: 'étais parti', // Giả định "je" là đực
+                    p1_text_original: 'partir',
+                    options: [
+                        'étais parti',
+                        'étais partie',
+                        'suis parti',
+                        'avais parti'
+                    ]
+                },
+                q2b: {
+                    original_text: '2b. Nous (se baigner) __________.',
+                    translation_text: 'Chúng tôi đã tắm.',
+                    rephrased_template: 'Nous <span class="placeholder" id="q2b_p1_placeholder">__________</span>.',
+                    correct: 'nous nous étions baignés', // Giả định "nous" là đực
+                    p1_text_original: 'se baigner',
+                    options: [
+                        'nous nous étions baignés',
+                        'nous nous étions baignées',
+                        'nous nous sommes baignés',
+                        'nous avions baigné'
+                    ]
+                },
+                q2c: {
+                    original_text: '2c. Nous (piqueniquer) __________.',
+                    translation_text: 'Chúng tôi đã dã ngoại.',
+                    rephrased_template: 'Nous <span class="placeholder" id="q2c_p1_placeholder">__________</span>.',
+                    correct: 'avions piqueniqué',
+                    p1_text_original: 'piqueniquer',
+                    options: [
+                        'avions piqueniqué',
+                        'étions piqueniqué',
+                        'avons piqueniqué',
+                        'avions piqueniqués'
+                    ]
+                },
+                q2d: {
+                    original_text: '2d. Nous (passer) __________ une bonne après-midi.',
+                    translation_text: 'Chúng tôi đã có một buổi chiều vui vẻ.',
+                    rephrased_template: 'Nous <span class="placeholder" id="q2d_p1_placeholder">__________</span> une bonne après-midi.',
+                    correct: 'avions passé',
+                    p1_text_original: 'passer',
+                    options: [
+                        'avions passé',
+                        'étions passés',
+                        'avons passé',
+                        'avions passés'
+                    ]
+                },
+                q2e: {
+                    original_text: '2e. Le soir, nous (aller) __________ danser dans une discothèque.',
+                    translation_text: 'Buổi tối, chúng tôi đã đi nhảy ở một vũ trường.',
+                    rephrased_template: 'Le soir, nous <span class="placeholder" id="q2e_p1_placeholder">__________</span> danser dans une discothèque.',
+                    correct: 'étions allés', // Giả định "nous" là đực
+                    p1_text_original: 'aller',
+                    options: [
+                        'étions allés',
+                        'étions allées',
+                        'sommes allés',
+                        'avions allés'
+                    ]
+                }
+            };
+
+            // Hàm xáo trộn mảng
+            function shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]]; // Hoán đổi vị trí
+                }
+            }
+
+            // Tạo và xáo trộn các lựa chọn đáp án cho mỗi câu hỏi
+            for (const qId in questionsData) {
+                const qData = questionsData[qId];
+                const questionBlock = document.getElementById(qId);
+                const optionsDiv = questionBlock.querySelector('.options');
+                
+                // Hiển thị câu hỏi gốc và bản dịch
+                questionBlock.querySelector('.question-text').innerHTML = qData.original_text;
+                questionBlock.querySelector('.question-translation').innerHTML = `<em>(${qData.translation_text})</em>`;
+
+                // Hiển thị câu đã viết lại với chỗ trống
+                const rephrasedContainer = questionBlock.querySelector('.rephrased-sentence-container');
+                rephrasedContainer.innerHTML = qData.rephrased_template;
+                
+                // Điền động từ gốc vào placeholder ban đầu
+                const p1_placeholder = questionBlock.querySelector(`#${qId}_p1_placeholder`);
+                const p2_placeholder = questionBlock.querySelector(`#${qId}_p2_placeholder`);
+                const p3_placeholder = questionBlock.querySelector(`#${qId}_p3_placeholder`);
+                const p4_placeholder = questionBlock.querySelector(`#${qId}_p4_placeholder`);
+                const p5_placeholder = questionBlock.querySelector(`#${qId}_p5_placeholder`);
+
+
+                if (p1_placeholder) p1_placeholder.textContent = '(' + qData.p1_text_original + ')';
+                if (p2_placeholder) p2_placeholder.textContent = '(' + qData.p2_text_original + ')';
+                if (p3_placeholder) p3_placeholder.textContent = '(' + qData.p3_text_original + ')';
+                if (p4_placeholder) p4_placeholder.textContent = '(' + qData.p4_text_original + ')';
+                if (p5_placeholder) p5_placeholder.textContent = '(' + qData.p5_text_original + ')';
+
+
+                let currentOptions = [...qData.options];
+                shuffleArray(currentOptions);
+
+                optionsDiv.innerHTML = '';
+                currentOptions.forEach(optionText => {
+                    const label = document.createElement('label');
+                    const input = document.createElement('input');
+                    input.type = 'radio';
+                    input.name = qId;
+                    input.value = optionText; // Giá trị radio button là cặp participe passé
+                    label.appendChild(input);
+                    label.innerHTML += ' ' + optionText; // Hiển thị dạng "P1 | P2"
+                    optionsDiv.appendChild(label);
+                });
+            }
+
+            updateOverallScore();
+        });
+
+        const answeredQuestions = {};
+        const totalQuestions = 10; 
+
+        const currentScoreValue = document.getElementById('current-score-value');
+        const totalQuestionsValue = document.getElementById('total-questions-value');
+
+        function updateOverallScore() {
+            let correctCount = 0;
+            const allQuestionIds = ['q1a', 'q1b', 'q1c', 'q1d', 'q1e', 'q2a', 'q2b', 'q2c', 'q2d', 'q2e'];
+            allQuestionIds.forEach(id => {
+                if (answeredQuestions[id] === true) {
+                    correctCount++;
+                }
+            });
+
+            currentScoreValue.textContent = correctCount;
+            totalQuestionsValue.textContent = totalQuestions;
+        }
+
+        function checkAnswer(questionId, explanation, errorDivId) {
+            const questionBlock = document.getElementById(questionId);
+            const selectedOption = questionBlock.querySelector(`input[name="${questionId}"]:checked`);
+            const feedbackDiv = questionBlock.querySelector('.feedback');
+            const optionsLabels = questionBlock.querySelectorAll('.options label');
+            const correctAnswer = questionBlock.dataset.correctAnswer;
+            const errorDiv = document.getElementById(errorDivId);
+
+            document.querySelectorAll('.validation-error').forEach(div => {
+                div.style.display = 'none';
+            });
+
+            optionsLabels.forEach(label => {
+                label.classList.remove('highlight-correct', 'highlight-incorrect-selected');
+            });
+            feedbackDiv.style.display = 'none';
+            feedbackDiv.classList.remove('correct', 'incorrect');
+            feedbackDiv.innerHTML = '';
+
+            if (!selectedOption) {
+                errorDiv.style.display = 'block';
+                setTimeout(() => {
+                    errorDiv.style.display = 'none';
+                }, 3000);
+                return;
+            }
+
+            const userAnswer = selectedOption.value;
+            let feedbackMessage = "";
+
+            optionsLabels.forEach(label => {
+                if (label.querySelector('input').value === correctAnswer) {
+                    label.classList.add('highlight-correct');
+                }
+            });
+
+            if (userAnswer === correctAnswer) {
+                feedbackMessage = "<b>Chính xác!</b> Đây là đáp án đúng.";
+                feedbackDiv.classList.add('correct');
+                answeredQuestions[questionId] = true;
+            } else {
+                feedbackMessage = `<b>Không chính xác.</b> Đáp án đúng là <span class="feedback-correct-answer-text">"${correctAnswer}"</span>.`;
+                feedbackDiv.classList.add('incorrect');
+                selectedOption.closest('label').classList.add('highlight-incorrect-selected');
+                answeredQuestions[questionId] = false;
+            }
+            feedbackDiv.innerHTML = feedbackMessage + `<div class="feedback-explanation">Giải thích: ${explanation}</div>`;
+            feedbackDiv.style.display = 'block';
+
+            // Cập nhật các placeholder với đáp án ĐÚNG sau khi kiểm tra
+            const correctParts = correctAnswer.split(' | ');
+            const placeholders = [];
+            for (let i = 1; i <= 5; i++) { // Lặp qua p1_placeholder đến p5_placeholder
+                const p = questionBlock.querySelector(`#${questionId}_p${i}_placeholder`);
+                if (p) placeholders.push(p);
+            }
+            
+            placeholders.forEach((p, index) => {
+                if (correctParts[index]) {
+                    p.textContent = correctParts[index];
+                }
+            });
+
+            updateOverallScore();
+        }
+    </script>
+</body>
+</html>

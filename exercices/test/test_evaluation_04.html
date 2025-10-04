@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2025 by anonymous (http://jsbin.com/tegoletapu/1/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2025 by anonymous (http://jsbin.com/mufileduyu/4/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài kiểm tra Tiếng Pháp</title>
+    <style>
+        /* CSS để làm cho trang kiểm tra đẹp hơn */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-header {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 0.95em;
+            color: #555;
+        }
+        
+        .info-header p {
+            margin: 0;
+        }
+
+        .quiz-status-bar {
+            position: sticky;
+            top: 0;
+            background-color: #4a5a7b;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0;
+            z-index: 1000;
+        }
+
+        .quiz-status-bar h1 {
+            margin: 0;
+            font-size: 1.5em;
+        }
+
+        #score-display, #timer-display {
+            font-size: 1.2em;
+            font-weight: bold;
+            background-color: #ffffff;
+            color: #4a5a7b;
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+        
+        #special-chars-palette {
+            position: sticky;
+            top: 75px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #e0e0e0;
+            z-index: 999;
+            text-align: center;
+            margin-left: -30px;
+            margin-right: -30px;
+            margin-bottom: 25px;
+        }
+
+        #special-chars-palette button {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 1.2em;
+            width: 35px;
+            height: 35px;
+            margin: 2px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        #special-chars-palette button:hover {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .audio-player-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            margin-right: 15px;
+            vertical-align: middle;
+        }
+
+        .audio-player-button svg {
+            width: 28px;
+            height: 28px;
+            fill: #3498db;
+            transition: fill 0.2s;
+        }
+        
+        .audio-player-button:hover svg {
+            fill: #2980b9;
+        }
+        
+         .audio-player-button.playing svg {
+            fill: #e74c3c;
+        }
+
+        .section-title {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+        
+        .reading-section-image {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .question-block {
+            margin-bottom: 25px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background-color: #fdfdfd;
+        }
+
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        /* === THAY ĐỔI: Căn lề trái cho ảnh trong câu hỏi === */
+        .question-image, .listening-image {
+            display: block;
+            height: auto;
+            margin: 20px 0; /* Bỏ 'auto' để căn lề trái */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .question-image {
+             max-width: 100%;
+        }
+
+        .listening-image {
+            max-width: 300px;
+        }
+
+        .reading-passage, .cloze-passage {
+            background-color: #eef3f8;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin-bottom: 15px;
+            font-style: italic;
+            line-height: 2.5;
+        }
+        
+        .cloze-passage input {
+            width: 120px !important;
+            max-width: none !important;
+            text-align: center;
+            font-style: normal;
+        }
+
+        .answers label {
+            display: block;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            max-width: 500px;
+        }
+
+        .answers label:hover {
+            background-color: #e9ecef;
+        }
+
+        .answers input[type="radio"] {
+            margin-right: 10px;
+        }
+        
+        .question-block input[type="text"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1em;
+            width: 100%; 
+            max-width: 400px;
+            box-sizing: border-box; 
+            margin-top: 5px;
+        }
+
+        .validate-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            display: block;
+            margin-top: 15px; 
+            transition: background-color 0.3s;
+        }
+
+        .validate-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .validate-btn:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+        
+        .show-transcription-btn {
+            background-color: #7f8c8d;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            cursor: pointer;
+            display: block;
+            margin-top: 10px;
+        }
+
+        .feedback {
+            margin-top: 15px;
+            font-weight: normal;
+            font-size: 0.95em;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .transcription-text {
+            background-color: #f5f5f5;
+            border-left: 4px solid #7f8c8d;
+            padding: 10px 15px;
+            margin-top: 15px;
+            font-style: italic;
+            color: #34495e;
+        }
+        
+        .feedback-correct {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .feedback-incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .feedback-warning {
+            background-color: #fffbe6;
+            color: #8a6d3b;
+        }
+
+        .correct-answer {
+            background-color: #d4edda !important;
+            border-color: #c3e6cb !important;
+        }
+
+        .incorrect-answer {
+            background-color: #f8d7da !important;
+            border-color: #f5c6cb !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="quiz-container">
+        <div class="info-header">            
+            <p><strong>Enseignant:</strong> Nguyễn Hoàng Vũ</p>
+            <p><strong>Ngày kiểm tra:</strong> <span id="test-date"></span></p>
+        </div>
+
+        <div class="quiz-status-bar">
+            <h1>Test d'évaluation 04</h1>
+            <div>
+                <span id="score-display">Điểm: 0 / 29</span>
+                <span id="timer-display">Thời gian: 10:00</span>
+            </div>
+        </div>
+        
+        <div id="special-chars-palette">
+            <button type="button" onclick="insertChar('é')">é</button>
+            <button type="button" onclick="insertChar('è')">è</button>
+            <button type="button" onclick="insertChar('ê')">ê</button>
+            <button type="button" onclick="insertChar('à')">à</button>
+            <button type="button" onclick="insertChar('â')">â</button>
+            <button type="button" onclick="insertChar('ô')">ô</button>
+            <button type="button" onclick="insertChar('û')">û</button>
+            <button type="button" onclick="insertChar('ç')">ç</button>
+            <button type="button" onclick="insertChar('ë')">ë</button>
+            <button type="button" onclick="insertChar('ï')">ï</button>
+            <button type="button" onclick="insertChar('î')">î</button>
+            <button type="button" onclick="insertChar('ü')">ü</button>
+        </div>
+
+        <div id="all-questions-container">
+            
+            <div class="question-block" id="q1">               
+                <p class="cloze-passage">
+                    1. Je ne <input type="text" id="cloze-1-1" placeholder="savoir" onfocus="setLastFocused(this)"> pas où habite Julie.
+                    Je ne connais pas <input type="text" id="cloze-1-2" placeholder="son, sa, ses" onfocus="setLastFocused(this)"> adresse. (Chapitres 26/6)
+                    
+                </p>
+                <button class="validate-btn" onclick="validateCloze(1, 1)">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          
+          <div class="question-block" id="q2">               
+                <p class="cloze-passage">
+                    2. Paul  s'est <input type="text" id="cloze-2-1" placeholder="casser" onfocus="setLastFocused(this)"> une dent
+                    en <input type="text" id="cloze-2-2" placeholder="manger" onfocus="setLastFocused(this)"> un sandwich ! (Chapitres 40/36)
+                    
+                </p>
+                <button class="validate-btn" onclick="validateCloze(2, 2)">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          <div class="question-block" id="q3">               
+                <p class="cloze-passage">
+                    3. Quand êtes-vous allés <input type="text" id="cloze-3-1" placeholder="à, au, en" onfocus="setLastFocused(this)"> Danemark ?
+                    - Nous y sommes <input type="text" id="cloze-3-2" placeholder="aller" onfocus="setLastFocused(this)"> il y a deux ans. (Chapitres 10/24)
+                    
+                </p>
+                <button class="validate-btn" onclick="validateCloze(3, 3)">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          <div class="question-block" id="q4">               
+                <p class="cloze-passage">
+                    4. Paul revient <input type="text" id="cloze-4-1" placeholder="dans, en" onfocus="setLastFocused(this)"> cinq minutes.
+                    - Voulez-vous boire un café en attendant qu'il <input type="text" id="cloze-4-2" placeholder="revenir" onfocus="setLastFocused(this)">. (Chapitres 41/51)
+                    
+                </p>
+                <button class="validate-btn" onclick="validateCloze(4, 4)">Valider</button>
+                <div class="feedback"></div>
+            </div>
+           <div class="question-block" id="q5">               
+                <p class="cloze-passage">
+                    5. Tu as vu Julie ? - Oui, je l' <input type="text" id="cloze-5-1" placeholder="voir" onfocus="setLastFocused(this)">
+                    et je <input type="text" id="cloze-5-2" placeholder="lui, elle, l', la" onfocus="setLastFocused(this)"> ai parlé. (Chapitres 28)
+                    
+                </p>
+                <button class="validate-btn" onclick="validateCloze(5, 5)">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          <div class="question-block" id="q6">               
+                <p class="cloze-passage">
+                    6. J'ai commencé  <input type="text" id="cloze-6-1" placeholder="à, de" onfocus="setLastFocused(this)"> faire mes valises.
+                    et je suis triste <input type="text" id="cloze-6-2" placeholder="à, de" onfocus="setLastFocused(this)"> partir. (Chapitres 28)
+                    
+                </p>
+                <button class="validate-btn" onclick="validateCloze(6, 6)">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          <div class="question-block" id="q7">               
+                <p class="cloze-passage">
+                    7. Avant, je <input type="text" id="cloze-7-1" placeholder="faire" onfocus="setLastFocused(this)"> du sport,
+                    mais maintenant, je n(e) <input type="text" id="cloze-7-2" placeholder="le, la, en, y" onfocus="setLastFocused(this)"><input type="text" id="cloze-7-3" placeholder="faire" onfocus="setLastFocused(this)"> plus du tout. (Chapitres 43/20)
+                    
+                </p>
+                <button class="validate-btn" onclick="validateCloze(7, 7)">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          <div class="question-block" id="q8">               
+                <p class="cloze-passage">
+                    8. C'est moi qui <input type="text" id="cloze-8-1" placeholder="avoir" onfocus="setLastFocused(this)"> appelé la police
+                    après <input type="text" id="cloze-8-2" placeholder="avoir" onfocus="setLastFocused(this)"> vu l'accident. (Chapitres 32/41)
+                    
+                </p>
+                <button class="validate-btn" onclick="validateCloze(8, 8)">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          
+          <div class="question-block" id="q9">               
+                <p class="cloze-passage">
+                    9. Je ne comprends pas <input type="text" id="cloze-9-1" placeholder="ce que, ce qui" onfocus="setLastFocused(this)">
+                    vous dites.  <input type="text" id="cloze-9-2" placeholder="Pouvoir" onfocus="setLastFocused(this)">
+                    -vous répéter, s'il vous plaît. (Chapitres 35/26)
+                    
+                </p>
+                <button class="validate-btn" onclick="validateCloze(9, 9)">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          <div class="question-block" id="q10">               
+                <p class="cloze-passage">
+                    10. Je suggère que nous <input type="text" id="cloze-10-1" placeholder="prendre" onfocus="setLastFocused(this)">
+                    un verre avant <input type="text" id="cloze-10-2" placeholder="à, de" onfocus="setLastFocused(this)">
+                     <input type="text" id="cloze-10-3" placeholder="se, nous" onfocus="setLastFocused(this)">
+                    quitter. (Chapitres 51/41)
+                    
+                </p>
+                <button class="validate-btn" onclick="validateCloze(10, 10)">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          
+          <div class="question-block" id="q11">               
+                <p class="cloze-passage">
+                    11. On m'a posé beaucoup<input type="text" id="cloze-11-1" placeholder="de, ko điền gì" onfocus="setLastFocused(this)">
+                    questions, et j'ai dit tout <input type="text" id="cloze-11-2" placeholder="ce, ceux" onfocus="setLastFocused(this)">
+                     <input type="text" id="cloze-11-3" placeholder="que, qui" onfocus="setLastFocused(this)">
+                    je savais. (Chapitres 19/32)
+                    
+                </p>
+                <button class="validate-btn" onclick="validateCloze(11, 11)">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          <div class="question-block" id="q12">               
+                <p class="cloze-passage">
+                    12. Au cas où vous <input type="text" id="cloze-12-1" placeholder="avoir" onfocus="setLastFocused(this)">
+                    un problème, n'hésitez pas <input type="text" id="cloze-12-2" placeholder="à, de" onfocus="setLastFocused(this)">
+                     
+                   m'appeler. (Chapitres 48/37)
+                    
+                </p>
+                <button class="validate-btn" onclick="validateCloze(12, 12)">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          <div class="question-block" id="q13">               
+                <p class="cloze-passage">
+                    13. J'ai eu peur, quand ma mère<input type="text" id="cloze-13-1" placeholder="avoir, être" onfocus="setLastFocused(this)">
+                     <input type="text" id="cloze-13-2" placeholder="tomber" onfocus="setLastFocused(this)">
+                     
+                   dans l'escalier! (Chapitres 40)
+                    
+                </p>
+                <button class="validate-btn" onclick="validateCloze(13, 13)">Valider</button>
+                <div class="feedback"></div>
+            </div>
+           <div class="question-block" id="q14">               
+                <p class="cloze-passage">
+                    14. Lily s'est<input type="text" id="cloze-14-1" placeholder="marier" onfocus="setLastFocused(this)">
+                     <input type="text" id="cloze-14-2" placeholder="cách đây" onfocus="setLastFocused(this)">
+                     un ans et elle a eu un bébé <input type="text" id="cloze-14-3" placeholder="cách đây" onfocus="setLastFocused(this)">
+                   un mois. (Chapitres 41)
+                    
+                </p>
+                <button class="validate-btn" onclick="validateCloze(14, 14)">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          <div class="question-block" id="q15"> 
+                <p>Câu điều kiện loại mấy ?</p>
+                <p class="cloze-passage">
+                    15. S'il <input type="text" id="cloze-15-1" placeholder="faire" onfocus="setLastFocused(this)">
+                     beau demain, nous <input type="text" id="cloze-15-2" placeholder="aller" onfocus="setLastFocused(this)">
+                     à la piscine.
+                   (Chapitres 50)
+                    
+                </p>
+                <button class="validate-btn" onclick="validateCloze(15, 15)">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          
+          <div class="question-block" id="q16"> 
+                <p class="cloze-passage">
+                    16. J'espère qu'il <input type="text" id="cloze-16-1" placeholder="faire" onfocus="setLastFocused(this)">
+                     beau demain, mais j'ai peur qu'il <input type="text" id="cloze-16-2" placeholder="faire" onfocus="setLastFocused(this)">
+                    encore froid
+                   (Chapitres 51)
+                    
+                </p>
+                <button class="validate-btn" onclick="validateCloze(16, 16)">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          <div class="question-block" id="q17"> 
+                <p class="cloze-passage">
+                    17. Pour que les enfants <input type="text" id="cloze-17-1" placeholder="être" onfocus="setLastFocused(this)">
+                     en forme, il faut qu'ils <input type="text" id="cloze-17-2" placeholder="faire" onfocus="setLastFocused(this)">
+                    du sport.
+                   (Chapitres 51)
+                    
+                </p>
+                <button class="validate-btn" onclick="validateCloze(17, 17)">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          <div class="question-block" id="q18"> 
+                <p class="cloze-passage">
+                    18. Je vais te raconter <input type="text" id="cloze-18-1" placeholder="ce que, ce qui" onfocus="setLastFocused(this)">
+                     s'est passé à la réunion hier, puisque tu n' <input type="text" id="cloze-18-2" placeholder="avoir, être" onfocus="setLastFocused(this)">
+                     pas venu.
+                   (Chapitres 32/52)
+                    
+                </p>
+                <button class="validate-btn" onclick="validateCloze(18, 18)">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          <div class="question-block" id="q19"> 
+                <p class="cloze-passage">
+                    19. Pour qu'un homme <input type="text" id="cloze-19-1" placeholder="être" onfocus="setLastFocused(this)">
+                     beau, il faut qu'il <input type="text" id="cloze-19-2" placeholder="avoir" onfocus="setLastFocused(this)">
+                     de personnalité.
+                   (Chapitres 51)
+                    
+                </p>
+                <button class="validate-btn" onclick="validateCloze(19, 19)">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          <div class="question-block" id="q20"> 
+            <p>Câu điều kiện loại mấy ?</p>
+                <p class="cloze-passage">
+                    20. Si j'  
+                      <input type="text" id="cloze-20-1" placeholder="savoir" onfocus="setLastFocused(this)">
+                     que le film était si mauvais, je ne serait pas allé 
+                    <input type="text" id="cloze-20-2" placeholder="le, la, en, y" onfocus="setLastFocused(this)">
+                    voir.
+                   (Chapitres 50/28)
+                    
+                </p>
+                <button class="validate-btn" onclick="validateCloze(20, 20)">Valider</button>
+                <div class="feedback"></div>
+            </div>
+
+           
+        </div>
+    </div>
+
+    <script>
+        let score = 0;
+        let lastFocusedInput = null;
+        let timeInSeconds = 3000;
+        let timerInterval = null;
+
+        const clozeAnswers = [
+            ['sais', 'son'],
+          ['cassé', 'mangeant'],
+          ['au', 'allés'],
+          ['dans', 'revienne'],
+          ['ai vue', 'lui'],
+          ['à', 'de'],
+          ['faisais', 'en', 'fais'],
+          ['ai', 'avoir'],
+          ['ce que', 'Pouvez'],
+          ['prenions', 'de', 'nous'],
+          ['de', 'ce', "que"],
+          ['auriez', 'à'],
+          ['est', 'tombée'],
+          ['mariée', 'il y a', 'il y a'],
+          ['fait', 'irons'],
+          ['fera', 'fasse'],
+          ['soient', 'fassent'],
+           ['ce qui', 'es'],
+           ['soit', 'ait'],
+           
+          ['avais su', 'le']
+         
+        ];
+        
+        const maxScore = clozeAnswers.flat().length; // 16 câu đơn + 13 chỗ trống = 29 điểm
+
+        const transcriptionData = {
+            9: "Le train pour Lyon partira à quinze heures trente du quai numéro sept.",
+            10: "N'oubliez pas d'acheter du pain, du lait et trois croissants pour le petit-déjeuner."
+        };
+        const feedbackExplanations = {
+            1: "Chính xác! 'Café' (cà phê) là một thức uống nóng phổ biến cho bữa sáng.",
+            2: "Chính xác! 'Médecin' (bác sĩ) là nghề nghiệp làm việc trong một 'hôpital' (bệnh viện).",
+            3: "Chính xác! Động từ 'aller' khi chia ở thì passé composé với chủ ngữ 'nous' sẽ là 'sommes allés'.",
+            4: "Chính xác! Cấu trúc so sánh hơn trong tiếng Pháp là 'plus + adjectif + que'.",
+            5: "Chính xác! Đoạn văn có ghi: 'Le week-end, j'aime me promener dans les musées...'",
+            6: "Chính xác! Đoạn văn có ghi: 'Je partage un appartement avec mon amie, Sophie.'",
+            7: "Chính xác! Đoạn văn có ghi: 'C'est la plus ancienne ville de France...'",
+            8: "Chính xác! Đoạn văn có ghi: '...où l'on peut trouver de nombreux restaurants de fruits de mer.'",
+            9: "Chính xác! Audio nói '...partira à quinze heures trente' (15h30).",
+            10: "Chính xác! Audio liệt kê 'du pain, du lait et trois croissants'. 'Du fromage' không được nhắc đến.",
+            11: "Chính xác! Động từ 'finir' ở thì tương lai đơn (futur simple) với chủ ngữ 'je' được chia là 'finirai'.",
+            13: "Chính xác! 'Aéroport' là sân bay, nơi dành cho máy bay.",
+            14: "Chính xác! 'Qui' được dùng làm chủ ngữ cho động từ 'est en panne'.",
+            16: "Chính xác! Theo lịch của Pháp, 'lundi' (thứ Hai) là ngày đầu tuần.",
+            17: "Chính xác! 'Ne... personne' có nghĩa là 'không một ai'.",
+            19: "Chính xác! Chúng ta dùng mạo từ l' trước một danh từ số ít (như ordinateur) bắt đầu bằng một nguyên âm."
+        };
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const today = new Date();
+            const day = String(today.getDate()).padStart(2, '0');
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const year = today.getFullYear();
+            document.getElementById('test-date').textContent = `${day}/${month}/${year}`;
+            
+            updateScoreDisplay();
+            startTimer();
+        });
+
+        function startTimer() {
+            const timerDisplay = document.getElementById('timer-display');
+            clearInterval(timerInterval); 
+            
+            timerInterval = setInterval(() => {
+                timeInSeconds--;
+                const minutes = Math.floor(timeInSeconds / 60);
+                const seconds = timeInSeconds % 60;
+                timerDisplay.textContent = `Thời gian: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                if (timeInSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    timerDisplay.textContent = "Hết giờ!";
+                    alert("Hết giờ làm bài!");
+                    document.querySelectorAll('.validate-btn').forEach(btn => btn.disabled = true);
+                }
+            }, 1000);
+        }
+
+        function updateScoreDisplay() {
+            const scoreDisplay = document.getElementById('score-display');
+            scoreDisplay.textContent = `Điểm: ${score} / ${maxScore}`;
+        }
+        
+        function updateScore(points = 1) {
+            score += points;
+            updateScoreDisplay();
+        }
+        
+        function setLastFocused(element) {
+            lastFocusedInput = element;
+        }
+
+        function insertChar(char) {
+            if (lastFocusedInput) {
+                const startPos = lastFocusedInput.selectionStart;
+                const endPos = lastFocusedInput.selectionEnd;
+                const value = lastFocusedInput.value;
+                lastFocusedInput.value = value.substring(0, startPos) + char + value.substring(endPos, value.length);
+                lastFocusedInput.focus();
+                lastFocusedInput.selectionStart = startPos + 1;
+                lastFocusedInput.selectionEnd = startPos + 1;
+            }
+        }
+        
+        function playAudio(questionNumber, buttonElement) {
+            const audioPlayer = document.getElementById(`audio-player-${questionNumber}`);
+            if (audioPlayer) {
+                audioPlayer.play();
+                buttonElement.classList.add('playing');
+                buttonElement.disabled = true;
+                audioPlayer.onended = () => {
+                    buttonElement.classList.remove('playing');
+                    buttonElement.disabled = false;
+                };
+            }
+        }
+
+        function showTranscription(questionNumber) {
+            const transcriptText = transcriptionData[questionNumber];
+            const transcriptContainer = document.getElementById(`transcription-${questionNumber}`);
+            const transcriptButton = document.getElementById(`show-transcription-btn-${questionNumber}`);
+
+            if (transcriptText && transcriptContainer) {
+                transcriptContainer.textContent = transcriptText;
+                transcriptContainer.style.display = 'block';
+                if(transcriptButton) transcriptButton.style.display = 'none';
+            }
+        }
+
+        function validateRadio(questionNumber, correctAnswer) {
+            const questionBlock = document.getElementById(`q${questionNumber}`);
+            const radios = document.getElementsByName(`q${questionNumber}`);
+            const feedback = questionBlock.querySelector('.feedback');
+            const button = questionBlock.querySelector('.validate-btn');
+            let selectedAnswer = null;
+
+            radios.forEach(radio => { if (radio.checked) { selectedAnswer = radio; } });
+
+            if (selectedAnswer === null) {
+                feedback.textContent = "Vui lòng chọn một đáp án!";
+                feedback.className = 'feedback feedback-warning';
+                return;
+            }
+            
+            button.disabled = true;
+            radios.forEach(radio => radio.disabled = true);
+            const selectedLabel = selectedAnswer.parentElement;
+            const explanation = feedbackExplanations[questionNumber];
+
+            if (selectedAnswer.value === correctAnswer) {
+                feedback.textContent = explanation;
+                feedback.className = 'feedback feedback-correct';
+                selectedLabel.classList.add('correct-answer');
+                updateScore();
+            } else {
+                const cleanedExplanation = explanation.replace("Chính xác! ", "");
+                feedback.innerHTML = `<strong>Không chính xác.</strong> ${cleanedExplanation}<br>Đáp án đúng là lựa chọn <strong>"${correctAnswer.toUpperCase()}"</strong>.`;
+                feedback.className = 'feedback feedback-incorrect';
+                selectedLabel.classList.add('incorrect-answer');
+                radios.forEach(radio => { if (radio.value === correctAnswer) { radio.parentElement.classList.add('correct-answer'); } });
+            }
+
+            if (document.getElementById(`audio-player-${questionNumber}`)) {
+                const transcriptBtn = document.getElementById(`show-transcription-btn-${questionNumber}`);
+                if (transcriptBtn) {
+                    transcriptBtn.style.display = 'block';
+                }
+            }
+        }
+        
+        function validateText(questionNumber, correctAnswer) {
+            const questionBlock = document.getElementById(`q${questionNumber}`);
+            const inputField = questionBlock.querySelector('input[type="text"]');
+            const feedback = questionBlock.querySelector('.feedback');
+            const button = questionBlock.querySelector('.validate-btn');
+            const userAnswer = inputField.value.trim();
+
+            if (userAnswer === "") {
+                feedback.textContent = "Vui lòng điền câu trả lời của bạn.";
+                feedback.className = 'feedback feedback-warning';
+                return;
+            }
+            
+            const explanation = feedbackExplanations[questionNumber];
+            
+            button.disabled = true;
+            inputField.disabled = true;
+
+            if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
+                feedback.textContent = explanation;
+                feedback.className = 'feedback feedback-correct';
+                inputField.classList.add('correct-answer');
+                updateScore();
+            } else {
+                const cleanedExplanation = explanation.replace("Chính xác! ", "");
+                feedback.innerHTML = `<strong>Không chính xác.</strong> ${cleanedExplanation}<br>Đáp án đúng phải là: <strong>${correctAnswer}</strong>`;
+                feedback.className = 'feedback feedback-incorrect';
+                inputField.classList.add('incorrect-answer');
+            }
+        }
+
+        function validateCloze(clozeSetIndex, questionId) {
+            const currentAnswers = clozeAnswers[clozeSetIndex - 1]; 
+            const questionBlock = document.getElementById(`q${questionId}`);
+            const button = questionBlock.querySelector('.validate-btn');
+            const feedback = questionBlock.querySelector('.feedback');
+            let correctCount = 0;
+
+            for (let i = 0; i < currentAnswers.length; i++) {
+                const inputId = `cloze-${clozeSetIndex}-${i + 1}`;
+                const inputElement = document.getElementById(inputId);
+                if (inputElement.value.trim() === "") {
+                    feedback.textContent = "Vui lòng điền đầy đủ tất cả các chỗ trống.";
+                    feedback.className = 'feedback feedback-warning';
+                    return;
+                }
+            }
+
+            for (let i = 0; i < currentAnswers.length; i++) {
+                const inputId = `cloze-${clozeSetIndex}-${i + 1}`;
+                const inputElement = document.getElementById(inputId);
+                
+                const userAnswer = inputElement.value.trim().toLowerCase();
+                const correctAnswer = currentAnswers[i].toLowerCase();
+
+                if (userAnswer === correctAnswer) {
+                    inputElement.classList.add('correct-answer');
+                    correctCount++;
+                } else {
+                    inputElement.classList.add('incorrect-answer');
+                    inputElement.value = currentAnswers[i];
+                }
+                
+                inputElement.disabled = true;
+            }
+
+            if (correctCount > 0) {
+                updateScore(correctCount);
+            }
+            
+            feedback.textContent = `Bạn đã điền đúng ${correctCount} trên ${currentAnswers.length} từ.`;
+            feedback.className = 'feedback feedback-correct';
+            
+            button.disabled = true;
+        }
+
+    </script>
+</body>
+</html>

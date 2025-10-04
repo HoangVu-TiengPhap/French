@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+
+<meta name="robots" content="noindex">
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hòa hợp Tính từ (Số nhiều)</title>
+    <style>
+        /* CSS để làm cho trang kiểm tra đẹp hơn */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-header {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 0.95em;
+            color: #555;
+        }
+        
+        .info-header p {
+            margin: 0;
+        }
+
+        .quiz-status-bar {
+            position: sticky;
+            top: 0;
+            background-color: #4a5a7b;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            z-index: 1000;
+        }
+
+        .quiz-status-bar h1 {
+            margin: 0;
+            font-size: 1.5em;
+        }
+
+        #score-display, #timer-display {
+            font-size: 1.2em;
+            font-weight: bold;
+            background-color: #ffffff;
+            color: #4a5a7b;
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+        
+        .question-block {
+            margin-bottom: 25px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background-color: #fdfdfd;
+        }
+
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .question-translation {
+            font-size: 0.9em;
+            font-style: italic;
+            color: #6c757d;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .answers label {
+            display: block;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            max-width: 500px;
+        }
+
+        .answers label:hover {
+            background-color: #e9ecef;
+        }
+
+        .answers input[type="radio"] {
+            margin-right: 10px;
+        }
+        
+        .validate-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            display: block;
+            margin-top: 15px; 
+            transition: background-color 0.3s;
+        }
+
+        .validate-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .validate-btn:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+        
+        .feedback {
+            margin-top: 15px;
+            font-weight: normal;
+            font-size: 0.95em;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .feedback-correct {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .feedback-incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .feedback-warning {
+            background-color: #fffbe6;
+            color: #8a6d3b;
+        }
+
+        .correct-answer {
+            background-color: #d4edda !important;
+            border-color: #c3e6cb !important;
+        }
+
+        .incorrect-answer {
+            background-color: #f8d7da !important;
+            border-color: #f5c6cb !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="quiz-container">
+        <div class="info-header">
+            <p><strong>Enseignant:</strong> Nguyễn Hoàng Vũ</p>
+            <p><strong>Ngày kiểm tra:</strong> <span id="test-date"></span></p>
+        </div>
+
+        <div class="quiz-status-bar">
+            <h1>Hòa hợp Tính từ (Số nhiều)</h1>
+            <div>
+                <span id="score-display">Điểm: 0 / 5</span>
+                <span id="timer-display">Thời gian: 5:00</span>
+            </div>
+        </div>
+        
+        <div id="all-questions-container">
+            <div class="question-block" id="q1">
+                <p class="question-text">1. Le canapé est jaune et rouge. Les fauteuils ______.</p>
+                <p class="question-translation">(Ghế sofa màu vàng và đỏ. Những chiếc ghế bành ______.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q1" value="a"> a) sont jaune et rouge</label>
+                    <label><input type="radio" name="q1" value="b"> b) sont jaunes et rouges</label>
+                    <label><input type="radio" name="q1" value="c"> c) est jaunes et rouges</label>
+                    <label><input type="radio" name="q1" value="d"> d) sont jaune et rouges</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(1, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q2">
+                <p class="question-text">2. Le violoniste est jeune et timide. Les musiciennes ______.</p>
+                <p class="question-translation">(Người nghệ sĩ vĩ cầm thì trẻ và nhút nhát. Các nữ nhạc sĩ thì ______.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q2" value="a"> a) sont jeune et timide</label>
+                    <label><input type="radio" name="q2" value="b"> b) sont jeunes et timides</label>
+                    <label><input type="radio" name="q2" value="c"> c) est jeunes et timides</label>
+                    <label><input type="radio" name="q2" value="d"> d) sont jeune et timides</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(2, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q3">
+                <p class="question-text">3. L'immeuble est vide et triste. Les pièces ______.</p>
+                <p class="question-translation">(Tòa nhà thì trống và buồn tẻ. Các căn phòng thì ______.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q3" value="a"> a) sont vides et tristes</label>
+                    <label><input type="radio" name="q3" value="b"> b) est vide et triste</label>
+                    <label><input type="radio" name="q3" value="c"> c) sont vide et triste</label>
+                    <label><input type="radio" name="q3" value="d"> d) sont vides et triste</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(3, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q4">
+                <p class="question-text">4. Le linge est sale ou propre. Les chemises de Marc ______.</p>
+                <p class="question-translation">(Đồ giặt thì bẩn hoặc sạch. Những chiếc áo sơ mi của Marc ______.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q4" value="a"> a) sont sale ou propre</label>
+                    <label><input type="radio" name="q4" value="b"> b) est sales ou propres</label>
+                    <label><input type="radio" name="q4" value="c"> c) sont sales ou propres</label>
+                    <label><input type="radio" name="q4" value="d"> d) sont sale ou propres</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(4, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q5">
+                <p class="question-text">5. C'est une fusée rapide. Ce sont des trains ______.</p>
+                <p class="question-translation">(Đây là một tên lửa nhanh. Đây là những đoàn tàu ______.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q5" value="a"> a) rapide</label>
+                    <label><input type="radio" name="q5" value="b"> b) rapides</label>
+                    <label><input type="radio" name="q5" value="c"> c) rapidea</label>
+                    <label><input type="radio" name="q5" value="d"> d) rapises</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(5, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let score = 0;
+        const maxScore = 5;
+        const scoreDisplay = document.getElementById('score-display');
+        let timeInSeconds = 300; // 5 minutes
+        let timerInterval = null;
+
+        const feedbackExplanations = {
+            1: "Chính xác! 'fauteuils' là danh từ giống đực số nhiều. Các tính từ 'jaune' và 'rouge' chỉ cần thêm '-s'.",
+            2: "Chính xác! 'musiciennes' là danh từ giống cái số nhiều. Các tính từ 'jeune' và 'timide' không đổi ở giống cái, chỉ cần thêm '-s' cho số nhiều.",
+            3: "Chính xác! 'pièces' là danh từ giống cái số nhiều. Các tính từ 'vide' và 'triste' chỉ cần thêm '-s'.",
+            4: "Chính xác! 'chemises' là danh từ giống cái số nhiều. Các tính từ 'sale' và 'propre' chỉ cần thêm '-s'.",
+            5: "Chính xác! 'trains' là danh từ giống đực số nhiều. Tính từ 'rapide' không đổi ở giống đực/cái, chỉ cần thêm '-s' cho số nhiều."
+        };
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const today = new Date();
+            const day = String(today.getDate()).padStart(2, '0');
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const year = today.getFullYear();
+            document.getElementById('test-date').textContent = `${day}/${month}/${year}`;
+            
+            updateScoreDisplay();
+            startTimer();
+        });
+
+        function startTimer() {
+            const timerDisplay = document.getElementById('timer-display');
+            clearInterval(timerInterval); 
+            
+            timerInterval = setInterval(() => {
+                timeInSeconds--;
+                const minutes = Math.floor(timeInSeconds / 60);
+                const seconds = timeInSeconds % 60;
+                timerDisplay.textContent = `Thời gian: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                if (timeInSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    timerDisplay.textContent = "Hết giờ!";
+                    alert("Hết giờ làm bài!");
+                    document.querySelectorAll('.validate-btn').forEach(btn => btn.disabled = true);
+                }
+            }, 1000);
+        }
+
+        function updateScoreDisplay() {
+            scoreDisplay.textContent = `Điểm: ${score} / ${maxScore}`;
+        }
+        
+        function updateScore(points = 1) {
+            score += points;
+            updateScoreDisplay();
+        }
+
+        function validateRadio(questionNumber, correctAnswer) {
+            const questionBlock = document.getElementById(`q${questionNumber}`);
+            const radios = document.getElementsByName(`q${questionNumber}`);
+            const feedback = questionBlock.querySelector('.feedback');
+            const button = questionBlock.querySelector('.validate-btn');
+            let selectedAnswer = null;
+
+            radios.forEach(radio => { if (radio.checked) { selectedAnswer = radio; } });
+
+            if (selectedAnswer === null) {
+                feedback.textContent = "Vui lòng chọn một đáp án!";
+                feedback.className = 'feedback feedback-warning';
+                return;
+            }
+            
+            button.disabled = true;
+            radios.forEach(radio => radio.disabled = true);
+            const selectedLabel = selectedAnswer.parentElement;
+            const explanation = feedbackExplanations[questionNumber];
+
+            if (selectedAnswer.value === correctAnswer) {
+                feedback.textContent = explanation;
+                feedback.className = 'feedback feedback-correct';
+                selectedLabel.classList.add('correct-answer');
+                updateScore();
+            } else {
+                const cleanedExplanation = explanation.replace("Chính xác! ", "");
+                feedback.innerHTML = `<strong>Không chính xác.</strong> ${cleanedExplanation}<br>Đáp án đúng là lựa chọn <strong>"${correctAnswer.toUpperCase()}"</strong>.`;
+                feedback.className = 'feedback feedback-incorrect';
+                selectedLabel.classList.add('incorrect-answer');
+                radios.forEach(radio => { if (radio.value === correctAnswer) { radio.parentElement.classList.add('correct-answer'); } });
+            }
+        }
+    </script>
+</body>
+</html>

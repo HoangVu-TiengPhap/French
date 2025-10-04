@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<meta name="robots" content="noindex">
+<html>
+<head>
+<title>Négation après Préposition</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f4f8; /* Màu nền nhã nhặn */
+    color: #333;
+  }
+  header {
+    background-color: #e0e7ed; /* Màu header */
+    color: #2c3e50;
+    padding: 15px 20px; /* Giảm padding */
+    border-bottom: 2px solid #c0d0e0;
+    display: flex; /* Sử dụng flexbox */
+    justify-content: space-between; /* Dàn sang hai bên */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    /* ************************************************* */
+    /* CHỈNH SỬA: Đồng bộ chiều rộng, căn giữa, và bo góc trên */
+    max-width: 800px;
+    margin: 0 auto;
+    border-radius: 8px 8px 0 0; 
+    /* ************************************************* */
+  }
+  header h2, header p {
+    margin: 0; /* Bỏ margin mặc định */
+    font-size: 1.1em; /* Giảm kích thước chữ */
+    color: #333; /* Đổi màu chữ cho dễ nhìn hơn */
+  }
+  h1 {
+    color: #2c3e50;
+    text-align: center;
+    /* ************************************************* */
+    /* CHỈNH SỬA: Xóa margin-top để kéo container sát lên header */
+    margin-top: 0; 
+    margin-bottom: 20px;
+    /* ************************************************* */
+  }
+  .container {
+    max-width: 800px;
+    /* ************************************************* */
+    /* CHỈNH SỬA: Xóa margin-top để container sát header */
+    margin: 0 auto 30px auto; 
+    /* ************************************************* */
+    padding: 20px;
+    background-color: #ffffff;
+    /* ************************************************* */
+    /* CHỈNH SỬA: Giữ góc trên vuông, bo tròn góc dưới */
+    border-radius: 0 0 10px 10px; 
+    /* ************************************************* */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  .question-block {
+    margin-bottom: 25px;
+    padding: 20px;
+    border: 1px solid #d0dbe4;
+    border-radius: 8px;
+    background-color: #fdfefe;
+  }
+  .question {
+    font-weight: bold;
+    margin-bottom: 5px; /* Giảm khoảng cách */
+    font-size: 1.1em;
+    color: #34495e;
+  }
+  .translation {
+    font-style: italic;
+    color: #666;
+    margin-bottom: 15px; /* Khoảng cách với phần options */
+    font-size: 0.95em;
+  }
+  .options label {
+    display: block;
+    margin-bottom: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: color 0.3s ease;
+    padding: 5px 0; /* Thêm padding để dễ khoanh */
+  }
+  .options label:hover {
+    color: #5a7d9a;
+  }
+  .options input[type="radio"] {
+    margin-right: 10px;
+    transform: scale(1.1);
+  }
+  /* Style cho đáp án đúng được khoanh lại */
+  .options label.correct-highlight {
+    background-color: #d4edda; /* Nền xanh nhạt */
+    border: 2px solid #28a745; /* Viền xanh đậm */
+    border-radius: 5px;
+    padding: 5px;
+    color: #1a7e37;
+  }
+  .feedback {
+    margin-top: 15px;
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 5px;
+    width: calc(100% - 24px);
+    box-sizing: border-box;
+    display: block;
+    /* Ẩn ban đầu, chỉ hiện khi có feedback */
+    display: none;
+  }
+  .feedback.active {
+      display: block;
+  }
+  .correct {
+    background-color: #e6ffe6;
+    color: #1a7e37;
+    border: 1px solid #28a745;
+  }
+  .incorrect {
+    background-color: #ffe6e6;
+    color: #dc3545;
+    border: 1px solid #dc3545;
+  }
+  .warning { /* Thêm style cho cảnh báo */
+      background-color: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffeeba;
+  }
+  /* Style riêng cho đáp án đúng trong feedback khi câu trả lời sai */
+  .correct-answer-display {
+    color: #0056b3;
+    font-weight: bold;
+    margin-top: 5px;
+    display: block;
+  }
+  .explanation {
+    font-size: 0.9em;
+    font-weight: normal;
+    color: #555;
+    margin-top: 8px;
+    font-style: italic;
+  }
+  .validate-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-top: 15px;
+    transition: background-color 0.3s ease;
+  }
+  .validate-btn:hover {
+    background-color: #45a049;
+  }
+  .validate-btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+  #score-area {
+    text-align: center;
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #e6f7ff;
+    border: 1px solid #b3e0ff;
+    border-radius: 8px;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #0056b3;
+    display: none;
+  }
+  .complete-test-btn {
+    display: block;
+    width: fit-content;
+    margin: 30px auto;
+    background-color: #007bff;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease;
+  }
+  .complete-test-btn:hover {
+    background-color: #0056b3;
+  }
+  /* Responsive adjustments for smaller screens */
+  @media (max-width: 600px) {
+    .container {
+      margin: 15px;
+      padding: 15px;
+      border-radius: 0 0 10px 10px; /* Vẫn bo góc dưới */
+    }
+    header {
+      flex-direction: column;
+      align-items: flex-start;
+      max-width: 100%; /* Đảm bảo full width trên màn hình nhỏ */
+      margin: 0;
+      border-radius: 0; /* Loại bỏ bo góc trên màn hình nhỏ */
+    }
+    header h2, header p {
+      font-size: 1em;
+      margin-bottom: 5px;
+    }
+    .question, .translation, .options label, .feedback, .validate-btn, .complete-test-btn {
+      font-size: 0.9em;
+    }
+    .feedback {
+      padding: 6px 10px;
+      width: calc(100% - 20px);
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h2>Enseignant: Nguyễn Hoàng Vũ</h2>
+</header>
+
+<div class="container">
+  <h1>Négation après Préposition</h1>
+
+  <div class="question-block" id="q1-block">
+    <div class="question">1. Je ne mens pas. J'essaie de ...</div>
+    <div class="translation">Tôi không nói dối. Tôi cố gắng...</div>
+    <div class="options" id="options-q1">
+      </div>
+    <button class="validate-btn" onclick="checkAnswer('q1')">Valider</button>
+    <div class="feedback" id="feedback1"></div>
+  </div>
+
+  <div class="question-block" id="q2-block">
+    <div class="question">2. Tu ne vois pas tes parents. Tu es triste de...</div>
+    <div class="translation">Bạn không gặp bố mẹ. Bạn buồn vì...</div>
+    <div class="options" id="options-q2">
+      </div>
+    <button class="validate-btn" onclick="checkAnswer('q2')">Valider</button>
+    <div class="feedback" id="feedback2"></div>
+  </div>
+
+  <div class="question-block" id="q3-block">
+    <div class="question">3. Nous ne connaissons pas ce pays. Nous regrettons de...</div>
+    <div class="translation">Chúng tôi không biết đất nước này. Chúng tôi tiếc vì...</div>
+    <div class="options" id="options-q3">
+      </div>
+    <button class="validate-btn" onclick="checkAnswer('q3')">Valider</button>
+    <div class="feedback" id="feedback3"></div>
+  </div>
+
+  <div class="question-block" id="q4-block">
+    <div class="question">4. Elle ne grossit plus. Elle est contente de...</div>
+    <div class="translation">Cô ấy không còn tăng cân nữa. Cô ấy vui vì...</div>
+    <div class="options" id="options-q4">
+      </div>
+    <button class="validate-btn" onclick="checkAnswer('q4')">Valider</button>
+    <div class="feedback" id="feedback4"></div>
+  </div>
+
+  <div class="question-block" id="q5-block">
+    <div class="question">5. Vous n'avez pas de nouvelles de Luc. Vous êtes inquiets de...</div>
+    <div class="translation">Bạn (số nhiều/lịch sự) không có tin tức gì về Luc. Bạn lo lắng về...</div>
+    <div class="options" id="options-q5">
+      </div>
+    <button class="validate-btn" onclick="checkAnswer('q5')">Valider</button>
+    <div class="feedback" id="feedback5"></div>
+  </div>
+
+  <button class="complete-test-btn" onclick="showScore()">Hoàn thành bài kiểm tra</button>
+
+  <div id="score-area">
+    <p>Bạn đã trả lời đúng <span id="correct-count">0</span> trên tổng số <span id="total-questions">0</span> câu.</p>
+  </div>
+
+</div>
+
+<script>
+  // Định nghĩa dữ liệu cho mỗi câu hỏi
+  const questionsData = {
+    q1: {
+      original: "Je ne mens pas. J'essaie de ...",
+      translation: "Tôi không nói dối. Tôi cố gắng...",
+      correct: "J'essaie de ne pas mentir.",
+      wrong: [
+        "J'essaie de pas mentir.", // Sai: thiếu ne
+        "Je n'essaie pas de mentir." // Sai: phủ định động từ chính
+      ],
+      explanation: "Khi động từ nguyên mẫu (mentir) bị phủ định sau giới từ (de), 'ne...pas' sẽ đặt ngay trước động từ nguyên mẫu."
+    },
+    q2: {
+      original: "Tu ne vois pas tes parents. Tu es triste de...",
+      translation: "Bạn không gặp bố mẹ. Bạn buồn vì...",
+      correct: "Tu es triste de ne pas voir tes parents.",
+      wrong: [
+        "Tu es triste de pas voir tes parents.", // Sai: thiếu ne
+        "Tu n'es pas triste de voir tes parents." // Sai: phủ định động từ chính
+      ],
+      explanation: "Khi động từ nguyên mẫu (voir) bị phủ định sau giới từ (de), 'ne...pas' sẽ đặt ngay trước động từ nguyên mẫu."
+    },
+    q3: {
+      original: "Nous ne connaissons pas ce pays. Nous regrettons de...",
+      translation: "Chúng tôi không biết đất nước này. Chúng tôi tiếc vì...",
+      correct: "Nous regrettons de ne pas connaître ce pays.",
+      wrong: [
+        "Nous regrettons de pas connaître ce pays.", // Sai: thiếu ne
+        "Nous ne regrettons pas de connaître ce pays." // Sai: phủ định động từ chính
+      ],
+      explanation: "Khi động từ nguyên mẫu (connaître) bị phủ định sau giới từ (de), 'ne...pas' sẽ đặt ngay trước động từ nguyên mẫu."
+    },
+    q4: {
+      original: "Elle ne grossit plus. Elle est contente de...",
+      translation: "Cô ấy không còn tăng cân nữa. Cô ấy vui vì...",
+      correct: "Elle est contente de ne plus grossir.",
+      wrong: [
+        "Elle est contente de ne pas grossir.", // Sai: dùng pas thay vì plus
+        "Elle n'est pas contente de grossir." // Sai: phủ định động từ chính
+      ],
+      explanation: "Trong câu gốc có 'ne...plus', nên phần phủ định của động từ nguyên mẫu (grossir) cũng sẽ là 'ne...plus', đặt ngay trước động từ nguyên mẫu."
+    },
+    q5: {
+      original: "Vous n'avez pas de nouvelles de Luc. Vous êtes inquiets de...",
+      translation: "Bạn (số nhiều/lịch sự) không có tin tức gì về Luc. Bạn lo lắng về...",
+      correct: "Vous êtes inquiets de ne pas avoir de nouvelles de Luc.",
+      wrong: [
+        "Vous êtes inquiets de pas avoir de nouvelles de Luc.", // Sai: thiếu ne
+        "Vous n'êtes pas inquiets d'avoir de nouvelles de Luc." // Sai: phủ định động từ chính
+      ],
+      explanation: "Khi động từ nguyên mẫu (avoir) bị phủ định sau giới từ (de), 'ne...pas' sẽ đặt ngay trước động từ nguyên mẫu."
+    }
+  };
+
+  let correctAnswersCount = 0;
+  const totalQuestions = Object.keys(questionsData).length;
+  const answeredQuestions = new Set(); // Theo dõi các câu hỏi đã được trả lời
+
+  // Hàm xáo trộn mảng Fisher-Yates
+  function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+      }
+  }
+
+  // Hàm tạo và hiển thị các lựa chọn
+  function generateOptions() {
+    for (const qKey in questionsData) {
+      const qData = questionsData[qKey];
+      const optionsDiv = document.getElementById(`options-${qKey}`);
+      optionsDiv.innerHTML = ''; // Xóa các lựa chọn cũ
+
+      const allOptions = [{text: qData.correct, isCorrect: true}];
+      qData.wrong.forEach(w => allOptions.push({text: w, isCorrect: false}));
+
+      shuffleArray(allOptions); // Xáo trộn thứ tự các lựa chọn
+
+      allOptions.forEach((option, index) => {
+        const optionId = `${qKey}${String.fromCharCode(97 + index)}`; // a, b, c...
+        const label = document.createElement('label');
+        label.setAttribute('for', optionId);
+        
+        const input = document.createElement('input');
+        input.type = 'radio';
+        input.name = qKey;
+        input.value = optionId; // Gán ID cho value để dễ dàng kiểm tra
+        input.id = optionId;
+        
+        label.appendChild(input);
+        label.appendChild(document.createTextNode(option.text));
+        
+        // Lưu trữ thông tin đáp án đúng vào một thuộc tính data trên label để kiểm tra sau này
+        if (option.isCorrect) {
+          label.dataset.isCorrect = "true";
+          // Lưu ID của đáp án đúng vào questionsData để dễ truy xuất
+          questionsData[qKey].correctOptionId = optionId; 
+        }
+
+        optionsDiv.appendChild(label);
+      });
+    }
+  }
+
+  // Gọi hàm tạo lựa chọn khi tải trang
+  document.addEventListener('DOMContentLoaded', generateOptions);
+
+
+  function checkAnswer(questionName) {
+    // Chỉ kiểm tra nếu câu hỏi chưa được trả lời trước đó
+    if (answeredQuestions.has(questionName)) {
+        return; // Đã trả lời rồi, không làm gì cả
+    }
+
+    const selectedOptionInput = document.querySelector(`input[name="${questionName}"]:checked`);
+    const feedbackDiv = document.getElementById(`feedback${questionName.substring(1)}`);
+    const validateButton = event.target; // Lấy nút validate được nhấn
+    
+    // Ẩn feedback cũ và lớp màu
+    feedbackDiv.classList.remove('active', 'correct', 'incorrect', 'warning');
+    feedbackDiv.innerHTML = '';
+
+
+    if (!selectedOptionInput) { // Nếu không có đáp án nào được chọn
+        feedbackDiv.textContent = 'Vui lòng chọn một đáp án trước khi kiểm tra.';
+        feedbackDiv.classList.add('active', 'warning'); // Hiển thị cảnh báo
+        return; // Ngừng hàm tại đây
+    }
+
+    // Các logic xử lý khi có đáp án được chọn
+    const qData = questionsData[questionName]; // Lấy dữ liệu của câu hỏi
+
+    // Highlight the correct answer
+    const correctAnswerLabel = document.querySelector(`label[for="${qData.correctOptionId}"]`);
+    if (correctAnswerLabel) {
+      correctAnswerLabel.classList.add('correct-highlight');
+    }
+
+    answeredQuestions.add(questionName); // Đánh dấu câu hỏi đã được trả lời
+    
+    const selectedOptionLabel = selectedOptionInput.parentElement; // Lấy thẻ label chứa radio button đã chọn
+    
+    if (selectedOptionLabel.dataset.isCorrect === "true") { // Kiểm tra qua data attribute
+      feedbackDiv.innerHTML = '<strong>Chính xác!</strong><br><span class="explanation">' + qData.explanation + '</span>';
+      feedbackDiv.classList.add('active', 'correct');
+      correctAnswersCount++; // Tăng điểm nếu đúng
+    } else {
+      const correctAnswerText = correctAnswerLabel ? correctAnswerLabel.textContent.trim() : '';
+      feedbackDiv.innerHTML = '<strong>Không chính xác.</strong><br><span class="correct-answer-display">Đáp án đúng là: ' + correctAnswerText + '</span><br><span class="explanation">' + qData.explanation + '</span>';
+      feedbackDiv.classList.add('active', 'incorrect');
+    }
+    // Vô hiệu hóa các radio button và nút validate sau khi trả lời
+    const radioButtons = document.querySelectorAll(`input[name="${questionName}"]`);
+    radioButtons.forEach(radio => radio.disabled = true);
+    validateButton.disabled = true;
+  }
+
+  function showScore() {
+    document.getElementById('correct-count').textContent = correctAnswersCount;
+    document.getElementById('total-questions').textContent = totalQuestions;
+    document.getElementById('score-area').style.display = 'block'; // Hiển thị khu vực điểm
+  }
+</script>
+
+</body>
+</html>

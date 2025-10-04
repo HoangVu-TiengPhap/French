@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2025 by anonymous (http://jsbin.com/yecisixava/1/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Concordance des temps - Passé Suite</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif; /* Font chữ chung cho body là Arial */
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        /* Đặt font Arial/sans-serif cho toàn bộ nội dung chính (trừ feedback vẫn là Roboto) */
+        .header, .question-block, .options label {
+            font-family: Arial, sans-serif;
+        }
+
+        /* Vùng chứa chung cho header và score-container để căn giữa */
+        .page-content-wrapper {
+            max-width: 700px; /* Chiều rộng tối đa cho toàn bộ nội dung chính */
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+        .header-top {
+            display: flex;
+            justify-content: space-between; /* Căn đều hai bên */
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .header h1 {
+            text-align: center;
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+
+        /* CSS cho phần Score dính */
+        #score-container {
+            position: sticky; /* Tạo hiệu ứng dính */
+            top: 0; /* Dính vào top của viewport */
+            z-index: 1000; /* Đảm bảo nằm trên các nội dung khác */
+            background-color: #fff; /* Nền trắng như các khối div */
+            color: #007bff; /* Chữ màu blue */
+            padding: 12px 20px; /* Tăng padding để làm khung to hơn */
+            border: 1px solid #cce5ff; /* Viền xanh nhạt giống các khối khác */
+            border-radius: 8px; /* Bo tròn góc */
+            text-align: center;
+            font-family: Arial, sans-serif; /* Font chữ Arial/sans-serif */
+            font-size: 1.3em; /* Tăng kích thước font cho score */
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Bóng nhẹ */
+            max-width: 700px; /* Đặt chiều rộng bằng các khối câu hỏi */
+            margin-left: auto; /* Căn giữa */
+            margin-right: auto;
+            display: block; /* Luôn hiển thị */
+            box-sizing: border-box; /* Đảm bảo padding không làm tăng width vượt quá max-width */
+        }
+        #score-container strong {
+            color: #0056b3; /* Chữ màu blue đậm hơn cho số điểm */
+        }
+
+        #quiz-container {
+            /* max-width và margin auto sẽ được thừa kế từ .page-content-wrapper */
+        }
+        .question-block {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            /* max-width và margin auto đã có ở đây */
+        }
+        .question-text {
+            font-size: 1.1em;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .question-translation {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+        .options {
+            max-width: 500px; /* Giới hạn chiều rộng tối đa của khối đáp án */
+            margin-bottom: 15px;
+        }
+        .options label {
+            display: block;
+            margin-bottom: 10px;
+            cursor: pointer;
+            padding: 8px;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+            font-family: Arial, sans-serif; /* Font chữ của đáp án (mặc định) */
+        }
+        .options label:hover {
+                background-color: #e9e9e9;
+        }
+        .feedback {
+            margin-top: 15px;
+            font-weight: bold;
+            display: none;
+            font-family: 'Roboto', sans-serif; /* Đặt font feedback là Roboto */
+        }
+        .feedback-explanation {
+            font-weight: normal;
+            font-size: 0.9em;
+            margin-top: 5px;
+            color: #0056b3;
+        }
+        .feedback-correct-answer-text {
+            color: #0056b3;
+        }
+        .correct {
+            color: green;
+        }
+        .incorrect {
+            color: red;
+        }
+        .highlight-correct {
+            background-color: #d4edda !important;
+            border-color: #28a745 !important;
+        }
+        .highlight-incorrect-selected {
+            background-color: #f8d7da !important;
+            border-color: #dc3545 !important;
+        }
+        .validate-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 15px;
+            transition: background-color 0.3s ease;
+        }
+        .validate-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-content-wrapper">
+        <div class="header">
+            <div class="header-top">
+                <p><strong>Enseignant:</strong> Nguyễn Hoàng Vũ</p>
+                <p><strong>Jour de test:</strong> <span id="currentDate"></span></p>
+            </div>
+            <h1>Concordance des temps - Passé Suite</h1> </div>
+
+        <div id="score-container">
+            Score: <strong id="current-score-value">0</strong> / <strong id="total-questions-value">13</strong>
+        </div>
+
+        <div id="quiz-container">
+            <div class="question-block" id="q8" data-correct-answer="était">
+                <p class="question-text">8. (sentir): Tu sens qu'il est heureux.<br>Tu sentais qu'il __________ heureux.</p>
+                <p class="question-translation"><em>(Bạn đã cảm thấy rằng anh ấy hạnh phúc.)</em></p>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q8', 'Khi mệnh đề chính ở quá khứ (Tu sentais), Présent (est) trong mệnh đề phụ sẽ chuyển thành Imparfait. Động từ &quot;être&quot; với chủ ngữ &quot;il&quot; chia Imparfait là &quot;était&quot;.')">Valider</button>
+                <div class="feedback" id="feedback-q8"></div>
+            </div>
+
+            <div class="question-block" id="q9" data-correct-answer="y avait">
+                <p class="question-text">9. (trouver): Tu trouves qu'il y a de beaux concerts à Londres.<br>Tu as trouvé qu'il __________ de beaux concerts à Londres.</p>
+                <p class="question-translation"><em>(Bạn đã thấy rằng có nhiều buổi hòa nhạc hay ở Luân Đôn.)</em></p>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q9', 'Khi mệnh đề chính ở quá khứ (Tu as trouvé), Présent (il y a) trong mệnh đề phụ sẽ chuyển thành Imparfait. Động từ &quot;avoir&quot; trong cấu trúc &quot;il y a&quot; chia Imparfait là &quot;y avait&quot;.')">Valider</button>
+                <div class="feedback" id="feedback-q9"></div>
+            </div>
+
+            <div class="question-block" id="q10" data-correct-answer="n'était pas">
+                <p class="question-text">10. (voir): Je vois bien qu'il n'est pas content.<br>J'ai bien vu qu'il __________ content.</p>
+                <p class="question-translation"><em>(Tôi đã thấy rõ rằng anh ấy không vui.)</em></p>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q10', 'Khi mệnh đề chính ở quá khứ (J\'ai bien vu), Présent (n\'est pas) trong mệnh đề phụ sẽ chuyển thành Imparfait. Động từ &quot;être&quot; với chủ ngữ &quot;il&quot; chia phủ định Imparfait là &quot;n\'était pas&quot;.')">Valider</button>
+                <div class="feedback" id="feedback-q10"></div>
+            </div>
+
+            <div class="question-block" id="q11" data-correct-answer="viendraient">
+                <p class="question-text">11. (être certain): Ils sont certains que leurs copains viendront les chercher.<br>Ils étaient certains que leurs copains __________ les chercher.</p>
+                <p class="question-translation"><em>(Họ đã chắc chắn rằng bạn bè của họ sẽ đến đón.)</em></p>
+            <div class="options">
+                </div>
+            <button class="validate-btn" onclick="checkAnswer('q11', 'Khi mệnh đề chính ở quá khứ (étaient certains), Futur Simple (viendront) trong mệnh đề phụ sẽ chuyển thành Futur dans le Passé. Động từ &quot;venir&quot; với chủ ngữ &quot;leurs copains&quot; chia Conditionnel Présent là &quot;viendraient&quot;.')">Valider</button>
+            <div class="feedback" id="feedback-q11"></div>
+        </div>
+
+            <div class="question-block" id="q12" data-correct-answer="venait de lui mentir">
+                <p class="question-text">12. (être sûr): Elle est sûre qu'il vient de lui mentir.<br>Elle était sûre qu'il __________ de lui mentir.</p>
+                <p class="question-translation"><em>(Cô ấy đã chắc chắn rằng anh ấy vừa nói dối cô ấy.)</em></p>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q12', 'Khi mệnh đề chính ở quá khứ (était sûre), Passé Proche (vient de mentir) trong mệnh đề phụ sẽ chuyển thành Passé Proche dans le Passé. &quot;Venir&quot; (au présent) chuyển thành &quot;venait&quot; (à l\'imparfait) + de + infinitif. Động từ &quot;mentir&quot; giữ nguyên.')">Valider</button>
+                <div class="feedback" id="feedback-q12"></div>
+            </div>
+
+            <div class="question-block" id="q13" data-correct-answer="était déjà passé">
+                <p class="question-text">13. (savoir): Vous savez que le facteur est déjà passé.<br>Vous saviez que le facteur __________.</p>
+                <p class="question-translation"><em>(Bạn đã biết rằng người đưa thư đã đi qua rồi.)</em></p>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q13', 'Khi mệnh đề chính ở quá khứ (saviez), Passé Composé (est passé) trong mệnh đề phụ sẽ chuyển thành Plus-que-parfait. Động từ &quot;passer&quot; (avec être) chia Plus-que-parfait là &quot;était déjà passé&quot;.')">Valider</button>
+                <div class="feedback" id="feedback-q13"></div>
+            </div>
+
+            <div class="question-block" id="q14" data-correct-answer="c'était">
+                <p class="question-text">14. (comprendre): Je comprends que c'est trop tard.<br>J'ai compris que __________ trop tard.</p>
+                <p class="question-translation"><em>(Tôi đã hiểu rằng đã quá muộn.)</em></p>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q14', 'Khi mệnh đề chính ở quá khứ (J\'ai compris), Présent (c\'est) trong mệnh đề phụ sẽ chuyển thành Imparfait. &quot;C\'est&quot; chuyển thành &quot;c\'était&quot;.')">Valider</button>
+                <div class="feedback" id="feedback-q14"></div>
+            </div>
+
+            <div class="question-block" id="q15" data-correct-answer="ne t'écoutait pas">
+                <p class="question-text">15. (s'apercevoir): Tu t'aperçois qu'il ne t'écoute pas.<br>Tu t'es aperçu qu'il __________.</p>
+                <p class="question-translation"><em>(Bạn đã nhận ra rằng anh ấy không nghe bạn.)</em></p>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q15', 'Khi mệnh đề chính ở quá khứ (t\'es aperçu), Présent (ne t\'écoute pas) trong mệnh đề phụ sẽ chuyển thành Imparfait. Động từ &quot;écouter&quot; với chủ ngữ &quot;il&quot; chia phủ định Imparfait là &quot;ne t\'écoutait pas&quot;.')">Valider</button>
+                <div class="feedback" id="feedback-q15"></div>
+            </div>
+
+            <div class="question-block" id="q16" data-correct-answer="n'irais plus travailler">
+                <p class="question-text">16. (décider): Je décide que je n'irai plus travailler.<br>J'ai décidé que je __________ plus travailler.</p>
+                <p class="question-translation"><em>(Tôi đã quyết định rằng tôi sẽ không đi làm nữa.)</em></p>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q16', 'Khi mệnh đề chính ở quá khứ (J\'ai décidé), Futur Simple (n\'irai plus) trong mệnh đề phụ sẽ chuyển thành Futur dans le Passé. Động từ &quot;aller&quot; với chủ ngữ &quot;je&quot; chia Conditionnel Présent (phủ định) là &quot;n\'irais plus&quot;.')">Valider</button>
+                <div class="feedback" id="feedback-q16"></div>
+            </div>
+
+            <div class="question-block" id="q17" data-correct-answer="venait de naître">
+                <p class="question-text">17. (apprendre): Vous apprenez que le bébé vient de naître.<br>Vous avez appris que le bébé __________.</p>
+                <p class="question-translation"><em>(Bạn đã biết rằng em bé vừa mới chào đời.)</em></p>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q17', 'Khi mệnh đề chính ở quá khứ (avez appris), Passé Proche (vient de naître) trong mệnh đề phụ sẽ chuyển thành Passé Proche dans le Passé. &quot;Venir&quot; (au présent) chuyển thành &quot;venait&quot; (à l\'imparfait) + de + infinitif. Động từ &quot;naître&quot; giữ nguyên.')">Valider</button>
+                <div class="feedback" id="feedback-q17"></div>
+            </div>
+
+            <div class="question-block" id="q18" data-correct-answer="avait donné">
+                <p class="question-text">18. (se souvenir): Vous vous souvenez qu'elle vous a donné rendez-vous.<br>Vous vous êtes souvenus qu'elle vous __________ rendez-vous.</p>
+                <p class="question-translation"><em>(Bạn đã nhớ rằng cô ấy đã cho bạn một cuộc hẹn.)</em></p>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q18', 'Khi mệnh đề chính ở quá khứ (vous êtes souvenus), Passé Composé (a donné) trong mệnh đề phụ sẽ chuyển thành Plus-que-parfait. Động từ &quot;donner&quot; với chủ ngữ &quot;elle&quot; chia Plus-que-parfait là &quot;avait donné&quot;.')">Valider</button>
+                <div class="feedback" id="feedback-q18"></div>
+            </div>
+
+            <div class="question-block" id="q19" data-correct-answer="avais compris">
+                <p class="question-text">19. (espérer): J'espère que tu as compris.<br>J'espérais que tu __________.</p>
+                <p class="question-translation"><em>(Tôi đã hy vọng rằng bạn đã hiểu.)</em></p>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q19', 'Khi mệnh đề chính ở quá khứ (J\'espérais), Passé Composé (as compris) trong mệnh đề phụ sẽ chuyển thành Plus-que-parfait. Động từ &quot;comprendre&quot; với chủ ngữ &quot;tu&quot; chia Plus-que-parfait là &quot;avais compris&quot;.')">Valider</button>
+                <div class="feedback" id="feedback-q19"></div>
+            </div>
+
+            <div class="question-block" id="q20" data-correct-answer="aiderait">
+                <p class="question-text">20. (promettre): Elle promet souvent qu'elle nous aidera.<br>Elle promettait souvent qu'elle nous __________.</p>
+                <p class="question-translation"><em>(Cô ấy thường hứa rằng cô ấy sẽ giúp chúng tôi.)</em></p>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q20', 'Khi mệnh đề chính ở quá khứ (promettait), Futur Simple (aidera) trong mệnh đề phụ sẽ chuyển thành Futur dans le Passé. Động từ &quot;aider&quot; với chủ ngữ &quot;elle&quot; chia Conditionnel Présent là &quot;aiderait&quot;.')">Valider</button>
+                <div class="feedback" id="feedback-q20"></div>
+            </div>
+
+        </div>
+    </div> <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const date = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('currentDate').textContent = date.toLocaleDateString('fr-FR', options);
+            
+            // Định nghĩa các câu hỏi và đáp án cho việc xáo trộn
+            const questionsData = {
+                q8: {
+                    correct: 'était',
+                    options: ['était', 'est', 'serait', 'aura été']
+                },
+                q9: {
+                    correct: 'y avait',
+                    options: ['y avait', 'il y a', 'y aura', 'y aurait']
+                },
+                q10: {
+                    correct: 'n\'était pas',
+                    options: ['n\'était pas', 'n\'est pas', 'ne serait pas', 'n\'aura pas été']
+                },
+                q11: {
+                    correct: 'viendraient',
+                    options: ['viendraient', 'viendront', 'viennent', 'venaient']
+                },
+                q12: {
+                    correct: 'venait de lui mentir',
+                    options: ['venait de lui mentir', 'vient de lui mentir', 'viendrait de lui mentir', 'était de lui mentir']
+                },
+                q13: {
+                    correct: 'était déjà passé',
+                    options: ['était déjà passé', 'est déjà passé', 'sera déjà passé', 'aurait déjà passé']
+                },
+                q14: {
+                    correct: 'c\'était',
+                    options: ['c\'était', 'c\'est', 'ce serait', 'ce fut']
+                },
+                q15: {
+                    correct: 'ne t\'écoutait pas',
+                    options: ['ne t\'écoutait pas', 'ne t\'écoute pas', 'ne t\'écouterait pas', 'ne t\'avait pas écouté']
+                },
+                q16: {
+                    correct: 'n\'irais plus travailler',
+                    options: ['n\'irais plus travailler', 'n\'irai plus travailler', 'n\'allais plus travailler', 'ne vais plus travailler']
+                },
+                q17: {
+                    correct: 'venait de naître',
+                    options: ['venait de naître', 'vient de naître', 'viendrait de naître', 'était né']
+                },
+                q18: {
+                    correct: 'avait donné',
+                    options: ['avait donné', 'a donné', 'aurait donné', 'eût donné']
+                },
+                q19: {
+                    correct: 'avais compris',
+                    options: ['avais compris', 'as compris', 'aurais compris', 'comprendrais']
+                },
+                q20: {
+                    correct: 'aiderait',
+                    options: ['aiderait', 'aidera', 'aidait', 'aurait aidé']
+                }
+            };
+
+            // Hàm xáo trộn mảng
+            function shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]]; // Hoán đổi vị trí
+                }
+            }
+
+            // Tạo và xáo trộn các lựa chọn đáp án cho mỗi câu hỏi
+            for (const qId in questionsData) {
+                const questionBlock = document.getElementById(qId);
+                const optionsDiv = questionBlock.querySelector('.options');
+                
+                // Lấy tất cả các đáp án cho câu hỏi này
+                let currentOptions = [...questionsData[qId].options]; // Tạo bản sao để xáo trộn
+                shuffleArray(currentOptions); // Xáo trộn
+
+                // Xóa các lựa chọn cũ (nếu có) và tạo mới
+                optionsDiv.innerHTML = '';
+                currentOptions.forEach(optionText => {
+                    const label = document.createElement('label');
+                    const input = document.createElement('input');
+                    input.type = 'radio';
+                    input.name = qId; // Name group cho radio buttons
+                    input.value = optionText;
+                    label.appendChild(input);
+                    label.appendChild(document.createTextNode(' ' + optionText)); // Thêm khoảng trắng và text
+                    optionsDiv.appendChild(label);
+                });
+            }
+
+            updateOverallScore(); // Cập nhật điểm ban đầu
+        });
+
+        const answeredQuestions = {};
+        const totalQuestions = 13; // Cập nhật tổng số câu hỏi (20 - 8 + 1 = 13 câu)
+
+        const currentScoreValue = document.getElementById('current-score-value');
+        const totalQuestionsValue = document.getElementById('total-questions-value');
+
+        function updateOverallScore() {
+            let correctCount = 0;
+            // Liệt kê tất cả các ID câu hỏi
+            const allQuestionIds = ['q8', 'q9', 'q10', 'q11', 'q12', 'q13', 'q14', 'q15', 'q16', 'q17', 'q18', 'q19', 'q20'];
+            allQuestionIds.forEach(id => {
+                if (answeredQuestions[id] === true) {
+                    correctCount++;
+                }
+            });
+
+            currentScoreValue.textContent = correctCount;
+            totalQuestionsValue.textContent = totalQuestions;
+        }
+
+        function checkAnswer(questionId, explanation) {
+            const questionBlock = document.getElementById(questionId);
+            const selectedOption = questionBlock.querySelector(`input[name="${questionId}"]:checked`);
+            const feedbackDiv = questionBlock.querySelector('.feedback');
+            const optionsLabels = questionBlock.querySelectorAll('.options label');
+            // Lấy đáp án đúng từ data-correct-answer trên question-block
+            const correctAnswer = questionBlock.dataset.correctAnswer; 
+
+            optionsLabels.forEach(label => {
+                label.classList.remove('highlight-correct', 'highlight-incorrect-selected');
+            });
+            feedbackDiv.style.display = 'none';
+            feedbackDiv.classList.remove('correct', 'incorrect');
+            feedbackDiv.innerHTML = '';
+
+            if (!selectedOption) {
+                alert("Veuillez sélectionner une réponse avant de valider.");
+                return;
+            }
+
+            const userAnswer = selectedOption.value;
+            let feedbackMessage = "";
+
+            optionsLabels.forEach(label => {
+                if (label.querySelector('input').value === correctAnswer) {
+                    label.classList.add('highlight-correct');
+                }
+            });
+
+            if (userAnswer === correctAnswer) {
+                feedbackMessage = "<b>Chính xác!</b> Đây là đáp án đúng.";
+                feedbackDiv.classList.add('correct');
+                answeredQuestions[questionId] = true;
+            } else {
+                feedbackMessage = `<b>Không chính xác.</b> Đáp án đúng là <span class="feedback-correct-answer-text">"${correctAnswer}"</span>.`;
+                feedbackDiv.classList.add('incorrect');
+                selectedOption.closest('label').classList.add('highlight-incorrect-selected');
+                answeredQuestions[questionId] = false;
+            }
+            feedbackDiv.innerHTML = feedbackMessage + `<div class="feedback-explanation">Giải thích: ${explanation}</div>`;
+            feedbackDiv.style.display = 'block';
+
+            updateOverallScore(); // Cập nhật điểm sau mỗi lần kiểm tra
+        }
+    </script>
+</body>
+</html>

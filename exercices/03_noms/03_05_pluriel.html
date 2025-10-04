@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+
+<meta name="robots" content="noindex">
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Số nhiều của danh từ</title>
+    <style>
+        /* CSS để làm cho trang kiểm tra đẹp hơn */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-header {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 0.95em;
+            color: #555;
+        }
+        
+        .info-header p {
+            margin: 0;
+        }
+
+        .quiz-status-bar {
+            position: sticky;
+            top: 0;
+            background-color: #4a5a7b;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            z-index: 1000;
+        }
+
+        .quiz-status-bar h1 {
+            margin: 0;
+            font-size: 1.5em;
+        }
+
+        #score-display, #timer-display {
+            font-size: 1.2em;
+            font-weight: bold;
+            background-color: #ffffff;
+            color: #4a5a7b;
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+        
+        .section-title {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+
+        .question-block {
+            margin-bottom: 25px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background-color: #fdfdfd;
+        }
+
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .answers label {
+            display: block;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            max-width: 500px;
+        }
+
+        .answers label:hover {
+            background-color: #e9ecef;
+        }
+
+        .answers input[type="radio"] {
+            margin-right: 10px;
+        }
+        
+        .validate-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            display: block;
+            margin-top: 15px; 
+            transition: background-color 0.3s;
+        }
+
+        .validate-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .validate-btn:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+        
+        .feedback {
+            margin-top: 15px;
+            font-weight: normal;
+            font-size: 0.95em;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .feedback-correct {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .feedback-incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .feedback-warning {
+            background-color: #fffbe6;
+            color: #8a6d3b;
+        }
+
+        .correct-answer {
+            background-color: #d4edda !important;
+            border-color: #c3e6cb !important;
+        }
+
+        .incorrect-answer {
+            background-color: #f8d7da !important;
+            border-color: #f5c6cb !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="quiz-container">
+        <div class="info-header">
+            <p><strong>Enseignant:</strong> Nguyễn Hoàng Vũ</p>
+         
+        </div>
+
+        <div class="quiz-status-bar">
+            <h1>Số nhiều của danh từ</h1>
+            <div>
+                <span id="score-display">Điểm: 0 / 41</span>
+                <span id="timer-display">Thời gian: 25:00</span>
+            </div>
+        </div>
+        
+        <div id="all-questions-container">
+            <h2 class="section-title">Phần A: Quy tắc chung (thêm -s)</h2>
+            <div class="question-block" id="q1">
+                <p class="question-text">1. Chọn dạng số nhiều của "un homme et une femme" (một người đàn ông và một người phụ nữ).</p>
+                <div class="answers">
+                    <label><input type="radio" name="q1" value="a"> a) Des homme et des femme</label>
+                    <label><input type="radio" name="q1" value="b"> b) Des hommes et des femmes</label>
+                </div> <button class="validate-btn" onclick="validateRadio(1, 'b')">Valider</button><div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q2">
+                <p class="question-text">2. Chọn dạng số nhiều của "un boulevard et un trottoir" (một đại lộ và một vỉa hè).</p>
+                <div class="answers">
+                    <label><input type="radio" name="q2" value="a"> a) Des boulevards et des trottoirs</label>
+                    <label><input type="radio" name="q2" value="b"> b) Des boulevard et des trottoir</label>
+                </div> <button class="validate-btn" onclick="validateRadio(2, 'a')">Valider</button><div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q3">
+                <p class="question-text">3. Chọn dạng số nhiều của "un détail et un conseil" (một chi tiết và một lời khuyên).</p>
+                <div class="answers">
+                    <label><input type="radio" name="q3" value="a"> a) Des détails et des conseils</label>
+                    <label><input type="radio" name="q3" value="b"> b) Des détaux et des conseilx</label>
+                </div> <button class="validate-btn" onclick="validateRadio(3, 'a')">Valider</button><div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q4">
+                <p class="question-text">4. Chọn dạng số nhiều của "un cri et un fou" (một tiếng hét và một kẻ điên).</p>
+                <div class="answers">
+                    <label><input type="radio" name="q4" value="a"> a) Des cris et des fous</label>
+                    <label><input type="radio" name="q4" value="b"> b) Des cris et des foux</label>
+                </div> <button class="validate-btn" onclick="validateRadio(4, 'a')">Valider</button><div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q5">
+                <p class="question-text">5. Chọn dạng số nhiều của "un bal et un festival" (một buổi vũ hội và một lễ hội).</p>
+                <div class="answers">
+                    <label><input type="radio" name="q5" value="a"> a) Des baux et des festivaux</label>
+                    <label><input type="radio" name="q5" value="b"> b) Des bals et des festivals</label>
+                </div> <button class="validate-btn" onclick="validateRadio(5, 'b')">Valider</button><div class="feedback"></div>
+            </div>
+
+            <h2 class="section-title">Phần B: Đuôi "-al" & "-ail" ➞ "-aux"</h2>
+            <div class="question-block" id="q6">
+                <p class="question-text">6. Chọn dạng số nhiều của "un hôpital" (một bệnh viện).</p>
+                <div class="answers">
+                    <label><input type="radio" name="q6" value="a"> a) Des hôpitals</label>
+                    <label><input type="radio" name="q6" value="b"> b) Des hôpitaux</label>
+                </div> <button class="validate-btn" onclick="validateRadio(6, 'b')">Valider</button><div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q7">
+                <p class="question-text">7. Chọn dạng số nhiều của "un métal" (một kim loại).</p>
+                <div class="answers">
+                    <label><input type="radio" name="q7" value="a"> a) Des métals</label>
+                    <label><input type="radio" name="q7" value="b"> b) Des métaux</label>
+                </div> <button class="validate-btn" onclick="validateRadio(7, 'b')">Valider</button><div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q8">
+                <p class="question-text">8. Chọn dạng số nhiều của "un journal" (một tờ báo).</p>
+                <div class="answers">
+                    <label><input type="radio" name="q8" value="a"> a) Des journals</label>
+                    <label><input type="radio" name="q8" value="b"> b) Des journaux</label>
+                </div> <button class="validate-btn" onclick="validateRadio(8, 'b')">Valider</button><div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q9">
+                <p class="question-text">9. Chọn dạng số nhiều của "un animal" (một con vật).</p>
+                <div class="answers">
+                    <label><input type="radio" name="q9" value="a"> a) Des animals</label>
+                    <label><input type="radio" name="q9" value="b"> b) Des animaux</label>
+                </div> <button class="validate-btn" onclick="validateRadio(9, 'b')">Valider</button><div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q10">
+                <p class="question-text">10. Chọn dạng số nhiều của "un canal" (một con kênh).</p>
+                <div class="answers">
+                    <label><input type="radio" name="q10" value="a"> a) Des canals</label>
+                    <label><input type="radio" name="q10" value="b"> b) Des canaux</label>
+                </div> <button class="validate-btn" onclick="validateRadio(10, 'b')">Valider</button><div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q11">
+                <p class="question-text">11. Chọn dạng số nhiều của "un travail" (một công việc).</p>
+                <div class="answers">
+                    <label><input type="radio" name="q11" value="a"> a) Des travails</label>
+                    <label><input type="radio" name="q11" value="b"> b) Des travaux</label>
+                </div> <button class="validate-btn" onclick="validateRadio(11, 'b')">Valider</button><div class="feedback"></div>
+            </div>
+
+            <h2 class="section-title">Phần C: Đuôi "-eu", "-ou", "-eau" ➞ "-x"</h2>
+            <div class="question-block" id="q12">
+                <p class="question-text">12. Chọn dạng số nhiều của "un cheveu" (một sợi tóc).</p>
+                <div class="answers">
+                    <label><input type="radio" name="q12" value="a"> a) Des cheveus</label>
+                    <label><input type="radio" name="q12" value="b"> b) Des cheveux</label>
+                </div> <button class="validate-btn" onclick="validateRadio(12, 'b')">Valider</button><div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q13">
+                <p class="question-text">13. Chọn dạng số nhiều của "un jeu" (một trò chơi).</p>
+                <div class="answers">
+                    <label><input type="radio" name="q13" value="a"> a) Des jeus</label>
+                    <label><input type="radio" name="q13" value="b"> b) Des jeux</label>
+                </div> <button class="validate-btn" onclick="validateRadio(13, 'b')">Valider</button><div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q14">
+                <p class="question-text">14. Chọn dạng số nhiều của "un neveu" (cháu trai).</p>
+                <div class="answers">
+                    <label><input type="radio" name="q14" value="a"> a) Des neveux</label>
+                    <label><input type="radio" name="q14" value="b"> b) Des neveus</label>
+                </div> <button class="validate-btn" onclick="validateRadio(14, 'a')">Valider</button><div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q15">
+                <p class="question-text">15. Chọn dạng số nhiều của "un vœu" (một điều ước).</p>
+                <div class="answers">
+                    <label><input type="radio" name="q15" value="a"> a) Des vœus</label>
+                    <label><input type="radio" name="q15" value="b"> b) Des vœux</label>
+                </div> <button class="validate-btn" onclick="validateRadio(15, 'b')">Valider</button><div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q16">
+                <p class="question-text">16. Chọn dạng số nhiều của "un adieu" (lời từ biệt).</p>
+                <div class="answers">
+                    <label><input type="radio" name="q16" value="a"> a) Des adieus</label>
+                    <label><input type="radio" name="q16" value="b"> b) Des adieux</label>
+                </div> <button class="validate-btn" onclick="validateRadio(16, 'b')">Valider</button><div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q17">
+                <p class="question-text">17. Chọn dạng số nhiều của "un bijou" (trang sức).</p>
+                <div class="answers">
+                    <label><input type="radio" name="q17" value="a"> a) Des bijous</label>
+                    <label><input type="radio" name="q17" value="b"> b) Des bijoux</label>
+                </div> <button class="validate-btn" onclick="validateRadio(17, 'b')">Valider</button><div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q18">
+                <p class="question-text">18. Chọn dạng số nhiều của "un chou" (cái bắp cải).</p>
+                <div class="answers">
+                    <label><input type="radio" name="q18" value="a"> a) Des choux</label>
+                    <label><input type="radio" name="q18" value="b"> b) Des chous</label>
+                </div> <button class="validate-btn" onclick="validateRadio(18, 'a')">Valider</button><div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q19">
+                <p class="question-text">19. Chọn dạng số nhiều của "un caillou" (viên sỏi).</p>
+                <div class="answers">
+                    <label><input type="radio" name="q19" value="a"> a) Des caillous</label>
+                    <label><input type="radio" name="q19" value="b"> b) Des cailloux</label>
+                </div> <button class="validate-btn" onclick="validateRadio(19, 'b')">Valider</button><div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q20">
+                <p class="question-text">20. Chọn dạng số nhiều của "un château" (lâu đài).</p>
+                <div class="answers">
+                    <label><input type="radio" name="q20" value="a"> a) Des châteaus</label>
+                    <label><input type="radio" name="q20" value="b"> b) Des châteaux</label>
+                </div> <button class="validate-btn" onclick="validateRadio(20, 'b')">Valider</button><div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q21">
+                <p class="question-text">21. Chọn dạng số nhiều của "un manteau" (áo khoác).</p>
+                <div class="answers">
+                    <label><input type="radio" name="q21" value="a"> a) Des manteaux</label>
+                    <label><input type="radio" name="q21" value="b"> b) Des manteaus</label>
+                </div> <button class="validate-btn" onclick="validateRadio(21, 'a')">Valider</button><div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q22">
+                <p class="question-text">22. Chọn dạng số nhiều của "un morceau" (một mẩu).</p>
+                <div class="answers">
+                    <label><input type="radio" name="q22" value="a"> a) Des morceaus</label>
+                    <label><input type="radio" name="q22" value="b"> b) Des morceaux</label>
+                </div> <button class="validate-btn" onclick="validateRadio(22, 'b')">Valider</button><div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q23">
+                <p class="question-text">23. Chọn dạng số nhiều của "un gâteau" (bánh ngọt).</p>
+                <div class="answers">
+                    <label><input type="radio" name="q23" value="a"> a) Des gâteaux</label>
+                    <label><input type="radio" name="q23" value="b"> b) Des gâteaus</label>
+                </div> <button class="validate-btn" onclick="validateRadio(23, 'a')">Valider</button><div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q24">
+                <p class="question-text">24. Chọn dạng số nhiều của "un couteau" (con dao).</p>
+                <div class="answers">
+                    <label><input type="radio" name="q24" value="a"> a) Des couteaux</label>
+                    <label><input type="radio" name="q24" value="b"> b) Des couteaus</label>
+                </div> <button class="validate-btn" onclick="validateRadio(24, 'a')">Valider</button><div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q25">
+                <p class="question-text">25. Chọn dạng số nhiều của "un tableau" (bức tranh/bảng).</p>
+                <div class="answers">
+                    <label><input type="radio" name="q25" value="a"> a) Des tableaus</label>
+                    <label><input type="radio" name="q25" value="b"> b) Des tableaux</label>
+                </div> <button class="validate-btn" onclick="validateRadio(25, 'b')">Valider</button><div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q26">
+                <p class="question-text">26. Chọn dạng số nhiều của "une peau" (làn da).</p>
+                <div class="answers">
+                    <label><input type="radio" name="q26" value="a"> a) Des peaux</label>
+                    <label><input type="radio" name="q26" value="b"> b) Des peaus</label>
+                </div> <button class="validate-btn" onclick="validateRadio(26, 'a')">Valider</button><div class="feedback"></div>
+            </div>
+
+            <h2 class="section-title">Phần D: Đuôi "-s", "-x", "-z" (không đổi)</h2>
+            <div class="question-block" id="q27">
+                <p class="question-text">27. Chọn dạng số nhiều của "un bras" (cánh tay).</p>
+                <div class="answers">
+                    <label><input type="radio" name="q27" value="a"> a) Des brass</label>
+                    <label><input type="radio" name="q27" value="b"> b) Des bras</label>
+                </div> <button class="validate-btn" onclick="validateRadio(27, 'b')">Valider</button><div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q28">
+                <p class="question-text">28. Chọn dạng số nhiều của "un mois" (một tháng).</p>
+                <div class="answers">
+                    <label><input type="radio" name="q28" value="a"> a) Des mois</label>
+                    <label><input type="radio" name="q28" value="b"> b) Des moiss</label>
+                </div> <button class="validate-btn" onclick="validateRadio(28, 'a')">Valider</button><div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q29">
+                <p class="question-text">29. Chọn dạng số nhiều của "un pays" (đất nước).</p>
+                <div class="answers">
+                    <label><input type="radio" name="q29" value="a"> a) Des payss</label>
+                    <label><input type="radio" name="q29" value="b"> b) Des pays</label>
+                </div> <button class="validate-btn" onclick="validateRadio(29, 'b')">Valider</button><div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q30">
+                <p class="question-text">30. Chọn dạng số nhiều của "un cours" (khóa học).</p>
+                <div class="answers">
+                    <label><input type="radio" name="q30" value="a"> a) Des cours</label>
+                    <label><input type="radio" name="q30" value="b"> b) Des courses</label>
+                </div> <button class="validate-btn" onclick="validateRadio(30, 'a')">Valider</button><div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q31">
+                <p class="question-text">31. Chọn dạng số nhiều của "un bois" (khu rừng).</p>
+                <div class="answers">
+                    <label><input type="radio" name="q31" value="a"> a) Des boix</label>
+                    <label><input type="radio" name="q31" value="b"> b) Des bois</label>
+                </div> <button class="validate-btn" onclick="validateRadio(31, 'b')">Valider</button><div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q32">
+                <p class="question-text">32. Chọn dạng số nhiều của "un fils" (con trai).</p>
+                <div class="answers">
+                    <label><input type="radio" name="q32" value="a"> a) Des fils</label>
+                    <label><input type="radio" name="q32" value="b"> b) Des filx</label>
+                </div> <button class="validate-btn" onclick="validateRadio(32, 'a')">Valider</button><div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q33">
+                <p class="question-text">33. Chọn dạng số nhiều của "un Polonais" (người Ba Lan).</p>
+                <div class="answers">
+                    <label><input type="radio" name="q33" value="a"> a) Des Polonais</label>
+                    <label><input type="radio" name="q33" value="b"> b) Des Polonaisx</label>
+                </div> <button class="validate-btn" onclick="validateRadio(33, 'a')">Valider</button><div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q34">
+                <p class="question-text">34. Chọn dạng số nhiều của "une toux" (cơn ho).</p>
+                <div class="answers">
+                    <label><input type="radio" name="q34" value="a"> a) Des toux</label>
+                    <label><input type="radio" name="q34" value="b"> b) Des touxs</label>
+                </div> <button class="validate-btn" onclick="validateRadio(34, 'a')">Valider</button><div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q35">
+                <p class="question-text">35. Chọn dạng số nhiều của "un choix" (sự lựa chọn).</p>
+                <div class="answers">
+                    <label><input type="radio" name="q35" value="a"> a) Des choix</label>
+                    <label><input type="radio" name="q35" value="b"> b) Des choixs</label>
+                </div> <button class="validate-btn" onclick="validateRadio(35, 'a')">Valider</button><div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q36">
+                <p class="question-text">36. Chọn dạng số nhiều của "un prix" (giải thưởng/giá cả).</p>
+                <div class="answers">
+                    <label><input type="radio" name="q36" value="a"> a) Des prixs</label>
+                    <label><input type="radio" name="q36" value="b"> b) Des prix</label>
+                </div> <button class="validate-btn" onclick="validateRadio(36, 'b')">Valider</button><div class="feedback"></div>
+            </div>
+
+             <h2 class="section-title">Phần E: Dạng số nhiều đặc biệt</h2>
+            <div class="question-block" id="q37">
+                <p class="question-text">37. Chọn dạng số nhiều của "Monsieur" (Ngài/Ông).</p>
+                <div class="answers">
+                    <label><input type="radio" name="q37" value="a"> a) Monsieurs</label>
+                    <label><input type="radio" name="q37" value="b"> b) Messieurs</label>
+                </div> <button class="validate-btn" onclick="validateRadio(37, 'b')">Valider</button><div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q38">
+                <p class="question-text">38. Chọn dạng số nhiều của "Madame" (Bà/Quý bà).</p>
+                <div class="answers">
+                    <label><input type="radio" name="q38" value="a"> a) Madames</label>
+                    <label><input type="radio" name="q38" value="b"> b) Mesdames</label>
+                </div> <button class="validate-btn" onclick="validateRadio(38, 'b')">Valider</button><div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q39">
+                <p class="question-text">39. Chọn dạng số nhiều của "Mademoiselle" (Cô/Quý cô).</p>
+                <div class="answers">
+                    <label><input type="radio" name="q39" value="a"> a) Mademoiselles</label>
+                    <label><input type="radio" name="q39" value="b"> b) Mesdemoiselles</label>
+                </div> <button class="validate-btn" onclick="validateRadio(39, 'b')">Valider</button><div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q40">
+                <p class="question-text">40. Chọn dạng số nhiều của "un œil" (một con mắt).</p>
+                <div class="answers">
+                    <label><input type="radio" name="q40" value="a"> a) Des œils</label>
+                    <label><input type="radio" name="q40" value="b"> b) Des yeux</label>
+                </div> <button class="validate-btn" onclick="validateRadio(40, 'b')">Valider</button><div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q41">
+                <p class="question-text">41. Chọn dạng số nhiều của "un jeune homme" (chàng trai trẻ).</p>
+                <div class="answers">
+                    <label><input type="radio" name="q41" value="a"> a) Des jeunes hommes</label>
+                    <label><input type="radio" name="q41" value="b"> b) Des jeunes gens</label>
+                </div> <button class="validate-btn" onclick="validateRadio(41, 'b')">Valider</button><div class="feedback"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let score = 0;
+        const maxScore = 41;
+        const scoreDisplay = document.getElementById('score-display');
+        let timeInSeconds = 1500; // 25 minutes
+        let timerInterval = null;
+
+        const feedbackExplanations = {
+            1: "Chính xác! Quy tắc chung là thêm '-s'.", 2: "Chính xác! Quy tắc chung là thêm '-s'.", 3: "Chính xác! Quy tắc chung là thêm '-s'.", 4: "Chính xác! Quy tắc chung là thêm '-s'.",
+            5: "Chính xác! 'Bal' và 'festival' là những trường hợp ngoại lệ của quy tắc '-al', chúng chỉ thêm '-s'.",
+            6: "Chính xác! Hầu hết các danh từ kết thúc bằng '-al' đổi thành '-aux' ở số nhiều.", 7: "Chính xác! Đuôi '-al' đổi thành '-aux'.", 8: "Chính xác! Đuôi '-al' đổi thành '-aux'.", 9: "Chính xác! Đuôi '-al' đổi thành '-aux'.", 10: "Chính xác! Đuôi '-al' đổi thành '-aux'.",
+            11: "Chính xác! 'travail' là một ngoại lệ quan trọng của đuôi '-ail', đổi thành 'travaux'.",
+            12: "Chính xác! Hầu hết các danh từ kết thúc bằng '-eu' thêm '-x' ở số nhiều.", 13: "Chính xác! Đuôi '-eu' thêm '-x'.", 14: "Chính xác! Đuôi '-eu' thêm '-x'.", 15: "Chính xác! Đuôi '-eu' thêm '-x'.", 16: "Chính xác! Đuôi '-eu' thêm '-x'.",
+            17: "Chính xác! 'Bijou' là một trong 7 danh từ đuôi '-ou' lấy '-x' ở số nhiều.", 18: "Chính xác! 'Chou' là một trong 7 danh từ đuôi '-ou' lấy '-x'.", 19: "Chính xác! 'Caillou' là một trong 7 danh từ đuôi '-ou' lấy '-x'.",
+            20: "Chính xác! Các danh từ kết thúc bằng '-eau' luôn thêm '-x' ở số nhiều.", 21: "Chính xác! Đuôi '-eau' thêm '-x'.", 22: "Chính xác! Đuôi '-eau' thêm '-x'.", 23: "Chính xác! Đuôi '-eau' thêm '-x'.", 24: "Chính xác! Đuôi '-eau' thêm '-x'.", 25: "Chính xác! Đuôi '-eau' thêm '-x'.", 26: "Chính xác! Đuôi '-eau' thêm '-x'.",
+            27: "Chính xác! Danh từ kết thúc bằng '-s' không thay đổi ở dạng số nhiều.", 28: "Chính xác! Danh từ kết thúc bằng '-s' không thay đổi.", 29: "Chính xác! Danh từ kết thúc bằng '-s' không thay đổi.", 30: "Chính xác! Danh từ kết thúc bằng '-s' không thay đổi.", 31: "Chính xác! Danh từ kết thúc bằng '-s' không thay đổi.",
+            32: "Chính xác! Danh từ kết thúc bằng '-s' không thay đổi.", 33: "Chính xác! Danh từ kết thúc bằng '-s' không thay đổi.",
+            34: "Chính xác! Danh từ kết thúc bằng '-x' không thay đổi ở dạng số nhiều.", 35: "Chính xác! Danh từ kết thúc bằng '-x' không thay đổi.", 36: "Chính xác! Danh từ kết thúc bằng '-x' không thay đổi.",
+            37: "Chính xác! Dạng số nhiều của 'Monsieur' là 'Messieurs'.", 38: "Chính xác! Dạng số nhiều của 'Madame' là 'Mesdames'.", 39: "Chính xác! Dạng số nhiều của 'Mademoiselle' là 'Mesdemoiselles'.",
+            40: "Chính xác! 'un œil' (một con mắt) có dạng số nhiều bất quy tắc là 'des yeux' (đôi mắt).",
+            41: "Chính xác! Dạng số nhiều của 'un jeune homme' (chàng trai trẻ) là 'des jeunes gens' (những người trẻ)."
+        };
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const today = new Date();
+            const day = String(today.getDate()).padStart(2, '0');
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const year = today.getFullYear();
+            document.getElementById('test-date').textContent = `${day}/${month}/${year}`;
+            
+            updateScoreDisplay();
+            startTimer();
+        });
+
+        function startTimer() {
+            const timerDisplay = document.getElementById('timer-display');
+            clearInterval(timerInterval); 
+            
+            timerInterval = setInterval(() => {
+                timeInSeconds--;
+                const minutes = Math.floor(timeInSeconds / 60);
+                const seconds = timeInSeconds % 60;
+                timerDisplay.textContent = `Thời gian: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                if (timeInSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    timerDisplay.textContent = "Hết giờ!";
+                    alert("Hết giờ làm bài!");
+                    document.querySelectorAll('.validate-btn').forEach(btn => btn.disabled = true);
+                }
+            }, 1000);
+        }
+
+        function updateScoreDisplay() {
+            scoreDisplay.textContent = `Điểm: ${score} / ${maxScore}`;
+        }
+        
+        function updateScore(points = 1) {
+            score += points;
+            updateScoreDisplay();
+        }
+
+        function validateRadio(questionNumber, correctAnswer) {
+            const questionBlock = document.getElementById(`q${questionNumber}`);
+            const radios = document.getElementsByName(`q${questionNumber}`);
+            const feedback = questionBlock.querySelector('.feedback');
+            const button = questionBlock.querySelector('.validate-btn');
+            let selectedAnswer = null;
+
+            radios.forEach(radio => { if (radio.checked) { selectedAnswer = radio; } });
+
+            if (selectedAnswer === null) {
+                feedback.textContent = "Vui lòng chọn một đáp án!";
+                feedback.className = 'feedback feedback-warning';
+                return;
+            }
+            
+            button.disabled = true;
+            radios.forEach(radio => radio.disabled = true);
+            const selectedLabel = selectedAnswer.parentElement;
+            const explanation = feedbackExplanations[questionNumber];
+
+            if (selectedAnswer.value === correctAnswer) {
+                feedback.textContent = explanation;
+                feedback.className = 'feedback feedback-correct';
+                selectedLabel.classList.add('correct-answer');
+                updateScore();
+            } else {
+                const cleanedExplanation = explanation.replace("Chính xác! ", "");
+                feedback.innerHTML = `<strong>Không chính xác.</strong> ${cleanedExplanation}<br>Đáp án đúng là lựa chọn <strong>"${correctAnswer.toUpperCase()}"</strong>.`;
+                feedback.className = 'feedback feedback-incorrect';
+                selectedLabel.classList.add('incorrect-answer');
+                radios.forEach(radio => { if (radio.value === correctAnswer) { radio.parentElement.classList.add('correct-answer'); } });
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+
+<meta name="robots" content="noindex" />
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AVOIR</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding-top: 0;
+        background-color: #f4f4f4;
+        color: #333;
+      }
+
+      /* ĐÃ SỬA: Tên giáo viên sang trái */
+      .top-info {
+        max-width: 800px;
+        margin: 20px auto 10px auto;
+        padding: 0 20px;
+        font-size: 0.9em;
+        color: #555;
+        text-align: left; /* ĐÃ SỬA: Căn lề trái */
+      }
+
+      /* ĐÃ SỬA: Header không sticky, giới hạn chiều rộng và căn giữa */
+      .main-header {
+        background-color: #fff;
+        padding: 15px 20px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        z-index: 900; /* Lower z-index than sticky bar */
+        text-align: center;
+        /* ĐÃ LOẠI BỎ: position: sticky; top: 0; */
+        width: 100%;
+        max-width: 800px; /* ĐÃ THÊM: Giới hạn chiều rộng bằng content-container */
+        margin: 0 auto; /* ĐÃ THÊM: Căn giữa */
+        box-sizing: border-box;
+      }
+
+      .main-header h1 {
+        color: #2a3a4a;
+        margin: 0;
+        font-size: 1.8em;
+      }
+      .main-header .instructions {
+        font-size: 1em;
+        margin-top: 5px;
+        margin-bottom: 0;
+        font-style: italic;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 5px;
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+        color: #f0c9c9;
+      }
+
+      /* ĐÃ THÊM: CSS cho thanh ký tự đặc biệt (Sticky) */
+      .char-buttons-container {
+        position: -webkit-sticky;
+        position: sticky;
+        top: 0; /* Gắn vào đỉnh trang */
+        z-index: 1000; /* Đảm bảo nó luôn ở trên cùng */
+
+        width: 100%;
+        max-width: 800px; /* Giới hạn chiều rộng và căn giữa */
+        margin: 0 auto;
+        box-sizing: border-box;
+
+        padding: 10px 0 5px 0;
+        background-color: #fdfdfd; /* Nền xám nhạt */
+        border-radius: 0 0 5px 5px;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(203, 132, 132, 0.1); /* Đổ bóng khi sticky */
+      }
+      .char-button {
+        background-color: #fcfcfc;
+        border: 1px solid #a7a5a5;
+        padding: 6px 10px;
+        margin: 3px;
+        cursor: pointer;
+        font-size: 1.2em;
+        border-radius: 4px;
+        transition: background-color 0.2s ease, transform 0.1s ease;
+      }
+      .char-button:hover {
+        background-color: #eff4f0;
+        transform: translateY(-1px);
+        color: green;
+      }
+      .char-button:active {
+        transform: translateY(0);
+      }
+
+      .content-container {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 0 20px;
+      }
+
+      .exercise-item {
+        margin-bottom: 25px;
+        padding: 10px;
+        border: 1px solid #eee;
+        border-radius: 5px;
+        background-color: #fcfcfc;
+      }
+      .question-text {
+        font-size: 1.1em;
+        margin-bottom: 5px;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .question-text input[type="text"] {
+        width: 100px;
+        padding: 5px 8px;
+        margin: 0 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 1em;
+        box-sizing: border-box;
+      }
+      .vietnamese-translation {
+        font-size: 0.9em;
+        color: #666;
+        margin-bottom: 10px;
+        font-style: italic;
+      }
+
+      /* Nút kiểm tra - màu tươi tắn hơn */
+      .check-button {
+        padding: 8px 15px;
+        background-color: #5cb85c; /* Màu xanh lá tươi tắn hơn (Bootstrap success) */
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 0.95em;
+        transition: background-color 0.3s ease;
+        margin-top: 5px;
+      }
+      .check-button:hover {
+        background-color: #4cae4c; /* Hơi đậm hơn khi hover */
+      }
+      .feedback {
+        margin-top: 10px;
+        font-weight: bold;
+        display: none;
+        padding: 5px 10px; /* Thêm padding cho feedback */
+        border-radius: 3px; /* Bo góc nhẹ */
+      }
+      /* Màu sắc cho feedback dễ đọc hơn */
+      .feedback.correct {
+        color: #1a7e3d; /* Xanh lá cây đậm hơn */
+        background-color: #e6ffe6; /* Nền xanh lá cây rất nhạt */
+        border: 1px solid #1a7e3d; /* Viền cùng màu chữ */
+      }
+      .feedback.incorrect {
+        color: #b52b2b; /* Đỏ đậm hơn */
+        background-color: #ffe6e6; /* Nền đỏ rất nhạt */
+        border: 1px solid #b52b2b; /* Viền cùng màu chữ */
+      }
+      .feedback.warning {
+        color: #d19a00; /* Vàng cam đậm hơn */
+        background-color: #fffbe6; /* Nền vàng rất nhạt */
+        border: 1px solid #d19a00; /* Viền cùng màu chữ */
+      }
+      .note {
+        font-size: 0.9em;
+        color: #666;
+        margin-top: 40px;
+        border-left: 3px solid #ccc;
+        padding-left: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="top-info">Enseignant: Nguyễn Hoàng Vũ <br /></div>
+
+    <div class="main-header">
+      <h1>AVOIR</h1>
+    </div>
+
+    <div class="char-buttons-container">
+        <button class="char-button" onclick="insertChar('é')">é</button>
+        <button class="char-button" onclick="insertChar('è')">è</button>
+        <button class="char-button" onclick="insertChar('ê')">ê</button>
+        <button class="char-button" onclick="insertChar('ë')">ë</button>
+        <button class="char-button" onclick="insertChar('à')">à</button>
+        <button class="char-button" onclick="insertChar('â')">â</button>
+        <button class="char-button" onclick="insertChar('ç')">ç</button>
+        <button class="char-button" onclick="insertChar('ù')">ù</button>
+        <button class="char-button" onclick="insertChar('û')">û</button>
+        <button class="char-button" onclick="insertChar('ï')">ï</button>
+        <button class="char-button" onclick="insertChar('î')">î</button>
+        <button class="char-button" onclick="insertChar('ô')">ô</button>
+        <button class="char-button" onclick="insertChar('œ')">œ</button>
+        <button class="char-button" onclick="insertChar('\'')">'</button>
+    </div>
+
+    <div class="content-container">
+      <div class="exercise-list">
+        <div class="exercise-item">
+          <div class="question-text">
+            1. J' <input type="text" id="q1" data-answer="ai" /> une voiture.
+          </div>
+          <div class="vietnamese-translation">(Tôi có một chiếc xe hơi.)</div>
+          <button
+            class="check-button"
+            onclick="checkAnswer('q1', 'ai', 'q1-feedback')"
+          >
+            Vérifier
+          </button>
+          <div id="q1-feedback" class="feedback"></div>
+        </div>
+
+        <div class="exercise-item">
+          <div class="question-text">
+            2. Elle <input type="text" id="q2" data-answer="a" /> des lunettes.
+          </div>
+          <div class="vietnamese-translation">(Cô ấy có một cặp kính.)</div>
+          <button
+            class="check-button"
+            onclick="checkAnswer('q2', 'a', 'q2-feedback')"
+          >
+            Vérifier
+          </button>
+          <div id="q2-feedback" class="feedback"></div>
+        </div>
+
+        <div class="exercise-item">
+          <div class="question-text">
+            3. Il <input type="text" id="q3" data-answer="a" /> une moto.
+          </div>
+          <div class="vietnamese-translation">
+            (Anh ấy có một chiếc xe máy.)
+          </div>
+          <button
+            class="check-button"
+            onclick="checkAnswer('q3', 'a', 'q3-feedback')"
+          >
+            Vérifier
+          </button>
+          <div id="q3-feedback" class="feedback"></div>
+        </div>
+
+        <div class="exercise-item">
+          <div class="question-text">
+            4. Vous <input type="text" id="q4" data-answer="avez" /> les yeux
+            bleus.
+          </div>
+          <div class="vietnamese-translation">
+            (Bạn/Các bạn có đôi mắt màu xanh.)
+          </div>
+          <button
+            class="check-button"
+            onclick="checkAnswer('q4', 'avez', 'q4-feedback')"
+          >
+            Vérifier
+          </button>
+          <div id="q4-feedback" class="feedback"></div>
+        </div>
+
+        <div class="exercise-item">
+          <div class="question-text">
+            5. Tu <input type="text" id="q5" data-answer="as" /> un chat.
+          </div>
+          <div class="vietnamese-translation">(Bạn có một con mèo.)</div>
+          <button
+            class="check-button"
+            onclick="checkAnswer('q5', 'as', 'q5-feedback')"
+          >
+            Vérifier
+          </button>
+          <div id="q5-feedback" class="feedback"></div>
+        </div>
+
+        <div class="exercise-item">
+          <div class="question-text">
+            6. Dans le jardin, il y
+            <input type="text" id="q6" data-answer="a" /> une piscine.
+          </div>
+          <div class="vietnamese-translation">(Trong vườn có một hồ bơi.)</div>
+          <button
+            class="check-button"
+            onclick="checkAnswer('q6', 'a', 'q6-feedback')"
+          >
+            Vérifier
+          </button>
+          <div id="q6-feedback" class="feedback"></div>
+        </div>
+
+        <div class="exercise-item">
+          <div class="question-text">
+            7. Nous <input type="text" id="q7" data-answer="avons" /> un jardin.
+          </div>
+          <div class="vietnamese-translation">(Chúng tôi có một khu vườn.)</div>
+          <button
+            class="check-button"
+            onclick="checkAnswer('q7', 'avons', 'q7-feedback')"
+          >
+            Vérifier
+          </button>
+          <div id="q7-feedback" class="feedback"></div>
+        </div>
+
+        <div class="exercise-item">
+          <div class="question-text">
+            8. Ils <input type="text" id="q8" data-answer="ont" /> une grande
+            maison.
+          </div>
+          <div class="vietnamese-translation">(Họ có một ngôi nhà lớn.)</div>
+          <button
+            class="check-button"
+            onclick="checkAnswer('q8', 'ont', 'q8-feedback')"
+          >
+            Vérifier
+          </button>
+          <div id="q8-feedback" class="feedback"></div>
+        </div>
+
+        <div class="exercise-item">
+          <div class="question-text">
+            9. Monsieur et Madame Dubois
+            <input type="text" id="q9" data-answer="ont" /> deux enfants.
+          </div>
+          <div class="vietnamese-translation">
+            (Ông và bà Dubois có hai người con.)
+          </div>
+          <button
+            class="check-button"
+            onclick="checkAnswer('q9', 'ont', 'q9-feedback')"
+          >
+            Vérifier
+          </button>
+          <div id="q9-feedback" class="feedback"></div>
+        </div>
+
+        <div class="exercise-item">
+          <div class="question-text">
+            10. En France, on <input type="text" id="q10" data-answer="a" /> un
+            Président de la République.
+          </div>
+          <div class="vietnamese-translation">
+            (Ở Pháp, người ta có một Tổng thống Cộng hòa.)
+          </div>
+          <button
+            class="check-button"
+            onclick="checkAnswer('q10', 'a', 'q10-feedback')"
+          >
+            Vérifier
+          </button>
+          <div id="q10-feedback" class="feedback"></div>
+        </div>
+      </div>
+
+      <p class="note">
+        <strong>Lưu ý quan trọng:</strong> <br />
+        - Đối với câu 1, đáp án đúng là "ai", nhưng khi viết đầy đủ sẽ là "J'ai"
+        (quy tắc lược bỏ nguyên âm - élision). <br />
+        - Câu 6: "Il y a" là một cụm từ cố định có nghĩa "có" (there is / there
+        are).
+      </p>
+    </div>
+
+    <script>
+      let activeInput = null;
+
+      document.addEventListener("mousedown", (event) => {
+        if (event.target.tagName === "INPUT" && event.target.type === "text") {
+          activeInput = event.target;
+        } else if (event.target.classList.contains("char-button")) {
+          activeInput = document.querySelector('input:focus') || null;
+        } else {
+          activeInput = null;
+        }
+      });
+
+      function insertChar(char) {
+        if (activeInput) {
+          const start = activeInput.selectionStart;
+          const end = activeInput.selectionEnd;
+          const value = activeInput.value;
+
+          activeInput.value =
+            value.substring(0, start) + char + value.substring(end);
+
+          activeInput.selectionStart = activeInput.selectionEnd =
+            start + char.length;
+
+          activeInput.focus();
+        } else {
+          alert(
+            "Vui lòng click vào ô bạn muốn điền trước khi chọn ký tự! (Please click on the input field you want to fill before selecting a character!)"
+          );
+        }
+      }
+
+      function checkAnswer(inputId, correctAnswer, feedbackId) {
+        const inputElement = document.getElementById(inputId);
+        const feedbackElement = document.getElementById(feedbackId);
+        const userAnswer = inputElement.value.trim().toLowerCase();
+
+        // Xóa các class cũ và hiển thị feedback
+        feedbackElement.classList.remove("correct", "incorrect", "warning");
+        feedbackElement.style.display = "block";
+
+        // Kiểm tra nếu ô input trống
+        if (userAnswer === "") {
+          feedbackElement.textContent =
+            "Bạn cần điền vào ô trống trước khi kiểm tra! (Please fill in the blank before checking!)";
+          feedbackElement.classList.add("warning");
+          return;
+        }
+
+        // Nếu không trống, tiếp tục kiểm tra đáp án
+        if (userAnswer === correctAnswer.toLowerCase()) {
+          feedbackElement.textContent = "Chính xác! (Correct!)";
+          feedbackElement.classList.add("correct");
+        } else {
+          feedbackElement.textContent = `Chưa đúng. Đáp án là: ${correctAnswer}. (Incorrect. The correct answer is: ${correctAnswer}.)`;
+          feedbackElement.classList.add("incorrect");
+        }
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2025 by anonymous (http://jsbin.com/yakasewucu/1/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conditionnel Passé - Regret</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif; /* Font chữ chung cho body là Arial */
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        /* Đặt font Arial/sans-serif cho toàn bộ nội dung chính (trừ feedback vẫn là Roboto) */
+        .header, .question-block, .options label {
+            font-family: Arial, sans-serif;
+        }
+
+        /* Vùng chứa chung cho header và score-container để căn giữa */
+        .page-content-wrapper {
+            max-width: 700px; /* Chiều rộng tối đa cho toàn bộ nội dung chính */
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+        .header-top {
+            display: flex;
+            justify-content: space-between; /* Căn đều hai bên */
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .header h1 {
+            text-align: center;
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+
+        /* CSS cho phần Score dính */
+        #score-container {
+            position: sticky; /* Tạo hiệu ứng dính */
+            top: 0; /* Dính vào top của viewport */
+            z-index: 1000; /* Đảm bảo nằm trên các nội dung khác */
+            background-color: #fff; /* Nền trắng như các khối div */
+            color: #007bff; /* Chữ màu blue */
+            padding: 12px 20px; /* Tăng padding để làm khung to hơn */
+            border: 1px solid #cce5ff; /* Viền xanh nhạt giống các khối khác */
+            border-radius: 8px; /* Bo tròn góc */
+            text-align: center;
+            font-family: Arial, sans-serif; /* Font chữ Arial/sans-serif */
+            font-size: 1.3em; /* Tăng kích thước font cho score */
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Bóng nhẹ */
+            max-width: 700px; /* Đặt chiều rộng bằng các khối câu hỏi */
+            margin-left: auto; /* Căn giữa */
+            margin-right: auto;
+            display: block; /* Luôn hiển thị */
+            box-sizing: border-box; /* Đảm bảo padding không làm tăng width vượt quá max-width */
+        }
+        #score-container strong {
+            color: #0056b3; /* Chữ màu blue đậm hơn cho số điểm */
+        }
+
+        #quiz-container {
+            /* max-width và margin auto sẽ được thừa kế từ .page-content-wrapper */
+        }
+        .question-block {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            /* max-width và margin auto đã có ở đây */
+        }
+        .question-text {
+            font-size: 1.1em;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .question-translation {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+        .options {
+            max-width: 500px; /* Giới hạn chiều rộng tối đa của khối đáp án */
+            margin-bottom: 15px;
+        }
+        .options label {
+            display: block;
+            margin-bottom: 10px;
+            cursor: pointer;
+            padding: 8px;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+            font-family: Arial, sans-serif; /* Font chữ của đáp án (mặc định) */
+        }
+        .options label:hover {
+                background-color: #e9e9e9;
+        }
+        .feedback {
+            margin-top: 15px;
+            font-weight: bold;
+            display: none;
+            font-family: 'Roboto', sans-serif; /* Đặt font feedback là Roboto */
+        }
+        .feedback-explanation {
+            font-weight: normal;
+            font-size: 0.9em;
+            margin-top: 5px;
+            color: #0056b3;
+        }
+        .feedback-correct-answer-text {
+            color: #0056b3;
+        }
+        .correct {
+            color: green;
+        }
+        .incorrect {
+            color: red;
+        }
+        .highlight-correct {
+            background-color: #d4edda !important;
+            border-color: #28a745 !important;
+        }
+        .highlight-incorrect-selected {
+            background-color: #f8d7da !important;
+            border-color: #dc3545 !important;
+        }
+        .validate-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 15px;
+            transition: background-color 0.3s ease;
+        }
+        .validate-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-content-wrapper">
+        <div class="header">
+            <div class="header-top">
+                <p><strong>Enseignant:</strong> Nguyễn Hoàng Vũ</p>
+                <p><strong>Jour de test:</strong> <span id="currentDate"></span></p>
+            </div>
+            <h1>Conditionnel Passé - Regret</h1> </div>
+
+        <div id="score-container">
+            Score: <strong id="current-score-value">0</strong> / <strong id="total-questions-value">5</strong>
+        </div>
+
+        <div id="quiz-container">
+            <div class="question-block" id="q1" data-correct-answer="aurait mieux aimé">
+                <p class="question-text">1. Il (aimer mieux) __________ faire de la musique, mais il a fait des études de médecine.</p>
+                <p class="question-translation"><em>(Anh ấy lẽ ra đã thích làm nhạc hơn, nhưng anh ấy lại học ngành y.)</em></p>
+                <div class="options">
+                    <label><input type="radio" name="q1" value="aurait mieux aimé"> aurait mieux aimé</label>
+                    <label><input type="radio" name="q1" value="aurait mieux aimer"> aurait mieux aimer</label>
+                    <label><input type="radio" name="q1" value="eût mieux aimé"> eût mieux aimé</label>
+                    <label><input type="radio" name="q1" value="aimait mieux"> aimait mieux</label>
+                </div>
+                <button class="validate-btn" onclick="checkAnswer('q1', 'Động từ &quot;aimer&quot; sử dụng trợ động từ &quot;avoir&quot;. Với chủ ngữ &quot;Il&quot;, Conditionnel Passé là &quot;aurait aimé&quot;. Cụm &quot;mieux&quot; đứng trước participe passé.')">Valider</button>
+                <div class="feedback" id="feedback-q1"></div>
+            </div>
+
+            <div class="question-block" id="q2" data-correct-answer="auriez pu">
+                <p class="question-text">2. C'est dommage! Vous (pouvoir) __________ gagner ce match de football!</p>
+                <p class="question-translation"><em>(Thật đáng tiếc! Bạn lẽ ra đã có thể thắng trận đấu bóng đá này!)</em></p>
+                <div class="options">
+                    <label><input type="radio" name="q2" value="auriez pu"> auriez pu</label>
+                    <label><input type="radio" name="q2" value="auriez pouvoir"> auriez pouvoir</label>
+                    <label><input type="radio" name="q2" value="eussiez pu"> eussiez pu</label>
+                    <label><input type="radio" name="q2" value="pouvez"> pouvez</label>
+                </div>
+                <button class="validate-btn" onclick="checkAnswer('q2', 'Động từ &quot;pouvoir&quot; sử dụng trợ động từ &quot;avoir&quot;. Với chủ ngữ &quot;Vous&quot;, Conditionnel Passé là &quot;auriez pu&quot;.')">Valider</button>
+                <div class="feedback" id="feedback-q2"></div>
+            </div>
+
+            <div class="question-block" id="q3" data-correct-answer="serions allés">
+                <p class="question-text">3. Nous (aller) __________ nous baigner avec plaisir, mais il a plu.</p>
+                <p class="question-translation"><em>(Chúng tôi lẽ ra đã đi tắm biển với niềm vui, nhưng trời lại mưa.)</em></p>
+                <div class="options">
+                    <label><input type="radio" name="q3" value="serions allés"> serions allés</label>
+                    <label><input type="radio" name="q3" value="aurions allés"> aurions allés</label>
+                    <label><input type="radio" name="q3" value="serions aller"> serions aller</label>
+                    <label><input type="radio" name="q3" value="sommes allés"> sommes allés</label>
+                </div>
+                <button class="validate-btn" onclick="checkAnswer('q3', 'Động từ &quot;aller&quot; sử dụng trợ động từ &quot;être&quot;. Với chủ ngữ &quot;Nous&quot; (giả định giống đực số nhiều), Conditionnel Passé là &quot;serions allés&quot;.')">Valider</button>
+                <div class="feedback" id="feedback-q3"></div>
+            </div>
+
+            <div class="question-block" id="q4" data-correct-answer="aurais préféré">
+                <p class="question-text">4. Tu (préférer) __________ vivre à la campagne, mais cela n'a pas été possible.</p>
+                <p class="question-translation"><em>(Bạn lẽ ra đã thích sống ở nông thôn hơn, nhưng điều đó không thể.)</em></p>
+            <div class="options">
+                <label><input type="radio" name="q4" value="aurais préféré"> aurais préféré</label>
+                <label><input type="radio" name="q4" value="aurais préférer"> aurais préférer</label>
+                <label><input type="radio" name="q4" value="eusses préféré"> eusses préféré</label>
+                <label><input type="radio" name="q4" value="préférais"> préférais</label>
+            </div>
+            <button class="validate-btn" onclick="checkAnswer('q4', 'Động từ &quot;préférer&quot; sử dụng trợ động từ &quot;avoir&quot;. Với chủ ngữ &quot;Tu&quot;, Conditionnel Passé là &quot;aurais préféré&quot;.')">Valider</button>
+            <div class="feedback" id="feedback-q4"></div>
+        </div>
+
+            <div class="question-block" id="q5" data-correct-answer="seraient restés">
+                <p class="question-text">5. Ils (rester) __________ volontiers avec nous plus longtemps, mais ils ont dû partir.</p>
+                <p class="question-translation"><em>(Họ lẽ ra đã ở lại với chúng tôi lâu hơn, nhưng họ phải đi.)</em></p>
+                <div class="options">
+                    <label><input type="radio" name="q5" value="seraient restés"> seraient restés</label>
+                    <label><input type="radio" name="q5" value="auraient restés"> auraient restés</label>
+                    <label><input type="radio" name="q5" value="seraient rester"> seraient rester</label>
+                    <label><input type="radio" name="q5" value="sont restés"> sont restés</label>
+                </div>
+                <button class="validate-btn" onclick="checkAnswer('q5', 'Động từ &quot;rester&quot; sử dụng trợ động từ &quot;être&quot;. Với chủ ngữ &quot;Ils&quot; (giả định giống đực số nhiều), Conditionnel Passé là &quot;seraient restés&quot;.')">Valider</button>
+                <div class="feedback" id="feedback-q5"></div>
+            </div>
+
+        </div>
+    </div> <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const date = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('currentDate').textContent = date.toLocaleDateString('fr-FR', options);
+            updateOverallScore(); // Cập nhật điểm ban đầu
+        });
+
+        const answeredQuestions = {};
+        const totalQuestions = 5;
+
+        // Lấy tham chiếu đến các phần tử hiển thị điểm
+        const currentScoreValue = document.getElementById('current-score-value');
+        const totalQuestionsValue = document.getElementById('total-questions-value');
+
+        function updateOverallScore() {
+            let correctCount = 0;
+            const allQuestionIds = ['q1', 'q2', 'q3', 'q4', 'q5'];
+            allQuestionIds.forEach(id => {
+                if (answeredQuestions[id] === true) {
+                    correctCount++;
+                }
+            });
+
+            currentScoreValue.textContent = correctCount;
+            totalQuestionsValue.textContent = totalQuestions;
+        }
+
+        function checkAnswer(questionId, explanation) {
+            const questionBlock = document.getElementById(questionId);
+            const selectedOption = questionBlock.querySelector(`input[name="${questionId}"]:checked`);
+            const feedbackDiv = questionBlock.querySelector('.feedback');
+            const optionsLabels = questionBlock.querySelectorAll('.options label');
+            const correctAnswer = questionBlock.dataset.correctAnswer;
+
+            optionsLabels.forEach(label => {
+                label.classList.remove('highlight-correct', 'highlight-incorrect-selected');
+            });
+            feedbackDiv.style.display = 'none';
+            feedbackDiv.classList.remove('correct', 'incorrect');
+            feedbackDiv.innerHTML = '';
+
+            if (!selectedOption) {
+                alert("Veuillez sélectionner une réponse avant de valider.");
+                return;
+            }
+
+            const userAnswer = selectedOption.value;
+            let feedbackMessage = "";
+
+            optionsLabels.forEach(label => {
+                if (label.querySelector('input').value === correctAnswer) {
+                    label.classList.add('highlight-correct');
+                }
+            });
+
+            if (userAnswer === correctAnswer) {
+                feedbackMessage = "<b>Chính xác!</b> Đây là đáp án đúng.";
+                feedbackDiv.classList.add('correct');
+                answeredQuestions[questionId] = true;
+            } else {
+                feedbackMessage = `<b>Không chính xác.</b> Đáp án đúng là <span class="feedback-correct-answer-text">"${correctAnswer}"</span>.`;
+                feedbackDiv.classList.add('incorrect');
+                selectedOption.closest('label').classList.add('highlight-incorrect-selected');
+                answeredQuestions[questionId] = false;
+            }
+            feedbackDiv.innerHTML = feedbackMessage + `<div class="feedback-explanation">Giải thích: ${explanation}</div>`;
+            feedbackDiv.style.display = 'block';
+
+            updateOverallScore(); // Cập nhật điểm sau mỗi lần kiểm tra
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2025 by anonymous (http://jsbin.com/wevapuxizu/12/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài tập: Động từ Nhóm 3 (đuôi -ir)</title>
+    <style>
+        /* CSS để làm cho trang kiểm tra đẹp hơn */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-header {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 0.95em;
+            color: #555;
+        }
+        
+        .info-header p {
+            margin: 0;
+        }
+
+        .quiz-status-bar {
+            position: sticky;
+            top: 0;
+            background-color: #4a5a7b;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            z-index: 1000;
+        }
+
+        .quiz-status-bar h1 {
+            margin: 0;
+            font-size: 1.5em;
+        }
+
+        #score-display, #timer-display {
+            font-size: 1.2em;
+            font-weight: bold;
+            background-color: #ffffff;
+            color: #4a5a7b;
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+        
+        .section-title {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+
+        .question-block {
+            margin-bottom: 25px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background-color: #fdfdfd;
+        }
+
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .question-translation {
+            font-size: 0.9em;
+            font-style: italic;
+            color: #6c757d;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .answers label {
+            display: block;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            max-width: 500px;
+        }
+
+        .answers label:hover {
+            background-color: #e9ecef;
+        }
+
+        .answers input[type="radio"] {
+            margin-right: 10px;
+        }
+        
+        .validate-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            display: block;
+            margin-top: 15px; 
+            transition: background-color 0.3s;
+        }
+
+        .validate-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .validate-btn:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+        
+        .feedback {
+            margin-top: 15px;
+            font-weight: normal;
+            font-size: 0.95em;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .feedback-correct {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .feedback-incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .feedback-warning {
+            background-color: #fffbe6;
+            color: #8a6d3b;
+        }
+
+        .correct-answer {
+            background-color: #d4edda !important;
+            border-color: #c3e6cb !important;
+        }
+
+        .incorrect-answer {
+            background-color: #f8d7da !important;
+            border-color: #f5c6cb !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="quiz-container">
+        <div class="info-header">
+            <p><strong>Enseignant:</strong> Nguyễn Hoàng Vũ</p>
+            <p><strong>Ngày kiểm tra:</strong> <span id="test-date"></span></p>
+        </div>
+
+        <div class="quiz-status-bar">
+            <h1>Bài tập: Động từ Nhóm 3 (đuôi -ir)</h1>
+            <div>
+                <span id="score-display">Điểm: 0 / 16</span>
+                <span id="timer-display">Thời gian: 16:00</span>
+            </div>
+        </div>
+        
+        <div id="all-questions-container">
+            <h2 class="section-title">Phần A: Quy tắc chia động từ</h2>
+            <div class="question-block" id="q1">
+                <p class="question-text">1. Je (sortir) ______.</p>
+                <p class="question-translation">(Tôi đi ra ngoài)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q1" value="a"> a) sor</label>
+                    <label><input type="radio" name="q1" value="b"> b) sors</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(1, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q2">
+                <p class="question-text">2. Nous (sortir) ______.</p>
+                <p class="question-translation">(Chúng tôi đi ra ngoài)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q2" value="a"> a) sortons</label>
+                    <label><input type="radio" name="q2" value="b"> b) sortissons</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(2, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q3">
+                <p class="question-text">3. Il (courir) ______.</p>
+                <p class="question-translation">(Anh ấy chạy)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q3" value="a"> a) cours</label>
+                    <label><input type="radio" name="q3" value="b"> b) court</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(3, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q4">
+                <p class="question-text">4. Vous (courir) ______.</p>
+                <p class="question-translation">(Các bạn chạy)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q4" value="a"> a) courez</label>
+                    <label><input type="radio" name="q4" value="b"> b) courez</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(4, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q5">
+                <p class="question-text">5. J' (ouvrir) ______.</p>
+                <p class="question-translation">(Tôi mở)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q5" value="a"> a) ouvre</label>
+                    <label><input type="radio" name="q5" value="b"> b) ouvres</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(5, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q6">
+                <p class="question-text">6. Ils (ouvrir) ______.</p>
+                <p class="question-translation">(Họ mở)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q6" value="a"> a) ouvrent</label>
+                    <label><input type="radio" name="q6" value="b"> b) ouvons</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(6, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+
+            <h2 class="section-title">Phần B: Chia động từ trong câu</h2>
+            <div class="question-block" id="q7">
+                <p class="question-text">7. Vous ______ souvent le soir. (sortir)</p>
+                <p class="question-translation">(Các bạn thường đi ra ngoài vào buổi tối.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q7" value="a"> a) sortons</label>
+                    <label><input type="radio" name="q7" value="b"> b) sortez</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(7, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q8">
+                <p class="question-text">8. Tu ______ le café. (servir)</p>
+                <p class="question-translation">(Bạn phục vụ cà phê.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q8" value="a"> a) sers</label>
+                    <label><input type="radio" name="q8" value="b"> b) sert</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(8, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q9">
+                <p class="question-text">9. Ils ______ en vacances. (partir)</p>
+                <p class="question-translation">(Họ đi nghỉ mát.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q9" value="a"> a) partent</label>
+                    <label><input type="radio" name="q9" value="b"> b) partez</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(9, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q10">
+                <p class="question-text">10. Je ne ______ pas bien. (dormir)</p>
+                <p class="question-translation">(Tôi không ngủ ngon.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q10" value="a"> a) dort</label>
+                    <label><input type="radio" name="q10" value="b"> b) dors</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(10, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q11">
+                <p class="question-text">11. Le champion de tennis ______ vite. (courir)</p>
+                <p class="question-translation">(Nhà vô địch quần vợt chạy nhanh.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q11" value="a"> a) cours</label>
+                    <label><input type="radio" name="q11" value="b"> b) court</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(11, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            
+            <h2 class="section-title">Phần C: Chia động từ trong câu</h2>
+            <div class="question-block" id="q12">
+                <p class="question-text">12. Tu ______ la porte. (ouvrir)</p>
+                 <p class="question-translation">(Bạn mở cửa.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q12" value="a"> a) ouvres</label>
+                    <label><input type="radio" name="q12" value="b"> b) ouvre</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(12, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q13">
+                <p class="question-text">13. J'ai mal aux dents, je ______. (souffrir)</p>
+                <p class="question-translation">(Tôi bị đau răng, tôi đang chịu đựng.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q13" value="a"> a) souffres</label>
+                    <label><input type="radio" name="q13" value="b"> b) souffre</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(13, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q14">
+                <p class="question-text">14. Nous ______ de belles roses. (offrir)</p>
+                <p class="question-translation">(Chúng tôi tặng những bông hồng đẹp.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q14" value="a"> a) offrons</label>
+                    <label><input type="radio" name="q14" value="b"> b) offrez</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(14, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q15">
+                <p class="question-text">15. Il ______ des cerises. (cueillir)</p>
+                <p class="question-translation">(Anh ấy hái những quả anh đào.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q15" value="a"> a) cueilles</label>
+                    <label><input type="radio" name="q15" value="b"> b) cueille</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(15, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q16">
+                <p class="question-text">16. Elles ______ un nouveau pays. (découvrir)</p>
+                <p class="question-translation">(Họ (nữ) khám phá một đất nước mới.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q16" value="a"> a) découvrent</label>
+                    <label><input type="radio" name="q16" value="b"> b) découvrez</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(16, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let score = 0;
+        const maxScore = 16;
+        const scoreDisplay = document.getElementById('score-display');
+        let timeInSeconds = 960; // 16 minutes
+        let timerInterval = null;
+
+        const feedbackExplanations = {
+            1: "Chính xác! Động từ 'sortir' chia với 'je' là 'sors'.",
+            2: "Chính xác! Với 'nous', động từ 'sortir' giữ nguyên gốc và thêm đuôi '-ons' thành 'sortons'.",
+            3: "Chính xác! Động từ 'courir' chia với 'il' là 'court'.",
+            4: "Chính xác! Động từ 'courir' chia với 'vous' là 'courez'.",
+            5: "Chính xác! Động từ dạng 'ouvrir' chia giống động từ nhóm 1, với 'je' là 'ouvre'.",
+            6: "Chính xác! Động từ 'ouvrir' chia với 'ils' là 'ouvrent'.",
+            7: "Chính xác! 'sortir' chia với 'vous' thành 'sortez'.",
+            8: "Chính xác! 'servir' chia với 'tu' thành 'sers'.",
+            9: "Chính xác! 'partir' chia với 'ils' thành 'partent'.",
+            10: "Chính xác! 'dormir' chia với 'je' thành 'dors'.",
+            11: "Chính xác! 'Le champion' tương đương 'il', nên 'courir' chia thành 'court'.",
+            12: "Chính xác! 'ouvrir' chia với 'tu' thành 'ouvres'.",
+            13: "Chính xác! 'souffrir' chia với 'je' thành 'souffre'.",
+            14: "Chính xác! 'offrir' chia với 'nous' thành 'offrons'.",
+            15: "Chính xác! 'cueillir' chia với 'il' thành 'cueille'.",
+            16: "Chính xác! 'découvrir' chia với 'elles' thành 'découvrent'."
+        };
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const today = new Date();
+            const day = String(today.getDate()).padStart(2, '0');
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const year = today.getFullYear();
+            document.getElementById('test-date').textContent = `${day}/${month}/${year}`;
+            
+            updateScoreDisplay();
+            startTimer();
+        });
+
+        function startTimer() {
+            const timerDisplay = document.getElementById('timer-display');
+            clearInterval(timerInterval); 
+            
+            timerInterval = setInterval(() => {
+                timeInSeconds--;
+                const minutes = Math.floor(timeInSeconds / 60);
+                const seconds = timeInSeconds % 60;
+                timerDisplay.textContent = `Thời gian: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                if (timeInSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    timerDisplay.textContent = "Hết giờ!";
+                    alert("Hết giờ làm bài!");
+                    document.querySelectorAll('.validate-btn').forEach(btn => btn.disabled = true);
+                }
+            }, 1000);
+        }
+
+        function updateScoreDisplay() {
+            scoreDisplay.textContent = `Điểm: ${score} / ${maxScore}`;
+        }
+        
+        function updateScore(points = 1) {
+            score += points;
+            updateScoreDisplay();
+        }
+
+        function validateRadio(questionNumber, correctAnswer) {
+            const questionBlock = document.getElementById(`q${questionNumber}`);
+            const radios = document.getElementsByName(`q${questionNumber}`);
+            const feedback = questionBlock.querySelector('.feedback');
+            const button = questionBlock.querySelector('.validate-btn');
+            let selectedAnswer = null;
+
+            radios.forEach(radio => { if (radio.checked) { selectedAnswer = radio; } });
+
+            if (selectedAnswer === null) {
+                feedback.textContent = "Vui lòng chọn một đáp án!";
+                feedback.className = 'feedback feedback-warning';
+                return;
+            }
+            
+            button.disabled = true;
+            radios.forEach(radio => radio.disabled = true);
+            const selectedLabel = selectedAnswer.parentElement;
+            const explanation = feedbackExplanations[questionNumber];
+
+            if (selectedAnswer.value === correctAnswer) {
+                feedback.textContent = explanation;
+                feedback.className = 'feedback feedback-correct';
+                selectedLabel.classList.add('correct-answer');
+                updateScore();
+            } else {
+                const cleanedExplanation = explanation.replace("Chính xác! ", "");
+                feedback.innerHTML = `<strong>Không chính xác.</strong> ${cleanedExplanation}<br>Đáp án đúng là lựa chọn <strong>"${correctAnswer.toUpperCase()}"</strong>.`;
+                feedback.className = 'feedback feedback-incorrect';
+                selectedLabel.classList.add('incorrect-answer');
+                radios.forEach(radio => { if (radio.value === correctAnswer) { radio.parentElement.classList.add('correct-answer'); } });
+            }
+        }
+    </script>
+</body>
+</html>

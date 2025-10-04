@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2025 by anonymous (http://jsbin.com/kigufatifi/12/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài Trắc Nghiệm: Passé Composé / Imparfait</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .quiz-container {
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px;
+            padding: 30px 40px;
+        }
+
+        .quiz-header {
+            text-align: center;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .quiz-header h1 {
+            color: #2c3e50;
+            margin: 0;
+            font-size: 28px;
+        }
+
+        .info-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            font-size: 16px;
+            color: #555;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        #score-container {
+            background-color: #2ecc71;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+
+        .question-block {
+            margin-bottom: 25px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .question-block:last-of-type {
+            border-bottom: none;
+            margin-bottom: 15px;
+        }
+
+        .question-block .prompt {
+            font-size: 18px;
+            font-weight: 500;
+            color: #34495e;
+            margin-bottom: 5px;
+        }
+
+        .question-block .translation {
+            font-size: 16px;
+            font-style: italic;
+            color: #7f8c8d;
+            margin-top: 5px;
+            margin-bottom: 15px;
+        }
+        
+        .options label {
+            display: block;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .options label:has(input:disabled) {
+            cursor: not-allowed;
+            background-color: #f8f9fa;
+        }
+        .options label:has(input:disabled):hover {
+            border-color: #dee2e6;
+        }
+
+        .options input[type="radio"] {
+            margin-right: 12px;
+            transform: translateY(1px);
+        }
+
+        .check-btn {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #fff;
+            background-color: #3498db;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .check-btn:hover {
+            background-color: #2980b9;
+        }
+        .check-btn:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+
+        .instant-feedback {
+            margin-top: 15px;
+            font-weight: normal;
+            font-size: 15px;
+            padding: 12px;
+            border-radius: 5px;
+            text-align: left;
+            line-height: 1.5;
+        }
+        .feedback-correct {
+            background-color: #d4edda;
+            color: #155724;
+            border-left: 5px solid #28a745;
+        }
+        .feedback-incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+            border-left: 5px solid #dc3545;
+        }
+        .feedback-prompt {
+            background-color: #fff3cd;
+            color: #856404;
+            border-left: 5px solid #ffc107;
+        }
+        
+        .options label.correct {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+            font-weight: bold;
+        }
+
+        .options label.incorrect {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="quiz-container">
+        <header class="quiz-header">
+            <h1>Bài Trắc Nghiệm: Passé Composé hay Imparfait?</h1>
+            <div class="info-bar">
+                <span>Enseignant: <strong>Nguyễn Hoàng Vũ</strong></span>
+                <div id="score-container">
+                    Điểm số: <span id="score-value">0/5</span>
+                </div>
+            </div>
+        </header>
+
+        <form id="quiz-form" onsubmit="return false;">
+            <div class="question-block">
+                <p class="prompt">1. Tout le monde (<i>attendre</i>). Enfin, on (<i>annoncer</i>) le résultat des élections.</p>
+                <p class="translation">(Mọi người (chờ đợi). Cuối cùng, người ta (công bố) kết quả của cuộc bầu cử.)</p>
+                <div class="options">
+                    <label><input type="radio" name="question1" value="A"> a attendu / a annoncé</label>
+                    <label><input type="radio" name="question1" value="B"> attendait / a annoncé</label>
+                    <label><input type="radio" name="question1" value="C"> attendait / annonçait</label>
+                </div>
+                <button type="button" class="check-btn">Vérifier</button>
+                <div class="instant-feedback"></div>
+            </div>
+            
+            <div class="question-block">
+                <p class="prompt">2. Hier soir, je vous (<i>téléphoner</i>), vous (<i>être</i>) absent.</p>
+                <p class="translation">(Tối hôm qua, tôi (gọi điện) cho bạn, bạn (vắng mặt).)</p>
+                <div class="options">
+                    <label><input type="radio" name="question2" value="A"> ai téléphoné / étiez</label>
+                    <label><input type="radio" name="question2" value="B"> téléphonais / avez été</label>
+                    <label><input type="radio" name="question2" value="C"> ai téléphoné / avez été</label>
+                </div>
+                <button type="button" class="check-btn">Vérifier</button>
+                <div class="instant-feedback"></div>
+            </div>
+            
+            <div class="question-block">
+                <p class="prompt">3. Cet acteur (<i>être</i>) inconnu. Il (<i>devenir</i>) célèbre.</p>
+                <p class="translation">(Diễn viên này (từng) vô danh. Anh ấy (đã trở nên) nổi tiếng.)</p>
+                <div class="options">
+                    <label><input type="radio" name="question3" value="A"> a été / est devenu</label>
+                    <label><input type="radio" name="question3" value="B"> était / devenait</label>
+                    <label><input type="radio" name="question3" value="C"> était / est devenu</label>
+                </div>
+                <button type="button" class="check-btn">Vérifier</button>
+                <div class="instant-feedback"></div>
+            </div>
+
+            <div class="question-block">
+                <p class="prompt">4. Je (<i>descendre</i>) l'escalier. Tout à coup, je (<i>rater</i>) une marche et je (<i>tomber</i>).</p>
+                <p class="translation">(Tôi (đang đi xuống) cầu thang. Đột nhiên, tôi (bị trượt) một bậc và (bị ngã).)</p>
+                <div class="options">
+                    <label><input type="radio" name="question4" value="A"> descendais / ai raté / suis tombé</label>
+                    <label><input type="radio" name="question4" value="B"> ai descendu / ratais / tombais</label>
+                    <label><input type="radio" name="question4" value="C"> descendais / ai raté / ai tombé</label>
+                </div>
+                <button type="button" class="check-btn">Vérifier</button>
+                <div class="instant-feedback"></div>
+            </div>
+
+            <div class="question-block">
+                <p class="prompt">5. Elle (<i>venir</i>) d'arriver au Japon. Elle (<i>ouvrir</i>) un compte dans une banque japonaise.</p>
+                <p class="translation">(Cô ấy (vừa mới) đến Nhật Bản. Cô ấy (đã mở) một tài khoản ở một ngân hàng Nhật Bản.)</p>
+                <div class="options">
+                    <label><input type="radio" name="question5" value="A"> est venue / a ouvert</label>
+                    <label><input type="radio" name="question5" value="B"> venait d'arriver / a ouvert</label>
+                    <label><input type="radio" name="question5" value="C"> venait d'arriver / ouvrait</label>
+                </div>
+                <button type="button" class="check-btn">Vérifier</button>
+                <div class="instant-feedback"></div>
+            </div>
+
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const quizData = [
+                { // Q1
+                    correct: 'B',
+                    feedback: {
+                        A: "<b>Không đúng.</b> Hành động 'chờ đợi' là một bối cảnh kéo dài, nên dùng Imparfait. Chỉ có hành động 'công bố' là sự kiện chính, dùng Passé Composé.",
+                        B: "<b>Chính xác!</b> 'attendait' (Imparfait) dùng để miêu tả bối cảnh (mọi người đang chờ). 'a annoncé' (Passé Composé) là hành động chính, bất chợt xảy ra.",
+                        C: "<b>Không đúng.</b> Hành động 'công bố' là một sự kiện đã hoàn tất, không phải hành động kéo dài. Do đó, phải dùng Passé Composé."
+                    }
+                },
+                { // Q2
+                    correct: 'A',
+                    feedback: {
+                        A: "<b>Chính xác!</b> 'ai téléphoné' (Passé Composé) là hành động chính. 'étiez absent' (Imparfait) là trạng thái, hoàn cảnh tại thời điểm đó.",
+                        B: "<b>Không đúng.</b> 'téléphonais' (Imparfait) ngụ ý một hành động lặp đi lặp lại. 'Hier soir' chỉ một hành động cụ thể. 'avez été' (Passé Composé) không phù hợp để miêu tả trạng thái.",
+                        C: "<b>Không đúng.</b> Trạng thái 'vắng mặt' phải được chia ở Imparfait, không phải Passé Composé."
+                    }
+                },
+                { // Q3
+                    correct: 'C',
+                    feedback: {
+                        A: "<b>Không đúng.</b> Trạng thái 'vô danh' là một tình trạng kéo dài trong quá khứ, nên dùng Imparfait.",
+                        B: "<b>Không đúng.</b> Sự việc 'trở nên nổi tiếng' là một sự thay đổi, một hành động đã hoàn tất, nên dùng Passé Composé.",
+                        C: "<b>Chính xác!</b> 'était inconnu' (Imparfait) mô tả trạng thái trong quá khứ. 'est devenu' (Passé Composé) là hành động làm thay đổi trạng thái đó."
+                    }
+                },
+                { // Q4
+                    correct: 'A',
+                    feedback: {
+                        A: "<b>Chính xác!</b> 'descendais' (Imparfait) là hành động nền đang diễn ra. 'ai raté' và 'suis tombé' (Passé Composé) là hai hành động ngắn, bất ngờ xen vào.",
+                        B: "<b>Không đúng.</b> Trật tự thì bị đảo ngược. 'ai descendu' cũng sai vì 'descendre l'escalier' có thể chia với 'avoir', nhưng trong ngữ cảnh này, Imparfait hợp lý hơn.",
+                        C: "<b>Không đúng.</b> Lỗi ở động từ cuối: 'tomber' (ngã) là động từ chia với 'être', không phải 'avoir'."
+                    }
+                },
+                { // Q5
+                    correct: 'B',
+                    feedback: {
+                        A: "<b>Không đúng.</b> 'est venue' (Passé Composé) có nghĩa là 'cô ấy đã đến'. Đề bài cho 'venir de' (vừa mới), khi lùi về quá khứ sẽ là `venir (ở Imparfait) + de`.",
+                        B: "<b>Chính xác!</b> 'venait d'arriver' (vừa mới đến - trong quá khứ) là bối cảnh. 'a ouvert' (Passé Composé) là hành động chính xảy ra sau đó.",
+                        C: "<b>Không đúng.</b> Hành động 'mở tài khoản' là một sự kiện đơn lẻ, đã hoàn thành, nên phải dùng Passé Composé."
+                    }
+                }
+            ];
+
+            const checkButtons = document.querySelectorAll('.check-btn');
+            const scoreValueElement = document.getElementById('score-value');
+            const totalQuestions = quizData.length;
+            let currentScore = 0;
+
+            checkButtons.forEach((button, index) => {
+                button.addEventListener('click', () => {
+                    const questionBlock = button.closest('.question-block');
+                    const selectedOption = questionBlock.querySelector(`input[name="question${index + 1}"]:checked`);
+                    const feedbackElement = questionBlock.querySelector('.instant-feedback');
+
+                    if (!selectedOption) {
+                        feedbackElement.innerHTML = "Veuillez sélectionner une réponse avant de vérifier.";
+                        feedbackElement.className = 'instant-feedback feedback-prompt';
+                        return;
+                    }
+
+                    const userAnswer = selectedOption.value;
+                    const questionData = quizData[index];
+                    const correctAnswer = questionData.correct;
+                    const feedbackMessage = questionData.feedback[userAnswer];
+                    const labels = questionBlock.querySelectorAll('.options label');
+                    
+                    const radioButtons = questionBlock.querySelectorAll('input[type="radio"]');
+                    radioButtons.forEach(radio => radio.disabled = true);
+                    button.disabled = true;
+                    
+                    feedbackElement.innerHTML = feedbackMessage;
+
+                    if (userAnswer === correctAnswer) {
+                        currentScore++;
+                        selectedOption.parentElement.classList.add('correct');
+                        feedbackElement.classList.add('feedback-correct');
+                    } else {
+                        selectedOption.parentElement.classList.add('incorrect');
+                        feedbackElement.classList.add('feedback-incorrect');
+                        labels.forEach(label => {
+                            if (label.querySelector('input').value === correctAnswer) {
+                                label.classList.add('correct');
+                            }
+                        });
+                    }
+
+                    scoreValueElement.textContent = `${currentScore}/${totalQuestions}`;
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+
+<meta name="robots" content="noindex">
+<html>
+<head>
+<title>Phân biệt Imparfait và Passé Composé</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0; /* Đã sửa: Loại bỏ khoảng trống đầu trang */
+    padding: 0;
+    background-color: #f0f4f8;
+    color: #333;
+  }
+  
+  /* CHỈNH SỬA QUAN TRỌNG: Đặt chiều rộng và box-sizing để khớp container */
+  header {
+    width: 800px; /* Chiều rộng cố định, bằng container */
+    margin: 0 auto; /* Căn giữa và sát lề trên */
+    background-color: #e0e7ed;
+    color: #2c3e50;
+    padding: 15px 20px;
+    /* border-bottom: 2px solid #c0d0e0; */ /* Đã bỏ border-bottom cũ */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Thay bằng đổ bóng nhẹ */
+    border-radius: 8px 8px 0 0; /* Đã sửa: Bo tròn góc trên */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box; /* Đã sửa: Đảm bảo padding nằm trong 800px */
+  }
+  
+  header h2, header p {
+    margin: 0;
+    font-size: 1.1em;
+    color: #333;
+  }
+  
+  h1 {
+    color: #2c3e50;
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 20px;
+  }
+  
+  .container {
+    width: 800px; /* Đã sửa: Đặt width cố định để khớp Header */
+    margin: 0 auto 30px auto; /* Đã sửa: margin-top: 0 để sát Header */
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 0 0 10px 10px; /* Đã sửa: Bỏ bo góc trên */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box; /* Đã sửa: Đảm bảo padding nằm trong 800px */
+  }
+  .original-text {
+    background-color: #eaf3f8;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    font-style: italic;
+    line-height: 1.6;
+    color: #4a6a8b;
+  }
+  .question-block {
+    margin-bottom: 25px;
+    padding: 20px;
+    border: 1px solid #d0dbe4;
+    border-radius: 8px;
+    background-color: #fdfefe;
+  }
+  .question {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 1.1em;
+    color: #34495e;
+  }
+  .translation {
+    font-style: italic;
+    color: #666;
+    margin-bottom: 15px;
+    font-size: 0.95em;
+  }
+  .options label {
+    display: block;
+    margin-bottom: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: color 0.3s ease;
+    padding: 5px 0;
+  }
+  .options label:hover {
+    color: #5a7d9a;
+  }
+  .options input[type="radio"] {
+    margin-right: 10px;
+    transform: scale(1.1);
+  }
+  .options label.correct-highlight {
+    background-color: #d4edda;
+    border: 2px solid #28a745;
+    border-radius: 5px;
+    padding: 5px;
+    color: #1a7e37;
+  }
+  .feedback {
+    margin-top: 15px;
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 5px;
+    width: calc(100% - 24px);
+    box-sizing: border-box;
+    display: none;
+  }
+  .feedback.active {
+      display: block;
+  }
+  .correct {
+    background-color: #e6ffe6;
+    color: #1a7e37;
+    border: 1px solid #28a745;
+  }
+  .incorrect {
+    background-color: #ffe6e6;
+    color: #dc3545;
+    border: 1px solid #dc3545;
+  }
+  .warning {
+      background-color: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffeeba;
+  }
+  .explanation {
+    font-size: 0.9em;
+    font-weight: normal;
+    color: #555;
+    margin-top: 8px;
+    font-style: italic;
+  }
+  .correct-answer-display {
+    color: dodgerblue; /* Xanh dương tươi */
+    font-weight: bold;
+    margin-top: 5px;
+    display: block;
+  }
+  .validate-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-top: 15px;
+    transition: background-color 0.3s ease;
+  }
+  .validate-btn:hover {
+    background-color: #45a049;
+  }
+  .validate-btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+  #score-area {
+    text-align: center;
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #e6f7ff;
+    border: 1px solid #b3e0ff;
+    border-radius: 8px;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #0056b3;
+    display: none;
+  }
+  .complete-test-btn {
+    display: block;
+    width: fit-content;
+    margin: 30px auto;
+    background-color: #007bff;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease;
+  }
+  .complete-test-btn:hover {
+    background-color: #0056b3;
+  }
+  @media (max-width: 600px) {
+    .container {
+      margin: 15px;
+      padding: 15px;
+    }
+    header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    header h2, header p {
+      font-size: 1em;
+      margin-bottom: 5px;
+    }
+    .question, .translation, .options label, .feedback, .validate-btn, .complete-test-btn {
+      font-size: 0.9em;
+    }
+    .feedback {
+      padding: 6px 10px;
+      width: calc(100% - 20px);
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h2>Enseignant: Nguyễn Hoàng Vũ</h2>
+ 
+</header>
+
+<div class="container">
+  <h1>Chia động từ trong ngoặc ở Imparfait hoặc Passé Composé</h1>
+
+ 
+  <div class="original-text">
+    Ce (être) la fin de la journée. Victor Fournier (rentrer) chez lui, fatigué. Il (avoir) envie de prendre un bain. Mais, quand il (arriver) devant son immeuble, il (voir) des flammes. Il y (avoir) le feu !
+    <br>
+    D'habitude, à cette heure-là, beaucoup d'enfants (être) seuls chez eux et (attendre) le retour de leurs parents. Victor (savoir) bien cela. Alors, très vite, il (courir), (monter) l'escalier, (appeler) les enfants et il (conduire) tout le monde au dernier étage.
+    <br>
+    Juste après, les pompiers (arriver) avec leur grande échelle et tous les enfants (pouvoir) être sauvés. Ce jour-là Victor Fournier (devenir) le héros du quartier !
+  </div>
+
+  <div class="question-block" id="q1-block">
+    <div class="question">1. Ce (être) la fin de la journée.</div>
+    <div class="translation">Đó (đã là) cuối ngày.</div>
+    <div class="options" id="options-q1"></div>
+    <button class="validate-btn" onclick="checkAnswer('q1')">Valider</button>
+    <div class="feedback" id="feedback1"></div>
+  </div>
+
+  <div class="question-block" id="q2-block">
+    <div class="question">2. Victor Fournier (rentrer) chez lui, fatigué.</div>
+    <div class="translation">Victor Fournier (đã về) nhà, mệt mỏi.</div>
+    <div class="options" id="options-q2"></div>
+    <button class="validate-btn" onclick="checkAnswer('q2')">Valider</button>
+    <div class="feedback" id="feedback2"></div>
+  </div>
+
+  <div class="question-block" id="q3-block">
+    <div class="question">3. Il (avoir) envie de prendre un bain.</div>
+    <div class="translation">Anh ấy (đã) muốn tắm.</div>
+    <div class="options" id="options-q3"></div>
+    <button class="validate-btn" onclick="checkAnswer('q3')">Valider</button>
+    <div class="feedback" id="feedback3"></div>
+  </div>
+
+  <div class="question-block" id="q4-block">
+    <div class="question">4. Mais, quand il (arriver) devant son immeuble, il (voir) des flammes.</div>
+    <div class="translation">Nhưng, khi anh ấy (đã đến) trước tòa nhà của mình, anh ấy (đã thấy) những ngọn lửa.</div>
+    <div class="options" id="options-q4"></div>
+    <button class="validate-btn" onclick="checkAnswer('q4')">Valider</button>
+    <div class="feedback" id="feedback4"></div>
+  </div>
+
+   <div class="question-block" id="q5-block">
+    <div class="question">5. Il y (avoir) le feu !</div>
+    <div class="translation">Có (đã) cháy !</div>
+    <div class="options" id="options-q5"></div>
+    <button class="validate-btn" onclick="checkAnswer('q5')">Valider</button>
+    <div class="feedback" id="feedback5"></div>
+  </div>
+
+  <div class="question-block" id="q6-block">
+    <div class="question">6. D'habitude, à cette heure-là, beaucoup d'enfants (être) seuls chez eux.</div>
+    <div class="translation">Thông thường, vào giờ đó, nhiều đứa trẻ (đã) ở nhà một mình.</div>
+    <div class="options" id="options-q6"></div>
+    <button class="validate-btn" onclick="checkAnswer('q6')">Valider</button>
+    <div class="feedback" id="feedback6"></div>
+  </div>
+
+  <div class="question-block" id="q7-block">
+    <div class="question">7. ... et (attendre) le retour de leurs parents.</div>
+    <div class="translation">... và (đã) đợi bố mẹ trở về.</div>
+    <div class="options" id="options-q7"></div>
+    <button class="validate-btn" onclick="checkAnswer('q7')">Valider</button>
+    <div class="feedback" id="feedback7"></div>
+  </div>
+
+  <div class="question-block" id="q8-block">
+    <div class="question">8. Victor (savoir) bien cela.</div>
+    <div class="translation">Victor (đã) biết rõ điều đó.</div>
+    <div class="options" id="options-q8"></div>
+    <button class="validate-btn" onclick="checkAnswer('q8')">Valider</button>
+    <div class="feedback" id="feedback8"></div>
+  </div>
+
+  <div class="question-block" id="q9-block">
+    <div class="question">9. Alors, très vite, il (courir), (monter) l'escalier, (appeler) les enfants et il (conduire) tout le monde au dernier étage.</div>
+    <div class="translation">Vậy thì, rất nhanh, anh ấy (đã chạy), (leo) cầu thang, (gọi) các con và anh ấy (đã dẫn) mọi người lên tầng trên cùng.</div>
+    <div class="options" id="options-q9"></div>
+    <button class="validate-btn" onclick="checkAnswer('q9')">Valider</button>
+    <div class="feedback" id="feedback9"></div>
+  </div>
+  
+
+  <div class="question-block" id="q10-block">
+    <div class="question">10. Juste après, les pompiers (arriver) avec leur grande échelle.</div>
+    <div class="translation">Ngay sau đó, lính cứu hỏa (đã đến) với thang lớn của họ.</div>
+    <div class="options" id="options-q10"></div>
+    <button class="validate-btn" onclick="checkAnswer('q10')">Valider</button>
+    <div class="feedback" id="feedback10"></div>
+  </div>
+
+  <div class="question-block" id="q11-block">
+    <div class="question">11. ... et tous les enfants (pouvoir) être sauvés.</div>
+    <div class="translation">... và tất cả trẻ con (đã) có thể được cứu.</div>
+    <div class="options" id="options-q11"></div>
+    <button class="validate-btn" onclick="checkAnswer('q11')">Valider</button>
+    <div class="feedback" id="feedback11"></div>
+  </div>
+
+  <div class="question-block" id="q12-block">
+    <div class="question">12. Ce jour-là Victor Fournier (devenir) le héros du quartier !</div>
+    <div class="translation">Ngày hôm đó Victor Fournier (đã trở thành) người hùng của khu phố!</div>
+    <div class="options" id="options-q12"></div>
+    <button class="validate-btn" onclick="checkAnswer('q12')">Valider</button>
+    <div class="feedback" id="feedback12"></div>
+  </div>
+
+  <hr style="margin: 40px 0; border: 0; border-top: 1px solid #ccc;">
+
+ 
+  <button class="complete-test-btn" onclick="showScore()">Hoàn thành bài kiểm tra</button>
+
+  <div id="score-area">
+    <p>Bạn đã trả lời đúng <span id="correct-count">0</span> trên tổng số <span id="total-questions">0</span> câu.</p>
+  </div>
+
+</div>
+
+<script>
+  // Định nghĩa dữ liệu cho mỗi câu hỏi
+  const questionsData = {
+    // Đoạn văn 1
+    q1: {
+      original: "Ce (être) la fin de la journée.",
+      translation: "Đó (đã là) cuối ngày.",
+      correct: "était",
+      wrong: ["a été", "fut"],
+      explanation: "Động từ 'être' miêu tả một trạng thái, bối cảnh trong quá khứ, nên dùng Imparfait."
+    },
+    q2: {
+      original: "Victor Fournier (rentrer) chez lui, fatigué.",
+      translation: "Victor Fournier (đã về) nhà, mệt mỏi.",
+      correct: "rentrait ",
+      wrong: ["est rentré", "a rentré"],
+      explanation: "Hành động 'rentrer' (trở về) là một thói quen lặp đi lặp lại."
+    },
+    q3: {
+      original: "Il (avoir) envie de prendre un bain.",
+      translation: "Anh ấy (đã) muốn tắm.",
+      correct: "avait",
+      wrong: ["a eu", "eut"],
+      explanation: "Diễn tả một trạng thái, cảm xúc (mong muốn) trong quá khứ, nên dùng Imparfait."
+    },
+    q4: {
+      original: "Mais, quand il (arriver) devant son immeuble, il (voir) des flammes.",
+      translation: "Nhưng, khi anh ấy (đã đến) trước tòa nhà của mình, anh ấy (đã thấy) những ngọn lửa.",
+      correct: "est arrivé, a vu",
+      wrong: ["arrivait, voyait", "est arrivé, voyait"],
+      explanation: "Hành động 'arriver' (đến) và 'voir' (thấy) là các hành động đột ngột, hoàn thành, tạo thành chuỗi sự kiện chính trong câu chuyện, nên dùng Passé Composé. 'Arriver' dùng 'être'."
+    },
+
+    q5: {
+      original: "Il y (avoir) le feu !",
+      translation: "Có (đã) cháy !",
+      correct: "avait", // L'incendie a eu lieu. C'est un fait ponctuel.
+      wrong: ["a eu", "eut"],
+      explanation: "Cháy là một sự việc đang diễn ra, và Fournier bắt gặp."
+    },
+    q6: {
+      original: "D'habitude, à cette heure-là, beaucoup d'enfants (être) seuls chez eux.",
+      translation: "Thông thường, vào giờ đó, nhiều đứa trẻ (đã) ở nhà một mình.",
+      correct: "étaient",
+      wrong: ["ont été", "furent"],
+      explanation: "Miêu tả một thói quen/tình trạng lặp lại ('D'habitude') trong quá khứ, nên dùng Imparfait."
+    },
+    q7: {
+      original: "... et (attendre) le retour de leurs parents.",
+      translation: "... và (đã) đợi bố mẹ trở về.",
+      correct: "attendaient",
+      wrong: ["ont attendu", "attendent"],
+      explanation: "Miêu tả một hành động kéo dài (đợi) trong quá khứ, song song với trạng thái 'être seuls', nên dùng Imparfait."
+    },
+    q8: {
+      original: "Victor (savoir) bien cela.",
+      translation: "Victor (đã) biết rõ điều đó.",
+      correct: "savait",
+      wrong: ["a su", "sut"],
+      explanation: "Miêu tả một trạng thái tri thức (biết) kéo dài trong quá khứ, nên dùng Imparfait."
+    },
+    q9: {
+      original: "Alors, très vite, il (courir), (monter) l'escalier, (appeler) les enfants et il (conduire) tout le monde au dernier étage.",
+      translation: "Vậy thì, rất nhanh, anh ấy (đã chạy), (leo) cầu thang, (gọi) các con và anh ấy (đã dẫn) mọi người lên tầng trên cùng.",
+      correct: "a couru, est monté, a appelé, a conduit",
+      wrong: ["courait, montait, appelait, conduisait", "a couru, est monté, a appelé, conduisait"],
+      explanation: "Đây là một chuỗi các hành động hoàn thành, kế tiếp nhau ('chạy', 'leo', 'gọi', 'dẫn'), tạo nên diễn biến chính của câu chuyện, nên dùng Passé Composé cho tất cả. 'Monter' dùng 'être'."
+    },
+    
+    q10: {
+      original: "Juste après, les pompiers (arriver) avec leur grande échelle.",
+      translation: "Ngay sau đó, lính cứu hỏa (đã đến) với thang lớn của họ.",
+      correct: "sont arrivés",
+      wrong: ["arrivaient", "ont arrivé"],
+      explanation: "Hành động 'arriver' (đến) là hoàn thành và chỉ sự di chuyển, nên dùng Passé Composé với 'être' và hợp giống/số ('sont arrivés')."
+    },
+    q11: {
+      original: "... et tous les enfants (pouvoir) être sauvés.",
+      translation: "... và tất cả trẻ con (đã) có thể được cứu.",
+      correct: "ont pu",
+      wrong: ["pouvaient", "purent"],
+      explanation: "Khả năng 'pouvoir' ở đây là một sự kiện hoàn thành (họ đã có thể được cứu), nên dùng Passé Composé."
+    },
+    q12: {
+      original: "Ce jour-là Victor Fournier (devenir) le héros du quartier !",
+      translation: "Ngày hôm đó Victor Fournier (đã trở thành) người hùng của khu phố!",
+      correct: "est devenu",
+      wrong: ["devenait", "a devenu"],
+      explanation: "Hành động 'devenir' (trở thành) là một sự kiện hoàn thành, có kết quả rõ ràng, nên dùng Passé Composé (với 'être')."
+    },    
+    
+  };
+
+  let correctAnswersCount = 0;
+  const totalQuestions = Object.keys(questionsData).length;
+  const answeredQuestions = new Set(); 
+
+  // Hàm xáo trộn mảng Fisher-Yates
+  function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+      }
+  }
+
+  // Hàm tạo và hiển thị các lựa chọn
+  function generateOptions() {
+    for (const qKey in questionsData) {
+      const qData = questionsData[qKey];
+      const optionsDiv = document.getElementById(`options-${qKey}`);
+      optionsDiv.innerHTML = ''; 
+
+      const allOptions = [{text: qData.correct, isCorrect: true}];
+      qData.wrong.slice(0, 2).forEach(w => allOptions.push({text: w, isCorrect: false})); 
+
+      shuffleArray(allOptions); 
+
+      allOptions.forEach((option, index) => {
+        const optionId = `${qKey}-${String.fromCharCode(97 + index)}`; 
+        const label = document.createElement('label');
+        label.setAttribute('for', optionId);
+        
+        const input = document.createElement('input');
+        input.type = 'radio';
+        input.name = qKey;
+        input.value = optionId;
+        input.id = optionId;
+        
+        label.appendChild(input);
+        label.appendChild(document.createTextNode(option.text));
+        
+        if (option.isCorrect) {
+          label.dataset.isCorrect = "true";
+          questionsData[qKey].correctOptionId = optionId; 
+        }
+
+        optionsDiv.appendChild(label);
+      });
+    }
+  }
+
+  // Call generateOptions when the page loads
+  document.addEventListener('DOMContentLoaded', generateOptions);
+
+
+  function checkAnswer(questionName) {
+    if (answeredQuestions.has(questionName)) {
+        return; 
+    }
+
+    const selectedOptionInput = document.querySelector(`input[name="${questionName}"]:checked`);
+    const feedbackDiv = document.getElementById(`feedback${questionName.substring(1)}`); 
+    const validateButton = event.target; 
+    
+    feedbackDiv.classList.remove('active', 'correct', 'incorrect', 'warning');
+    feedbackDiv.innerHTML = '';
+
+
+    if (!selectedOptionInput) {
+        feedbackDiv.textContent = 'Vui lòng chọn một đáp án trước khi kiểm tra.';
+        feedbackDiv.classList.add('active', 'warning');
+        return;
+    }
+
+    const qData = questionsData[questionName]; 
+
+    const correctAnswerLabel = document.querySelector(`label[for="${qData.correctOptionId}"]`);
+    if (correctAnswerLabel) {
+      correctAnswerLabel.classList.add('correct-highlight');
+    }
+
+    answeredQuestions.add(questionName);
+    
+    const selectedOptionLabel = selectedOptionInput.parentElement;
+    
+    if (selectedOptionLabel.dataset.isCorrect === "true") {
+      feedbackDiv.innerHTML = '<strong>Chính xác!</strong><br><span class="explanation">' + qData.explanation + '</span>';
+      feedbackDiv.classList.add('active', 'correct');
+      correctAnswersCount++;
+    } else {
+      const correctAnswerText = correctAnswerLabel ? correctAnswerLabel.textContent.trim() : '';
+      feedbackDiv.innerHTML = '<strong>Không chính xác.</strong><br><span class="correct-answer-display">Đáp án đúng là: ' + correctAnswerText + '</span><br><span class="explanation">' + qData.explanation + '</span>';
+      feedbackDiv.classList.add('active', 'incorrect');
+    }
+    
+    const radioButtons = document.querySelectorAll(`input[name="${questionName}"]`);
+    radioButtons.forEach(radio => radio.disabled = true);
+    validateButton.disabled = true;
+  }
+
+  function showScore() {
+    document.getElementById('correct-count').textContent = correctAnswersCount;
+    document.getElementById('total-questions').textContent = totalQuestions;
+    document.getElementById('score-area').style.display = 'block';
+  }
+</script>
+
+</body>
+</html>

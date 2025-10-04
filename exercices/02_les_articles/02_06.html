@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+
+<meta name="robots" content="noindex">
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mạo từ trong câu</title>
+    <style>
+        /* CSS để làm cho trang kiểm tra đẹp hơn */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-header {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 0.95em;
+            color: #555;
+        }
+        
+        .info-header p {
+            margin: 0;
+        }
+
+        .quiz-status-bar {
+            position: sticky;
+            top: 0;
+            background-color: #4a5a7b;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            z-index: 1000;
+        }
+
+        .quiz-status-bar h1 {
+            margin: 0;
+            font-size: 1.5em;
+        }
+
+        #score-display, #timer-display {
+            font-size: 1.2em;
+            font-weight: bold;
+            background-color: #ffffff;
+            color: #4a5a7b;
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+        
+        .section-title {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+
+        .question-block {
+            margin-bottom: 25px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background-color: #fdfdfd;
+        }
+
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .question-translation {
+            font-size: 0.9em;
+            font-style: italic;
+            color: #6c757d;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .answers label {
+            display: block;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .answers label:hover {
+            background-color: #e9ecef;
+        }
+
+        .answers input[type="radio"] {
+            margin-right: 10px;
+        }
+        
+        .validate-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            display: block;
+            margin-top: 15px; 
+            transition: background-color 0.3s;
+        }
+
+        .validate-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .validate-btn:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+        
+        .feedback {
+            margin-top: 15px;
+            font-weight: normal;
+            font-size: 0.95em;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .feedback-correct {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .feedback-incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .feedback-warning {
+            background-color: #fffbe6;
+            color: #8a6d3b;
+        }
+
+        .correct-answer {
+            background-color: #d4edda !important;
+            border-color: #c3e6cb !important;
+        }
+
+        .incorrect-answer {
+            background-color: #f8d7da !important;
+            border-color: #f5c6cb !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="quiz-container">
+        <div class="info-header">
+            <p><strong>Enseignant:</strong> Nguyễn Hoàng Vũ</p>
+        
+        </div>
+
+        <div class="quiz-status-bar">
+            <h1>Mạo từ trong câu</h1>
+            <div>
+                <span id="score-display">Điểm: 0 / 18</span>
+                <span id="timer-display">Thời gian: 18:00</span>
+            </div>
+        </div>
+        
+        <div id="all-questions-container">
+            <h2 class="section-title">Phần A: Cấu trúc "La/Le... est un/une..."</h2>
+            <div class="question-block" id="q1">
+                <p class="question-text">1. Chọn câu đúng cho "tulipe - fleur".</p>
+                <p class="question-translation">(Hoa tulip là một loài hoa.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q1" value="a"> a) Le tulipe est un fleur.</label>
+                    <label><input type="radio" name="q1" value="b"> b) La tulipe est une fleur.</label>
+                    <label><input type="radio" name="q1" value="c"> c) La tulipe est un fleur.</label>
+                    <label><input type="radio" name="q1" value="d"> d) Le tulipe est une fleur.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(1, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q2">
+                <p class="question-text">2. Chọn câu đúng cho "Mali - pays d'Afrique".</p>
+                <p class="question-translation">(Mali là một quốc gia ở Châu Phi.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q2" value="a"> a) Le Mali est un pays d'Afrique.</label>
+                    <label><input type="radio" name="q2" value="b"> b) La Mali est une pays d'Afrique.</label>
+                    <label><input type="radio" name="q2" value="c"> c) Le Mali est une pays d'Afrique.</label>
+                    <label><input type="radio" name="q2" value="d"> d) Mali est un pays d'Afrique.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(2, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q3">
+                <p class="question-text">3. Chọn câu đúng cho "tennis - sport".</p>
+                <p class="question-translation">(Quần vợt là một môn thể thao.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q3" value="a"> a) La tennis est une sport.</label>
+                    <label><input type="radio" name="q3" value="b"> b) Le tennis est un sport.</label>
+                    <label><input type="radio" name="q3" value="c"> c) Le tennis est une sport.</label>
+                    <label><input type="radio" name="q3" value="d"> d) L'tennis est un sport.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(3, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q4">
+                <p class="question-text">4. Chọn câu đúng cho "peinture - art".</p>
+                <p class="question-translation">(Hội họa là một loại hình nghệ thuật.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q4" value="a"> a) Le peinture est un art.</label>
+                    <label><input type="radio" name="q4" value="b"> b) La peinture est une art.</label>
+                    <label><input type="radio" name="q4" value="c"> c) La peinture est un art.</label>
+                    <label><input type="radio" name="q4" value="d"> d) Peinture est art.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(4, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q5">
+                <p class="question-text">5. Chọn câu đúng cho "Atlantique - océan".</p>
+                <p class="question-translation">(Đại Tây Dương là một đại dương.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q5" value="a"> a) Le Atlantique est un océan.</label>
+                    <label><input type="radio" name="q5" value="b"> b) L'Atlantique est un océan.</label>
+                    <label><input type="radio" name="q5" value="c"> c) La Atlantique est un océan.</label>
+                    <label><input type="radio" name="q5" value="d"> d) L'Atlantique est une océan.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(5, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+             <div class="question-block" id="q6">
+                <p class="question-text">6. Chọn câu đúng cho "poker - jeu".</p>
+                <p class="question-translation">(Poker là một trò chơi.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q6" value="a"> a) La poker est un jeu.</label>
+                    <label><input type="radio" name="q6" value="b"> b) Le poker est une jeu.</label>
+                    <label><input type="radio" name="q6" value="c"> c) Le poker est un jeu.</label>
+                    <label><input type="radio" name="q6" value="d"> d) L'poker est un jeu.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(6, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+
+            <h2 class="section-title">Phần B: Cấu trúc "C'est un/une..., c'est le/la/l'/des..."</h2>
+            <div class="question-block" id="q7">
+                <p class="question-text">7. Chọn câu đúng cho "parc - ville".</p>
+                <p class="question-translation">(Đó là một công viên, đó là công viên của thành phố.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q7" value="a"> a) C'est un parc, c'est le parc de la ville.</label>
+                    <label><input type="radio" name="q7" value="b"> b) C'est une parc, c'est le parc de la ville.</label>
+                    <label><input type="radio" name="q7" value="c"> c) C'est un parc, c'est le parc du ville.</label>
+                    <label><input type="radio" name="q7" value="d"> d) C'est un parc, c'est la parc de la ville.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(7, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q8">
+                <p class="question-text">8. Chọn câu đúng cho "église - village".</p>
+                <p class="question-translation">(Đó là một nhà thờ, đó là nhà thờ của ngôi làng.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q8" value="a"> a) C'est une église, c'est l'église de la village.</label>
+                    <label><input type="radio" name="q8" value="b"> b) C'est un église, c'est l'église du village.</label>
+                    <label><input type="radio" name="q8" value="c"> c) C'est une église, c'est l'église du village.</label>
+                    <label><input type="radio" name="q8" value="d"> d) C'est une église, c'est le église du village.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(8, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q9">
+                <p class="question-text">9. Chọn câu đúng cho "menu - restaurant".</p>
+                <p class="question-translation">(Đó là một thực đơn, đó là thực đơn của nhà hàng.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q9" value="a"> a) C'est un menu, c'est le menu du restaurant.</label>
+                    <label><input type="radio" name="q9" value="b"> b) C'est une menu, c'est le menu du restaurant.</label>
+                    <label><input type="radio" name="q9" value="c"> c) C'est un menu, c'est le menu de la restaurant.</label>
+                    <label><input type="radio" name="q9" value="d"> d) C'est un menu, c'est la menu du restaurant.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(9, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q10">
+                <p class="question-text">10. Chọn câu đúng cho "jeu vidéo - enfants".</p>
+                <p class="question-translation">(Đó là một trò chơi điện tử, đó là trò chơi điện tử của bọn trẻ.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q10" value="a"> a) C'est un jeu vidéo, c'est le jeu vidéo du enfants.</label>
+                    <label><input type="radio" name="q10" value="b"> b) C'est un jeu vidéo, c'est le jeu vidéo des enfants.</label>
+                    <label><input type="radio" name="q10" value="c"> c) C'est une jeu vidéo, c'est le jeu vidéo des enfants.</label>
+                    <label><input type="radio" name="q10" value="d"> d) C'est un jeu vidéo, c'est la jeu vidéo des enfants.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(10, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q11">
+                <p class="question-text">11. Chọn câu đúng cho "aéroport - Moscou".</p>
+                <p class="question-translation">(Đó là một sân bay, đó là sân bay của Mat-xcơ-va.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q11" value="a"> a) C'est une aéroport, c'est l'aéroport de Moscou.</label>
+                    <label><input type="radio" name="q11" value="b"> b) C'est un aéroport, c'est le aéroport de Moscou.</label>
+                    <label><input type="radio" name="q11" value="c"> c) C'est un aéroport, c'est l'aéroport de Moscou.</label>
+                    <label><input type="radio" name="q11" value="d"> d) C'est un aéroport, c'est l'aéroport du Moscou.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(11, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q12">
+                <p class="question-text">12. Chọn câu đúng cho "chauffeur - autobus".</p>
+                 <p class="question-translation">(Đó là một người tài xế, đó là người tài xế của xe buýt.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q12" value="a"> a) C'est un chauffeur, c'est le chauffeur de l'autobus.</label>
+                    <label><input type="radio" name="q12" value="b"> b) C'est une chauffeur, c'est le chauffeur de l'autobus.</label>
+                    <label><input type="radio" name="q12" value="c"> c) C'est un chauffeur, c'est le chauffeur du autobus.</label>
+                    <label><input type="radio" name="q12" value="d"> d) C'est un chauffeur, c'est la chauffeur de l'autobus.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(12, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+
+            <h2 class="section-title">Phần C: Cấu trúc "avoir + le/la/les + N + Adj"</h2>
+            <div class="question-block" id="q13">
+                <p class="question-text">13. Chọn câu đúng cho "Magali - yeux noirs".</p>
+                <p class="question-translation">(Magali có đôi mắt đen.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q13" value="a"> a) Magali est les yeux noirs.</label>
+                    <label><input type="radio" name="q13" value="b"> b) Magali a des yeux noirs.</label>
+                    <label><input type="radio" name="q13" value="c"> c) Magali a les yeux noirs.</label>
+                    <label><input type="radio" name="q13" value="d"> d) Magali a les yeux noir.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(13, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q14">
+                <p class="question-text">14. Chọn câu đúng cho "Sébastien - mains sales".</p>
+                <p class="question-translation">(Sébastien có đôi bàn tay bẩn.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q14" value="a"> a) Sébastien est les mains sales.</label>
+                    <label><input type="radio" name="q14" value="b"> b) Sébastien a les main sales.</label>
+                    <label><input type="radio" name="q14" value="c"> c) Sébastien a les mains sales.</label>
+                    <label><input type="radio" name="q14" value="d"> d) Sébastien a des mains sales.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(14, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q15">
+                <p class="question-text">15. Chọn câu đúng cho "Olivia - visage rond".</p>
+                <p class="question-translation">(Olivia có khuôn mặt tròn.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q15" value="a"> a) Olivia a le visage rond.</label>
+                    <label><input type="radio" name="q15" value="b"> b) Olivia a un visage rond.</label>
+                    <label><input type="radio" name="q15" value="c"> c) Olivia a la visage rond.</label>
+                    <label><input type="radio" name="q15" value="d"> d) Olivia est le visage rond.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(15, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q16">
+                <p class="question-text">16. Chọn câu đúng cho "Juliette - cheveux longs".</p>
+                <p class="question-translation">(Juliette có mái tóc dài.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q16" value="a"> a) Juliette a des cheveux longs.</label>
+                    <label><input type="radio" name="q16" value="b"> b) Juliette a les cheveux longs.</label>
+                    <label><input type="radio" name="q16" value="c"> c) Juliette a les cheveux longue.</label>
+                    <label><input type="radio" name="q16" value="d"> d) Juliette est les cheveux longs.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(16, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q17">
+                <p class="question-text">17. Chọn câu đúng cho "Laurent - dents blanches".</p>
+                <p class="question-translation">(Laurent có hàm răng trắng.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q17" value="a"> a) Laurent a les dents blancs.</label>
+                    <label><input type="radio" name="q17" value="b"> b) Laurent a les dents blanches.</label>
+                    <label><input type="radio" name="q17" value="c"> c) Laurent a des dents blanches.</label>
+                    <label><input type="radio" name="q17" value="d"> d) Laurent est les dents blanches.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(17, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q18">
+                <p class="question-text">18. Chọn câu đúng cho "Charlotte - nez droit".</p>
+                <p class="question-translation">(Charlotte có chiếc mũi thẳng.)</p>
+                <div class="answers">
+                    <label><input type="radio" name="q18" value="a"> a) Charlotte est le nez droit.</label>
+                    <label><input type="radio" name="q18" value="b"> b) Charlotte a un nez droit.</label>
+                    <label><input type="radio" name="q18" value="c"> c) Charlotte a la nez droit.</label>
+                    <label><input type="radio" name="q18" value="d"> d) Charlotte a le nez droit.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(18, 'd')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let score = 0;
+        const maxScore = 18;
+        const scoreDisplay = document.getElementById('score-display');
+        let timeInSeconds = 1080; // 18 minutes
+        let timerInterval = null;
+
+        const feedbackExplanations = {
+            1: "Chính xác! 'tulipe' (f.) dùng mạo từ 'la', 'fleur' (f.) dùng mạo từ 'une'.",
+            2: "Chính xác! Tên quốc gia giống đực như 'Mali' dùng mạo từ 'le'. 'Pays' (m.) dùng mạo từ 'un'.",
+            3: "Chính xác! 'tennis' (m.) dùng mạo từ 'le'. 'sport' (m.) dùng mạo từ 'un'.",
+            4: "Chính xác! 'peinture' (f.) dùng mạo từ 'la'. 'art' (m.) dùng mạo từ 'un'.",
+            5: "Chính xác! 'Atlantique' bắt đầu bằng nguyên âm nên dùng mạo từ 'l''. 'océan' (m.) dùng mạo từ 'un'.",
+            6: "Chính xác! 'poker' (m.) dùng mạo từ 'le'. 'jeu' (m.) dùng mạo từ 'un'.",
+            7: "Chính xác! 'parc' (m.) -> un parc. 'ville' (f.) -> de la ville.",
+            8: "Chính xác! 'église' (f.) -> une église. 'village' (m.) -> du village (de + le). 'église' bắt đầu bằng nguyên âm -> l'église.",
+            9: "Chính xác! 'menu' (m.) -> un menu. 'restaurant' (m.) -> du restaurant (de + le).",
+            10: "Chính xác! 'jeu vidéo' (m.) -> un jeu vidéo. 'enfants' (pl.) -> des enfants (de + les).",
+            11: "Chính xác! 'aéroport' (m.) -> un aéroport. Tên thành phố 'Moscou' không có mạo từ -> de Moscou.",
+            12: "Chính xác! 'chauffeur' (m.) -> un chauffeur. 'autobus' bắt đầu bằng nguyên âm -> de l'autobus.",
+            13: "Chính xác! Khi mô tả bộ phận cơ thể, ta dùng động từ 'avoir' + mạo từ xác định 'les' cho 'yeux' (pl.).",
+            14: "Chính xác! Dùng 'avoir' + mạo từ xác định 'les' cho 'mains' (pl.). Tính từ 'sales' hòa hợp số nhiều.",
+            15: "Chính xác! Dùng 'avoir' + mạo từ xác định 'le' cho 'visage' (m.sg).",
+            16: "Chính xác! Dùng 'avoir' + mạo từ xác định 'les' cho 'cheveux' (pl.).",
+            17: "Chính xác! Dùng 'avoir' + mạo từ xác định 'les' cho 'dents' (pl.). Tính từ 'blanches' hòa hợp giống cái số nhiều.",
+            18: "Chính xác! Dùng 'avoir' + mạo từ xác định 'le' cho 'nez' (m.sg)."
+        };
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const today = new Date();
+            const day = String(today.getDate()).padStart(2, '0');
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const year = today.getFullYear();
+            document.getElementById('test-date').textContent = `${day}/${month}/${year}`;
+            
+            updateScoreDisplay();
+            startTimer();
+        });
+
+        function startTimer() {
+            const timerDisplay = document.getElementById('timer-display');
+            clearInterval(timerInterval); 
+            
+            timerInterval = setInterval(() => {
+                timeInSeconds--;
+                const minutes = Math.floor(timeInSeconds / 60);
+                const seconds = timeInSeconds % 60;
+                timerDisplay.textContent = `Thời gian: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                if (timeInSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    timerDisplay.textContent = "Hết giờ!";
+                    alert("Hết giờ làm bài!");
+                    document.querySelectorAll('.validate-btn').forEach(btn => btn.disabled = true);
+                }
+            }, 1000);
+        }
+
+        function updateScoreDisplay() {
+            scoreDisplay.textContent = `Điểm: ${score} / ${maxScore}`;
+        }
+        
+        function updateScore(points = 1) {
+            score += points;
+            updateScoreDisplay();
+        }
+
+        function validateRadio(questionNumber, correctAnswer) {
+            const questionBlock = document.getElementById(`q${questionNumber}`);
+            const radios = document.getElementsByName(`q${questionNumber}`);
+            const feedback = questionBlock.querySelector('.feedback');
+            const button = questionBlock.querySelector('.validate-btn');
+            let selectedAnswer = null;
+
+            radios.forEach(radio => { if (radio.checked) { selectedAnswer = radio; } });
+
+            if (selectedAnswer === null) {
+                feedback.textContent = "Vui lòng chọn một đáp án!";
+                feedback.className = 'feedback feedback-warning';
+                return;
+            }
+            
+            button.disabled = true;
+            radios.forEach(radio => radio.disabled = true);
+            const selectedLabel = selectedAnswer.parentElement;
+            const explanation = feedbackExplanations[questionNumber];
+
+            if (selectedAnswer.value === correctAnswer) {
+                feedback.textContent = explanation;
+                feedback.className = 'feedback feedback-correct';
+                selectedLabel.classList.add('correct-answer');
+                updateScore();
+            } else {
+                const cleanedExplanation = explanation.replace("Chính xác! ", "");
+                feedback.innerHTML = `<strong>Không chính xác.</strong> ${cleanedExplanation}<br>Đáp án đúng là lựa chọn <strong>"${correctAnswer.toUpperCase()}"</strong>.`;
+                feedback.className = 'feedback feedback-incorrect';
+                selectedLabel.classList.add('incorrect-answer');
+                radios.forEach(radio => { if (radio.value === correctAnswer) { radio.parentElement.classList.add('correct-answer'); } });
+            }
+        }
+    </script>
+</body>
+</html>

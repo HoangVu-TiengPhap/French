@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<meta name="robots" content="noindex">
+<html>
+<head>
+<title>Impératif (Nhóm 2 và Tổng hợp)</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f4f8;
+    color: #333;
+  }
+  
+  /* Container giới hạn chiều rộng, bóng đổ và bo góc chung */
+  .main-content-wrapper {
+      max-width: 800px;
+      margin: 30px auto; 
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+      border-radius: 10px; 
+      overflow: hidden; 
+  }
+
+  header {
+    background-color: #e0e7ed;
+    color: #2c3e50;
+    padding: 15px 20px;
+    /* Xóa border-bottom để sát với container */
+    display: flex;
+    /* Chỉ còn h2 nên căn trái */
+    justify-content: flex-start; 
+    align-items: center;
+    /* Bo tròn góc trên */
+    border-radius: 10px 10px 0 0;
+  }
+  
+  header h2 {
+    margin: 0;
+    font-size: 1.1em;
+    color: #333;
+  }
+  
+  /* Bỏ style cho header p */
+  /* header h2, header p {
+    margin: 0;
+    font-size: 1.1em;
+    color: #333;
+  } */
+  
+  h1 {
+    color: #2c3e50;
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 20px;
+  }
+  
+  .container {
+    max-width: 100%; /* Giữ nguyên chiều rộng 100% so với wrapper */
+    margin: 0 auto; /* Xóa margin-top cũ, dính liền với header */
+    padding: 20px;
+    background-color: #ffffff;
+    /* Bo tròn góc dưới */
+    border-radius: 0 0 10px 10px;
+    /* Xóa box-shadow */
+  }
+  
+  .question-block {
+    margin-bottom: 25px;
+    padding: 20px;
+    border: 1px solid #d0dbe4;
+    border-radius: 8px;
+    background-color: #fdfefe;
+  }
+  .question {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 1.1em;
+    color: #34495e;
+  }
+  .translation {
+    font-style: italic;
+    color: #666;
+    margin-bottom: 15px;
+    font-size: 0.95em;
+  }
+  .options label {
+    display: block;
+    margin-bottom: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: color 0.3s ease;
+    padding: 5px 0;
+  }
+  .options label:hover {
+    color: #5a7d9a;
+  }
+  .options input[type="radio"] {
+    margin-right: 10px;
+    transform: scale(1.1);
+  }
+  .options label.correct-highlight {
+    background-color: #d4edda;
+    border: 2px solid #28a745;
+    border-radius: 5px;
+    padding: 5px;
+    color: #1a7e37;
+  }
+  .feedback {
+    margin-top: 15px;
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 5px;
+    width: calc(100% - 24px);
+    box-sizing: border-box;
+    display: none;
+  }
+  .feedback.active {
+      display: block;
+  }
+  .correct {
+    background-color: #e6ffe6;
+    color: #1a7e37;
+    border: 1px solid #28a745;
+  }
+  .incorrect {
+    background-color: #ffe6e6;
+    color: #dc3545;
+    border: 1px solid #dc3545;
+  }
+  .warning {
+      background-color: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffeeba;
+  }
+  .explanation {
+    font-size: 0.9em;
+    font-weight: normal;
+    color: #555;
+    margin-top: 8px;
+    font-style: italic;
+  }
+  .correct-answer-display {
+    color: dodgerblue; /* Xanh dương tươi */
+    font-weight: bold;
+    margin-top: 5px;
+    display: block;
+  }
+  .validate-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-top: 15px;
+    transition: background-color 0.3s ease;
+  }
+  .validate-btn:hover {
+    background-color: #45a049;
+  }
+  .validate-btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+  #score-area {
+    text-align: center;
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #e6f7ff;
+    border: 1px solid #b3e0ff;
+    border-radius: 8px;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #0056b3;
+    display: none;
+  }
+  .complete-test-btn {
+    display: block;
+    width: fit-content;
+    margin: 30px auto;
+    background-color: #007bff;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease;
+  }
+  .complete-test-btn:hover {
+    background-color: #0056b3;
+  }
+  @media (max-width: 600px) {
+    .main-content-wrapper {
+        margin: 15px;
+    }
+    header {
+      flex-direction: column;
+      align-items: flex-start;
+      border-radius: 10px 10px 0 0; /* Giữ bo tròn góc trên */
+    }
+    header h2 {
+      font-size: 1em;
+      margin-bottom: 5px;
+    }
+    .container {
+      padding: 15px;
+      border-radius: 0 0 10px 10px; /* Giữ bo tròn góc dưới */
+    }
+    .question, .translation, .options label, .feedback, .validate-btn, .complete-test-btn {
+      font-size: 0.9em;
+    }
+    .feedback {
+      padding: 6px 10px;
+      width: calc(100% - 20px);
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="main-content-wrapper">
+    <header>
+      <h2>Enseignant: Nguyễn Hoàng Vũ</h2>
+      </header>
+
+    <div class="container">
+      <h1>Présent / Futur -> Impératif</h1>
+
+      <div class="question-block" id="q1-block">
+        <div class="question">1. Tu choisis un fruit.</div>
+        <div class="translation">Bạn chọn một loại trái cây.</div>
+        <div class="options" id="options-q1"></div>
+        <button class="validate-btn" onclick="checkAnswer('q1')">Valider</button>
+        <div class="feedback" id="feedback1"></div>
+      </div>
+
+      <div class="question-block" id="q2-block">
+        <div class="question">2. Tu réfléchiras avant d'écrire.</div>
+        <div class="translation">Bạn sẽ suy nghĩ trước khi viết.</div>
+        <div class="options" id="options-q2"></div>
+        <button class="validate-btn" onclick="checkAnswer('q2')">Valider</button>
+        <div class="feedback" id="feedback2"></div>
+      </div>
+
+      <div class="question-block" id="q3-block">
+        <div class="question">3. Nous réunissons toute la famille.</div>
+        <div class="translation">Chúng ta tập hợp cả gia đình.</div>
+        <div class="options" id="options-q3"></div>
+        <button class="validate-btn" onclick="checkAnswer('q3')">Valider</button>
+        <div class="feedback" id="feedback3"></div>
+      </div>
+
+      <div class="question-block" id="q4-block">
+        <div class="question">4. Vous ne punirez personne.</div>
+        <div class="translation">Bạn (số nhiều/lịch sự) sẽ không trừng phạt ai cả.</div>
+        <div class="options" id="options-q4"></div>
+        <button class="validate-btn" onclick="checkAnswer('q4')">Valider</button>
+        <div class="feedback" id="feedback4"></div>
+      </div>
+
+      <div class="question-block" id="q5-block">
+        <div class="question">5. Vous ne maigrirez pas trop.</div>
+        <div class="translation">Bạn (số nhiều/lịch sự) sẽ không giảm cân quá nhiều.</div>
+        <div class="options" id="options-q5"></div>
+        <button class="validate-btn" onclick="checkAnswer('q5')">Valider</button>
+        <div class="feedback" id="feedback5"></div>
+      </div>
+
+      <div class="question-block" id="q6-block">
+        <div class="question">6. Nous réagissons.</div>
+        <div class="translation">Chúng ta phản ứng.</div>
+        <div class="options" id="options-q6"></div>
+        <button class="validate-btn" onclick="checkAnswer('q6')">Valider</button>
+        <div class="feedback" id="feedback6"></div>
+      </div>
+
+      <button class="complete-test-btn" onclick="showScore()">Hoàn thành bài kiểm tra</button>
+
+      <div id="score-area">
+        <p>Bạn đã trả lời đúng <span id="correct-count">0</span> trên tổng số <span id="total-questions">0</span> câu.</p>
+      </div>
+
+    </div>
+</div> <script>
+  // Định nghĩa dữ liệu cho mỗi câu hỏi
+  const questionsData = {
+    q1: {
+      original: "Tu choisis un fruit.",
+      translation: "Bạn chọn một loại trái cây.",
+      correct: "Choisis un fruit !",
+      wrong: ["Choisi un fruit !", "Choisissez un fruit !"],
+      explanation: "Động từ 'choisir' (nhóm 2) ở ngôi 'tu' trong Impératif, giữ nguyên 's' cuối."
+    },
+    q2: {
+      original: "Tu réfléchiras avant d'écrire.",
+      translation: "Bạn sẽ suy nghĩ trước khi viết.",
+      correct: "Réfléchis avant d'écrire !",
+      wrong: ["Réfléchira avant d'écrire !", "Réfléchissez avant d'écrire !"],
+      explanation: "Chuyển động từ 'réfléchir' (nhóm 2) từ thì tương lai sang ngôi 'tu' trong Impératif, giữ nguyên 's' cuối."
+    },
+    q3: {
+      original: "Nous réunissons toute la famille.",
+      translation: "Chúng ta tập hợp cả gia đình.",
+      correct: "Réunissons toute la famille !",
+      wrong: ["Réunissez toute la famille !", "Nous réunissons toute la famille !"],
+      explanation: "Động từ 'réunir' (nhóm 2) ở ngôi 'nous' trong Impératif, giữ nguyên đuôi 'ons'."
+    },
+    q4: {
+      original: "Vous ne punirez personne.",
+      translation: "Bạn (số nhiều/lịch sự) sẽ không trừng phạt ai cả.",
+      correct: "Ne punissez personne !",
+      wrong: ["Ne punirons personne !", "Ne punis personne !"],
+      explanation: "Chuyển động từ 'punir' (nhóm 2) từ thì tương lai sang ngôi 'vous' trong Impératif, giữ nguyên đuôi 'ez'. Phần phủ định 'ne...personne' bao quanh động từ."
+    },
+    q5: {
+      original: "Vous ne maigrirez pas trop.",
+      translation: "Bạn (số nhiều/lịch sự) sẽ không giảm cân quá nhiều.",
+      correct: "Ne maigrissez pas trop !",
+      wrong: ["Ne maigrirez pas trop !", "Ne maigris pas trop !"],
+      explanation: "Chuyển động từ 'maigrir' (nhóm 2) từ thì tương lai sang ngôi 'vous' trong Impératif, giữ nguyên đuôi 'ez'. Phần phủ định 'ne...pas' bao quanh động từ."
+    },
+    q6: {
+      original: "Nous réagissons.",
+      translation: "Chúng ta phản ứng.",
+      correct: "Réagissons !",
+      wrong: ["Réagissez !", "Nous réagissons !"],
+      explanation: "Động từ 'réagir' (nhóm 2) ở ngôi 'nous' trong Impératif, giữ nguyên đuôi 'ons'."
+    }
+  };
+
+  let correctAnswersCount = 0;
+  const totalQuestions = Object.keys(questionsData).length;
+  const answeredQuestions = new Set(); 
+
+  // Hàm xáo trộn mảng Fisher-Yates
+  function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+      }
+  }
+
+  // Hàm tạo và hiển thị các lựa chọn
+  function generateOptions() {
+    for (const qKey in questionsData) {
+      const qData = questionsData[qKey];
+      const optionsDiv = document.getElementById(`options-${qKey}`);
+      optionsDiv.innerHTML = ''; 
+
+      const allOptions = [{text: qData.correct, isCorrect: true}];
+      qData.wrong.slice(0, 2).forEach(w => allOptions.push({text: w, isCorrect: false})); 
+
+      shuffleArray(allOptions); 
+
+      allOptions.forEach((option, index) => {
+        const optionId = `${qKey}-${String.fromCharCode(97 + index)}`; 
+        const label = document.createElement('label');
+        label.setAttribute('for', optionId);
+        
+        const input = document.createElement('input');
+        input.type = 'radio';
+        input.name = qKey;
+        input.value = optionId;
+        input.id = optionId;
+        
+        label.appendChild(input);
+        label.appendChild(document.createTextNode(option.text));
+        
+        if (option.isCorrect) {
+          label.dataset.isCorrect = "true";
+          questionsData[qKey].correctOptionId = optionId; 
+        }
+
+        optionsDiv.appendChild(label);
+      });
+    }
+  }
+
+  // Call generateOptions when the page loads
+  document.addEventListener('DOMContentLoaded', generateOptions);
+
+
+  function checkAnswer(questionName) {
+    if (answeredQuestions.has(questionName)) {
+        return; 
+    }
+
+    const selectedOptionInput = document.querySelector(`input[name="${questionName}"]:checked`);
+    const feedbackDiv = document.getElementById(`feedback${questionName.substring(1)}`); 
+    const validateButton = event.target; 
+    
+    feedbackDiv.classList.remove('active', 'correct', 'incorrect', 'warning');
+    feedbackDiv.innerHTML = '';
+
+
+    if (!selectedOptionInput) {
+        feedbackDiv.textContent = 'Vui lòng chọn một đáp án trước khi kiểm tra.';
+        feedbackDiv.classList.add('active', 'warning');
+        return;
+    }
+
+    const qData = questionsData[questionName]; 
+
+    const correctAnswerLabel = document.querySelector(`label[for="${qData.correctOptionId}"]`);
+    if (correctAnswerLabel) {
+      correctAnswerLabel.classList.add('correct-highlight');
+    }
+
+    answeredQuestions.add(questionName);
+    
+    const selectedOptionLabel = selectedOptionInput.parentElement;
+    
+    if (selectedOptionLabel.dataset.isCorrect === "true") {
+      feedbackDiv.innerHTML = '<strong>Chính xác!</strong><br><span class="explanation">' + qData.explanation + '</span>';
+      feedbackDiv.classList.add('active', 'correct');
+      correctAnswersCount++;
+    } else {
+      const correctAnswerText = correctAnswerLabel ? correctAnswerLabel.textContent.trim() : '';
+      feedbackDiv.innerHTML = '<strong>Không chính xác.</strong><br><span class="correct-answer-display">Đáp án đúng là: ' + correctAnswerText + '</span><br><span class="explanation">' + qData.explanation + '</span>';
+      feedbackDiv.classList.add('active', 'incorrect');
+    }
+    
+    const radioButtons = document.querySelectorAll(`input[name="${questionName}"]`);
+    radioButtons.forEach(radio => radio.disabled = true);
+    validateButton.disabled = true;
+  }
+
+  function showScore() {
+    document.getElementById('correct-count').textContent = correctAnswersCount;
+    document.getElementById('total-questions').textContent = totalQuestions;
+    document.getElementById('score-area').style.display = 'block';
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2025 by anonymous (http://jsbin.com/junulamuta/1/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài Tập Điền Từ: Passé Composé / Imparfait</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .quiz-container {
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 900px;
+            padding: 30px 40px;
+        }
+
+        .quiz-header {
+            text-align: center;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .quiz-header h1 {
+            color: #2c3e50;
+            margin: 0;
+            font-size: 28px;
+        }
+
+        .info-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            font-size: 16px;
+            color: #555;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        #score-container {
+            background-color: #e67e22;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+
+        .special-chars-bar {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .char-btn {
+            background-color: #f1f1f1;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 5px 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #333;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+        .char-btn:hover {
+            background-color: #e0e0e0;
+        }
+        .char-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .paragraph-container {
+            font-size: 1.2rem;
+            line-height: 3.2;
+            color: #34495e;
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px 8px 0 0;
+            border: 1px solid #e9ecef;
+            border-bottom: none;
+        }
+        
+        .translation-container {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: #555;
+            background-color: #f8f9fa;
+            padding: 15px 20px;
+            border-radius: 0 0 8px 8px;
+            border: 1px solid #e9ecef;
+            border-top: 1px dashed #ccc;
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+
+        .verb-input {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.1rem;
+            border: none;
+            border-bottom: 2px solid #3498db;
+            padding: 4px 6px;
+            text-align: center;
+            width: 140px;
+            transition: all 0.2s ease-in-out;
+            background-color: transparent;
+        }
+        .verb-input:focus {
+            outline: none;
+            border-bottom: 2px solid #e67e22;
+        }
+        .verb-input.correct {
+            border-bottom-color: #2ecc71;
+            color: #2ecc71;
+        }
+        .verb-input.incorrect {
+            border-bottom-color: #e74c3c;
+            color: #e74c3c;
+        }
+
+        .feedback-span {
+            font-size: 0.9rem;
+            margin-left: 5px;
+        }
+        .feedback-span .correct-answer {
+            font-weight: bold;
+            color: #27ae60;
+        }
+        
+        .feedback-explanation {
+            font-size: 1rem;
+            color: #34495e;
+            background-color: #e8f4fd;
+            border-left: 4px solid #0366d6;
+            padding: 15px;
+            margin-top: 20px;
+            display: none;
+            line-height: 1.7;
+        }
+        
+        .feedback-explanation strong {
+            font-size: 1.1rem;
+        }
+
+        .check-all-btn {
+            display: block;
+            width: 100%;
+            padding: 18px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;
+            background: linear-gradient(90deg, #e67e22, #d35400);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 30px;
+        }
+        .check-all-btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="quiz-container">
+        <header class="quiz-header">
+            <h1>Bài Tập Kể Chuyện: Thăm bạn ở bệnh viện</h1>
+            <div class="info-bar">
+                <span>Enseignant: <strong>Nguyễn Hoàng Vũ</strong></span>
+                <div id="score-container">
+                    Điểm: <span id="score-value">0/22</span>
+                </div>
+            </div>
+        </header>
+
+        <form id="quiz-form" onsubmit="return false;">
+            <p style="text-align: center; font-style: italic; color: #555; margin-bottom: 20px;">
+                Hoàn thành câu chuyện sau bằng cách chia các động từ trong ngoặc ở thì Passé Composé hoặc Imparfait.
+            </p>
+
+            <div id="special-chars" class="special-chars-bar">
+                <button type="button" class="char-btn">à</button>
+                <button type="button" class="char-btn">â</button>
+                <button type="button" class="char-btn">é</button>
+                <button type="button" class="char-btn">è</button>
+                <button type="button" class="char-btn">ê</button>
+                <button type="button" class="char-btn">ë</button>
+                <button type="button" class="char-btn">î</button>
+                <button type="button" class="char-btn">ï</button>
+                <button type="button" class="char-btn">ô</button>
+                <button type="button" class="char-btn">û</button>
+                <button type="button" class="char-btn">ù</button>
+                <button type="button" class="char-btn">ç</button>
+            </div>
+
+            <div class="paragraph-container">
+                Ce matin, j' <input type="text" id="q1_verb1" class="verb-input" placeholder="(décider)"> <span class="feedback-span" id="q1_feedback1"></span> d'aller voir mon ami Robert à l'hôpital. Il <input type="text" id="q1_verb2" class="verb-input" placeholder="(venir)"> <span class="feedback-span" id="q1_feedback2"></span>  d'avoir un accident; ce n'<input type="text" id="q1_verb3" class="verb-input" placeholder="(être)"> <span class="feedback-span" id="q1_feedback3"></span> pas grave, mais il <input type="text" id="q1_verb4" class="verb-input" placeholder="(devoir)"> <span class="feedback-span" id="q1_feedback4"></span> rester une semaine en observation. Avant de partir, j' <input type="text" id="q1_verb5" class="verb-input" placeholder="(choisir)"> <span class="feedback-span" id="q1_feedback5"></span> un livre dans ma bibliothèque : c' <input type="text" id="q1_verb6" class="verb-input" placeholder="(être)"> <span class="feedback-span" id="q1_feedback6"></span> un reportage sur l'Afrique. Je <input type="text" id="q1_verb7" class="verb-input" placeholder="(savoir)"> <span class="feedback-span" id="q1_feedback7"></span> que Robert <input type="text" id="q1_verb8" class="verb-input" placeholder="(aimer)"> <span class="feedback-span" id="q1_feedback8"></span> beaucoup ce genre de livres. Je <input type="text" id="q1_verb9" class="verb-input" placeholder="(monter)"> <span class="feedback-span" id="q1_feedback9"></span> dans l'autobus, et je <input type="text" id="q1_verb10" class="verb-input" placeholder="(descendre)"> <span class="feedback-span" id="q1_feedback10"></span> à un arrêt tout proche de l'hôpital : j' <input type="text" id="q1_verb11" class="verb-input" placeholder="(acheter)"> <span class="feedback-span" id="q1_feedback11"></span> une boîte de chocolats et je <input type="text" id="q1_verb12" class="verb-input" placeholder="(entrer)"> <span class="feedback-span" id="q1_feedback12"></span> dans la chambre de Robert. J' <input type="text" id="q1_verb13" class="verb-input" placeholder="(poser)"> <span class="feedback-span" id="q1_feedback13"></span> le livre et les chocolats à côté de lui. Il <input type="text" id="q1_verb14" class="verb-input" placeholder="(dire)"> <span class="feedback-span" id="q1_feedback14"></span> merci. Nous <input type="text" id="q1_verb15" class="verb-input" placeholder="(bavarder)"> <span class="feedback-span" id="q1_feedback15"></span> quelques minutes : il <input type="text" id="q1_verb16" class="verb-input" placeholder="(raconter)"> <span class="feedback-span" id="q1_feedback16"></span> son aventure. Je <input type="text" id="q1_verb17" class="verb-input" placeholder="(rester)"> <span class="feedback-span" id="q1_feedback17"></span> peu de temps, je <input type="text" id="q1_verb18" class="verb-input" placeholder="(ne pas vouloir)"> <span class="feedback-span" id="q1_feedback18"></span> fatiguer mon ami. Donc, je <input type="text" id="q1_verb19" class="verb-input" placeholder="(repartir)"> <span class="feedback-span" id="q1_feedback19"></span>. Je <input type="text" id="q1_verb20" class="verb-input" placeholder="(ne plus craindre)"> <span class="feedback-span" id="q1_feedback20"></span> rien pour lui. Robert <input type="text" id="q1_verb21" class="verb-input" placeholder="(sembler)"> <span class="feedback-span" id="q1_feedback21"></span> en bonne forme.
+            </div>
+            <div class="translation-container">
+                Sáng nay, tôi (quyết định) đi thăm bạn tôi là Robert ở bệnh viện. Anh ấy (vừa mới) bị tai nạn; nó không (nghiêm trọng), nhưng anh ấy (phải) ở lại một tuần để theo dõi. Trước khi đi, tôi (chọn) một cuốn sách trong thư viện của mình: đó (là) một bài phóng sự về châu Phi. Tôi (biết) rằng Robert (thích) thể loại sách này. Tôi (lên) xe buýt, và tôi (xuống) ở một trạm dừng rất gần bệnh viện: tôi (mua) một hộp sôcôla và tôi (bước vào) phòng của Robert. Tôi (đặt) cuốn sách và hộp sôcôla bên cạnh anh ấy. Anh ấy (nói) cảm ơn. Chúng tôi (trò chuyện) vài phút: anh ấy (kể) lại cuộc phiêu lưu của mình. Tôi (ở lại) một lúc, tôi (không muốn) làm bạn tôi mệt. Vì vậy, tôi (rời đi). Tôi (không còn lo lắng) gì cho anh ấy nữa. Robert (dường như) đang có thể trạng tốt.
+            </div>
+            <div class="feedback-explanation" id="q1_explanation"></div>
+            
+            <button id="check-all-btn" class="check-all-btn">Kiểm tra tất cả</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const solution = {
+                blanks: {
+                    q1_verb1: 'ai décidé',
+                    q1_verb2: "venait d'avoir",
+                    q1_verb3: "n'était",
+                    q1_verb4: 'devait',
+                    q1_verb5: 'ai choisi',
+                    q1_verb6: "était",
+                    q1_verb7: 'savais',
+                    q1_verb8: 'aimait',
+                    q1_verb9: ['suis monté', 'suis montée'],
+                    q1_verb10: ['suis descendu', 'suis descendue'],
+                    q1_verb11: 'ai acheté',
+                    q1_verb12: ['suis entré', 'suis entrée'],
+                    q1_verb13: 'ai posé',
+                    q1_verb14: 'a dit',
+                    q1_verb15: 'avons bavardé',
+                    q1_verb16: 'a raconté',
+                    q1_verb17: ['suis resté', 'suis restée'],
+                    q1_verb18: 'ne voulais pas',
+                    q1_verb19: ['suis reparti', 'suis repartie'],
+                    q1_verb20: 'ne craignais plus',
+                    q1_verb21: 'semblait'
+                },
+                explanation: `
+                    <strong>Phân tích:</strong><br>
+                    - <strong>Hành động chính, đơn lẻ, hoàn tất (Passé Composé):</strong> <i>ai décidé, ai choisi, suis monté(e), suis descendu(e), ai acheté, suis entré(e), ai posé, a dit, avons bavardé, suis resté(e), suis reparti(e).</i> Đây là chuỗi các sự kiện chính làm nên sườn của câu chuyện.<br>
+                    - <strong>Bối cảnh, miêu tả, trạng thái (Imparfait):</strong> <i>venait d'avoir</i> (bối cảnh cho chuyến thăm), <i>n'était, devait</i> (miêu tả tình trạng của tai nạn và nghĩa vụ), <i>c'était, savais, aimait</i> (miêu tả cuốn sách và kiến thức/sở thích), <i>racontait</i> (hành động nền trong lúc trò chuyện), <i>ne voulais pas, ne craignais plus rien, semblait</i> (miêu tả trạng thái tinh thần, cảm xúc).
+                `
+            };
+            
+            // There are 21 verbs in the text.
+            const totalBlanks = 21;
+
+
+            const checkButton = document.getElementById('check-all-btn');
+            const scoreValueElement = document.getElementById('score-value');
+            scoreValueElement.textContent = `0/${totalBlanks}`;
+            let currentScore = 0;
+            let lastActiveInput = null;
+
+            const charButtons = document.querySelectorAll('.char-btn');
+            const verbInputs = document.querySelectorAll('.verb-input');
+
+            verbInputs.forEach(input => {
+                input.addEventListener('focus', (event) => {
+                    lastActiveInput = event.target;
+                });
+            });
+            
+            charButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    if (lastActiveInput) {
+                        const charToInsert = button.textContent;
+                        const input = lastActiveInput;
+                        const startPos = input.selectionStart;
+                        const endPos = input.selectionEnd;
+                        const originalValue = input.value;
+                        
+                        input.value = originalValue.substring(0, startPos) + charToInsert + originalValue.substring(endPos);
+                        
+                        const newPos = startPos + 1;
+                        input.selectionStart = newPos;
+                        input.selectionEnd = newPos;
+                        input.focus();
+                    }
+                });
+            });
+
+            checkButton.addEventListener('click', () => {
+                currentScore = 0;
+                
+                const explanationElement = document.getElementById('q1_explanation');
+                
+                Object.keys(solution.blanks).forEach(blankId => {
+                    const inputElement = document.getElementById(blankId);
+                    const feedbackElement = document.getElementById(blankId.replace('verb', 'feedback'));
+                    const userAnswer = inputElement.value.trim();
+                    const correctAnswer = solution.blanks[blankId];
+
+                    let correctAnswers = Array.isArray(correctAnswer) ? correctAnswer : [correctAnswer];
+                    
+                    if (correctAnswers.map(ans => ans.toLowerCase()).includes(userAnswer.toLowerCase())) {
+                        currentScore++;
+                        inputElement.value = correctAnswers[0];
+                        inputElement.classList.add('correct');
+                        feedbackElement.innerHTML = '✔️';
+                    } else {
+                        inputElement.classList.add('incorrect');
+                        feedbackElement.innerHTML = `❌ <span class="correct-answer">${correctAnswers[0]}</span>`;
+                    }
+                    inputElement.disabled = true;
+                });
+                
+                explanationElement.innerHTML = solution.explanation;
+                explanationElement.style.display = 'block';
+
+                scoreValueElement.textContent = `${currentScore}/${totalBlanks}`;
+                checkButton.disabled = true;
+            });
+        });
+    </script>
+</body>
+</html>

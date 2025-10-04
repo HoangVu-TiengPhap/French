@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2025 by anonymous (http://jsbin.com/veqixocuda/24/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pronoms Personnels - Remplacement des Compléments (V1)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        /* Đặt font Arial/sans-serif cho toàn bộ nội dung chính (trừ feedback vẫn là Roboto) */
+        .header, .question-block, .options label {
+            font-family: Arial, sans-serif;
+        }
+
+        /* Vùng chứa chung cho header và score-container để căn giữa */
+        .page-content-wrapper {
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .header h1 {
+            text-align: center;
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+
+        /* CSS cho phần Score dính */
+        #score-container {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color: #fff;
+            color: #007bff;
+            padding: 12px 20px;
+            border: 1px solid #cce5ff;
+            border-radius: 8px;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            font-size: 1.3em;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+            box-sizing: border-box;
+        }
+        #score-container strong {
+            color: #0056b3;
+        }
+
+        #quiz-container {
+            /* max-width và margin auto sẽ được thừa kế từ .page-content-wrapper */
+        }
+        .question-block {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            /* max-width và margin auto đã có ở đây */
+        }
+        .question-text {
+            font-size: 1.1em;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .question-translation {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+        .rephrased-sentence-container {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border: 1px solid #e2e3e5;
+            border-radius: 5px;
+            font-size: 0.95em;
+        }
+        .rephrased-sentence-container p {
+            margin: 5px 0;
+        }
+        /* Placeholder styling from V1 */
+        .placeholder {
+            color: #dc3545;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+        .options {
+            max-width: 500px;
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+        .options label {
+            display: block;
+            margin-bottom: 10px;
+            cursor: pointer;
+            padding: 8px;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+            font-family: Arial, sans-serif;
+        }
+        .options label:hover {
+                background-color: #e9e9e9;
+        }
+        .feedback {
+            margin-top: 15px;
+            font-weight: bold;
+            display: none;
+            font-family: 'Roboto', sans-serif;
+        }
+        .feedback-explanation {
+            font-weight: normal;
+            font-size: 0.9em;
+            margin-top: 5px;
+            color: #0056b3;
+        }
+        .feedback-correct-answer-text {
+            color: #0056b3;
+        }
+        .correct {
+            color: green;
+        }
+        .incorrect {
+            color: red;
+        }
+        .highlight-correct {
+            background-color: #d4edda !important;
+            border-color: #28a745 !important;
+        }
+        .highlight-incorrect-selected {
+            background-color: #f8d7da !important;
+            border-color: #dc3545 !important;
+        }
+        .validate-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 15px;
+            transition: background-color 0.3s ease;
+        }
+        .validate-btn:hover {
+            background-color: #0056b3;
+        }
+        .validation-error {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 15px;
+            font-weight: normal;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-content-wrapper">
+        <div class="header">
+            <div class="header-top">
+                <p><strong>Enseignant:</strong> Nguyễn Hoàng Vũ</p>
+                <p><strong>Jour de test:</strong> <span id="currentDate"></span></p>
+            </div>
+            <h1>Pronoms Personnels - Remplacement des Compléments</h1> </div>
+
+        <div id="score-container">
+            Score: <strong id="current-score-value">0</strong> / <strong id="total-questions-value">10</strong>
+        </div>
+
+        <div id="quiz-container">
+            <div class="question-block" id="q1" data-correct-answer="l'aimes">
+                <p class="question-text">1. Tu aimes beaucoup ton cousin.</p>
+                <p class="question-translation"><em>(Bạn rất yêu quý anh họ/em họ của mình.)</em></p>
+                <div class="rephrased-sentence-container">
+                    <p>Tu <span class="placeholder" id="q1_p1_placeholder">__________</span> beaucoup.</p>
+                </div>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q1', 'COD &quot;ton cousin&quot; (giống đực, số ít) được thay bằng đại từ &quot;l\'&quot; đứng trước động từ.', 'error-q1')">Valider</button>
+                <div class="feedback" id="feedback-q1"></div>
+                <div class="validation-error" id="error-q1">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+            <div class="question-block" id="q2" data-correct-answer="lui téléphones">
+                <p class="question-text">2. Tu téléphones à ton cousin.</p>
+                <p class="question-translation"><em>(Bạn gọi điện cho anh họ/em họ của mình.)</em></p>
+                <div class="rephrased-sentence-container">
+                    <p>Tu <span class="placeholder" id="q2_p1_placeholder">__________</span>.</p>
+                </div>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q2', 'COI &quot;à ton cousin&quot; (người, số ít) được thay bằng đại từ &quot;lui&quot; đứng trước động từ.', 'error-q2')">Valider</button>
+                <div class="feedback" id="feedback-q2"></div>
+                <div class="validation-error" id="error-q2">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+            <div class="question-block" id="q3" data-correct-answer="leur écrivez">
+                <p class="question-text">3. Vous écrivez à vos parents.</p>
+                <p class="question-translation"><em>(Bạn viết thư cho bố mẹ mình.)</em></p>
+                <div class="rephrased-sentence-container">
+                    <p>Vous <span class="placeholder" id="q3_p1_placeholder">__________</span>.</p>
+                </div>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q3', 'COI &quot;à vos parents&quot; (người, số nhiều) được thay bằng đại từ &quot;leur&quot; đứng trước động từ.', 'error-q3')">Valider</button>
+                <div class="feedback" id="feedback-q3"></div>
+                <div class="validation-error" id="error-q3">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+            <div class="question-block" id="q4" data-correct-answer="les remerciez">
+                <p class="question-text">4. Vous remerciez vos parents.</p>
+                <p class="question-translation"><em>(Bạn cảm ơn bố mẹ mình.)</em></p>
+            <div class="rephrased-sentence-container">
+                <p>Vous <span class="placeholder" id="q4_p1_placeholder">__________</span>.</p>
+            </div>
+            <div class="options">
+                </div>
+            <button class="validate-btn" onclick="checkAnswer('q4', 'COD &quot;vos parents&quot; (người, số nhiều) được thay bằng đại từ &quot;les&quot; đứng trước động từ.', 'error-q4')">Valider</button>
+            <div class="feedback" id="feedback-q4"></div>
+            <div class="validation-error" id="error-q4">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+        </div>
+
+            <div class="question-block" id="q5" data-correct-answer="la rencontrent">
+                <p class="question-text">5. Ils rencontrent Sophie.</p>
+                <p class="question-translation"><em>(Họ gặp Sophie.)</em></p>
+                <div class="rephrased-sentence-container">
+                    <p>Ils <span class="placeholder" id="q5_p1_placeholder">__________</span>.</p>
+                </div>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q5', 'COD &quot;Sophie&quot; (người, giống cái, số ít) được thay bằng đại từ &quot;la&quot; đứng trước động từ.', 'error-q5')">Valider</button>
+                <div class="feedback" id="feedback-q5"></div>
+                <div class="validation-error" id="error-q5">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+            <div class="question-block" id="q6" data-correct-answer="lui disent">
+                <p class="question-text">6. Ils disent bonjour à Sophie.</p>
+                <p class="question-translation"><em>(Họ chào Sophie.)</em></p>
+                <div class="rephrased-sentence-container">
+                    <p>Ils <span class="placeholder" id="q6_p1_placeholder">__________</span> bonjour.</p>
+                </div>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q6', 'COI &quot;à Sophie&quot; (người, số ít) được thay bằng đại từ &quot;lui&quot; đứng trước động từ.', 'error-q6')">Valider</button>
+                <div class="feedback" id="feedback-q6"></div>
+                <div class="validation-error" id="error-q6">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+            <div class="question-block" id="q7" data-correct-answer="l'embrassent">
+                <p class="question-text">7. Ils embrassent Sophie.</p>
+                <p class="question-translation"><em>(Họ ôm Sophie.)</em></p>
+                <div class="rephrased-sentence-container">
+                    <p>Ils <span class="placeholder" id="q7_p1_placeholder">__________</span>.</p>
+                </div>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q7', 'COD &quot;Sophie&quot; (người, giống cái, số ít) được thay bằng đại từ &quot;l\'&quot; đứng trước động từ.', 'error-q7')">Valider</button>
+                <div class="feedback" id="feedback-q7"></div>
+                <div class="validation-error" id="error-q7">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+            <div class="question-block" id="q8" data-correct-answer="les avons invités">
+                <p class="question-text">8. Nous avons invité nos amis.</p>
+                <p class="question-translation"><em>(Chúng tôi đã mời bạn bè của mình.)</em></p>
+                <div class="rephrased-sentence-container">
+                    <p>Nous <span class="placeholder" id="q8_p1_placeholder">__________</span>.</p>
+                </div>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q8', 'COD &quot;nos amis&quot; (người, số nhiều) được thay bằng đại từ &quot;les&quot; đứng trước trợ động từ &quot;avons&quot;. Participe passé &quot;invité&quot; hòa hợp với &quot;les&quot; thành &quot;invités&quot;.', 'error-q8')">Valider</button>
+                <div class="feedback" id="feedback-q8"></div>
+                <div class="validation-error" id="error-q8">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+            <div class="question-block" id="q9" data-correct-answer="leur ai demandé">
+                <p class="question-text">9. J'ai demandé à nos amis de venir.</p>
+                <p class="question-translation"><em>(Tôi đã yêu cầu bạn bè của mình đến.)</em></p>
+                <div class="rephrased-sentence-container">
+                    <p>Je <span class="placeholder" id="q9_p1_placeholder">__________</span> de venir.</p>
+                </div>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q9', 'COI &quot;à nos amis&quot; (người, số nhiều) được thay bằng đại từ &quot;leur&quot; đứng trước trợ động từ &quot;ai&quot;. Participe passé &quot;demandé&quot; không hòa hợp với COI.', 'error-q9')">Valider</button>
+                <div class="feedback" id="feedback-q9"></div>
+                <div class="validation-error" id="error-q9">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+            <div class="question-block" id="q10" data-correct-answer="les attendons">
+                <p class="question-text">10. Nous attendons nos amis.</p>
+                <p class="question-translation"><em>(Chúng tôi đang đợi bạn bè của mình.)</em></p>
+                <div class="rephrased-sentence-container">
+                    <p>Nous <span class="placeholder" id="q10_p1_placeholder">__________</span>.</p>
+                </div>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q10', 'COD &quot;nos amis&quot; (người, số nhiều) được thay bằng đại từ &quot;les&quot; đứng trước động từ.', 'error-q10')">Valider</button>
+                <div class="feedback" id="feedback-q10"></div>
+                <div class="validation-error" id="error-q10">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+        </div>
+    </div> <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const date = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            // Cập nhật Jour de test theo ngày thực
+            document.getElementById('currentDate').textContent = date.toLocaleDateString('fr-FR', options);
+            
+            // Định nghĩa các câu hỏi và đáp án cho việc xáo trộn
+            const questionsData = {
+                q1: {
+                    original_text: '1. Tu aimes beaucoup ton cousin.',
+                    translation_text: 'Bạn rất yêu quý anh họ/em họ của mình.',
+                    rephrased_template: 'Tu <span class="placeholder" id="q1_p1_placeholder"></span> beaucoup.',
+                    correct: 'l\'aimes',
+                    options: [
+                        'l\'aimes', 'l\'aime', 'les aimes', 'lui aimes'
+                    ]
+                },
+                q2: {
+                    original_text: '2. Tu téléphones à ton cousin.',
+                    translation_text: 'Bạn gọi điện cho anh họ/em họ của mình.',
+                    rephrased_template: 'Tu <span class="placeholder" id="q2_p1_placeholder"></span>.',
+                    correct: 'lui téléphones',
+                    options: [
+                        'lui téléphones', 'le téléphones', 'la téléphones', 'y téléphones'
+                    ]
+                },
+                q3: {
+                    original_text: '3. Vous écrivez à vos parents.',
+                    translation_text: 'Bạn viết thư cho bố mẹ mình.',
+                    rephrased_template: 'Vous <span class="placeholder" id="q3_p1_placeholder"></span>.',
+                    correct: 'leur écrivez',
+                    options: [
+                        'leur écrivez', 'les écrivez', 'lui écrivez', 'y écrivez'
+                    ]
+                },
+                q4: {
+                    original_text: '4. Vous remerciez vos parents.',
+                    translation_text: 'Bạn cảm ơn bố mẹ mình.',
+                    rephrased_template: 'Vous <span class="placeholder" id="q4_p1_placeholder"></span>.',
+                    correct: 'les remerciez',
+                    options: [
+                        'les remerciez', 'leur remerciez', 'lui remerciez', 'vous remerciez'
+                    ]
+                },
+                q5: {
+                    original_text: '5. Ils rencontrent Sophie.',
+                    translation_text: 'Họ gặp Sophie.',
+                    rephrased_template: 'Ils <span class="placeholder" id="q5_p1_placeholder"></span>.',
+                    correct: 'la rencontrent',
+                    options: [
+                        'la rencontrent', 'le rencontrent', 'lui rencontrent', 'les rencontrent'
+                    ]
+                },
+                q6: {
+                    original_text: '6. Ils disent bonjour à Sophie.',
+                    translation_text: 'Họ chào Sophie.',
+                    rephrased_template: 'Ils <span class="placeholder" id="q6_p1_placeholder"></span> bonjour.',
+                    correct: 'lui disent',
+                    options: [
+                        'lui disent', 'le disent', 'la disent', 'leur disent'
+                    ]
+                },
+                q7: {
+                    original_text: '7. Ils embrassent Sophie.',
+                    translation_text: 'Họ ôm Sophie.',
+                    rephrased_template: 'Ils <span class="placeholder" id="q7_p1_placeholder"></span>.',
+                    correct: 'l\'embrassent', // l' vì embrassent bắt đầu bằng nguyên âm
+                    options: [
+                        'l\'embrassent', 'la embrassent', 'le embrassent', 'lui embrassent'
+                    ]
+                },
+                q8: {
+                    original_text: '8. Nous avons invité nos amis.',
+                    translation_text: 'Chúng tôi đã mời bạn bè của mình.',
+                    rephrased_template: 'Nous <span class="placeholder" id="q8_p1_placeholder"></span>.',
+                    correct: 'les avons invités', // Hòa hợp participe passé
+                    options: [
+                        'les avons invités',
+                        'les avons invité', // Sai hòa hợp
+                        'leur avons invités', // Sai đại từ
+                        'les avons invitées' // Sai giống
+                    ]
+                },
+                q9: {
+                    original_text: '9. J\'ai demandé à nos amis de venir.',
+                    translation_text: 'Tôi đã yêu cầu bạn bè của mình đến.',
+                    rephrased_template: 'Je <span class="placeholder" id="q9_p1_placeholder"></span> de venir.',
+                    correct: 'leur ai demandé',
+                    options: [
+                        'leur ai demandé',
+                        'les ai demandé', // Sai đại từ
+                        'lui ai demandé', // Sai số
+                        'leur ai demandés' // Sai hòa hợp (COI không hòa hợp)
+                    ]
+                },
+                q10: {
+                    original_text: '10. Nous attendons nos amis.',
+                    translation_text: 'Chúng tôi đang đợi bạn bè của mình.',
+                    rephrased_template: 'Nous <span class="placeholder" id="q10_p1_placeholder"></span>.',
+                    correct: 'les attendons',
+                    options: [
+                        'les attendons',
+                        'leur attendons', // Sai đại từ
+                        'les attendent', // Sai chia
+                        'l\'attendons' // Sai số
+                    ]
+                }
+            };
+
+            // Hàm xáo trộn mảng
+            function shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]]; // Hoán đổi vị trí
+                }
+            }
+
+            // Tạo và xáo trộn các lựa chọn đáp án cho mỗi câu hỏi
+            for (const qId in questionsData) {
+                const qData = questionsData[qId];
+                const questionBlock = document.getElementById(qId);
+                const optionsDiv = questionBlock.querySelector('.options');
+                
+                // Hiển thị câu hỏi gốc và bản dịch
+                questionBlock.querySelector('.question-text').innerHTML = qData.original_text;
+                questionBlock.querySelector('.question-translation').innerHTML = `<em>(${qData.translation_text})</em>`;
+
+                // Hiển thị câu đã viết lại với chỗ trống
+                const rephrasedContainer = questionBlock.querySelector('.rephrased-sentence-container');
+                rephrasedContainer.innerHTML = qData.rephrased_template; // Gán lại HTML
+                
+                // Khởi tạo text cho placeholders: Đặt lại dấu gạch ngang
+                const p1_placeholder = questionBlock.querySelector(`#${qId}_p1_placeholder`);
+                
+                if (p1_placeholder) p1_placeholder.textContent = '__________';
+
+
+                let currentOptions = [...qData.options];
+                shuffleArray(currentOptions);
+
+                optionsDiv.innerHTML = '';
+                currentOptions.forEach(optionText => {
+                    const label = document.createElement('label');
+                    const input = document.createElement('input');
+                    input.type = 'radio';
+                    input.name = qId;
+                    input.value = optionText;
+                    label.appendChild(input);
+                    label.innerHTML += ' ' + optionText;
+                    optionsDiv.appendChild(label);
+                });
+            }
+
+            updateOverallScore();
+        });
+
+        const answeredQuestions = {};
+        const totalQuestions = 10; 
+
+        const currentScoreValue = document.getElementById('current-score-value');
+        const totalQuestionsValue = document.getElementById('total-questions-value');
+
+        function updateOverallScore() {
+            let correctCount = 0;
+            const allQuestionIds = ['q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8', 'q9', 'q10'];
+            allQuestionIds.forEach(id => {
+                if (answeredQuestions[id] === true) {
+                    correctCount++;
+                }
+            });
+
+            currentScoreValue.textContent = correctCount;
+            totalQuestionsValue.textContent = totalQuestions;
+        }
+
+        function checkAnswer(questionId, explanation, errorDivId) {
+            const questionBlock = document.getElementById(questionId);
+            const selectedOption = questionBlock.querySelector(`input[name="${questionId}"]:checked`);
+            const feedbackDiv = questionBlock.querySelector('.feedback');
+            const optionsLabels = questionBlock.querySelectorAll('.options label');
+            const correctAnswer = questionBlock.dataset.correctAnswer;
+            const errorDiv = document.getElementById(errorDivId);
+
+            document.querySelectorAll('.validation-error').forEach(div => {
+                div.style.display = 'none';
+            });
+            
+            // Reset placeholder text và class
+            const p1_placeholder = questionBlock.querySelector(`#${questionId}_p1_placeholder`);
+            
+            const allPlaceholders = [p1_placeholder].filter(p => p !== null); // Chỉ có p1 trong bài này
+
+            allPlaceholders.forEach(p => {
+                p.textContent = '__________'; // Đặt lại dấu gạch ngang
+                p.classList.remove('correct-filled-text'); // Xóa class màu xanh
+            });
+
+
+            optionsLabels.forEach(label => {
+                label.classList.remove('highlight-correct', 'highlight-incorrect-selected');
+            });
+            feedbackDiv.style.display = 'none';
+            feedbackDiv.classList.remove('correct', 'incorrect');
+            feedbackDiv.innerHTML = '';
+
+            if (!selectedOption) {
+                errorDiv.style.display = 'block';
+                setTimeout(() => {
+                    errorDiv.style.display = 'none';
+                }, 3000);
+                return;
+            }
+
+            const userAnswer = selectedOption.value;
+            let feedbackMessage = "";
+
+            optionsLabels.forEach(label => {
+                if (label.querySelector('input').value === correctAnswer) {
+                    label.classList.add('highlight-correct');
+                }
+            });
+
+            if (userAnswer === correctAnswer) {
+                feedbackMessage = "<b>Chính xác!</b> Đây là đáp án đúng.";
+                feedbackDiv.classList.add('correct');
+                answeredQuestions[questionId] = true;
+            } else {
+                feedbackMessage = `<b>Không chính xác.</b> Đáp án đúng là <span class="feedback-correct-answer-text">"${correctAnswer}"</span>.`;
+                feedbackDiv.classList.add('incorrect');
+                selectedOption.closest('label').classList.add('highlight-incorrect-selected');
+                answeredQuestions[questionId] = false;
+            }
+            feedbackDiv.innerHTML = feedbackMessage + `<div class="feedback-explanation">Giải thích: ${explanation}</div>`;
+            feedbackDiv.style.display = 'block';
+
+            // Cập nhật các placeholder với đáp án ĐÚNG sau khi kiểm tra
+            const correctParts = correctAnswer.split(' | ');
+            allPlaceholders.forEach((p, index) => {
+                if (correctParts[index] !== undefined) {
+                    p.textContent = correctParts[index]; // Điền đáp án, thay thế gạch ngang
+                    p.classList.add('correct-filled-text'); // Thêm class màu xanh
+                }
+            });
+
+
+            updateOverallScore();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2025 by anonymous (http://jsbin.com/faqawowapa/8/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accord du Participe Passé - Question & Réponse</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .header, .question-block, .options label {
+            font-family: Arial, sans-serif;
+        }
+
+        .page-content-wrapper {
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .header h1 {
+            text-align: center;
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+
+        #score-container {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color: #fff;
+            color: #007bff;
+            padding: 12px 20px;
+            border: 1px solid #cce5ff;
+            border-radius: 8px;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            font-size: 1.3em;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+            box-sizing: border-box;
+        }
+        #score-container strong {
+            color: #0056b3;
+        }
+
+        #quiz-container {
+        }
+        .question-block {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .question-text {
+            font-size: 1.1em;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .question-translation {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+        .rephrased-sentence-container { /* Container cho cả câu hỏi và câu trả lời đã điền */
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #f8f9fa; /* Nền nhẹ để phân biệt */
+            border: 1px solid #e2e3e5;
+            border-radius: 5px;
+            font-size: 0.95em;
+        }
+        .rephrased-sentence-container p {
+            margin: 5px 0;
+        }
+        .placeholder {
+            color: #dc3545; /* Màu đỏ cho chỗ trống */
+            font-weight: bold;
+            text-decoration: underline;
+        }
+        .options {
+            max-width: 500px;
+            margin-top: 15px; /* Thêm khoảng cách với câu đã điền */
+            margin-bottom: 15px;
+        }
+        .options label {
+            display: block;
+            margin-bottom: 10px;
+            cursor: pointer;
+            padding: 8px;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+            font-family: Arial, sans-serif;
+        }
+        .options label:hover {
+                background-color: #e9e9e9;
+        }
+        .feedback {
+            margin-top: 15px;
+            font-weight: bold;
+            display: none;
+            font-family: 'Roboto', sans-serif;
+        }
+        .feedback-explanation {
+            font-weight: normal;
+            font-size: 0.9em;
+            margin-top: 5px;
+            color: #0056b3;
+        }
+        .feedback-correct-answer-text {
+            color: #0056b3;
+        }
+        .correct {
+            color: green;
+        }
+        .incorrect {
+            color: red;
+        }
+        .highlight-correct {
+            background-color: #d4edda !important;
+            border-color: #28a745 !important;
+        }
+        .highlight-incorrect-selected {
+            background-color: #f8d7da !important;
+            border-color: #dc3545 !important;
+        }
+        .validate-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 15px;
+            transition: background-color 0.3s ease;
+        }
+        .validate-btn:hover {
+            background-color: #0056b3;
+        }
+        .validation-error {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 15px;
+            font-weight: normal;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-content-wrapper">
+        <div class="header">
+            <div class="header-top">
+                <p><strong>Enseignant:</strong> Nguyễn Hoàng Vũ</p>
+                <p><strong>Jour de test:</strong> <span id="currentDate"></span></p>
+            </div>
+            <h1>Accord du Participe Passé - Question & Réponse</h1>
+        </div>
+
+        <div id="score-container">
+            Score: <strong id="current-score-value">0</strong> / <strong id="total-questions-value">5</strong>
+        </div>
+
+        <div id="quiz-container">
+            <div class="question-block" id="q1" data-correct-answer="reçu | reçue">
+                <p class="question-text">1. Est-ce que tu as (reçu) ma lettre? Oui, je l'ai (reçu).</p>
+                <p class="question-translation"><em>(Bạn đã nhận được thư của tôi chưa? Rồi, tôi đã nhận được.)</em></p>
+                <div class="rephrased-sentence-container">
+                    <p>Est-ce que tu as <span class="placeholder" id="q1_p1_placeholder">__________</span> ma lettre?</p>
+                    <p>Oui, je l'ai <span class="placeholder" id="q1_p2_placeholder">__________</span>.</p>
+                </div>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q1', 'Participe passé của động từ dùng trợ động từ &quot;avoir&quot; hòa hợp với COD khi COD đứng trước động từ. Trong câu hỏi, không có COD trước, nên &quot;reçu&quot;. Trong câu trả lời, COD là &quot;l\'&quot; (thay cho &quot;ma lettre&quot; - giống cái, số ít) đứng trước, nên &quot;reçue&quot;.', 'error-q1')">Valider</button>
+                <div class="feedback" id="feedback-q1"></div>
+                <div class="validation-error" id="error-q1">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+            <div class="question-block" id="q2" data-correct-answer="lu | lus">
+                <p class="question-text">2. Est-ce que tu as (lu) ces journaux? Oui, je les ai (lu).</p>
+                <p class="question-translation"><em>(Bạn đã đọc những tờ báo này chưa? Rồi, tôi đã đọc rồi.)</em></p>
+                <div class="rephrased-sentence-container">
+                    <p>Est-ce que tu as <span class="placeholder" id="q2_p1_placeholder">__________</span> ces journaux?</p>
+                    <p>Oui, je les ai <span class="placeholder" id="q2_p2_placeholder">__________</span>.</p>
+                </div>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q2', 'Participe passé của động từ dùng trợ động từ &quot;avoir&quot; hòa hợp với COD khi COD đứng trước động từ. Trong câu hỏi, không có COD trước, nên &quot;lu&quot;. Trong câu trả lời, COD là &quot;les&quot; (thay cho &quot;ces journaux&quot; - giống đực, số nhiều) đứng trước, nên &quot;lus&quot;.', 'error-q2')">Valider</button>
+                <div class="feedback" id="feedback-q2"></div>
+                <div class="validation-error" id="error-q2">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+            <div class="question-block" id="q3" data-correct-answer="pris | prises">
+                <p class="question-text">3. Quand avez-vous (pris) vos vacances? Je les ai (pris) en août.</p>
+                <p class="question-translation"><em>(Bạn đã nghỉ lễ khi nào? Tôi đã nghỉ vào tháng 8.)</em></p>
+                <div class="rephrased-sentence-container">
+                    <p>Quand avez-vous <span class="placeholder" id="q3_p1_placeholder">__________</span> vos vacances?</p>
+                    <p>Je les ai <span class="placeholder" id="q3_p2_placeholder">__________</span> en août.</p>
+                </div>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q3', 'Participe passé của động từ dùng trợ động từ &quot;avoir&quot; hòa hợp với COD khi COD đứng trước động từ. Trong câu hỏi, không có COD trước, nên &quot;pris&quot;. Trong câu trả lời, COD là &quot;les&quot; (thay cho &quot;vos vacances&quot; - giống cái, số nhiều) đứng trước, nên &quot;prises&quot;.', 'error-q3')">Valider</button>
+                <div class="feedback" id="feedback-q3"></div>
+                <div class="validation-error" id="error-q3">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+            <div class="question-block" id="q4" data-correct-answer="rangé | rangées">
+                <p class="question-text">4. Où as-tu (rangé) tes chaussures? Je les ai (rangé) dans le placard.</p>
+                <p class="question-translation"><em>(Bạn đã cất giày ở đâu? Tôi đã cất chúng vào tủ.)</em></p>
+            <div class="rephrased-sentence-container">
+                <p>Où as-tu <span class="placeholder" id="q4_p1_placeholder">__________</span> tes chaussures?</p>
+                <p>Je les ai <span class="placeholder" id="q4_p2_placeholder">__________</span> dans le placard.</p>
+            </div>
+            <div class="options">
+                </div>
+            <button class="validate-btn" onclick="checkAnswer('q4', 'Participe passé của động từ dùng trợ động từ &quot;avoir&quot; hòa hợp với COD khi COD đứng trước động từ. Trong câu hỏi, không có COD trước, nên &quot;rangé&quot;. Trong câu trả lời, COD là &quot;les&quot; (thay cho &quot;tes chaussures&quot; - giống cái, số nhiều) đứng trước, nên &quot;rangées&quot;.', 'error-q4')">Valider</button>
+            <div class="feedback" id="feedback-q4"></div>
+            <div class="validation-error" id="error-q4">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+        </div>
+
+            <div class="question-block" id="q5" data-correct-answer="vu | vu">
+                <p class="question-text">5. Est-ce que vous avez (vu) des fantômes? Oui, j'en ai (vu).</p>
+                <p class="question-translation"><em>(Bạn có thấy ma không? Rồi, tôi có thấy.)</em></p>
+                <div class="rephrased-sentence-container">
+                    <p>Est-ce que vous avez <span class="placeholder" id="q5_p1_placeholder">__________</span> des fantômes?</p>
+                    <p>Oui, j'en ai <span class="placeholder" id="q5_p2_placeholder">__________</span>.</p>
+                </div>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q5', 'Participe passé của động từ dùng trợ động từ &quot;avoir&quot; hòa hợp với COD khi COD đứng trước động từ. Trong câu hỏi, không có COD trước, nên &quot;vu&quot;. Trong câu trả lời, COD là &quot;en&quot;. Participe passé không hòa hợp với &quot;en&quot;, nên giữ nguyên &quot;vu&quot;.', 'error-q5')">Valider</button>
+                <div class="feedback" id="feedback-q5"></div>
+                <div class="validation-error" id="error-q5">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+        </div>
+    </div> <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const date = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('currentDate').textContent = date.toLocaleDateString('fr-FR', options);
+            
+            // Định nghĩa các câu hỏi và đáp án cho việc xáo trộn
+            const questionsData = {
+                q1: {
+                    correct: 'reçu | reçue',
+                    p1_text: 'reçu', // participe passé nguyên bản cho câu hỏi
+                    p2_text: 'reçu', // participe passé nguyên bản cho câu trả lời
+                    options: [
+                        'reçu | reçue',     // Đúng
+                        'reçu | reçu',      // Sai P2
+                        'reçue | reçue',    // Sai P1
+                        'reçue | reçu'      // Sai P1 và P2
+                    ]
+                },
+                q2: {
+                    correct: 'lu | lus',
+                    p1_text: 'lu',
+                    p2_text: 'lu',
+                    options: [
+                        'lu | lus',
+                        'lu | lu',
+                        'lus | lus',
+                        'lus | lu'
+                    ]
+                },
+                q3: {
+                    correct: 'pris | prises',
+                    p1_text: 'pris',
+                    p2_text: 'pris',
+                    options: [
+                        'pris | prises',
+                        'pris | pris',
+                        'prise | prises',
+                        'prises | pris'
+                    ]
+                },
+                q4: {
+                    correct: 'rangé | rangées',
+                    p1_text: 'rangé',
+                    p2_text: 'rangé',
+                    options: [
+                        'rangé | rangées',
+                        'rangé | rangé',
+                        'rangée | rangées',
+                        'rangées | rangée'
+                    ]
+                },
+                q5: {
+                    correct: 'vu | vu',
+                    p1_text: 'vu',
+                    p2_text: 'vu',
+                    options: [
+                        'vu | vu',
+                        'vu | vue',
+                        'vue | vu',
+                        'vues | vus'
+                    ]
+                }
+            };
+
+            // Hàm xáo trộn mảng
+            function shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]]; // Hoán đổi vị trí
+                }
+            }
+
+            // Tạo và xáo trộn các lựa chọn đáp án cho mỗi câu hỏi
+            for (const qId in questionsData) {
+                const qData = questionsData[qId];
+                const questionBlock = document.getElementById(qId);
+                const optionsDiv = questionBlock.querySelector('.options');
+                
+                // Hiển thị câu hỏi và câu trả lời với chỗ trống
+                const p1_placeholder = questionBlock.querySelector(`#${qId}_p1_placeholder`);
+                const p2_placeholder = questionBlock.querySelector(`#${qId}_p2_placeholder`);
+                
+                // Điền text gốc vào chỗ trống (để học sinh thấy dạng nguyên bản trước khi chọn)
+                p1_placeholder.textContent = qData.p1_text;
+                p2_placeholder.textContent = qData.p2_text;
+
+                let currentOptions = [...qData.options];
+                shuffleArray(currentOptions);
+
+                optionsDiv.innerHTML = '';
+                currentOptions.forEach(optionText => {
+                    const label = document.createElement('label');
+                    const input = document.createElement('input');
+                    input.type = 'radio';
+                    input.name = qId;
+                    input.value = optionText; // Giá trị radio button là cặp participe passé
+                    label.appendChild(input);
+                    label.innerHTML += ' ' + optionText; // Hiển thị dạng "P1 | P2"
+                    optionsDiv.appendChild(label);
+                });
+            }
+
+            updateOverallScore();
+        });
+
+        const answeredQuestions = {};
+        const totalQuestions = 5; 
+
+        const currentScoreValue = document.getElementById('current-score-value');
+        const totalQuestionsValue = document.getElementById('total-questions-value');
+
+        function updateOverallScore() {
+            let correctCount = 0;
+            const allQuestionIds = ['q1', 'q2', 'q3', 'q4', 'q5'];
+            allQuestionIds.forEach(id => {
+                if (answeredQuestions[id] === true) {
+                    correctCount++;
+                }
+            });
+
+            currentScoreValue.textContent = correctCount;
+            totalQuestionsValue.textContent = totalQuestions;
+        }
+
+        function checkAnswer(questionId, explanation, errorDivId) {
+            const questionBlock = document.getElementById(questionId);
+            const selectedOption = questionBlock.querySelector(`input[name="${questionId}"]:checked`);
+            const feedbackDiv = questionBlock.querySelector('.feedback');
+            const optionsLabels = questionBlock.querySelectorAll('.options label');
+            const correctAnswer = questionBlock.dataset.correctAnswer;
+            const errorDiv = document.getElementById(errorDivId);
+
+            document.querySelectorAll('.validation-error').forEach(div => {
+                div.style.display = 'none';
+            });
+
+            optionsLabels.forEach(label => {
+                label.classList.remove('highlight-correct', 'highlight-incorrect-selected');
+            });
+            feedbackDiv.style.display = 'none';
+            feedbackDiv.classList.remove('correct', 'incorrect');
+            feedbackDiv.innerHTML = '';
+
+            if (!selectedOption) {
+                errorDiv.style.display = 'block';
+                setTimeout(() => {
+                    errorDiv.style.display = 'none';
+                }, 3000);
+                return;
+            }
+
+            const userAnswer = selectedOption.value;
+            let feedbackMessage = "";
+
+            optionsLabels.forEach(label => {
+                if (label.querySelector('input').value === correctAnswer) {
+                    label.classList.add('highlight-correct');
+                }
+            });
+
+            if (userAnswer === correctAnswer) {
+                feedbackMessage = "<b>Chính xác!</b> Đây là đáp án đúng.";
+                feedbackDiv.classList.add('correct');
+                answeredQuestions[questionId] = true;
+            } else {
+                feedbackMessage = `<b>Không chính xác.</b> Đáp án đúng là <span class="feedback-correct-answer-text">"${correctAnswer}"</span>.`;
+                feedbackDiv.classList.add('incorrect');
+                selectedOption.closest('label').classList.add('highlight-incorrect-selected');
+                answeredQuestions[questionId] = false;
+            }
+            feedbackDiv.innerHTML = feedbackMessage + `<div class="feedback-explanation">Giải thích: ${explanation}</div>`;
+            feedbackDiv.style.display = 'block';
+
+            // Cập nhật các placeholder với đáp án ĐÚNG sau khi kiểm tra
+            const [p1_correct, p2_correct] = correctAnswer.split(' | '); // Tách đáp án đúng ra
+            questionBlock.querySelector(`#${questionId}_p1_placeholder`).textContent = p1_correct;
+            questionBlock.querySelector(`#${questionId}_p2_placeholder`).textContent = p2_correct;
+
+            updateOverallScore();
+        }
+    </script>
+</body>
+</html>

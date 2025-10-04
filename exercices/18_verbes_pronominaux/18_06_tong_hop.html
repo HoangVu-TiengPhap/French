@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2025 by anonymous (http://jsbin.com/mifijiseje/2/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+<head>
+<title>Bài tập số 6: Chia động từ (có cả phản thân)</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f4f8;
+    color: #333;
+  }
+  header {
+    background-color: #e0e7ed;
+    color: #2c3e50;
+    padding: 15px 20px;
+    border-bottom: 2px solid #c0d0e0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  header h2, header p {
+    margin: 0;
+    font-size: 1.1em;
+    color: #333;
+  }
+  h1 {
+    color: #2c3e50;
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 20px;
+  }
+  .container {
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  .original-instruction {
+    background-color: #eaf3f8;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    font-style: italic;
+    line-height: 1.6;
+    color: #4a6a8b;
+  }
+  .question-block {
+    margin-bottom: 25px;
+    padding: 20px;
+    border: 1px solid #d0dbe4;
+    border-radius: 8px;
+    background-color: #fdfefe;
+  }
+  .question {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 1.1em;
+    color: #34495e;
+  }
+  .translation {
+    font-style: italic;
+    color: #666;
+    margin-bottom: 15px;
+    font-size: 0.95em;
+  }
+  .options label {
+    display: block;
+    margin-bottom: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: color 0.3s ease;
+    padding: 5px 0;
+  }
+  .options label:hover {
+    color: #5a7d9a;
+  }
+  .options input[type="radio"] {
+    margin-right: 10px;
+    transform: scale(1.1);
+  }
+  .options label.correct-highlight {
+    background-color: #d4edda;
+    border: 2px solid #28a745;
+    border-radius: 5px;
+    padding: 5px;
+    color: #1a7e37;
+  }
+  .feedback {
+    margin-top: 15px;
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 5px;
+    width: calc(100% - 24px);
+    box-sizing: border-box;
+    display: none;
+  }
+  .feedback.active {
+      display: block;
+  }
+  .correct {
+    background-color: #e6ffe6;
+    color: #1a7e37;
+    border: 1px solid #28a745;
+  }
+  .incorrect {
+    background-color: #ffe6e6;
+    color: #dc3545;
+    border: 1px solid #dc3545;
+  }
+  .warning {
+      background-color: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffeeba;
+  }
+  .explanation {
+    font-size: 0.9em;
+    font-weight: normal;
+    color: #555;
+    margin-top: 8px;
+    font-style: italic;
+  }
+  .correct-answer-display {
+    color: dodgerblue; /* Xanh dương tươi */
+    font-weight: bold;
+    margin-top: 5px;
+    display: block;
+  }
+  .validate-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-top: 15px;
+    transition: background-color 0.3s ease;
+  }
+  .validate-btn:hover {
+    background-color: #45a049;
+  }
+  .validate-btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+  #score-area {
+    text-align: center;
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #e6f7ff;
+    border: 1px solid #b3e0ff;
+    border-radius: 8px;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #0056b3;
+    display: none;
+  }
+  .complete-test-btn {
+    display: block;
+    width: fit-content;
+    margin: 30px auto;
+    background-color: #007bff;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease;
+  }
+  .complete-test-btn:hover {
+    background-color: #0056b3;
+  }
+  @media (max-width: 600px) {
+    .container {
+      margin: 15px;
+      padding: 15px;
+    }
+    header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    header h2, header p {
+      font-size: 1em;
+      margin-bottom: 5px;
+    }
+    .question, .translation, .options label, .feedback, .validate-btn, .complete-test-btn {
+      font-size: 0.9em;
+    }
+    .feedback {
+      padding: 6px 10px;
+      width: calc(100% - 20px);
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h2>Enseignant: Nguyễn Hoàng Vũ</h2>
+  <p>Ngày: 07/07/2025</p>
+</header>
+
+<div class="container">
+  <h1>Chia động từ trong ngoặc theo thì được chỉ định:</h1>
+
+  <div class="original-instruction">
+    Mỗi câu sẽ bắt đầu với thì cần chia động từ, sau đó là câu có động từ trong ngoặc.
+  </div>
+
+  <div class="question-block" id="q1-block">
+    <div class="question">1. Imparfait: Les personnes âgées n' (entendre) pas toujours bien.</div>
+    <div class="translation">Imparfait: Người lớn tuổi không (đã) luôn nghe rõ.</div>
+    <div class="options" id="options-q1"></div>
+    <button class="validate-btn" onclick="checkAnswer('q1')">Valider</button>
+    <div class="feedback" id="feedback1"></div>
+  </div>
+
+  <div class="question-block" id="q2-block">
+    <div class="question">2. Présent: Elle (s'entendre avec) bien avec sa belle-mère.</div>
+    <div class="translation">Hiện tại: Cô ấy (hòa thuận) với mẹ chồng/vợ.</div>
+    <div class="options" id="options-q2"></div>
+    <button class="validate-btn" onclick="checkAnswer('q2')">Valider</button>
+    <div class="feedback" id="feedback2"></div>
+  </div>
+
+  <div class="question-block" id="q3-block">
+    <div class="question">3. Passé composé: Je (décider de) de mener une vie plus régulière.</div>
+    <div class="translation">Quá khứ phức: Tôi (đã quyết định) sống một cuộc sống đều đặn hơn.</div>
+    <div class="options" id="options-q3"></div>
+    <button class="validate-btn" onclick="checkAnswer('q3')">Valider</button>
+    <div class="feedback" id="feedback3"></div>
+  </div>
+
+  <div class="question-block" id="q4-block">
+    <div class="question">4. Passé composé: À deux heures du matin, il (se décider à) partir.</div>
+    <div class="translation">Quá khứ phức: Lúc hai giờ sáng, anh ấy (đã tự quyết định) rời đi.</div>
+    <div class="options" id="options-q4"></div>
+    <button class="validate-btn" onclick="checkAnswer('q4')">Valider</button>
+    <div class="feedback" id="feedback4"></div>
+  </div>
+
+  <div class="question-block" id="q5-block">
+    <div class="question">5. Présent: De ma fenêtre, je (apercevoir) les arbres de la forêt.</div>
+    <div class="translation">Hiện tại: Từ cửa sổ, tôi (nhận thấy) những cái cây trong rừng.</div>
+    <div class="options" id="options-q5"></div>
+    <button class="validate-btn" onclick="checkAnswer('q5')">Valider</button>
+    <div class="feedback" id="feedback5"></div>
+  </div>
+
+  <div class="question-block" id="q6-block">
+    <div class="question">6. Passé composé: Il (ne pas s'apercevoir de) son erreur.</div>
+    <div class="translation">Quá khứ phức: Anh ấy không (nhận ra) lỗi lầm của mình.</div>
+    <div class="options" id="options-q6"></div>
+    <button class="validate-btn" onclick="checkAnswer('q6')">Valider</button>
+    <div class="feedback" id="feedback6"></div>
+  </div>
+
+  <div class="question-block" id="q7-block">
+    <div class="question">7. Présent: À quoi (servir à) un aspirateur ?</div>
+    <div class="translation">Hiện tại: Một cái máy hút bụi (dùng để) làm gì?</div>
+    <div class="options" id="options-q7"></div>
+    <button class="validate-btn" onclick="checkAnswer('q7')">Valider</button>
+    <div class="feedback" id="feedback7"></div>
+  </div>
+
+  <div class="question-block" id="q8-block">
+    <div class="question">8. Présent: Pour déboucher une bouteille, on (se servir de) d'un tire-bouchon.</div>
+    <div class="translation">Hiện tại: Để mở một chai, người ta (sử dụng) một cái mở nút chai.</div>
+    <div class="options" id="options-q8"></div>
+    <button class="validate-btn" onclick="checkAnswer('q8')">Valider</button>
+    <div class="feedback" id="feedback8"></div>
+  </div>
+
+  <div class="question-block" id="q9-block">
+    <div class="question">9. Imparfait: J' (attendre) Louis depuis une heure. Enfin, il est arrivé.</div>
+    <div class="translation">Imparfait: Tôi (đã đợi) Louis một tiếng đồng hồ. Cuối cùng, anh ấy đã đến.</div>
+    <div class="options" id="options-q9"></div>
+    <button class="validate-btn" onclick="checkAnswer('q9')">Valider</button>
+    <div class="feedback" id="feedback9"></div>
+  </div>
+
+  <div class="question-block" id="q10-block">
+    <div class="question">10. Imparfait: Nous (ne pas s'attendre à) ce résultat.</div>
+    <div class="translation">Imparfait: Chúng tôi không (mong đợi) kết quả này.</div>
+    <div class="options" id="options-q10"></div>
+    <button class="validate-btn" onclick="checkAnswer('q10')">Valider</button>
+    <div class="feedback" id="feedback10"></div>
+  </div>
+
+  <div class="question-block" id="q11-block">
+    <div class="question">11. Passé composé: Est-ce que tu (rendre) ton disque à ton copain ?</div>
+    <div class="translation">Quá khứ phức: Bạn (đã trả lại) đĩa của bạn cho bạn trai chưa?</div>
+    <div class="options" id="options-q11"></div>
+    <button class="validate-btn" onclick="checkAnswer('q11')">Valider</button>
+    <div class="feedback" id="feedback11"></div>
+  </div>
+
+  <div class="question-block" id="q12-block">
+    <div class="question">12. Futur: L'année prochaine, nous (se rendre à) au Festival de Cannes.</div>
+    <div class="translation">Tương lai: Năm tới, chúng tôi (sẽ đi đến) Liên hoan phim Cannes.</div>
+    <div class="options" id="options-q12"></div>
+    <button class="validate-btn" onclick="checkAnswer('q12')">Valider</button>
+    <div class="feedback" id="feedback12"></div>
+  </div>
+
+  <div class="question-block" id="q13-block">
+    <div class="question">13. Passé composé: Est-ce que tu (trouver) ce mot dans le dictionnaire ?</div>
+    <div class="translation">Quá khứ phức: Bạn (đã tìm thấy) từ này trong từ điển chứ?</div>
+    <div class="options" id="options-q13"></div>
+    <button class="validate-btn" onclick="checkAnswer('q13')">Valider</button>
+    <div class="feedback" id="feedback13"></div>
+  </div>
+
+  <div class="question-block" id="q14-block">
+    <div class="question">14. Présent: Notre maison de campagne (se trouver) près de Bordeaux.</div>
+    <div class="translation">Hiện tại: Ngôi nhà nông thôn của chúng tôi (nằm) gần Bordeaux.</div>
+    <div class="options" id="options-q14"></div>
+    <button class="validate-btn" onclick="checkAnswer('q14')">Valider</button>
+    <div class="feedback" id="feedback14"></div>
+  </div>
+
+  <div class="question-block" id="q15-block">
+    <div class="question">15. Impératif: (mettre) ... tes bottes ! Il pleut.</div>
+    <div class="translation">Mệnh lệnh: (đeo) ... ủng của bạn! Trời mưa.</div>
+    <div class="options" id="options-q15"></div>
+    <button class="validate-btn" onclick="checkAnswer('q15')">Valider</button>
+    <div class="feedback" id="feedback15"></div>
+  </div>
+
+  <div class="question-block" id="q16-block">
+    <div class="question">16. Passé composé: J'ai dit une bêtise. Ils (se mettre à) rire.</div>
+    <div class="translation">Quá khứ phức: Tôi đã nói một điều ngu ngốc. Họ (bắt đầu) cười.</div>
+    <div class="options" id="options-q16"></div>
+    <button class="validate-btn" onclick="checkAnswer('q16')">Valider</button>
+    <div class="feedback" id="feedback16"></div>
+  </div>
+
+  <div class="question-block" id="q17-block">
+    <div class="question">17. Présent: La Martinique (produire) des bananes et des ananas.</div>
+    <div class="translation">Hiện tại: Martinique (sản xuất) chuối và dứa.</div>
+    <div class="options" id="options-q17"></div>
+    <button class="validate-btn" onclick="checkAnswer('q17')">Valider</button>
+    <div class="feedback" id="feedback17"></div>
+  </div>
+
+  <div class="question-block" id="q18-block">
+    <div class="question">18. Passé composé: Quel événement important (se produire) en 1789 en France?</div>
+    <div class="translation">Quá khứ phức: Sự kiện quan trọng nào (đã xảy ra) vào năm 1789 ở Pháp?</div>
+    <div class="options" id="options-q18"></div>
+    <button class="validate-btn" onclick="checkAnswer('q18')">Valider</button>
+    <div class="feedback" id="feedback18"></div>
+  </div>
+
+  <div class="question-block" id="q19-block">
+    <div class="question">19. Passé composé: Est-ce que vous (passer) une bonne journée ?</div>
+    <div class="translation">Quá khứ phức: Bạn (số nhiều/lịch sự) (đã trải qua) một ngày tốt lành chứ?</div>
+    <div class="options" id="options-q19"></div>
+    <button class="validate-btn" onclick="checkAnswer('q19')">Valider</button>
+    <div class="feedback" id="feedback19"></div>
+  </div>
+
+  <div class="question-block" id="q20-block">
+    <div class="question">20. Passé composé: Que (se passer) hier ?</div>
+    <div class="translation">Quá khứ phức: Điều gì (đã xảy ra) hôm qua?</div>
+    <div class="options" id="options-q20"></div>
+    <button class="validate-btn" onclick="checkAnswer('q20')">Valider</button>
+    <div class="feedback" id="feedback20"></div>
+  </div>
+
+  <div class="question-block" id="q21-block">
+    <div class="question">21. Passé composé: Ils (arrêter) leurs études.</div>
+    <div class="translation">Quá khứ phức: Họ (đã dừng) việc học của họ.</div>
+    <div class="options" id="options-q21"></div>
+    <button class="validate-btn" onclick="checkAnswer('q21')">Valider</button>
+    <div class="feedback" id="feedback21"></div>
+  </div>
+
+  <div class="question-block" id="q22-block">
+    <div class="question">22. Passé composé: Est-ce que tu (s'arrêter de) de fumer?</div>
+    <div class="translation">Quá khứ phức: Bạn (đã dừng) hút thuốc chưa?</div>
+    <div class="options" id="options-q22"></div>
+    <button class="validate-btn" onclick="checkAnswer('q22')">Valider</button>
+    <div class="feedback" id="feedback22"></div>
+  </div>
+
+
+  <button class="complete-test-btn" onclick="showScore()">Hoàn thành bài kiểm tra</button>
+
+  <div id="score-area">
+    <p>Bạn đã trả lời đúng <span id="correct-count">0</span> trên tổng số <span id="total-questions">0</span> câu.</p>
+  </div>
+
+</div>
+
+<script>
+  // Định nghĩa dữ liệu cho mỗi câu hỏi
+  const questionsData = {
+    // Từ image_c7807b.png (Câu 1 đến 4)
+    q1: {
+      original: "1. Imparfait: Les personnes âgées n' (entendre) pas toujours bien.",
+      translation: "Imparfait: Người lớn tuổi không (đã) luôn nghe rõ.",
+      correct: "entendaient",
+      wrong: ["entendent", "entendait"],
+      explanation: "Động từ 'entendre' chia ở Imparfait. Gốc 'entend-' (từ 'nous entendons'). Đuôi '-aient' cho 'Les personnes âgées'."
+    },
+    q2: {
+      original: "2. Présent: Elle (s'entendre avec) bien avec sa belle-mère.",
+      translation: "Hiện tại: Cô ấy (hòa thuận) với mẹ chồng/vợ.",
+      correct: "s'entend",
+      wrong: ["s'entendent", "s'entends"],
+      explanation: "Động từ phản thân 's'entendre avec' chia ở Présent, ngôi 'Elle'. 'se' rút gọn thành 's'' trước nguyên âm."
+    },
+    q3: {
+      original: "3. Passé composé: Je (décider de) de mener une vie plus régulière.",
+      translation: "Quá khứ phức: Tôi (đã quyết định) sống một cuộc sống đều đặn hơn.",
+      correct: "ai décidé",
+      wrong: ["décidais", "décidai"],
+      explanation: "Động từ 'décider de' chia ở Passé Composé với trợ động từ 'avoir'."
+    },
+    q4: {
+      original: "4. Passé composé: À deux heures du matin, il (se décider à) partir.",
+      translation: "Quá khứ phức: Lúc hai giờ sáng, anh ấy (đã tự quyết định) rời đi.",
+      correct: "s'est décidé",
+      wrong: ["se décidait", "s'est décidée"], // Giả định là nam
+      explanation: "Động từ phản thân 'se décider à' chia ở Passé Composé với trợ động từ 'être'. Phân từ quá khứ hợp giống/số với chủ ngữ (nếu chủ ngữ là nữ sẽ là 's'est décidée')."
+    },
+    // Từ image_c77d94.png (Câu 2-10 trong hình đó)
+    q5: {
+      original: "2. (apercevoir): Présent - De ma fenêtre, je ... les arbres de la forêt.",
+      translation: "Hiện tại: Từ cửa sổ, tôi (nhận thấy) những cái cây trong rừng.",
+      correct: "aperçois",
+      wrong: ["apercevons", "apercevez"],
+      explanation: "Động từ 'apercevoir' chia ở Présent, ngôi 'Je'."
+    },
+    q6: {
+      original: "(s'apercevoir de): Passé composé - Il ne ... pas ... de son erreur.",
+      translation: "Quá khứ phức: Anh ấy không (nhận ra) lỗi lầm của mình.",
+      correct: "ne s'est pas aperçu de", // Giả định nam
+      wrong: ["ne s'apercevait pas de", "ne s'est pas aperçues de"],
+      explanation: "Động từ phản thân 's'apercevoir de' chia ở Passé Composé với trợ động từ 'être'. 'ne...pas' bao quanh trợ động từ và đại từ phản thân."
+    },
+    q7: {
+      original: "3. (servir à): Présent - À quoi ... un aspirateur ?",
+      translation: "Hiện tại: Một cái máy hút bụi (dùng để) làm gì?",
+      correct: "sert",
+      wrong: ["servent", "sers"],
+      explanation: "Động từ 'servir à' chia ở Présent, ngôi 'il/elle' (un aspirateur)."
+    },
+    q8: {
+      original: "(se servir de): Présent - Pour déboucher une bouteille, on ... d'un tire-bouchon.",
+      translation: "Hiện tại: Để mở một chai, người ta (sử dụng) một cái mở nút chai.",
+      correct: "se sert",
+      wrong: ["se servent", "se sers"],
+      explanation: "Động từ phản thân 'se servir de' chia ở Présent, ngôi 'on'."
+    },
+    q9: {
+      original: "4. (attendre): Imparfait - Je ... Louis depuis une heure. Enfin, il est arrivé.",
+      translation: "Imparfait: Tôi (đã đợi) Louis một tiếng đồng hồ. Cuối cùng, anh ấy đã đến.",
+      correct: "attendais",
+      wrong: ["attendait", "attendaient"],
+      explanation: "Động từ 'attendre' chia ở Imparfait, ngôi 'je'. Diễn tả hành động đang diễn ra khi hành động khác xen vào."
+    },
+    q10: {
+      original: "(s'attendre à): Imparfait - Nous ne ... pas à ce résultat.",
+      translation: "Imparfait: Chúng tôi không (mong đợi) kết quả này.",
+      correct: "ne nous attendions pas à",
+      wrong: ["ne nous attendais pas à", "ne nous attendaient pas à"],
+      explanation: "Động từ phản thân 's'attendre à' chia ở Imparfait, ngôi 'nous'. Phủ định 'ne...pas' bao quanh động từ."
+    },
+    q11: {
+      original: "5. (rendre): Passé composé - Est-ce que tu ... ton disque à ton copain ?",
+      translation: "Quá khứ phức: Bạn (đã trả lại) đĩa của bạn cho bạn trai chưa?",
+      correct: "as rendu",
+      wrong: ["as rendis", "as rendi"],
+      explanation: "Động từ 'rendre' chia ở Passé Composé với trợ động từ 'avoir'."
+    },
+    q12: {
+      original: "(se rendre à): Futur - L'année prochaine, nous ... au Festival de Cannes.",
+      translation: "Tương lai: Năm tới, chúng tôi (sẽ đi đến) Liên hoan phim Cannes.",
+      correct: "nous rendrons",
+      wrong: ["nous irons", "nous rendons"],
+      explanation: "Động từ phản thân 'se rendre à' chia ở Futur Simple, ngôi 'nous'. Gốc 'rendr-'. Đại từ phản thân 'nous' đứng trước động từ chia."
+    },
+    q13: {
+      original: "6. (trouver): Passé composé - Est-ce que tu ... ce mot dans le dictionnaire ?",
+      translation: "Quá khứ phức: Bạn (đã tìm thấy) từ này trong từ điển chứ?",
+      correct: "as trouvé",
+      wrong: ["as trouvez", "as trouvis"],
+      explanation: "Động từ 'trouver' chia ở Passé Composé với trợ động từ 'avoir'."
+    },
+    q14: {
+      original: "7. (se trouver): Présent - Notre maison de campagne ... près de Bordeaux.",
+      translation: "Hiện tại: Ngôi nhà nông thôn của chúng tôi (nằm) gần Bordeaux.",
+      correct: "se trouve",
+      wrong: ["se trouvent", "se trouvons"],
+      explanation: "Động từ phản thân 'se trouver' chia ở Présent, ngôi 'elle' (Notre maison de campagne)."
+    },
+    q15: {
+      original: "7. (mettre): Impératif - ... tes bottes ! Il pleut.",
+      translation: "Mệnh lệnh: (đeo) ... ủng của bạn! Trời mưa.",
+      correct: "Mets",
+      wrong: ["Mettez", "Met"],
+      explanation: "Động từ 'mettre' chia ở Impératif, ngôi 'tu' là 'Mets'."
+    },
+    q16: {
+      original: "8. (se mettre à): Passé composé - J'ai dit une bêtise. Ils ... à rire.",
+      translation: "Quá khứ phức: Tôi đã nói một điều ngu ngốc. Họ (bắt đầu) cười.",
+      correct: "se sont mis",
+      wrong: ["se sont mettus", "se sont mettés"],
+      explanation: "Động từ phản thân 'se mettre à' chia ở Passé Composé với trợ động từ 'être'. Phân từ quá khứ 'mis' không hợp giống/số vì COI. 'Ils' là chủ ngữ số nhiều."
+    },
+    q17: {
+      original: "8. (produire): Présent - La Martinique ... des bananes et des ananas.",
+      translation: "Hiện tại: Martinique (sản xuất) chuối và dứa.",
+      correct: "produit",
+      wrong: ["produisent", "produis"],
+      explanation: "Động từ 'produire' chia ở Présent, ngôi 'Il/Elle' (La Martinique)."
+    },
+    q18: {
+      original: "9. (se produire): Passé composé - Quel événement important ... en 1789 en France?",
+      translation: "Quá khứ phức: Sự kiện quan trọng nào (đã xảy ra) vào năm 1789 ở Pháp?",
+      correct: "s'est produit",
+      wrong: ["s'est produite", "s'est produits"],
+      explanation: "Động từ phản thân 'se produire' chia ở Passé Composé với trợ động từ 'être'. Phân từ quá khứ hợp giống/số với chủ ngữ (événement là giống đực số ít)."
+    },
+    q19: {
+      original: "9. (passer): Passé composé - Est-ce que vous ... une bonne journée ?",
+      translation: "Quá khứ phức: Bạn (số nhiều/lịch sự) (đã trải qua) một ngày tốt lành chứ?",
+      correct: "avez passé",
+      wrong: ["êtes passé(e)s", "passiez"],
+      explanation: "Động từ 'passer' (trải qua) dùng trợ động từ 'avoir' ở Passé Composé."
+    },
+    q20: {
+      original: "10. (se passer): Passé composé - Que ...-il hier ?",
+      translation: "Quá khứ phức: Điều gì (đã xảy ra) hôm qua?",
+      correct: "s'est-il passé",
+      wrong: ["s'est-il passée", "s'est-il passés"],
+      explanation: "Động từ phản thân 'se passer' (xảy ra) chia ở Passé Composé với 'être'. Phân từ quá khứ 'passé' không hợp giống/số khi là động từ phản thân trực tiếp."
+    },
+    q21: {
+      original: "10. (arrêter): Passé composé - Ils ... leurs études.",
+      translation: "10. (dừng) - Quá khứ phức: Họ ... việc học của họ.",
+      correct: "ont arrêté",
+      wrong: ["sont arrêtés", "arrêtaient"],
+      explanation: "Động từ 'arrêter' (dừng) dùng trợ động từ 'avoir' ở Passé Composé."
+    },
+    q22: {
+      original: "(s'arrêter de): Passé composé - Est-ce que tu ... de fumer?",
+      translation: "Quá khứ phức: Bạn (đã dừng) hút thuốc chưa?",
+      correct: "t'es arrêté(e)", // Giả định tu có thể là nam hoặc nữ
+      wrong: ["t'as arrêté", "t'arrêtais"],
+      explanation: "Động từ phản thân 's'arrêter de' (dừng làm gì) chia ở Passé Composé với 'être'. Phân từ quá khứ hợp giống/số với 'tu'."
+    }
+  };
+
+  let correctAnswersCount = 0;
+  const totalQuestions = Object.keys(questionsData).length;
+  const answeredQuestions = new Set(); 
+
+  // Hàm xáo trộn mảng Fisher-Yates
+  function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+      }
+  }
+
+  // Hàm tạo và hiển thị các lựa chọn cho mỗi câu hỏi
+  function generateOptions() {
+    for (const qKey in questionsData) {
+      const qData = questionsData[qKey];
+      const optionsDiv = document.getElementById(`options-${qKey}`);
+      optionsDiv.innerHTML = ''; 
+
+      const allOptions = [{text: qData.correct, isCorrect: true}];
+      qData.wrong.slice(0, 2).forEach(w => allOptions.push({text: w, isCorrect: false})); 
+
+      shuffleArray(allOptions); 
+
+      allOptions.forEach((option, index) => {
+        const optionId = `${qKey}-${String.fromCharCode(97 + index)}`; 
+        const label = document.createElement('label');
+        label.setAttribute('for', optionId);
+        
+        const input = document.createElement('input');
+        input.type = 'radio';
+        input.name = qKey;
+        input.value = optionId;
+        input.id = optionId;
+        
+        label.appendChild(input);
+        label.appendChild(document.createTextNode(option.text));
+        
+        if (option.isCorrect) {
+          label.dataset.isCorrect = "true";
+          questionsData[qKey].correctOptionId = optionId; 
+        }
+
+        optionsDiv.appendChild(label);
+      });
+    }
+  }
+
+  // Call generateOptions when the page loads
+  document.addEventListener('DOMContentLoaded', generateOptions);
+
+
+  function checkAnswer(questionName) {
+    if (answeredQuestions.has(questionName)) {
+        return; 
+    }
+
+    const selectedOptionInput = document.querySelector(`input[name="${questionName}"]:checked`);
+    const feedbackDiv = document.getElementById(`feedback${questionName.substring(1)}`); 
+    const validateButton = event.target; 
+    
+    feedbackDiv.classList.remove('active', 'correct', 'incorrect', 'warning');
+    feedbackDiv.innerHTML = '';
+
+
+    if (!selectedOptionInput) {
+        feedbackDiv.textContent = 'Vui lòng chọn một đáp án trước khi kiểm tra.';
+        feedbackDiv.classList.add('active', 'warning');
+        return;
+    }
+
+    const qData = questionsData[questionName]; 
+
+    const correctAnswerLabel = document.querySelector(`label[for="${qData.correctOptionId}"]`);
+    if (correctAnswerLabel) {
+      correctAnswerLabel.classList.add('correct-highlight');
+    }
+
+    answeredQuestions.add(questionName);
+    
+    const selectedOptionLabel = selectedOptionInput.parentElement;
+    
+    if (selectedOptionLabel.dataset.isCorrect === "true") {
+      feedbackDiv.innerHTML = '<strong>Chính xác!</strong><br><span class="explanation">' + qData.explanation + '</span>';
+      feedbackDiv.classList.add('active', 'correct');
+      correctAnswersCount++;
+    } else {
+      const correctAnswerText = correctAnswerLabel ? correctAnswerLabel.textContent.trim() : '';
+      feedbackDiv.innerHTML = '<strong>Không chính xác.</strong><br><span class="correct-answer-display">Đáp án đúng là: ' + correctAnswerText + '</span><br><span class="explanation">' + qData.explanation + '</span>';
+      feedbackDiv.classList.add('active', 'incorrect');
+    }
+    
+    const radioButtons = document.querySelectorAll(`input[name="${questionName}"]`);
+    radioButtons.forEach(radio => radio.disabled = true);
+    validateButton.disabled = true;
+  }
+
+  function showScore() {
+    document.getElementById('correct-count').textContent = correctAnswersCount;
+    document.getElementById('total-questions').textContent = totalQuestions;
+    document.getElementById('score-area').style.display = 'block';
+  }
+</script>
+
+</body>
+</html>

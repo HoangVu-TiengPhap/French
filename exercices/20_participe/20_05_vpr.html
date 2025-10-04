@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2025 by anonymous (http://jsbin.com/faqawowapa/12/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accord du Participe Passé - Verbes Pronominaux</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .header, .question-block, .options label {
+            font-family: Arial, sans-serif;
+        }
+
+        .page-content-wrapper {
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .header h1 {
+            text-align: center;
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+
+        #score-container {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color: #fff;
+            color: #007bff;
+            padding: 12px 20px;
+            border: 1px solid #cce5ff;
+            border-radius: 8px;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            font-size: 1.3em;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+            box-sizing: border-box;
+        }
+        #score-container strong {
+            color: #0056b3;
+        }
+
+        #quiz-container {
+        }
+        .question-block {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .question-text {
+            font-size: 1.1em;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .question-translation {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+        .rephrased-sentence-container {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border: 1px solid #e2e3e5;
+            border-radius: 5px;
+            font-size: 0.95em;
+        }
+        .rephrased-sentence-container p {
+            margin: 5px 0;
+        }
+        .placeholder {
+            color: #dc3545;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+        .options {
+            max-width: 500px;
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+        .options label {
+            display: block;
+            margin-bottom: 10px;
+            cursor: pointer;
+            padding: 8px;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+            font-family: Arial, sans-serif;
+        }
+        .options label:hover {
+                background-color: #e9e9e9;
+        }
+        .feedback {
+            margin-top: 15px;
+            font-weight: bold;
+            display: none;
+            font-family: 'Roboto', sans-serif;
+        }
+        .feedback-explanation {
+            font-weight: normal;
+            font-size: 0.9em;
+            margin-top: 5px;
+            color: #0056b3;
+        }
+        .feedback-correct-answer-text {
+            color: #0056b3;
+        }
+        .correct {
+            color: green;
+        }
+        .incorrect {
+            color: red;
+        }
+        .highlight-correct {
+            background-color: #d4edda !important;
+            border-color: #28a745 !important;
+        }
+        .highlight-incorrect-selected {
+            background-color: #f8d7da !important;
+            border-color: #dc3545 !important;
+        }
+        .validate-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 15px;
+            transition: background-color 0.3s ease;
+        }
+        .validate-btn:hover {
+            background-color: #0056b3;
+        }
+        .validation-error {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 15px;
+            font-weight: normal;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-content-wrapper">
+        <div class="header">
+            <div class="header-top">
+                <p><strong>Enseignant:</strong> Nguyễn Hoàng Vũ</p>
+                <p><strong>Jour de test:</strong> <span id="currentDate"></span></p>
+            </div>
+            <h1>Accord du Participe Passé - Verbes Pronominaux</h1> </div>
+
+        <div id="score-container">
+            Score: <strong id="current-score-value">0</strong> / <strong id="total-questions-value">5</strong>
+        </div>
+
+        <div id="quiz-container">
+            <div class="question-block" id="q1" data-correct-answer="aimés | quittés">
+                <p class="question-text">1. Yvan et moi, nous nous sommes (aimé) à la folie, mais nous nous sommes (quitté) au bout de deux ans!</p>
+                <p class="question-translation"><em>(Yvan và tôi, chúng tôi đã yêu nhau điên cuồng, nhưng chúng tôi đã chia tay sau hai năm!)</em></p>
+                <div class="rephrased-sentence-container">
+                    <p>Yvan et moi, nous nous sommes <span class="placeholder" id="q1_p1_placeholder">__________</span> à la folie, mais nous nous sommes <span class="placeholder" id="q1_p2_placeholder">__________</span> au bout de deux ans!</p>
+                </div>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q1', 'Cả hai động từ phản thân &quot;s\'aimer&quot; và &quot;se quitter&quot; đều có &quot;nous&quot; là COD. Vì &quot;nous&quot; (Yvan et moi) là giống đực số nhiều, participe passé hòa hợp bằng cách thêm &quot;-s&quot; cho cả hai động từ.', 'error-q1')">Valider</button>
+                <div class="feedback" id="feedback-q1"></div>
+                <div class="validation-error" id="error-q1">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+            <div class="question-block" id="q2" data-correct-answer="couchés | endormis">
+                <p class="question-text">2. Vous vous êtes (couché) tôt hier soir, mais est-ce que vous vous êtes (endormi) tout de suite?</p>
+                <p class="question-translation"><em>(Bạn (số nhiều) đã đi ngủ sớm tối qua, nhưng bạn đã ngủ thiếp đi ngay lập tức chưa?)</em></p>
+                <div class="rephrased-sentence-container">
+                    <p>Vous vous êtes <span class="placeholder" id="q2_p1_placeholder">__________</span> tôt hier soir, mais est-ce que vous vous êtes <span class="placeholder" id="q2_p2_placeholder">__________</span> tout de suite?</p>
+                </div>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q2', 'Cả hai động từ phản thân &quot;se coucher&quot; và &quot;s\'endormir&quot; đều có &quot;vous&quot; là COD. Giả định &quot;vous&quot; là giống đực số nhiều, participe passé hòa hợp bằng cách thêm &quot;-s&quot; cho cả hai động từ.', 'error-q2')">Valider</button>
+                <div class="feedback" id="feedback-q2"></div>
+                <div class="validation-error" id="error-q2">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+            <div class="question-block" id="q3" data-correct-answer="croisées | reconnues">
+                <p class="question-text">3. Elles se sont (croisé) dans la rue, mais elles ne se sont pas (reconnu).</p>
+                <p class="question-translation"><em>(Họ (nữ) đã gặp nhau trên phố, nhưng họ đã không nhận ra nhau.)</em></p>
+                <div class="rephrased-sentence-container">
+                    <p>Elles se sont <span class="placeholder" id="q3_p1_placeholder">__________</span> dans la rue, mais elles ne se sont pas <span class="placeholder" id="q3_p2_placeholder">__________</span>.</p>
+                </div>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q3', 'Cả hai động từ phản thân &quot;se croiser&quot; và &quot;se reconnaître&quot; đều có &quot;se&quot; là COD. Vì chủ ngữ &quot;Elles&quot; là giống cái số nhiều, participe passé hòa hợp bằng cách thêm &quot;-es&quot; cho cả hai động từ.', 'error-q3')">Valider</button>
+                <div class="feedback" id="feedback-q3"></div>
+                <div class="validation-error" id="error-q3">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+            <div class="question-block" id="q4" data-correct-answer="maquillé | rasé">
+                <p class="question-text">4. Ce matin, je ne me suis pas (maquillé) et mon mari ne s'est pas (rasé).</p>
+                <p class="question-translation"><em>(Sáng nay, tôi đã không trang điểm và chồng tôi đã không cạo râu.)</em></p>
+            <div class="rephrased-sentence-container">
+                <p>Ce matin, je ne me suis pas <span class="placeholder" id="q4_p1_placeholder">__________</span> et mon mari ne s'est pas <span class="placeholder" id="q4_p2_placeholder">__________</span>.</p>
+            </div>
+            <div class="options">
+                </div>
+            <button class="validate-btn" onclick="checkAnswer('q4', 'Động từ phản thân &quot;se maquiller&quot; có &quot;me&quot; là COD. Giả định chủ ngữ &quot;je&quot; là giống đực, số ít, participe passé là &quot;maquillé&quot;. Động từ phản thân &quot;se raser&quot; có &quot;se&quot; là COD. Chủ ngữ &quot;mon mari&quot; là giống đực, số ít, participe passé là &quot;rasé&quot;.', 'error-q4')">Valider</button>
+            <div class="feedback" id="feedback-q4"></div>
+            <div class="validation-error" id="error-q4">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+        </div>
+
+            <div class="question-block" id="q5" data-correct-answer="amusés | perdus">
+                <p class="question-text">5. Est-ce que vous vous êtes (amusé) chez vos amis ? – Non, nous n'avons pas pu arriver chez eux, nous nous sommes (perdu).</p>
+                <p class="question-translation"><em>(Bạn (số nhiều) đã vui vẻ ở nhà bạn bè không? – Không, chúng tôi đã không thể đến nhà họ, chúng tôi đã bị lạc.)</em></p>
+                <div class="rephrased-sentence-container">
+                    <p>Est-ce que vous vous êtes <span class="placeholder" id="q5_p1_placeholder">__________</span> chez vos amis ?</p>
+                    <p>– Non, nous n'avons pas pu arriver chez eux, nous nous sommes <span class="placeholder" id="q5_p2_placeholder">__________</span>.</p>
+                </div>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q5', 'Cả hai động từ phản thân &quot;s\'amuser&quot; và &quot;se perdre&quot; đều có &quot;vous/nous&quot; là COD. Giả định chủ ngữ là giống đực số nhiều, participe passé hòa hợp bằng cách thêm &quot;-s&quot; cho cả hai động từ.', 'error-q5')">Valider</button>
+                <div class="feedback" id="feedback-q5"></div>
+                <div class="validation-error" id="error-q5">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+        </div>
+    </div> <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const date = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('currentDate').textContent = date.toLocaleDateString('fr-FR', options);
+            
+            // Định nghĩa các câu hỏi và đáp án cho việc xáo trộn
+            const questionsData = {
+                q1: {
+                    original_text: 'Yvan et moi, nous nous sommes (aimé) à la folie, mais nous nous sommes (quitté) au bout de deux ans!',
+                    translation_text: 'Yvan và tôi, chúng tôi đã yêu nhau điên cuồng, nhưng chúng tôi đã chia tay sau hai năm!',
+                    rephrased_template: 'Yvan et moi, nous nous sommes <span class="placeholder" id="q1_p1_placeholder">__________</span> à la folie, mais nous nous sommes <span class="placeholder" id="q1_p2_placeholder">__________</span> au bout de deux ans!',
+                    correct: 'aimés | quittés',
+                    p1_text_original: 'aimé',
+                    p2_text_original: 'quitté',
+                    options: [
+                        'aimés | quittés',
+                        'aimé | quitté',
+                        'aimées | quittées',
+                        'aimé | quittés'
+                    ]
+                },
+                q2: {
+                    original_text: 'Vous vous êtes (couché) tôt hier soir, mais est-ce que vous vous êtes (endormi) tout de suite?',
+                    translation_text: 'Bạn (số nhiều) đã đi ngủ sớm tối qua, nhưng bạn đã ngủ thiếp đi ngay lập tức chưa?',
+                    rephrased_template: 'Vous vous êtes <span class="placeholder" id="q2_p1_placeholder">__________</span> tôt hier soir, mais est-ce que vous vous êtes <span class="placeholder" id="q2_p2_placeholder">__________</span> tout de suite?',
+                    correct: 'couchés | endormis',
+                    p1_text_original: 'couché',
+                    p2_text_original: 'endormi',
+                    options: [
+                        'couchés | endormis',
+                        'couché | endormi',
+                        'couchées | endormies',
+                        'couché | endormis'
+                    ]
+                },
+                q3: {
+                    original_text: 'Elles se sont (croisé) dans la rue, mais elles ne se sont pas (reconnu).',
+                    translation_text: 'Họ (nữ) đã gặp nhau trên phố, nhưng họ đã không nhận ra nhau.',
+                    rephrased_template: 'Elles se sont <span class="placeholder" id="q3_p1_placeholder">__________</span> dans la rue, mais elles ne se sont pas <span class="placeholder" id="q3_p2_placeholder">__________</span>.',
+                    correct: 'croisées | reconnues',
+                    p1_text_original: 'croisé',
+                    p2_text_original: 'reconnu',
+                    options: [
+                        'croisées | reconnues',
+                        'croisé | reconnu',
+                        'croisées | reconnu',
+                        'croisé | reconnues'
+                    ]
+                },
+                q4: {
+                    original_text: 'Ce matin, je ne me suis pas (maquillé) et mon mari ne s\'est pas (rasé).',
+                    translation_text: 'Sáng nay, tôi đã không trang điểm và chồng tôi đã không cạo râu.',
+                    rephrased_template: 'Ce matin, je ne me suis pas <span class="placeholder" id="q4_p1_placeholder">__________</span> et mon mari ne s\'est pas <span class="placeholder" id="q4_p2_placeholder">__________</span>.',
+                    correct: 'maquillé | rasé', // Giả định "je" là đực, số ít
+                    p1_text_original: 'maquillé',
+                    p2_text_original: 'rasé',
+                    options: [
+                        'maquillé | rasé',
+                        'maquillée | rasé',
+                        'maquillés | rasés',
+                        'maquillée | rasée'
+                    ]
+                },
+                q5: {
+                    original_text: 'Est-ce que vous vous êtes (amusé) chez vos amis ? – Non, nous n\'avons pas pu arriver chez eux, nous nous sommes (perdu).',
+                    translation_text: 'Bạn (số nhiều) đã vui vẻ ở nhà bạn bè không? – Không, chúng tôi đã không thể đến nhà họ, chúng tôi đã bị lạc.',
+                    rephrased_template: 'Est-ce que vous vous êtes <span class="placeholder" id="q5_p1_placeholder">__________</span> chez vos amis ?<br>– Non, nous n\'avons pas pu arriver chez eux, nous nous sommes <span class="placeholder" id="q5_p2_placeholder">__________</span>.',
+                    correct: 'amusés | perdus',
+                    p1_text_original: 'amusé',
+                    p2_text_original: 'perdu',
+                    options: [
+                        'amusés | perdus',
+                        'amusé | perdu',
+                        'amusées | perdues',
+                        'amusé | perdus'
+                    ]
+                }
+            };
+
+            // Hàm xáo trộn mảng
+            function shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]]; // Hoán đổi vị trí
+                }
+            }
+
+            // Tạo và xáo trộn các lựa chọn đáp án cho mỗi câu hỏi
+            for (const qId in questionsData) {
+                const qData = questionsData[qId];
+                const questionBlock = document.getElementById(qId);
+                const optionsDiv = questionBlock.querySelector('.options');
+                
+                // Hiển thị câu hỏi gốc và bản dịch
+                questionBlock.querySelector('.question-text').innerHTML = qData.original_text;
+                questionBlock.querySelector('.question-translation').innerHTML = `<em>(${qData.translation_text})</em>`;
+
+                // Hiển thị câu đã viết lại với chỗ trống
+                const rephrasedContainer = questionBlock.querySelector('.rephrased-sentence-container');
+                rephrasedContainer.innerHTML = qData.rephrased_template;
+                
+                // Điền động từ gốc vào placeholder ban đầu
+                const p1_placeholder = questionBlock.querySelector(`#${qId}_p1_placeholder`);
+                const p2_placeholder = questionBlock.querySelector(`#${qId}_p2_placeholder`);
+                const p3_placeholder = questionBlock.querySelector(`#${qId}_p3_placeholder`); 
+
+                if (p1_placeholder) p1_placeholder.textContent = '(' + qData.p1_text_original + ')';
+                if (p2_placeholder) p2_placeholder.textContent = '(' + qData.p2_text_original + ')';
+                if (p3_placeholder) p3_placeholder.textContent = '(' + qData.p3_text_original + ')';
+
+
+                let currentOptions = [...qData.options];
+                shuffleArray(currentOptions);
+
+                optionsDiv.innerHTML = '';
+                currentOptions.forEach(optionText => {
+                    const label = document.createElement('label');
+                    const input = document.createElement('input');
+                    input.type = 'radio';
+                    input.name = qId;
+                    input.value = optionText;
+                    label.appendChild(input);
+                    label.innerHTML += ' ' + optionText;
+                    optionsDiv.appendChild(label);
+                });
+            }
+
+            updateOverallScore();
+        });
+
+        const answeredQuestions = {};
+        const totalQuestions = 5; 
+
+        const currentScoreValue = document.getElementById('current-score-value');
+        const totalQuestionsValue = document.getElementById('total-questions-value');
+
+        function updateOverallScore() {
+            let correctCount = 0;
+            const allQuestionIds = ['q1', 'q2', 'q3', 'q4', 'q5'];
+            allQuestionIds.forEach(id => {
+                if (answeredQuestions[id] === true) {
+                    correctCount++;
+                }
+            });
+
+            currentScoreValue.textContent = correctCount;
+            totalQuestionsValue.textContent = totalQuestions;
+        }
+
+        function checkAnswer(questionId, explanation, errorDivId) {
+            const questionBlock = document.getElementById(questionId);
+            const selectedOption = questionBlock.querySelector(`input[name="${questionId}"]:checked`);
+            const feedbackDiv = questionBlock.querySelector('.feedback');
+            const optionsLabels = questionBlock.querySelectorAll('.options label');
+            const correctAnswer = questionBlock.dataset.correctAnswer;
+            const errorDiv = document.getElementById(errorDivId);
+
+            document.querySelectorAll('.validation-error').forEach(div => {
+                div.style.display = 'none';
+            });
+
+            optionsLabels.forEach(label => {
+                label.classList.remove('highlight-correct', 'highlight-incorrect-selected');
+            });
+            feedbackDiv.style.display = 'none';
+            feedbackDiv.classList.remove('correct', 'incorrect');
+            feedbackDiv.innerHTML = '';
+
+            if (!selectedOption) {
+                errorDiv.style.display = 'block';
+                setTimeout(() => {
+                    errorDiv.style.display = 'none';
+                }, 3000);
+                return;
+            }
+
+            const userAnswer = selectedOption.value;
+            let feedbackMessage = "";
+
+            optionsLabels.forEach(label => {
+                if (label.querySelector('input').value === correctAnswer) {
+                    label.classList.add('highlight-correct');
+                }
+            });
+
+            if (userAnswer === correctAnswer) {
+                feedbackMessage = "<b>Chính xác!</b> Đây là đáp án đúng.";
+                feedbackDiv.classList.add('correct');
+                answeredQuestions[questionId] = true;
+            } else {
+                feedbackMessage = `<b>Không chính xác.</b> Đáp án đúng là <span class="feedback-correct-answer-text">"${correctAnswer}"</span>.`;
+                feedbackDiv.classList.add('incorrect');
+                selectedOption.closest('label').classList.add('highlight-incorrect-selected');
+                answeredQuestions[questionId] = false;
+            }
+            feedbackDiv.innerHTML = feedbackMessage + `<div class="feedback-explanation">Giải thích: ${explanation}</div>`;
+            feedbackDiv.style.display = 'block';
+
+            // Cập nhật các placeholder với đáp án ĐÚNG sau khi kiểm tra
+            const correctParts = correctAnswer.split(' | ');
+            const p1_placeholder = questionBlock.querySelector(`#${questionId}_p1_placeholder`);
+            const p2_placeholder = questionBlock.querySelector(`#${questionId}_p2_placeholder`);
+            const p3_placeholder = questionBlock.querySelector(`#${questionId}_p3_placeholder`); // Có thể có p3
+
+            if (p1_placeholder) p1_placeholder.textContent = correctParts[0];
+            if (p2_placeholder) p2_placeholder.textContent = correctParts[1];
+            if (p3_placeholder && correctParts[2]) p3_placeholder.textContent = correctParts[2];
+
+
+            updateOverallScore();
+        }
+    </script>
+</body>
+</html>

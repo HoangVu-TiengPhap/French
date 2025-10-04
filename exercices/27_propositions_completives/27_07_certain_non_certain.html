@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2025 by anonymous (http://jsbin.com/fewikukiqo/1/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indicatif vs Subjonctif - Chắc chắn và không chắc chắn</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .header, .question-block, .options label {
+            font-family: Arial, sans-serif;
+        }
+
+        .page-content-wrapper {
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .header h1 {
+            text-align: center;
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+
+        #score-container {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color: #fff;
+            color: #007bff;
+            padding: 12px 20px;
+            border: 1px solid #cce5ff;
+            border-radius: 8px;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            font-size: 1.3em;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+            box-sizing: border-box;
+        }
+        #score-container strong {
+            color: #0056b3;
+        }
+
+        #quiz-container {
+        }
+        .question-block {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .question-text {
+            font-size: 1.1em;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .question-translation {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+        .options {
+            max-width: 500px;
+            margin-bottom: 15px;
+        }
+        .options label {
+            display: block;
+            margin-bottom: 10px;
+            cursor: pointer;
+            padding: 8px;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+            font-family: Arial, sans-serif;
+        }
+        .options label:hover {
+                background-color: #e9e9e9;
+        }
+        .feedback {
+            margin-top: 15px;
+            font-weight: bold;
+            display: none;
+            font-family: 'Roboto', sans-serif;
+        }
+        .feedback-explanation {
+            font-weight: normal;
+            font-size: 0.9em;
+            margin-top: 5px;
+            color: #0056b3;
+        }
+        .feedback-correct-answer-text {
+            color: #0056b3;
+        }
+        .correct {
+            color: green;
+        }
+        .incorrect {
+            color: red;
+        }
+        .highlight-correct {
+            background-color: #d4edda !important;
+            border-color: #28a745 !important;
+        }
+        .highlight-incorrect-selected {
+            background-color: #f8d7da !important;
+            border-color: #dc3545 !important;
+        }
+        .validate-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 15px;
+            transition: background-color 0.3s ease;
+        }
+        .validate-btn:hover {
+            background-color: #0056b3;
+        }
+        .validation-error {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 15px;
+            font-weight: normal;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-content-wrapper">
+        <div class="header">
+            <div class="header-top">
+                <p><strong>Enseignant:</strong> Nguyễn Hoàng Vũ</p>
+                <p><strong>Jour de test:</strong> <span id="currentDate"></span></p>
+            </div>
+            <h1>Indicatif vs Subjonctif - Chắc chắn và không chắc chắn</h1> </div>
+
+        <div id="score-container">
+            Score: <strong id="current-score-value">0</strong> / <strong id="total-questions-value">5</strong>
+        </div>
+
+        <div id="quiz-container">
+            <div class="question-block" id="q1" data-correct-answer="Oui, je suis sûr que Franz vient.<br>Non, je ne suis pas sûr que Franz vienne.">
+                <p class="question-text">1. Es-tu sûr que Franz vienne?</p>
+                <p class="question-translation"><em>(Bạn có chắc là Franz sẽ đến không?)</em></p>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q1', 'Khi mệnh đề chính là khẳng định (je suis sûr), mệnh đề phụ dùng Indicatif (vient). Khi mệnh đề chính là phủ định (je ne suis pas sûr), mệnh đề phụ dùng Subjonctif (vienne).', 'error-q1')">Valider</button>
+                <div class="feedback" id="feedback-q1"></div>
+                <div class="validation-error" id="error-q1">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+            <div class="question-block" id="q2" data-correct-answer="Oui, je trouve qu'elle fait des progrès.<br>Non, je ne trouve pas qu'elle fasse des progrès.">
+                <p class="question-text">2. Trouvez-vous qu'elle fasse des progrès?</p>
+                <p class="question-translation"><em>(Bạn có thấy cô ấy đang tiến bộ không?)</em></p>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q2', 'Khi mệnh đề chính là khẳng định (je trouve), mệnh đề phụ dùng Indicatif (fait). Khi mệnh đề chính là phủ định (je ne trouve pas), mệnh đề phụ dùng Subjonctif (fasse).', 'error-q2')">Valider</button>
+                <div class="feedback" id="feedback-q2"></div>
+                <div class="validation-error" id="error-q2">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+            <div class="question-block" id="q3" data-correct-answer="Oui, je suis certain qu'il me croit.<br>Non, je ne suis pas certain qu'il me croie.">
+                <p class="question-text">3. Êtes-vous certain qu'il vous croie?</p>
+                <p class="question-translation"><em>(Bạn có chắc là anh ấy tin bạn không?)</em></p>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q3', 'Khi mệnh đề chính là khẳng định (je suis certain), mệnh đề phụ dùng Indicatif (croit). Khi mệnh đề chính là phủ định (je ne suis pas certain), mệnh đề phụ dùng Subjonctif (croie).', 'error-q3')">Valider</button>
+                <div class="feedback" id="feedback-q3"></div>
+                <div class="validation-error" id="error-q3">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+            <div class="question-block" id="q4" data-correct-answer="Oui, je pense que les choses peuvent s'arranger.<br>Non, je ne pense pas que les choses puissent s'arranger.">
+                <p class="question-text">4. Pensez-vous que les choses puissent s'arranger?</p>
+                <p class="question-translation"><em>(Bạn có nghĩ mọi thứ có thể ổn thỏa không?)</em></p>
+            <div class="options">
+                </div>
+            <button class="validate-btn" onclick="checkAnswer('q4', 'Khi mệnh đề chính là khẳng định (je pense), mệnh đề phụ dùng Indicatif (peuvent). Khi mệnh đề chính là phủ định (je ne pense pas), mệnh đề phụ dùng Subjonctif (puissent).', 'error-q4')">Valider</button>
+            <div class="feedback" id="feedback-q4"></div>
+            <div class="validation-error" id="error-q4">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+        </div>
+
+            <div class="question-block" id="q5" data-correct-answer="Oui, je crois que c'est possible.<br>Non, je ne crois pas que ce soit possible.">
+                <p class="question-text">5. Croyez-vous que ce soit possible?</p>
+                <p class="question-translation"><em>(Bạn có tin rằng điều đó là có thể không?)</em></p>
+                <div class="options">
+                    </div>
+                <button class="validate-btn" onclick="checkAnswer('q5', 'Khi mệnh đề chính là khẳng định (je crois), mệnh đề phụ dùng Indicatif (c\'est). Khi mệnh đề chính là phủ định (je ne crois pas), mệnh đề phụ dùng Subjonctif (ce soit).', 'error-q5')">Valider</button>
+                <div class="feedback" id="feedback-q5"></div>
+                <div class="validation-error" id="error-q5">Vui lòng chọn một đáp án trước khi xác nhận.</div>
+            </div>
+
+        </div>
+    </div> <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const date = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('currentDate').textContent = date.toLocaleDateString('fr-FR', options);
+            
+            // Định nghĩa các câu hỏi và đáp án cho việc xáo trộn
+            const questionsData = {
+                q1: {
+                    correct: 'Oui, je suis sûr que Franz vient.<br>Non, je ne suis pas sûr que Franz vienne.',
+                    options: [
+                        'Oui, je suis sûr que Franz vient.<br>Non, je ne suis pas sûr que Franz vienne.', // Correct
+                        'Oui, je suis sûr que Franz vienne.<br>Non, je ne suis pas sûr que Franz vient.', // Subjonctif sai
+                        'Oui, je suis sûr que Franz vient.<br>Non, je ne suis pas sûr que Franz vient.', // Indicatif sai
+                        'Oui, je suis sûr que Franz vienne.<br>Non, je ne suis pas sûr que Franz vienne.' // Lặp lại đúng
+                    ]
+                },
+                q2: {
+                    correct: 'Oui, je trouve qu\'elle fait des progrès.<br>Non, je ne trouve pas qu\'elle fasse des progrès.',
+                    options: [
+                        'Oui, je trouve qu\'elle fait des progrès.<br>Non, je ne trouve pas qu\'elle fasse des progrès.', // Correct
+                        'Oui, je trouve qu\'elle fasse des progrès.<br>Non, je ne trouve pas qu\'elle fait des progrès.', // Indicatif sai
+                        'Oui, je trouve qu\'elle fait des progrès.<br>Non, je ne trouve pas qu\'elle fait des progrès.', // Cả hai sai
+                        'Oui, je trouve qu\'elle fasse des progrès.<br>Non, je ne trouve pas qu\'elle fasse des progrès.' // Subjonctif sai
+                    ]
+                },
+                q3: {
+                    correct: 'Oui, je suis certain qu\'il me croit.<br>Non, je ne suis pas certain qu\'il me croie.',
+                    options: [
+                        'Oui, je suis certain qu\'il me croit.<br>Non, je ne suis pas certain qu\'il me croie.', // Correct
+                        'Oui, je suis certain qu\'il me croie.<br>Non, je ne suis pas certain qu\'il me croit.', // Subjonctif sai
+                        'Oui, je suis certain qu\'il me croit.<br>Non, je ne suis pas certain qu\'il me croit.', // Indicatif sai
+                        'Oui, je suis certain qu\'il me croie.<br>Non, je ne suis pas certain qu\'il me croie.' // Lặp lại đúng
+                    ]
+                },
+                q4: {
+                    correct: 'Oui, je pense que les choses peuvent s\'arranger.<br>Non, je ne pense pas que les choses puissent s\'arranger.',
+                    options: [
+                        'Oui, je pense que les choses peuvent s\'arranger.<br>Non, je ne pense pas que les choses puissent s\'arranger.', // Correct
+                        'Oui, je pense que les choses puissent s\'arranger.<br>Non, je ne pense pas que les choses peuvent s\'arranger.', // Indicatif sai
+                        'Oui, je pense que les choses peuvent s\'arranger.<br>Non, je ne pense pas que les choses peuvent s\'arranger.', // Cả hai sai
+                        'Oui, je pense que les choses puissent s\'arranger.<br>Non, je ne pense pas que les choses puissent s\'arranger.' // Subjonctif sai
+                    ]
+                },
+                q5: {
+                    correct: 'Oui, je crois que c\'est possible.<br>Non, je ne crois pas que ce soit possible.',
+                    options: [
+                        'Oui, je crois que c\'est possible.<br>Non, je ne crois pas que ce soit possible.', // Correct
+                        'Oui, je crois que ce soit possible.<br>Non, je ne crois pas que c\'est possible.', // Indicatif sai
+                        'Oui, je crois que c\'est possible.<br>Non, je ne crois pas que c\'est possible.', // Cả hai sai
+                        'Oui, je crois que ce soit possible.<br>Non, je ne crois pas que ce soit possible.' // Subjonctif sai
+                    ]
+                }
+            };
+
+            // Hàm xáo trộn mảng
+            function shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]]; // Hoán đổi vị trí
+                }
+            }
+
+            // Tạo và xáo trộn các lựa chọn đáp án cho mỗi câu hỏi
+            for (const qId in questionsData) {
+                const questionBlock = document.getElementById(qId);
+                const optionsDiv = questionBlock.querySelector('.options');
+                
+                let currentOptions = [...questionsData[qId].options]; // Tạo bản sao
+                shuffleArray(currentOptions); // Xáo trộn các lựa chọn
+
+                optionsDiv.innerHTML = '';
+                currentOptions.forEach(optionText => {
+                    const label = document.createElement('label');
+                    const input = document.createElement('input');
+                    input.type = 'radio';
+                    input.name = qId;
+                    input.value = optionText; // Giá trị radio button là toàn bộ chuỗi HTML
+                    label.appendChild(input);
+                    label.innerHTML += ' ' + optionText; // Thêm nội dung HTML vào label
+                    optionsDiv.appendChild(label);
+                });
+            }
+
+            updateOverallScore(); // Cập nhật điểm ban đầu
+        });
+
+        const answeredQuestions = {};
+        const totalQuestions = 5; 
+
+        const currentScoreValue = document.getElementById('current-score-value');
+        const totalQuestionsValue = document.getElementById('total-questions-value');
+
+        function updateOverallScore() {
+            let correctCount = 0;
+            const allQuestionIds = ['q1', 'q2', 'q3', 'q4', 'q5']; // Cập nhật ID câu hỏi
+            allQuestionIds.forEach(id => {
+                if (answeredQuestions[id] === true) {
+                    correctCount++;
+                }
+            });
+
+            currentScoreValue.textContent = correctCount;
+            totalQuestionsValue.textContent = totalQuestions;
+        }
+
+        function checkAnswer(questionId, explanation, errorDivId) {
+            const questionBlock = document.getElementById(questionId);
+            const selectedOption = questionBlock.querySelector(`input[name="${questionId}"]:checked`);
+            const feedbackDiv = questionBlock.querySelector('.feedback');
+            const optionsLabels = questionBlock.querySelectorAll('.options label');
+            const correctAnswer = questionBlock.dataset.correctAnswer;
+            const errorDiv = document.getElementById(errorDivId);
+
+            document.querySelectorAll('.validation-error').forEach(div => {
+                div.style.display = 'none';
+            });
+
+            optionsLabels.forEach(label => {
+                label.classList.remove('highlight-correct', 'highlight-incorrect-selected');
+            });
+            feedbackDiv.style.display = 'none';
+            feedbackDiv.classList.remove('correct', 'incorrect');
+            feedbackDiv.innerHTML = '';
+
+            if (!selectedOption) {
+                errorDiv.style.display = 'block';
+                setTimeout(() => {
+                    errorDiv.style.display = 'none';
+                }, 3000);
+                return;
+            }
+
+            const userAnswer = selectedOption.value;
+            let feedbackMessage = "";
+
+            optionsLabels.forEach(label => {
+                if (label.querySelector('input').value === correctAnswer) {
+                    label.classList.add('highlight-correct');
+                }
+            });
+
+            if (userAnswer === correctAnswer) {
+                feedbackMessage = "<b>Chính xác!</b> Đây là đáp án đúng.";
+                feedbackDiv.classList.add('correct');
+                answeredQuestions[questionId] = true;
+            } else {
+                feedbackMessage = `<b>Không chính xác.</b> Đáp án đúng là <span class="feedback-correct-answer-text">"${correctAnswer}"</span>.`;
+                feedbackDiv.classList.add('incorrect');
+                selectedOption.closest('label').classList.add('highlight-incorrect-selected');
+                answeredQuestions[questionId] = false;
+            }
+            feedbackDiv.innerHTML = feedbackMessage + `<div class="feedback-explanation">Giải thích: ${explanation}</div>`;
+            feedbackDiv.style.display = 'block';
+
+            updateOverallScore();
+        }
+    </script>
+</body>
+</html>

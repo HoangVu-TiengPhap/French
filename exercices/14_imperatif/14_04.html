@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<meta name="robots" content="noindex">
+<html>
+<head>
+<title>Futur -> Impératif</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f4f8;
+    color: #333;
+  }
+  
+  /* Container giới hạn chiều rộng, bóng đổ và bo góc chung */
+  .main-content-wrapper {
+      max-width: 800px;
+      margin: 30px auto; 
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+      border-radius: 10px; 
+      overflow: hidden; 
+  }
+
+  header {
+    background-color: #e0e7ed;
+    color: #2c3e50;
+    padding: 15px 20px;
+    /* Đã xóa border-bottom để sát container */
+    display: flex;
+    /* Chỉ còn h2 nên căn trái */
+    justify-content: flex-start; 
+    align-items: center;
+    /* Bo tròn góc trên */
+    border-radius: 10px 10px 0 0;
+  }
+  
+  header h2 {
+    margin: 0;
+    font-size: 1.1em;
+    color: #333;
+    /* Đã xóa header p, chỉ giữ style cho h2 */
+  }
+
+  h1 {
+    color: #2c3e50;
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 20px;
+  }
+  
+  .container {
+    max-width: 100%; /* Giữ nguyên chiều rộng 100% so với wrapper */
+    margin: 0 auto; /* Xóa margin-top cũ, dính liền với header */
+    padding: 20px;
+    background-color: #ffffff;
+    /* Bo tròn góc dưới */
+    border-radius: 0 0 10px 10px;
+    /* Đã chuyển box-shadow lên .main-content-wrapper */
+  }
+  
+  .question-block {
+    margin-bottom: 25px;
+    padding: 20px;
+    border: 1px solid #d0dbe4;
+    border-radius: 8px;
+    background-color: #fdfefe;
+  }
+  .question {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 1.1em;
+    color: #34495e;
+  }
+  .translation {
+    font-style: italic;
+    color: #666;
+    margin-bottom: 15px;
+    font-size: 0.95em;
+  }
+  .options label {
+    display: block;
+    margin-bottom: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: color 0.3s ease;
+    padding: 5px 0;
+  }
+  .options label:hover {
+    color: #5a7d9a;
+  }
+  .options input[type="radio"] {
+    margin-right: 10px;
+    transform: scale(1.1);
+  }
+  .options label.correct-highlight {
+    background-color: #d4edda;
+    border: 2px solid #28a745;
+    border-radius: 5px;
+    padding: 5px;
+    color: #1a7e37;
+  }
+  .feedback {
+    margin-top: 15px;
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 5px;
+    width: calc(100% - 24px);
+    box-sizing: border-box;
+    display: none;
+  }
+  .feedback.active {
+      display: block;
+  }
+  .correct {
+    background-color: #e6ffe6;
+    color: #1a7e37;
+    border: 1px solid #28a745;
+  }
+  .incorrect {
+    background-color: #ffe6e6;
+    color: #dc3545;
+    border: 1px solid #dc3545;
+  }
+  .warning {
+      background-color: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffeeba;
+  }
+  .explanation {
+    font-size: 0.9em;
+    font-weight: normal;
+    color: #555;
+    margin-top: 8px;
+    font-style: italic;
+  }
+  .correct-answer-display {
+    color: dodgerblue; /* Xanh dương tươi */
+    font-weight: bold;
+    margin-top: 5px;
+    display: block;
+  }
+  .validate-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-top: 15px;
+    transition: background-color 0.3s ease;
+  }
+  .validate-btn:hover {
+    background-color: #45a049;
+  }
+  .validate-btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+  #score-area {
+    text-align: center;
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #e6f7ff;
+    border: 1px solid #b3e0ff;
+    border-radius: 8px;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #0056b3;
+    display: none;
+  }
+  .complete-test-btn {
+    display: block;
+    width: fit-content;
+    margin: 30px auto;
+    background-color: #007bff;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease;
+  }
+  .complete-test-btn:hover {
+    background-color: #0056b3;
+  }
+  @media (max-width: 600px) {
+    .main-content-wrapper {
+        margin: 15px;
+    }
+    header {
+      flex-direction: column;
+      align-items: flex-start;
+      border-radius: 10px 10px 0 0; /* Giữ bo tròn góc trên */
+    }
+    header h2 {
+      font-size: 1em;
+      margin-bottom: 5px;
+    }
+    .container {
+      padding: 15px;
+      border-radius: 0 0 10px 10px; /* Giữ bo tròn góc dưới */
+    }
+    .question, .translation, .options label, .feedback, .validate-btn, .complete-test-btn {
+      font-size: 0.9em;
+    }
+    .feedback {
+      padding: 6px 10px;
+      width: calc(100% - 20px);
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="main-content-wrapper">
+    <header>
+      <h2>Enseignant: Nguyễn Hoàng Vũ</h2>
+      </header>
+
+    <div class="container">
+      <h1>Futur -> Impératif</h1>
+
+      <div class="question-block" id="q1-block">
+        <div class="question">1. Nous prendrons cette route et nous irons jusqu'à la mer.</div>
+        <div class="translation">Chúng ta sẽ đi con đường này và chúng ta sẽ đi đến biển.</div>
+        <div class="options" id="options-q1"></div>
+        <button class="validate-btn" onclick="checkAnswer('q1')">Valider</button>
+        <div class="feedback" id="feedback1"></div>
+      </div>
+
+      <div class="question-block" id="q2-block">
+        <div class="question">2. Tu sortiras et tu feras une grande promenade.</div>
+        <div class="translation">Bạn sẽ đi ra ngoài và bạn sẽ đi dạo một chuyến lớn.</div>
+        <div class="options" id="options-q2"></div>
+        <button class="validate-btn" onclick="checkAnswer('q2')">Valider</button>
+        <div class="feedback" id="feedback2"></div>
+      </div>
+
+      <div class="question-block" id="q3-block">
+        <div class="question">3. Vous ferez bien attention, vous direz toute la vérité.</div>
+        <div class="translation">Bạn (số nhiều/lịch sự) sẽ rất cẩn thận, bạn sẽ nói toàn bộ sự thật.</div>
+        <div class="options" id="options-q3"></div>
+        <button class="validate-btn" onclick="checkAnswer('q3')">Valider</button>
+        <div class="feedback" id="feedback3"></div>
+      </div>
+
+      <div class="question-block" id="q4-block">
+        <div class="question">4. Tu viendras avec moi et nous boirons un verre.</div>
+        <div class="translation">Bạn sẽ đến với tôi và chúng ta sẽ uống một ly.</div>
+        <div class="options" id="options-q4"></div>
+        <button class="validate-btn" onclick="checkAnswer('q4')">Valider</button>
+        <div class="feedback" id="feedback4"></div>
+      </div>
+
+      <div class="question-block" id="q5-block">
+        <div class="question">5. Tu recevras tes amis, tu offriras du champagne.</div>
+        <div class="translation">Bạn sẽ tiếp đón bạn bè, bạn sẽ mời rượu champagne.</div>
+        <div class="options" id="options-q5"></div>
+        <button class="validate-btn" onclick="checkAnswer('q5')">Valider</button>
+        <div class="feedback" id="feedback5"></div>
+      </div>
+
+      <div class="question-block" id="q6-block">
+        <div class="question">6. Nous vendrons notre appartement et nous partirons à l'aventure.</div>
+        <div class="translation">Chúng ta sẽ bán căn hộ của mình và chúng ta sẽ đi phiêu lưu.</div>
+        <div class="options" id="options-q6"></div>
+        <button class="validate-btn" onclick="checkAnswer('q6')">Valider</button>
+        <div class="feedback" id="feedback6"></div>
+      </div>
+
+      <div class="question-block" id="q7-block">
+        <div class="question">7. Vous tiendrez votre promesse, vous reviendrez chez nous.</div>
+        <div class="translation">Bạn (số nhiều/lịch sự) sẽ giữ lời hứa của mình, bạn sẽ trở về nhà chúng tôi.</div>
+        <div class="options" id="options-q7"></div>
+        <button class="validate-btn" onclick="checkAnswer('q7')">Valider</button>
+        <div class="feedback" id="feedback7"></div>
+      </div>
+
+      <div class="question-block" id="q8-block">
+        <div class="question">8. Tu ne répondras à personne, tu n'ouvriras la porte à personne.</div>
+        <div class="translation">Bạn sẽ không trả lời ai, bạn sẽ không mở cửa cho ai.</div>
+        <div class="options" id="options-q8"></div>
+        <button class="validate-btn" onclick="checkAnswer('q8')">Valider</button>
+        <div class="feedback" id="feedback8"></div>
+      </div>
+
+      <div class="question-block" id="q9-block">
+        <div class="question">9. Tu iras prendre ton billet và tu suivras le guide.</div>
+        <div class="translation">Bạn sẽ đi lấy vé và bạn sẽ đi theo hướng dẫn viên.</div>
+        <div class="options" id="options-q9"></div>
+        <button class="validate-btn" onclick="checkAnswer('q9')">Valider</button>
+        <div class="feedback" id="feedback9"></div>
+      </div>
+
+      <div class="question-block" id="q10-block">
+        <div class="question">10. Vous écrirez un bon livre et vous deviendrez célèbre.</div>
+        <div class="translation">Bạn (số nhiều/lịch sự) sẽ viết một cuốn sách hay và bạn sẽ trở nên nổi tiếng.</div>
+        <div class="options" id="options-q10"></div>
+        <button class="validate-btn" onclick="checkAnswer('q10')">Valider</button>
+        <div class="feedback" id="feedback10"></div>
+      </div>
+
+      <button class="complete-test-btn" onclick="showScore()">Hoàn thành bài kiểm tra</button>
+
+      <div id="score-area">
+        <p>Bạn đã trả lời đúng <span id="correct-count">0</span> trên tổng số <span id="total-questions">0</span> câu.</p>
+      </div>
+
+    </div>
+</div> <script>
+  // Định nghĩa dữ liệu cho mỗi câu hỏi
+  const questionsData = {
+    q1: {
+      original: "Nous prendrons cette route et nous irons jusqu'à la mer.",
+      translation: "Chúng ta sẽ đi con đường này và chúng ta sẽ đi đến biển.",
+      correct: "Prenons cette route et allons jusqu'à la mer !",
+      wrong: ["Prenez cette route et allez jusqu'à la mer !", "Prendrons cette route et irons jusqu'à la mer !"],
+      explanation: "Động từ 'prendre' ở ngôi 'nous' (Impératif) là 'Prenons'. Động từ 'aller' ở ngôi 'nous' (Impératif) là 'Allons'."
+    },
+    q2: {
+      original: "Tu sortiras et tu feras une grande promenade.",
+      translation: "Bạn sẽ đi ra ngoài và bạn sẽ đi dạo một chuyến lớn.",
+      correct: "Sors et fais une grande promenade !",
+      wrong: ["Sortis et fais une grande promenade !", "Sortira et fera une grande promenade !"],
+      explanation: "Động từ 'sortir' ở ngôi 'tu' (Impératif) là 'Sors'. Động từ 'faire' ở ngôi 'tu' (Impératif) là 'Fais'."
+    },
+    q3: {
+      original: "Vous ferez bien attention, vous direz toute la vérité.",
+      translation: "Bạn (số nhiều/lịch sự) sẽ rất cẩn thận, bạn sẽ nói toàn bộ sự thật.",
+      correct: "Faites bien attention, dites toute la vérité !",
+      wrong: ["Ferez bien attention, direz toute la vérité !", "Faites bien attention, disez toute la vérité !"],
+      explanation: "Động từ 'faire' ở ngôi 'vous' (Impératif) là 'Faites'. Động từ 'dire' ở ngôi 'vous' (Impératif) là 'Dites'."
+    },
+    q4: {
+      original: "Tu viendras avec moi et nous boirons un verre.",
+      translation: "Bạn sẽ đến với tôi và chúng ta sẽ uống một ly.",
+      correct: "Viens avec moi et buvons un verre !",
+      wrong: ["Viens avec moi et boirez un verre !", "Viendra avec moi et boira un verre !"],
+      explanation: "Động từ 'venir' ở ngôi 'tu' (Impératif) là 'Viens'. Động từ 'boire' ở ngôi 'nous' (Impératif) là 'Buvons'."
+    },
+    q5: {
+      original: "Tu recevras tes amis, tu offriras du champagne.",
+      translation: "Bạn sẽ tiếp đón bạn bè, bạn sẽ mời rượu champagne.",
+      correct: "Reçois tes amis, offre du champagne !",
+      wrong: ["Recevez tes amis, offrez du champagne !", "Recevras tes amis, offriras du champagne !"],
+      explanation: "Động từ 'recevoir' ở ngôi 'tu' (Impératif) là 'Reçois'. Động từ 'offrir' ở ngôi 'tu' (Impératif) là 'Offre'."
+    },
+    q6: {
+      original: "Nous vendrons notre appartement et nous partirons à l'aventure.",
+      translation: "Chúng ta sẽ bán căn hộ của mình và chúng ta sẽ đi phiêu lưu.",
+      correct: "Vendons notre appartement et partons à l'aventure !",
+      wrong: ["Vendez notre appartement et partez à l'aventure !", "Vendrons notre appartement et partirons à l'aventure !"],
+      explanation: "Động từ 'vendre' ở ngôi 'nous' (Impératif) là 'Vendons'. Động từ 'partir' ở ngôi 'nous' (Impératif) là 'Partons'."
+    },
+    q7: {
+      original: "Vous tiendrez votre promesse, vous reviendrez chez nous.",
+      translation: "Bạn (số nhiều/lịch sự) sẽ giữ lời hứa của mình, bạn sẽ trở về nhà chúng tôi.",
+      correct: "Tenez votre promesse, revenez chez nous !",
+      wrong: ["Tiendez votre promesse, reviendez chez nous !", "Tiendrez votre promesse, reviendrez chez nous !"],
+      explanation: "Động từ 'tenir' ở ngôi 'vous' (Impératif) là 'Tenez'. Động từ 'revenir' ở ngôi 'vous' (Impératif) là 'Revenez'."
+    },
+    q8: {
+      original: "Tu ne répondras à personne, tu n'ouvriras la porte à personne.",
+      translation: "Bạn sẽ không trả lời ai, bạn sẽ không mở cửa cho ai.",
+      correct: "Ne réponds à personne, n'ouvre la porte à personne !",
+      wrong: ["Ne réponds pas à personne, n'ouvres la porte à personne !", "Ne répondez à personne, n'ouvrez la porte à personne !"],
+      explanation: "Động từ 'répondre' ở ngôi 'tu' (Impératif) là 'Réponds'. Động từ 'ouvrir' ở ngôi 'tu' (Impératif) là 'Ouvre'. Phủ định 'ne...personne' bao quanh động từ."
+    },
+    q9: {
+      original: "Tu iras prendre ton billet et tu suivras le guide.",
+      translation: "Bạn sẽ đi lấy vé và bạn sẽ đi theo hướng dẫn viên.",
+      correct: "Va prendre ton billet et suis le guide !",
+      wrong: ["Vas prendre ton billet et suis le guide !", "Va prendre ton billet et suive le guide !"],
+      explanation: "Động từ 'aller' ở ngôi 'tu' (Impératif) là 'Va' (không có 's'). Động từ 'suivre' ở ngôi 'tu' (Impératif) là 'Suis'."
+    },
+    q10: {
+      original: "Vous écrirez un bon livre et vous deviendrez célèbre.",
+      translation: "Bạn (số nhiều/lịch sự) sẽ viết một cuốn sách hay và bạn sẽ trở nên nổi tiếng.",
+      correct: "Écrivez un bon livre et devenez célèbre !",
+      wrong: ["Écrirez un bon livre et deviendrez célèbre !", "Écrivez un bon livre et devenez célèbres !"],
+      explanation: "Động từ 'écrire' ở ngôi 'vous' (Impératif) là 'Écrivez'. Động từ 'devenir' ở ngôi 'vous' (Impératif) là 'Devenez'."
+    }
+  };
+
+  let correctAnswersCount = 0;
+  const totalQuestions = Object.keys(questionsData).length;
+  const answeredQuestions = new Set(); 
+
+  // Hàm xáo trộn mảng Fisher-Yates
+  function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+      }
+  }
+
+  // Hàm tạo và hiển thị các lựa chọn
+  function generateOptions() {
+    for (const qKey in questionsData) {
+      const qData = questionsData[qKey];
+      const optionsDiv = document.getElementById(`options-${qKey}`);
+      optionsDiv.innerHTML = ''; 
+
+      const allOptions = [{text: qData.correct, isCorrect: true}];
+      qData.wrong.slice(0, 2).forEach(w => allOptions.push({text: w, isCorrect: false})); 
+
+      shuffleArray(allOptions); 
+
+      allOptions.forEach((option, index) => {
+        const optionId = `${qKey}-${String.fromCharCode(97 + index)}`; 
+        const label = document.createElement('label');
+        label.setAttribute('for', optionId);
+        
+        const input = document.createElement('input');
+        input.type = 'radio';
+        input.name = qKey;
+        input.value = optionId;
+        input.id = optionId;
+        
+        label.appendChild(input);
+        label.appendChild(document.createTextNode(option.text));
+        
+        if (option.isCorrect) {
+          label.dataset.isCorrect = "true";
+          questionsData[qKey].correctOptionId = optionId; 
+        }
+
+        optionsDiv.appendChild(label);
+      });
+    }
+  }
+
+  // Call generateOptions when the page loads
+  document.addEventListener('DOMContentLoaded', generateOptions);
+
+
+  function checkAnswer(questionName) {
+    if (answeredQuestions.has(questionName)) {
+        return; 
+    }
+
+    const selectedOptionInput = document.querySelector(`input[name="${questionName}"]:checked`);
+    const feedbackDiv = document.getElementById(`feedback${questionName.substring(1)}`); 
+    const validateButton = event.target; 
+    
+    feedbackDiv.classList.remove('active', 'correct', 'incorrect', 'warning');
+    feedbackDiv.innerHTML = '';
+
+
+    if (!selectedOptionInput) {
+        feedbackDiv.textContent = 'Vui lòng chọn một đáp án trước khi kiểm tra.';
+        feedbackDiv.classList.add('active', 'warning');
+        return;
+    }
+
+    const qData = questionsData[questionName]; 
+
+    const correctAnswerLabel = document.querySelector(`label[for="${qData.correctOptionId}"]`);
+    if (correctAnswerLabel) {
+      correctAnswerLabel.classList.add('correct-highlight');
+    }
+
+    answeredQuestions.add(questionName);
+    
+    const selectedOptionLabel = selectedOptionInput.parentElement;
+    
+    if (selectedOptionLabel.dataset.isCorrect === "true") {
+      feedbackDiv.innerHTML = '<strong>Chính xác!</strong><br><span class="explanation">' + qData.explanation + '</span>';
+      feedbackDiv.classList.add('active', 'correct');
+      correctAnswersCount++;
+    } else {
+      const correctAnswerText = correctAnswerLabel ? correctAnswerLabel.textContent.trim() : '';
+      feedbackDiv.innerHTML = '<strong>Không chính xác.</strong><br><span class="correct-answer-display">Đáp án đúng là: ' + correctAnswerText + '</span><br><span class="explanation">' + qData.explanation + '</span>';
+      feedbackDiv.classList.add('active', 'incorrect');
+    }
+    
+    const radioButtons = document.querySelectorAll(`input[name="${questionName}"]`);
+    radioButtons.forEach(radio => radio.disabled = true);
+    validateButton.disabled = true;
+  }
+
+  function showScore() {
+    document.getElementById('correct-count').textContent = correctAnswersCount;
+    document.getElementById('total-questions').textContent = totalQuestions;
+    document.getElementById('score-area').style.display = 'block';
+  }
+</script>
+
+</body>
+</html>

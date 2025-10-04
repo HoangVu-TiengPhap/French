@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+
+<meta name="robots" content="noindex">
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Définis</title>
+    <style>
+        /* CSS CHUNG CHO TOÀN BỘ TRANG */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding-top: 0; 
+            background-color: #e9eff5;
+            color: #333;
+        }
+
+        /* ĐÃ SỬA: Tên giáo viên sang trái */
+        .top-info {
+            max-width: 800px;
+            margin: 20px auto 10px auto;
+            padding: 0 20px;
+            font-size: 0.9em;
+            color: #555;
+            text-align: left; /* ĐÃ SỬA: Căn lề trái */
+        }
+
+        /* ĐÃ SỬA: Header không sticky, giới hạn chiều rộng và căn giữa */
+        .main-header {
+            background-color: #ffffff;
+            padding: 15px 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            z-index: 900; /* z-index thấp hơn thanh ký tự */
+            text-align: center;
+            /* ĐÃ LOẠI BỎ: position: sticky; top: 0; */
+            width: 100%;
+            max-width: 800px; /* ĐÃ THÊM: Giới hạn chiều rộng bằng content-container */
+            margin: 0 auto; /* ĐÃ THÊM: Căn giữa */
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .main-header h1 {
+            color: #2c3e50;
+            margin: 0;
+            font-size: 2em;
+            font-weight: 600;
+            order: 1;
+        }
+
+        .main-header .instructions {
+            font-size: 1.1em;
+            margin-top: 8px;
+            margin-bottom: 0;
+            font-style: italic;
+            border-bottom: 1px solid #dcdcdc;
+            padding-bottom: 8px;
+            width: 85%;
+            margin: 8px auto 0 auto;
+            color: #555;
+            order: 2;
+        }
+
+        /* ĐÃ SỬA: Chỉ thanh ký tự đặc biệt là sticky */
+        .char-buttons-container {
+            position: -webkit-sticky;
+            position: sticky;
+            top: 0; /* Gắn vào đỉnh trang */
+            z-index: 1000; /* Đảm bảo nó luôn ở trên cùng */
+
+            width: 100%;
+            max-width: 800px; /* ĐÃ THÊM: Giới hạn chiều rộng bằng content-container */
+            margin: 0 auto; /* ĐÃ THÊM: Căn giữa */
+            box-sizing: border-box;
+
+            padding: 10px 0 5px 0;
+            background-color: #f0f3f6;
+            border-radius: 0 0 5px 5px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* ĐÃ SỬA: Đổ bóng rõ hơn khi sticky */
+            /* ĐÃ LOẠI BỎ: margin-top: 15px; order: 3; */
+        }
+
+        .char-button {
+            background-color: #e2e6ea;
+            border: 1px solid #d1d6db;
+            padding: 6px 10px;
+            margin: 3px;
+            cursor: pointer;
+            font-size: 1.2em;
+            font-weight: normal;
+            border-radius: 4px;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+        }
+
+        .char-button:hover {
+            background-color: #cdd2d7;
+            transform: translateY(-1px);
+        }
+
+        .char-button:active {
+            transform: translateY(0);
+        }
+
+        /* Container cho nội dung bài tập */
+        .content-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 20px;
+            text-align: left;
+        }
+
+        /* Phần ví dụ */
+        .example-section {
+            background-color: #f7f7f7;
+            padding: 18px;
+            border-left: 5px solid #007bff;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            font-size: 1.05em;
+            text-align: left;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .example-text {
+            margin-bottom: 5px;
+        }
+
+        .example-text strong {
+            color: #007bff;
+        }
+
+        .example-line {
+            display: inline;
+        }
+
+        .example-line input {
+            width: 150px !important; /* Chiều rộng ô input ví dụ */
+            margin: 0 5px;
+            background-color: #e9ecef;
+            border: 1px dashed #adb5bd;
+            color: #495057;
+        }
+
+        /* Từng câu hỏi trong bài tập */
+        .exercise-item {
+            margin-bottom: 25px;
+            padding: 15px;
+            border: 1px solid #d1e0f0;
+            border-radius: 8px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+            text-align: left;
+            transition: transform 0.2s ease;
+        }
+
+        .exercise-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .question-line {
+            font-size: 1.1em;
+            margin-bottom: 5px;
+            display: block; /* Mỗi dòng câu hỏi (có input) nằm trên 1 dòng riêng */
+        }
+
+        .question-line input[type="text"] {
+            width: 80px; /* Chiều rộng ô input cho articles */
+            padding: 8px 10px;
+            margin: 0 5px;
+            border: 1px solid #a3c1e0;
+            border-radius: 5px;
+            font-size: 1.05em;
+            box-sizing: border-box;
+            display: inline-block;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .question-line input[type="text"]:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+            outline: none;
+        }
+
+        .vietnamese-translation {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            margin-top: 8px;
+            margin-bottom: 12px;
+            font-style: italic;
+            display: block;
+        }
+
+        .check-button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+            margin-top: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .check-button:hover {
+            background-color: #45a049;
+            transform: translateY(-1px);
+        }
+
+        .check-button:active {
+            transform: translateY(0);
+        }
+
+        .feedback {
+            margin-top: 15px;
+            font-weight: bold;
+            display: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .feedback.correct {
+            color: #1a7e3d;
+            background-color: #d4edda;
+            border: 1px solid #1a7e3d;
+        }
+
+        .feedback.incorrect {
+            color: #b52b2b;
+            background-color: #f8d7da;
+            border: 1px solid #b52b2b;
+        }
+
+        .feedback.warning {
+            color: #d19a00;
+            background-color: #fff3cd;
+            border: 1px solid #d19a00;
+        }
+
+        .note {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 40px;
+            border-left: 3px solid #ccc;
+            padding-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-info">
+        Enseignant: Nguyễn Hoàng Vũ <br>        
+    </div>
+
+    <div class="main-header">
+        <h1>Article Défini (le, la, les, l')</h1>
+        <p class="instructions">
+            Mettre <strong>le, la, les</strong> hoặc l'article défini élidé <strong>l'</strong>.<br>
+            <em>(Điền mạo từ xác định le, la, les hoặc mạo từ xác định rút gọn l'.)</em>
+        </p>
+    </div>
+    
+    <div class="char-buttons-container">
+        <button class="char-button" onclick="insertChar('é')">é</button>
+        <button class="char-button" onclick="insertChar('è')">è</button>
+        <button class="char-button" onclick="insertChar('ê')">ê</button>
+        <button class="char-button" onclick="insertChar('ë')">ë</button>
+        <button class="char-button" onclick="insertChar('à')">à</button>
+        <button class="char-button" onclick="insertChar('â')">â</button>
+        <button class="char-button" onclick="insertChar('ç')">ç</button>
+        <button class="char-button" onclick="insertChar('ù')">ù</button>
+        <button class="char-button" onclick="insertChar('û')">û</button>
+        <button class="char-button" onclick="insertChar('ï')">ï</button>
+        <button class="char-button" onclick="insertChar('î')">î</button>
+        <button class="char-button" onclick="insertChar('ô')">ô</button>
+        <button class="char-button" onclick="insertChar('œ')">œ</button>
+        <button class="char-button" onclick="insertChar('\'')">'</button>
+    </div>
+
+    <div class="content-container" id="exercise-content-area">
+        <div class="example-section">
+            <strong>Exemple (Ví dụ):</strong>
+            <div class="example-text">
+                ... fille est dans ... maison.
+            </div>
+            <div class="example-text">
+                &rarr; <input type="text" value="La" disabled class="example-input" style="width:50px !important;"> fille est dans <input type="text" value="la" disabled class="example-input" style="width:50px !important;"> maison.
+            </div>
+            <div class="vietnamese-translation">
+                <em>(Cô gái ở trong nhà.)</em>
+            </div>
+        </div>
+
+        <div class="exercise-list">
+            <div class="exercise-item">
+                <div class="question-line">
+                    1. <input type="text" id="q1a" data-answer="l'"> autobus et <input type="text" id="q1b" data-answer="les"> voitures sont dans <input type="text" id="q1c" data-answer="l'"> avenue.
+                </div>
+                <div class="vietnamese-translation">(Xe buýt và những chiếc ô tô ở trên đại lộ.)</div>
+                <button class="check-button" onclick="checkMultipleAnswersDynamic('q1a', 'l\'', 'q1b', 'les', 'q1c', 'l\'', 'q1-feedback')">Vérifier</button>
+                <div id="q1-feedback" class="feedback"></div>
+            </div>
+
+            <div class="exercise-item">
+                <div class="question-line">
+                    2. <input type="text" id="q2a" data-answer="l'"> étudiant et <input type="text" id="q2b" data-answer="le"> professeur sont à <input type="text" id="q2c" data-answer="l'"> université.
+                </div>
+                <div class="vietnamese-translation">(Sinh viên và giáo sư ở trường đại học.)</div>
+                <button class="check-button" onclick="checkMultipleAnswersDynamic('q2a', 'l\'', 'q2b', 'le', 'q2c', 'l\'', 'q2-feedback')">Vérifier</button>
+                <div id="q2-feedback" class="feedback"></div>
+            </div>
+
+            <div class="exercise-item">
+                <div class="question-line">
+                    3. À Paris, <input type="text" id="q3a" data-answer="le"> printemps est frais et <input type="text" id="q3b" data-answer="l'"> été est chaud.
+                </div>
+                <div class="vietnamese-translation">(Ở Paris, mùa xuân thì mát mẻ và mùa hè thì nóng.)</div>
+                <button class="check-button" onclick="checkMultipleAnswersDynamic('q3a', 'le', 'q3b', 'l\'', 'q3-feedback')">Vérifier</button>
+                <div id="q3-feedback" class="feedback"></div>
+            </div>
+
+            <div class="exercise-item">
+                <div class="question-line">
+                    4. <input type="text" id="q4a" data-answer="l'"> hôtel et <input type="text" id="q4b" data-answer="l'"> hôpital sont dans <input type="text" id="q4c" data-answer="la"> rue principale.
+                </div>
+                <div class="vietnamese-translation">(Khách sạn và bệnh viện ở trên con phố chính.)</div>
+                <button class="check-button" onclick="checkMultipleAnswersDynamic('q4a', 'l\'', 'q4b', 'l\'', 'q4c', 'la', 'q4-feedback')">Vérifier</button>
+                <div id="q4-feedback" class="feedback"></div>
+            </div>
+
+            <div class="exercise-item">
+                <div class="question-line">
+                    5. En France, <input type="text" id="q5a" data-answer="l'"> hiver est froid, <input type="text" id="q5b" data-answer="l'"> automne est doux.
+                </div>
+                <div class="vietnamese-translation">(Ở Pháp, mùa đông thì lạnh, mùa thu thì dịu mát.)</div>
+                <button class="check-button" onclick="checkMultipleAnswersDynamic('q5a', 'l\'', 'q5b', 'l\'', 'q5-feedback')">Vérifier</button>
+                <div id="q5-feedback" class="feedback"></div>
+            </div>
+        </div>
+
+        <p class="note">
+            <strong>Lưu ý:</strong> <br>
+            - **Le** dùng cho danh từ giống đực số ít.<br>
+            - **La** dùng cho danh từ giống cái số ít.<br>
+            - **Les** dùng cho danh từ số nhiều (cả giống đực và cái).<br>
+            - **L'** dùng trước danh từ bắt đầu bằng nguyên âm (a, e, i, o, u) hoặc 'h' câm.<br>
+            - Không dùng **l'** trước các từ bắt đầu bằng 'h' hữu thanh (h aspiré) hoặc một số từ cố định (ví dụ: *les halles, la hauteur, le haut, le héros, la Hollande, le homard, le hors-d'œuvre*).
+        </p>
+    </div>
+
+    <script>
+        // === BIẾN TOÀN CỤC VÀ HÀM CHÈN KÝ TỰ ===
+        let activeInput = null;
+
+        document.addEventListener('mousedown', (event) => {
+            if (event.target.tagName === 'INPUT' && event.target.type === 'text') {
+                activeInput = event.target;
+            } else if (!event.target.classList.contains('char-button')) {
+                activeInput = null;
+            }
+        });
+
+        function insertChar(char) {
+            if (activeInput) {
+                const start = activeInput.selectionStart;
+                const end = activeInput.selectionEnd;
+                const value = activeInput.value;
+
+                activeInput.value = value.substring(0, start) + char + value.substring(end);
+                
+                activeInput.selectionStart = activeInput.selectionEnd = start + char.length;
+                
+                activeInput.focus();
+            } else {
+                alert('Vui lòng click vào ô bạn muốn điền trước khi chọn ký tự! (Please click on the input field you want to fill before selecting a character!)');
+            }
+        }
+
+        // === HÀM KIỂM TRA ĐÁP ÁN (checkMultipleAnswersDynamic - đã được cải tiến để linh hoạt) ===
+        // Hàm này sẽ kiểm tra tất cả các ô input trong một câu.
+        // Các tham số truyền vào là một chuỗi các cặp (inputId, correctAnswer), 
+        // và tham số cuối cùng là feedbackId.
+        function checkMultipleAnswersDynamic(...args) {
+            const feedbackId = args[args.length - 1]; // Feedback ID là tham số cuối cùng
+            const feedbackElement = document.getElementById(feedbackId);
+
+            let allInputsFilled = true;
+            let allAnswersCorrect = true;
+            let incorrectAnswers = [];
+
+            // Lặp qua các cặp inputId và correctAnswer
+            for (let i = 0; i < args.length - 1; i += 2) {
+                const inputId = args[i];
+                const correctAnswer = args[i + 1];
+
+                const inputElement = document.getElementById(inputId);
+                const userAnswer = inputElement.value.trim().toLowerCase();
+                const cleanCorrectAnswer = correctAnswer.toLowerCase().trim(); 
+
+                if (userAnswer === '') {
+                    allInputsFilled = false;
+                }
+
+                // Xử lý đặc biệt cho 'l\'' vì người dùng có thể gõ 'l'' hoặc 'l'
+                let isCurrentCorrect;
+                if (cleanCorrectAnswer === "l'") { // Nếu đáp án đúng là l'
+                    isCurrentCorrect = (
+                        userAnswer === "l'" || 
+                        userAnswer === "l" // Chấp nhận l nếu họ không gõ apostrophe
+                    );
+                } else { // Với các mạo từ khác (le, la, les), so sánh trực tiếp
+                    isCurrentCorrect = (userAnswer === cleanCorrectAnswer);
+                }
+                
+                if (!isCurrentCorrect) {
+                    allAnswersCorrect = false;
+                    incorrectAnswers.push({
+                        inputNum: (i / 2) + 1, // Số thứ tự ô input trong câu (bắt đầu từ 1)
+                        correct: correctAnswer
+                    });
+                }
+            }
+
+            feedbackElement.classList.remove('correct', 'incorrect', 'warning');
+            feedbackElement.style.display = 'block';
+
+            if (!allInputsFilled) {
+                feedbackElement.textContent = 'Bạn cần điền vào tất cả các ô trống trước khi kiểm tra! (Please fill in all blanks before checking!)';
+                feedbackElement.classList.add('warning');
+            } else if (allAnswersCorrect) {
+                feedbackElement.textContent = 'Chính xác! (Correct!)';
+                feedbackElement.classList.add('correct');
+            } else {
+                let feedbackText = 'Chưa đúng. ';
+                incorrectAnswers.forEach((item, index) => {
+                    feedbackText += `Ô ${item.inputNum}: "${item.correct}". `;
+                });
+                feedbackText += ` (Incorrect. Please check your answers.)`;
+                feedbackElement.classList.add('incorrect');
+                feedbackElement.textContent = feedbackText;
+            }
+        }
+
+        // Tải bài tập mặc định khi trang load: BÀI TẬP ARTICLES DÉFINIS (le, la, les, l')
+        document.addEventListener('DOMContentLoaded', () => {
+            // Đã chèn nội dung bài tập trực tiếp vào HTML, không cần loadExercise()
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<meta name="robots" content="noindex">
+<html>
+<head>
+<title>Groupe 3</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f4f8;
+    color: #333;
+  }
+  
+  /* Đảm bảo header có cùng chiều rộng và căn giữa như container, và bo góc */
+  header {
+    background-color: #e0e7ed;
+    color: #2c3e50;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    /* Các thay đổi để căn chỉnh và bo góc */
+    max-width: 800px; /* Giống container */
+    margin: 0px auto; /* Căn giữa và giảm margin-top */
+    border-radius: 10px 10px 0 0; /* Bo tròn các góc trên */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+    border-bottom: none; /* Bỏ border-bottom để sát container */
+  }
+  
+  header h2 {
+    margin: 0;
+    font-size: 1.1em;
+    color: #333;
+  }
+  
+  h1 {
+    color: #2c3e50;
+    text-align: center;
+    margin-top: 0px; /* Giảm margin-top để sát header */
+    margin-bottom: 20px;
+  }
+  
+  .container {
+    max-width: 800px;
+    /* Giảm margin-top để sát header, giữ margin-bottom */
+    margin: 0px auto 30px auto; 
+    padding: 20px;
+    background-color: #ffffff;
+    /* Giữ góc dưới bo tròn, góc trên phẳng để khớp với header */
+    border-radius: 0 0 10px 10px; 
+    /* Thay đổi box-shadow để không bị trùng hoặc tạo khoảng cách với header */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  .question-block {
+    margin-bottom: 25px;
+    padding: 20px;
+    border: 1px solid #d0dbe4;
+    border-radius: 8px;
+    background-color: #fdfefe;
+  }
+  .question {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 1.1em;
+    color: #34495e;
+  }
+  .translation {
+    font-style: italic;
+    color: #666;
+    margin-bottom: 15px;
+    font-size: 0.95em;
+  }
+  .options label {
+    display: block;
+    margin-bottom: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: color 0.3s ease;
+    padding: 5px 0;
+  }
+  .options label:hover {
+    color: #5a7d9a;
+  }
+  .options input[type="radio"] {
+    margin-right: 10px;
+    transform: scale(1.1);
+  }
+  .options label.correct-highlight {
+    background-color: #d4edda;
+    border: 2px solid #28a745;
+    border-radius: 5px;
+    padding: 5px;
+    color: #1a7e37;
+  }
+  .feedback {
+    margin-top: 15px;
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 5px;
+    width: calc(100% - 24px);
+    box-sizing: border-box;
+    display: none;
+  }
+  .feedback.active {
+      display: block;
+  }
+  .correct {
+    background-color: #e6ffe6;
+    color: #1a7e37;
+    border: 1px solid #28a745;
+  }
+  .incorrect {
+    background-color: #ffe6e6;
+    color: #dc3545;
+    border: 1px solid #dc3545;
+  }
+  .warning {
+      background-color: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffeeba;
+  }
+  .explanation {
+    font-size: 0.9em;
+    font-weight: normal;
+    color: #555;
+    margin-top: 8px;
+    font-style: italic;
+  }
+  /* Cập nhật màu xanh lá cây cho đáp án đúng khi hiển thị trong feedback sai */
+  .correct-answer-display {
+    color: #28a745; /* Green color */
+    font-weight: bold;
+    margin-top: 5px;
+    display: block;
+  }
+  .validate-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-top: 15px;
+    transition: background-color 0.3s ease;
+  }
+  .validate-btn:hover {
+    background-color: #45a049;
+  }
+  .validate-btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+  #score-area {
+    text-align: center;
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #e6f7ff;
+    border: 1px solid #b3e0ff;
+    border-radius: 8px;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #0056b3;
+    display: none;
+  }
+  .complete-test-btn {
+    display: block;
+    width: fit-content;
+    margin: 30px auto;
+    background-color: #007bff;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease;
+  }
+  .complete-test-btn:hover {
+    background-color: #0056b3;
+  }
+  @media (max-width: 600px) {
+    .container, header {
+      margin: 0px 15px 30px 15px;
+      padding: 15px;
+      max-width: none; /* Cho phép giãn ra hết cỡ */
+      width: auto;
+    }
+    header {
+      margin-bottom: 0;
+      border-radius: 10px 10px 0 0;
+    }
+    .container {
+      margin-top: 0;
+      border-radius: 0 0 10px 10px;
+    }
+    header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    header h2 {
+      font-size: 1em;
+      margin-bottom: 0px; 
+    }
+    .question, .translation, .options label, .feedback, .validate-btn, .complete-test-btn {
+      font-size: 0.9em;
+    }
+    .feedback {
+      padding: 6px 10px;
+      width: calc(100% - 20px);
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h2>Enseignant: Nguyễn Hoàng Vũ</h2>
+  </header>
+
+<div class="container">
+  <h1>Groupe 3 (Futur Simple):</h1>
+
+  <div class="question-block" id="q1-block">
+    <div class="question">1. Avec ce médicament, je ne sens plus la douleur!</div>
+    <div class="translation">Với thuốc này, tôi không còn cảm thấy đau nữa!</div>
+    <div class="options" id="options-q1"></div>
+    <button class="validate-btn" onclick="checkAnswer('q1')">Valider</button>
+    <div class="feedback" id="feedback1"></div>
+  </div>
+
+  <div class="question-block" id="q2-block">
+    <div class="question">2. Nous écrivons à nos amis pour la nouvelle année.</div>
+    <div class="translation">Chúng tôi viết thư cho bạn bè nhân dịp năm mới.</div>
+    <div class="options" id="options-q2"></div>
+    <button class="validate-btn" onclick="checkAnswer('q2')">Valider</button>
+    <div class="feedback" id="feedback2"></div>
+  </div>
+
+  <div class="question-block" id="q3-block">
+    <div class="question">3. Le soleil disparaît à l'horizon.</div>
+    <div class="translation">Mặt trời biến mất ở chân trời.</div>
+    <div class="options" id="options-q3"></div>
+    <button class="validate-btn" onclick="checkAnswer('q3')">Valider</button>
+    <div class="feedback" id="feedback3"></div>
+  </div>
+
+  <div class="question-block" id="q4-block">
+    <div class="question">4. Vous vivez d'amour et d'eau fraîche.</div>
+    <div class="translation">Bạn (số nhiều/lịch sự) sống bằng tình yêu và nước lã.</div>
+    <div class="options" id="options-q4"></div>
+    <button class="validate-btn" onclick="checkAnswer('q4')">Valider</button>
+    <div class="feedback" id="feedback4"></div>
+  </div>
+
+  <div class="question-block" id="q5-block">
+    <div class="question">5. Je traduis un roman espagnol.</div>
+    <div class="translation">Tôi dịch một cuốn tiểu thuyết tiếng Tây Ban Nha.</div>
+    <div class="options" id="options-q5"></div>
+    <button class="validate-btn" onclick="checkAnswer('q5')">Valider</button>
+    <div class="feedback" id="feedback5"></div>
+  </div>
+
+  <div class="question-block" id="q6-block">
+    <div class="question">6. Le jour de la fête, nous buvons beaucoup.</div>
+    <div class="translation">Vào ngày lễ, chúng tôi uống rất nhiều.</div>
+    <div class="options" id="options-q6"></div>
+    <button class="validate-btn" onclick="checkAnswer('q6')">Valider</button>
+    <div class="feedback" id="feedback6"></div>
+  </div>
+
+  <div class="question-block" id="q7-block">
+    <div class="question">7. A minuit, tu éteins la lumière.</div>
+    <div class="translation">Vào nửa đêm, bạn tắt đèn.</div>
+    <div class="options" id="options-q7"></div>
+    <button class="validate-btn" onclick="checkAnswer('q7')">Valider</button>
+    <div class="feedback" id="feedback7"></div>
+  </div>
+
+  <div class="question-block" id="q8-block">
+    <div class="question">8. Est-ce que vous reprenez de la mousse au chocolat?</div>
+    <div class="translation">Bạn (số nhiều/lịch sự) có lấy thêm mousse sô cô la không?</div>
+    <div class="options" id="options-q8"></div>
+    <button class="validate-btn" onclick="checkAnswer('q8')">Valider</button>
+    <div class="feedback" id="feedback8"></div>
+  </div>
+
+  <div class="question-block" id="q9-block">
+    <div class="question">9. Nous attendons ton retour.</div>
+    <div class="translation">Chúng tôi đang chờ bạn trở về.</div>
+    <div class="options" id="options-q9"></div>
+    <button class="validate-btn" onclick="checkAnswer('q9')">Valider</button>
+    <div class="feedback" id="feedback9"></div>
+  </div>
+
+  <div class="question-block" id="q10-block">
+    <div class="question">10. Le champion bat son record.</div>
+    <div class="translation">Nhà vô địch phá kỷ lục của mình.</div>
+    <div class="options" id="options-q10"></div>
+    <button class="validate-btn" onclick="checkAnswer('q10')">Valider</button>
+    <div class="feedback" id="feedback10"></div>
+  </div>
+
+  <button class="complete-test-btn" onclick="showScore()">Hoàn thành bài kiểm tra</button>
+
+  <div id="score-area">
+    <p>Bạn đã trả lời đúng <span id="correct-count">0</span> trên tổng số <span id="total-questions">0</span> câu.</p>
+  </div>
+
+</div>
+
+<script>
+  // Định nghĩa dữ liệu cho mỗi câu hỏi
+  const questionsData = {
+    q1: {
+      original: "Avec ce médicament, je ne sens plus la douleur!",
+      translation: "Với thuốc này, tôi không còn cảm thấy đau nữa!",
+      correct: "Avec ce médicament, je ne sentirai plus la douleur!",
+      wrong: ["Avec ce médicament, je ne sentirai pas la douleur!", "Avec ce médicament, je ne sens plus la douleurai!"],
+      explanation: "Động từ 'sentir' có gốc tương lai là 'sentir-'. Phần phủ định 'ne...plus' bao quanh động từ chia ở tương lai đơn."
+    },
+    q2: {
+      original: "Nous écrivons à nos amis pour la nouvelle année.",
+      translation: "Chúng tôi viết thư cho bạn bè nhân dịp năm mới.",
+      correct: "Nous écrirons à nos amis pour la nouvelle année.",
+      wrong: ["Nous écriront à nos amis pour la nouvelle année.", "Nous écriverons à nos amis pour la nouvelle année."],
+      explanation: "Động từ 'écrire' có gốc tương lai là 'écrir-'. Thêm đuôi 'ons' cho ngôi 'Nous'."
+    },
+    q3: {
+      original: "Le soleil disparaît à l'horizon.",
+      translation: "Mặt trời biến mất ở chân trời.",
+      correct: "Le soleil disparaîtra à l'horizon.",
+      wrong: ["Le soleil disparaîtront à l'horizon.", "Le soleil disparaîtrons à l'horizon."],
+      explanation: "Động từ 'disparaître' có gốc tương lai là 'disparaîtr-'. Thêm đuôi 'a' cho ngôi 'Il/Elle' (Le soleil)."
+    },
+    q4: {
+      original: "Vous vivez d'amour et d'eau fraîche.",
+      translation: "Bạn (số nhiều/lịch sự) sống bằng tình yêu và nước lã.",
+      correct: "Vous vivrez d'amour et d'eau fraîche.",
+      wrong: ["Vous vivra d'amour et d'eau fraîche.", "Vous vivraient d'amour et d'eau fraîche."],
+      explanation: "Động từ 'vivre' có gốc tương lai là 'vivr-'. Thêm đuôi 'ez' cho ngôi 'Vous'."
+    },
+    q5: {
+      original: "Je traduis un roman espagnol.",
+      translation: "Tôi dịch một cuốn tiểu thuyết tiếng Tây Ban Nha.",
+      correct: "Je traduirai un roman espagnol.",
+      wrong: ["Je traduiras un roman espagnol.", "Je traduira un roman espagnol."],
+      explanation: "Động từ 'traduire' có gốc tương lai là 'traduir-'. Thêm đuôi 'ai' cho ngôi 'Je'."
+    },
+    q6: {
+      original: "Le jour de la fête, nous buvons beaucoup.",
+      translation: "Vào ngày lễ, chúng tôi uống rất nhiều.",
+      correct: "Le jour de la fête, nous boirons beaucoup.",
+      wrong: ["Le jour de la fête, nous buverons beaucoup.", "Le jour de la fête, nous boiras beaucoup."],
+      explanation: "Động từ 'boire' có gốc tương lai là 'boir-'. Thêm đuôi 'ons' cho ngôi 'Nous'."
+    },
+    q7: {
+      original: "A minuit, tu éteins la lumière.",
+      translation: "Vào nửa đêm, bạn tắt đèn.",
+      correct: "A minuit, tu éteindras la lumière.",
+      wrong: ["A minuit, tu éteindra la lumière.", "A minuit, tu éteindrai la lumière."],
+      explanation: "Động từ 'éteindre' có gốc tương lai là 'éteindr-'. Thêm đuôi 'as' cho ngôi 'Tu'."
+    },
+    q8: {
+      original: "Est-ce que vous reprenez de la mousse au chocolat?",
+      translation: "Bạn (số nhiều/lịch sự) có lấy thêm mousse sô cô la không?",
+      correct: "Est-ce que vous reprendrez de la mousse au chocolat?",
+      wrong: ["Est-ce que vous reprendrez de la mousse au chocolat?", "Est-ce que vous reprendriez de la mousse au chocolat?"],
+      explanation: "Động từ 'reprendre' có gốc tương lai là 'reprendr-'. Thêm đuôi 'ez' cho ngôi 'Vous'."
+    },
+    q9: {
+      original: "Nous attendons ton retour.",
+      translation: "Chúng tôi đang chờ bạn trở về.",
+      correct: "Nous attendrons ton retour.",
+      wrong: ["Nous attendra ton retour.", "Nous attendrez ton retour."],
+      explanation: "Động từ 'attendre' có gốc tương lai là 'attendr-'. Thêm đuôi 'ons' cho ngôi 'Nous'."
+    },
+    q10: {
+      original: "Le champion bat son record.",
+      translation: "Nhà vô địch phá kỷ lục của mình.",
+      correct: "Le champion battra son record.",
+      wrong: ["Le champion battras son record.", "Le champion battrons son record."],
+      explanation: "Động từ 'battre' có gốc tương lai là 'battr-'. Thêm đuôi 'a' cho ngôi 'Il/Elle' (Le champion)."
+    }
+  };
+
+  let correctAnswersCount = 0;
+  const totalQuestions = Object.keys(questionsData).length;
+  const answeredQuestions = new Set(); 
+
+  // Hàm xáo trộn mảng Fisher-Yates
+  function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+      }
+  }
+
+  // Hàm tạo và hiển thị các lựa chọn
+  function generateOptions() {
+    for (const qKey in questionsData) {
+      const qData = questionsData[qKey];
+      const optionsDiv = document.getElementById(`options-${qKey}`);
+      optionsDiv.innerHTML = ''; 
+
+      const allOptions = [{text: qData.correct, isCorrect: true}];
+      // Lấy 2 lựa chọn sai từ mảng 'wrong' để có tổng cộng 3 lựa chọn
+      qData.wrong.slice(0, 2).forEach(w => allOptions.push({text: w, isCorrect: false})); 
+
+      shuffleArray(allOptions); 
+
+      allOptions.forEach((option, index) => {
+        const optionId = `${qKey}-${String.fromCharCode(97 + index)}`; 
+        const label = document.createElement('label');
+        label.setAttribute('for', optionId);
+        
+        const input = document.createElement('input');
+        input.type = 'radio';
+        input.name = qKey;
+        input.value = optionId;
+        input.id = optionId;
+        
+        label.appendChild(input);
+        label.appendChild(document.createTextNode(option.text));
+        
+        if (option.isCorrect) {
+          label.dataset.isCorrect = "true";
+          questionsData[qKey].correctOptionId = optionId; 
+        }
+
+        optionsDiv.appendChild(label);
+      });
+    }
+  }
+
+  // Call generateOptions when the page loads
+  document.addEventListener('DOMContentLoaded', generateOptions);
+
+
+  function checkAnswer(questionName) {
+    if (answeredQuestions.has(questionName)) {
+        return; 
+    }
+
+    const selectedOptionInput = document.querySelector(`input[name="${questionName}"]:checked`);
+    const feedbackDiv = document.getElementById(`feedback${questionName.substring(1)}`); // Sửa lại cách truy cập ID feedback
+    const validateButton = event.target; 
+    
+    feedbackDiv.classList.remove('active', 'correct', 'incorrect', 'warning');
+    feedbackDiv.innerHTML = '';
+
+
+    if (!selectedOptionInput) {
+        feedbackDiv.textContent = 'Vui lòng chọn một đáp án trước khi kiểm tra.';
+        feedbackDiv.classList.add('active', 'warning');
+        return;
+    }
+
+    const qData = questionsData[questionName]; 
+
+    const correctAnswerLabel = document.querySelector(`label[for="${qData.correctOptionId}"]`);
+    if (correctAnswerLabel) {
+      correctAnswerLabel.classList.add('correct-highlight');
+    }
+
+    answeredQuestions.add(questionName);
+    
+    const selectedOptionLabel = selectedOptionInput.parentElement;
+    
+    if (selectedOptionLabel.dataset.isCorrect === "true") {
+      feedbackDiv.innerHTML = '<strong>Chính xác!</strong><br><span class="explanation">' + qData.explanation + '</span>';
+      feedbackDiv.classList.add('active', 'correct');
+      correctAnswersCount++;
+    } else {
+      const correctAnswerText = correctAnswerLabel ? correctAnswerLabel.textContent.trim() : '';
+      feedbackDiv.innerHTML = '<strong>Không chính xác.</strong><br><span class="correct-answer-display">Đáp án đúng là: ' + correctAnswerText + '</span><br><span class="explanation">' + qData.explanation + '</span>';
+      feedbackDiv.classList.add('active', 'incorrect');
+    }
+    
+    const radioButtons = document.querySelectorAll(`input[name="${questionName}"]`);
+    radioButtons.forEach(radio => radio.disabled = true);
+    validateButton.disabled = true;
+  }
+
+  function showScore() {
+    document.getElementById('correct-count').textContent = correctAnswersCount;
+    document.getElementById('total-questions').textContent = totalQuestions;
+    document.getElementById('score-area').style.display = 'block';
+  }
+</script>
+
+</body>
+</html>

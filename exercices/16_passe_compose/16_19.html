@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+
+<meta name="robots" content="noindex" />
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Passé Composé</title>
+    <style>
+      /* CSS để làm cho trang kiểm tra đẹp hơn */
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Helvetica, Arial, sans-serif;
+        background-color: #f0f2f5;
+        color: #333;
+        line-height: 1.6;
+        margin: 0;
+        padding: 20px;
+      }
+
+      .quiz-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background-color: #ffffff;
+        padding: 20px 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      .info-header {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #e0e0e0;
+        font-size: 0.95em;
+        color: #555;
+      }
+
+      .info-header p {
+        margin: 0;
+      }
+
+      .quiz-status-bar {
+        position: sticky;
+        top: 0;
+        background-color: #4a5a7b;
+        color: white;
+        padding: 15px 30px;
+        border-radius: 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+        z-index: 1000;
+      }
+
+      .quiz-status-bar h1 {
+        margin: 0;
+        font-size: 1.5em;
+      }
+
+      #score-display,
+      #timer-display {
+        font-size: 1.2em;
+        font-weight: bold;
+        background-color: #ffffff;
+        color: #4a5a7b;
+        padding: 5px 15px;
+        border-radius: 20px;
+      }
+
+      .question-block {
+        margin-bottom: 25px;
+        padding: 20px;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        background-color: #fdfdfd;
+      }
+
+      .question-text {
+        font-weight: bold;
+        margin-bottom: 5px;
+        display: block;
+        font-style: italic;
+        color: #34495e;
+      }
+
+      .question-translation {
+        font-size: 0.9em;
+        font-style: italic;
+        color: #6c757d;
+        margin-top: -10px;
+        margin-bottom: 15px;
+      }
+
+      .answers label {
+        display: block;
+        margin-bottom: 10px;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .answers label:hover {
+        background-color: #e9ecef;
+      }
+
+      .answers input[type="radio"] {
+        margin-right: 10px;
+      }
+
+      .validate-btn {
+        background-color: #3498db;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-size: 1em;
+        cursor: pointer;
+        display: block;
+        margin-top: 15px;
+        transition: background-color 0.3s;
+      }
+
+      .validate-btn:hover {
+        background-color: #2980b9;
+      }
+
+      .validate-btn:disabled {
+        background-color: #bdc3c7;
+        cursor: not-allowed;
+      }
+
+      .feedback {
+        margin-top: 15px;
+        font-weight: normal;
+        font-size: 0.95em;
+        padding: 10px;
+        border-radius: 5px;
+      }
+
+      .feedback-correct {
+        background-color: #d4edda;
+        color: #155724;
+      }
+
+      .feedback-incorrect {
+        background-color: #f8d7da;
+        color: #721c24;
+      }
+
+      .feedback-warning {
+        background-color: #fffbe6;
+        color: #8a6d3b;
+      }
+
+      .correct-answer {
+        background-color: #d4edda !important;
+        border-color: #c3e6cb !important;
+      }
+
+      .incorrect-answer {
+        background-color: #f8d7da !important;
+        border-color: #f5c6cb !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="quiz-container">
+      <div class="info-header">
+        <p><strong>Enseignant:</strong> Nguyễn Hoàng Vũ</p>
+      </div>
+
+      <div class="quiz-status-bar">
+        <h1>Hoàn thành câu ở thì Passé Composé</h1>
+        <div>
+          <span id="score-display">Điểm: 0 / 10</span>
+        </div>
+      </div>
+
+      <div id="all-questions-container">
+        <div class="question-block" id="q1">
+          <p class="question-text">1. Ce matin – falloir partir très tôt.</p>
+          <p class="question-translation">
+            Sáng nay – cần phải – rời đi rất sớm.
+          </p>
+          <div class="answers">
+            <label
+              ><input type="radio" name="q1" value="a" />Ce matin, il fallait
+              partir très tôt.</label
+            >
+            <label
+              ><input type="radio" name="q1" value="b" />Ce matin, il a fallu
+              partir très tôt.</label
+            >
+            <label
+              ><input type="radio" name="q1" value="c" />Ce matin, il faut
+              partir très tôt.</label
+            >
+          </div>
+          <button class="validate-btn" onclick="validateRadio(1, 'b')">
+            Valider
+          </button>
+          <div class="feedback"></div>
+        </div>
+        <div class="question-block" id="q2">
+          <p class="question-text">
+            2. Dimanche dernier – nous – jouer au golf.
+          </p>
+          <p class="question-translation">
+            Chủ nhật tuần trước – chúng tôi – chơi gôn.
+          </p>
+          <div class="answers">
+            <label
+              ><input type="radio" name="q2" value="a" /> Dimanche dernier, nous
+              avons joué au golf.</label
+            >
+            <label
+              ><input type="radio" name="q2" value="b" /> Dimanche dernier, nous
+              sommes joués au golf.</label
+            >
+            <label
+              ><input type="radio" name="q2" value="c" /> Dimanche dernier, nous
+              jouions au golf.</label
+            >
+          </div>
+          <button class="validate-btn" onclick="validateRadio(2, 'a')">
+            Valider
+          </button>
+          <div class="feedback"></div>
+        </div>
+        <div class="question-block" id="q3">
+          <p class="question-text">
+            3. Il y a quelques minutes – le facteur – sonner à la porte.
+          </p>
+          <p class="question-translation">
+            Vài phút trước – người đưa thư – bấm chuông cửa.
+          </p>
+          <div class="answers">
+            <label
+              ><input type="radio" name="q3" value="a" /> Il y a quelques
+              minutes, le facteur est sonné à la porte.</label
+            >
+            <label
+              ><input type="radio" name="q3" value="b" /> Il y a quelques
+              minutes, le facteur sonnait à la porte.</label
+            >
+            <label
+              ><input type="radio" name="q3" value="c" /> Il y a quelques
+              minutes, le facteur a sonné à la porte.</label
+            >
+          </div>
+          <button class="validate-btn" onclick="validateRadio(3, 'c')">
+            Valider
+          </button>
+          <div class="feedback"></div>
+        </div>
+        <div class="question-block" id="q4">
+          <p class="question-text">
+            4. La nuit dernière – vous – prendre un taxi pour rentrer chez vous.
+          </p>
+          <p class="question-translation">
+            Đêm qua – bạn – bắt một chiếc taxi để về nhà.
+          </p>
+          <div class="answers">
+            <label
+              ><input type="radio" name="q4" value="a" /> La nuit dernière, vous
+              avez pris un taxi pour rentrer chez vous.</label
+            >
+            <label
+              ><input type="radio" name="q4" value="b" /> La nuit dernière, vous
+              êtes pris un taxi pour rentrer chez vous.</label
+            >
+            <label
+              ><input type="radio" name="q4" value="c" /> La nuit dernière, vous
+              avez prendu un taxi pour rentrer chez vous.</label
+            >
+          </div>
+          <button class="validate-btn" onclick="validateRadio(4, 'a')">
+            Valider
+          </button>
+          <div class="feedback"></div>
+        </div>
+        <div class="question-block" id="q5">
+          <p class="question-text">
+            5. Pendant deux jours – je – dormir sans arrêt.
+          </p>
+          <p class="question-translation">
+            Trong hai ngày – tôi – ngủ không ngừng.
+          </p>
+          <div class="answers">
+            <label
+              ><input type="radio" name="q5" value="a" /> Pendant deux jours, je
+              suis dormi sans arrêt.</label
+            >
+            <label
+              ><input type="radio" name="q5" value="b" /> Pendant deux jours,
+              j'ai dormi sans arrêt.</label
+            >
+            <label
+              ><input type="radio" name="q5" value="c" /> Pendant deux jours, je
+              dormais sans arrêt.</label
+            >
+          </div>
+          <button class="validate-btn" onclick="validateRadio(5, 'b')">
+            Valider
+          </button>
+          <div class="feedback"></div>
+        </div>
+        <div class="question-block" id="q6">
+          <p class="question-text">
+            6. De huit heures à midi – le malade – rester dans la salle
+            d'opération.
+          </p>
+          <p class="question-translation">
+            Từ tám giờ đến trưa – người bệnh – ở lại trong phòng phẫu thuật.
+          </p>
+          <div class="answers">
+            <label
+              ><input type="radio" name="q6" value="a" /> De huit heures à midi,
+              le malade a resté dans la salle d'opération.</label
+            >
+            <label
+              ><input type="radio" name="q6" value="b" /> De huit heures à midi,
+              le malade est resté dans la salle d'opération.</label
+            >
+            <label
+              ><input type="radio" name="q6" value="c" /> De huit heures à midi,
+              le malade reste dans la salle d'opération.</label
+            >
+          </div>
+          <button class="validate-btn" onclick="validateRadio(6, 'b')">
+            Valider
+          </button>
+          <div class="feedback"></div>
+        </div>
+        <div class="question-block" id="q7">
+          <p class="question-text">
+            7. Jusqu'à sept heures du soir – les manifestants – défiler dans la
+            rue.
+          </p>
+          <p class="question-translation">
+            Cho đến bảy giờ tối – những người biểu tình – diễu hành trên đường
+            phố.
+          </p>
+          <div class="answers">
+            <label
+              ><input type="radio" name="q7" value="a" /> Jusqu'à sept heures du
+              soir, les manifestants ont défilé dans la rue.</label
+            >
+            <label
+              ><input type="radio" name="q7" value="b" /> Jusqu'à sept heures du
+              soir, les manifestants sont défilés dans la rue.</label
+            >
+            <label
+              ><input type="radio" name="q7" value="c" /> Jusqu'à sept heures du
+              soir, les manifestants défilaient dans la rue.</label
+            >
+          </div>
+          <button class="validate-btn" onclick="validateRadio(7, 'a')">
+            Valider
+          </button>
+          <div class="feedback"></div>
+        </div>
+        <div class="question-block" id="q8">
+          <p class="question-text">
+            8. Le 10 mai 1975 – Boris – naître à Moscou.
+          </p>
+          <p class="question-translation">
+            Vào ngày 10 tháng 5 năm 1975 – Boris – sinh ra ở Mát-xcơ-va.
+          </p>
+          <div class="answers">
+            <label
+              ><input type="radio" name="q8" value="a" /> Le 10 mai 1975, Boris
+              a né à Moscou.</label
+            >
+            <label
+              ><input type="radio" name="q8" value="b" /> Le 10 mai 1975, Boris
+              naissait à Moscou.</label
+            >
+            <label
+              ><input type="radio" name="q8" value="c" /> Le 10 mai 1975, Boris
+              est né à Moscou.</label
+            >
+          </div>
+          <button class="validate-btn" onclick="validateRadio(8, 'c')">
+            Valider
+          </button>
+          <div class="feedback"></div>
+        </div>
+        <div class="question-block" id="q9">
+          <p class="question-text">
+            9. Tout à coup – elle – devenir furieuse – et – elle – commencer à
+            crier.
+          </p>
+          <p class="question-translation">
+            Đột nhiên – cô ấy – trở nên tức giận – và – cô ấy – bắt đầu la hét.
+          </p>
+          <div class="answers">
+            <label
+              ><input type="radio" name="q9" value="a" /> Tout à coup, elle a
+              devenu furieuse et elle est commencée à crier.</label
+            >
+            <label
+              ><input type="radio" name="q9" value="b" /> Tout à coup, elle est
+              devenue furieuse et elle a commencé à crier.</label
+            >
+            <label
+              ><input type="radio" name="q9" value="c" /> Tout à coup, elle est
+              devenu furieuse et elle a commencé à crier.</label
+            >
+          </div>
+          <button class="validate-btn" onclick="validateRadio(9, 'b')">
+            Valider
+          </button>
+          <div class="feedback"></div>
+        </div>
+
+        <div class="question-block" id="q10">
+          <p class="question-text">
+            10. Milou – disparaître quelques jours – puis – il – revenir.
+          </p>
+          <p class="question-translation">
+            Milou – biến mất vài ngày – sau đó – cậu ấy – quay trở lại.
+          </p>
+          <div class="answers">
+            <label
+              ><input type="radio" name="q10" value="a" /> Milou a disparu
+              quelques jours, puis il est revenu.</label
+            >
+            <label
+              ><input type="radio" name="q10" value="b" /> Milou est disparu
+              quelques jours, puis il a revenu.</label
+            >
+            <label
+              ><input type="radio" name="q10" value="c" /> Milou a disparaît
+              quelques jours, puis il est revenu.</label
+            >
+          </div>
+          <button class="validate-btn" onclick="validateRadio(10, 'a')">
+            Valider
+          </button>
+          <div class="feedback"></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let score = 0;
+      const maxScore = 10;
+      const scoreDisplay = document.getElementById("score-display");
+      let timeInSeconds = 600; // 10 minutes
+      let timerInterval = null;
+
+      const feedbackExplanations = {
+        1: "Chính xác!",
+        2: "Chính xác!",
+        3: "Chính xác!",
+        4: "Chính xác!",
+        5: "Chính xác!",
+        6: "Chính xác!",
+        7: "Chính xác!",
+        8: "Chính xác!",
+        9: "Chính xác!",
+        10: "Chính xác!",
+      };
+
+      document.addEventListener("DOMContentLoaded", (event) => {
+        const today = new Date();
+        const day = String(today.getDate()).padStart(2, "0");
+        const month = String(today.getMonth() + 1).padStart(2, "0");
+        const year = today.getFullYear();
+        document.getElementById(
+          "test-date"
+        ).textContent = `${day}/${month}/${year}`;
+
+        updateScoreDisplay();
+        startTimer();
+      });
+
+      function startTimer() {
+        const timerDisplay = document.getElementById("timer-display");
+        clearInterval(timerInterval);
+
+        timerInterval = setInterval(() => {
+          timeInSeconds--;
+          const minutes = Math.floor(timeInSeconds / 60);
+          const seconds = timeInSeconds % 60;
+          timerDisplay.textContent = `Thời gian: ${minutes}:${
+            seconds < 10 ? "0" : ""
+          }${seconds}`;
+          if (timeInSeconds <= 0) {
+            clearInterval(timerInterval);
+            timerDisplay.textContent = "Hết giờ!";
+            alert("Hết giờ làm bài!");
+            document
+              .querySelectorAll(".validate-btn")
+              .forEach((btn) => (btn.disabled = true));
+          }
+        }, 1000);
+      }
+
+      function updateScoreDisplay() {
+        scoreDisplay.textContent = `Điểm: ${score} / ${maxScore}`;
+      }
+
+      function updateScore(points = 1) {
+        score += points;
+        updateScoreDisplay();
+      }
+
+      function validateRadio(questionNumber, correctAnswer) {
+        const questionBlock = document.getElementById(`q${questionNumber}`);
+        const radios = document.getElementsByName(`q${questionNumber}`);
+        const feedback = questionBlock.querySelector(".feedback");
+        const button = questionBlock.querySelector(".validate-btn");
+        let selectedAnswer = null;
+
+        radios.forEach((radio) => {
+          if (radio.checked) {
+            selectedAnswer = radio;
+          }
+        });
+
+        if (selectedAnswer === null) {
+          feedback.textContent = "Vui lòng chọn một đáp án!";
+          feedback.className = "feedback feedback-warning";
+          return;
+        }
+
+        button.disabled = true;
+        radios.forEach((radio) => (radio.disabled = true));
+        const selectedLabel = selectedAnswer.parentElement;
+        const explanation = feedbackExplanations[questionNumber];
+
+        if (selectedAnswer.value === correctAnswer) {
+          feedback.textContent = explanation;
+          feedback.className = "feedback feedback-correct";
+          selectedLabel.classList.add("correct-answer");
+          updateScore();
+        } else {
+          const cleanedExplanation = explanation.replace("Chính xác! ", "");
+          feedback.innerHTML = `<strong>Không chính xác.</strong> <br>Đáp án đúng là lựa chọn <strong>"${correctAnswer.toUpperCase()}"</strong>.`;
+          feedback.className = "feedback feedback-incorrect";
+          radios.forEach((radio) => {
+            if (radio.value === correctAnswer) {
+              radio.parentElement.classList.add("correct-answer");
+            }
+          });
+        }
+      }
+    </script>
+  </body>
+</html>

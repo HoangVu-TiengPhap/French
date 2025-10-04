@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2025 by anonymous (http://jsbin.com/vumogobame/27/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+<head>
+<title>Đoạn văn: Phân biệt Imparfait và Passé Composé</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0; /* Đã sửa: Loại bỏ khoảng trống đầu trang */
+    padding: 0;
+    background-color: #f0f4f8;
+    color: #333;
+  }
+  
+  /* CHỈNH SỬA QUAN TRỌNG: Đặt chiều rộng và box-sizing để khớp container */
+  header {
+    width: 800px; /* Chiều rộng cố định, bằng container */
+    margin: 0 auto; /* Căn giữa và sát lề trên */
+    background-color: #e0e7ed;
+    color: #2c3e50;
+    padding: 15px 20px;
+    /* border-bottom: 2px solid #c0d0e0; */ /* Đã bỏ border-bottom cũ */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Thay bằng đổ bóng nhẹ */
+    border-radius: 8px 8px 0 0; /* Đã sửa: Bo tròn góc trên */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box; /* Đã sửa: Đảm bảo padding nằm trong 800px */
+  }
+  
+  header h2, header p {
+    margin: 0;
+    font-size: 1.1em;
+    color: #333;
+  }
+  
+  h1 {
+    color: #2c3e50;
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 20px;
+  }
+  
+  .container {
+    width: 800px; /* Đã sửa: Đặt width cố định để khớp Header */
+    margin: 0 auto 30px auto; /* Đã sửa: margin-top: 0 để sát Header */
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 0 0 10px 10px; /* Đã sửa: Bỏ bo góc trên */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box; /* Đã sửa: Đảm bảo padding nằm trong 800px */
+  }
+  .original-text {
+    background-color: #eaf3f8;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    font-style: italic;
+    line-height: 1.6;
+    color: #4a6a8b;
+  }
+  .question-block {
+    margin-bottom: 25px;
+    padding: 20px;
+    border: 1px solid #d0dbe4;
+    border-radius: 8px;
+    background-color: #fdfefe;
+  }
+  .question {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 1.1em;
+    color: #34495e;
+  }
+  .translation {
+    font-style: italic;
+    color: #666;
+    margin-bottom: 15px;
+    font-size: 0.95em;
+  }
+  .options label {
+    display: block;
+    margin-bottom: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: color 0.3s ease;
+    padding: 5px 0;
+  }
+  .options label:hover {
+    color: #5a7d9a;
+  }
+  .options input[type="radio"] {
+    margin-right: 10px;
+    transform: scale(1.1);
+  }
+  .options label.correct-highlight {
+    background-color: #d4edda;
+    border: 2px solid #28a745;
+    border-radius: 5px;
+    padding: 5px;
+    color: #1a7e37;
+  }
+  .feedback {
+    margin-top: 15px;
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 5px;
+    width: calc(100% - 24px);
+    box-sizing: border-box;
+    display: none;
+  }
+  .feedback.active {
+      display: block;
+  }
+  .correct {
+    background-color: #e6ffe6;
+    color: #1a7e37;
+    border: 1px solid #28a745;
+  }
+  .incorrect {
+    background-color: #ffe6e6;
+    color: #dc3545;
+    border: 1px solid #dc3545;
+  }
+  .warning {
+      background-color: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffeeba;
+  }
+  .explanation {
+    font-size: 0.9em;
+    font-weight: normal;
+    color: #555;
+    margin-top: 8px;
+    font-style: italic;
+  }
+  .correct-answer-display {
+    color: dodgerblue; /* Xanh dương tươi */
+    font-weight: bold;
+    margin-top: 5px;
+    display: block;
+  }
+  .validate-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-top: 15px;
+    transition: background-color 0.3s ease;
+  }
+  .validate-btn:hover {
+    background-color: #45a049;
+  }
+  .validate-btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+  #score-area {
+    text-align: center;
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #e6f7ff;
+    border: 1px solid #b3e0ff;
+    border-radius: 8px;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #0056b3;
+    display: none;
+  }
+  .complete-test-btn {
+    display: block;
+    width: fit-content;
+    margin: 30px auto;
+    background-color: #007bff;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease;
+  }
+  .complete-test-btn:hover {
+    background-color: #0056b3;
+  }
+  @media (max-width: 600px) {
+    .container {
+      margin: 15px;
+      padding: 15px;
+    }
+    header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    header h2, header p {
+      font-size: 1em;
+      margin-bottom: 5px;
+    }
+    .question, .translation, .options label, .feedback, .validate-btn, .complete-test-btn {
+      font-size: 0.9em;
+    }
+    .feedback {
+      padding: 6px 10px;
+      width: calc(100% - 20px);
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h2>Enseignant: Nguyễn Hoàng Vũ</h2>
+  
+</header>
+
+<div class="container">
+  <h1>Chia động từ trong ngoặc ở Imparfait hoặc Passé Composé</h1>
+
+  <div class="original-text">
+    À dix heures cinquante, mon train (entrer) en gare. Il (avoir) dix minutes de retard. Tous les voyageurs (être) déjà debout, ils (vouloir) descendre très vite. Moi, je (rester) assise, car Allan et Peter (devoir) m'attendre sur le quai. Je (ouvrir) la fenêtre et je (chercher) mes amis du regard. Je ne (voir) personne! Alors, je (descendre) et je (marcher) jusqu'au bout du quai. Là, beaucoup de gens (attendre) : ils (regarder), ils (dévisager) chaque voyageur ; ils (craindre) de laisser passer la personne attendue. Enfin, derrière eux, je (apercevoir) mes amis. Je (courir) vers eux. Contens de nous retrouver, nous (partir) aussitôt.
+  </div>
+
+  <div class="question-block" id="q1-block">
+    <div class="question">1. À dix heures cinquante, mon train (entrer) en gare.</div>
+    <div class="translation">Vào mười giờ năm mươi, tàu của tôi (đã) vào ga.</div>
+    <div class="options" id="options-q1"></div>
+    <button class="validate-btn" onclick="checkAnswer('q1')">Valider</button>
+    <div class="feedback" id="feedback1"></div>
+  </div>
+
+  <div class="question-block" id="q2-block">
+    <div class="question">2. Il (avoir) dix minutes de retard.</div>
+    <div class="translation">Nó (đã) trễ mười phút.</div>
+    <div class="options" id="options-q2"></div>
+    <button class="validate-btn" onclick="checkAnswer('q2')">Valider</button>
+    <div class="feedback" id="feedback2"></div>
+  </div>
+
+  <div class="question-block" id="q3-block">
+    <div class="question">3. Tous les voyageurs (être) déjà debout.</div>
+    <div class="translation">Tất cả hành khách (đã) đứng dậy rồi.</div>
+    <div class="options" id="options-q3"></div>
+    <button class="validate-btn" onclick="checkAnswer('q3')">Valider</button>
+    <div class="feedback" id="feedback3"></div>
+  </div>
+
+  <div class="question-block" id="q4-block">
+    <div class="question">4. ... ils (vouloir) descendre très vite.</div>
+    <div class="translation">... họ (đã) muốn xuống rất nhanh.</div>
+    <div class="options" id="options-q4"></div>
+    <button class="validate-btn" onclick="checkAnswer('q4')">Valider</button>
+    <div class="feedback" id="feedback4"></div>
+  </div>
+
+  <div class="question-block" id="q5-block">
+    <div class="question">5. Moi, je (rester) assise, car Allan et Peter (devoir) m'attendre sur le quai.</div>
+    <div class="translation">Còn tôi, tôi (đã) ngồi yên, vì Allan và Peter (đã) phải đợi tôi trên sân ga.</div>
+    <div class="options" id="options-q5"></div>
+    <button class="validate-btn" onclick="checkAnswer('q5')">Valider</button>
+    <div class="feedback" id="feedback5"></div>
+  </div>
+
+  <div class="question-block" id="q6-block">
+    <div class="question">6. Je (ouvrir) la fenêtre et je (chercher) mes amis du regard.</div>
+    <div class="translation">Tôi (đã) mở cửa sổ và tôi (đã) tìm bạn bè bằng ánh mắt.</div>
+    <div class="options" id="options-q6"></div>
+    <button class="validate-btn" onclick="checkAnswer('q6')">Valider</button>
+    <div class="feedback" id="feedback6"></div>
+  </div>
+
+
+  <div class="question-block" id="q7-block">
+    <div class="question">7. Je ne (voir) personne!</div>
+    <div class="translation">Tôi không (đã) thấy ai cả!</div>
+    <div class="options" id="options-q7"></div>
+    <button class="validate-btn" onclick="checkAnswer('q7')">Valider</button>
+    <div class="feedback" id="feedback7"></div>
+  </div>
+
+  <div class="question-block" id="q8-block">
+    <div class="question">8. Alors, je (descendre) et je (marcher) jusqu'au bout du quai.</div>
+    <div class="translation">Vậy thì, tôi (đã) xuống và tôi (đã) đi bộ đến cuối sân ga.</div>
+    <div class="options" id="options-q8"></div>
+    <button class="validate-btn" onclick="checkAnswer('q8')">Valider</button>
+    <div class="feedback" id="feedback8"></div>
+  </div>
+
+  <div class="question-block" id="q9-block">
+    <div class="question">9. Là, beaucoup de gens (attendre) : ils (regarder), ils (dévisager) chaque voyageur.</div>
+    <div class="translation">Ở đó, nhiều người (đang đợi): họ (đang nhìn), họ (đang săm soi) từng hành khách.</div>
+    <div class="options" id="options-q9"></div>
+    <button class="validate-btn" onclick="checkAnswer('q9')">Valider</button>
+    <div class="feedback" id="feedback9"></div>
+  </div>
+  
+
+  <div class="question-block" id="q10-block">
+    <div class="question">10. ... ils (craindre) de laisser passer la personne attendue.</div>
+    <div class="translation">... họ (đã) sợ để người được đợi đi qua.</div>
+    <div class="options" id="options-q10"></div>
+    <button class="validate-btn" onclick="checkAnswer('q10')">Valider</button>
+    <div class="feedback" id="feedback10"></div>
+  </div>
+
+  <div class="question-block" id="q11-block">
+    <div class="question">11. Enfin, derrière eux, j' (apercevoir) mes amis.</div>
+    <div class="translation">Cuối cùng, phía sau họ, tôi (đã) nhìn thấy bạn bè của mình.</div>
+    <div class="options" id="options-q11"></div>
+    <button class="validate-btn" onclick="checkAnswer('q11')">Valider</button>
+    <div class="feedback" id="feedback11"></div>
+  </div>
+
+  <div class="question-block" id="q12-block">
+    <div class="question">12. Je (courir) vers eux.</div>
+    <div class="translation">Tôi (đã) chạy về phía họ.</div>
+    <div class="options" id="options-q12"></div>
+    <button class="validate-btn" onclick="checkAnswer('q12')">Valider</button>
+    <div class="feedback" id="feedback12"></div>
+  </div>
+
+  <div class="question-block" id="q13-block">
+    <div class="question">13. Contents de nous retrouver, nous (partir) aussitôt.</div>
+    <div class="translation">Vui mừng gặp lại nhau, chúng tôi (đã) đi ngay lập tức.</div>
+    <div class="options" id="options-q13"></div>
+    <button class="validate-btn" onclick="checkAnswer('q13')">Valider</button>
+    <div class="feedback" id="feedback13"></div>
+  </div>
+
+  <button class="complete-test-btn" onclick="showScore()">Hoàn thành bài kiểm tra</button>
+
+  <div id="score-area">
+    <p>Bạn đã trả lời đúng <span id="correct-count">0</span> trên tổng số <span id="total-questions">0</span> câu.</p>
+  </div>
+
+</div>
+
+<script>
+  // Định nghĩa dữ liệu cho mỗi câu hỏi
+  const questionsData = {
+    q1: {
+      original: "mon train (entrer) en gare",
+      translation: "tàu của tôi (đã) vào ga",
+      correct: "est entré",
+      wrong: ["entrait", "était entré"],
+      explanation: "Hành động tàu 'entrer' (vào ga) là một hành động hoàn thành, có điểm bắt đầu rõ ràng, nên dùng Passé Composé."
+    },
+    q2: {
+      original: "Il (avoir) dix minutes de retard",
+      translation: "Nó (đã) trễ mười phút",
+      correct: "avait",
+      wrong: ["a eu", "eut"],
+      explanation: "Diễn tả một trạng thái kéo dài (trễ 10 phút) tại thời điểm đó, nên dùng Imparfait."
+    },
+    q3: {
+      original: "Tous les voyageurs (être) déjà debout",
+      translation: "Tất cả hành khách (đã) đứng dậy rồi",
+      correct: "étaient",
+      wrong: ["ont été", "furent"],
+      explanation: "Miêu tả trạng thái (đứng dậy) của hành khách vào thời điểm đó, nên dùng Imparfait."
+    },
+    q4: {
+      original: "ils (vouloir) descendre très vite",
+      translation: "họ (đã) muốn xuống rất nhanh",
+      correct: "voulaient",
+      wrong: ["ont voulu", "voulurent"],
+      explanation: "Miêu tả mong muốn/ý muốn (trạng thái) của hành khách vào thời điểm đó, nên dùng Imparfait."
+    },
+    q5: {
+      original: "je (rester) assise",
+      translation: "tôi (đã) ngồi yên",
+      correct: "suis restée, devaient", // Nữ giới thì là restée
+      wrong: ["restais, ont dû", "restais, durent"],
+      explanation: "Hành động 'rester assise' (ngồi yên) là một hành động hoàn thành tại một thời điểm cụ thể (khi tàu vào ga), nên dùng Passé Composé. Lưu ý hợp giống/số với 'je' là nữ. 'Devoir' diễn tả một nghĩa vụ/sự cần thiết (trạng thái) của Allan và Peter vào thời điểm đó, nên dùng Imparfait."
+    },
+    
+    q6: {
+      original: "Je (ouvrir) la fenêtre et je (chercher) mes amis du regard",
+      translation: "Tôi (đã) mở cửa sổ và tôi (đã) tìm bạn bè bằng ánh mắt",
+      correct: "ai ouvert, ai cherché",
+      wrong: ["ouvrais, cherchais", "ai ouvert, cherchais"],
+      explanation: "Đây là chuỗi hành động hoàn thành, kế tiếp nhau: 'mở cửa sổ' rồi 'tìm bạn', nên dùng Passé Composé cho cả hai."
+    },
+    
+    q7: {
+      original: "Je ne (voir) personne!",
+      translation: "Tôi không (đã) thấy ai cả!",
+      correct: "n'ai vu",
+      wrong: ["ne voyais", "ne voyais pas"],
+      explanation: "Hành động 'voir' (thấy) là một hành động hoàn thành (phát hiện ra việc không thấy ai), nên dùng Passé Composé. 'Ne...personne' bao quanh trợ động từ và phân từ quá khứ."
+    },
+    q8: {
+      original: "je (descendre) et je (marcher) jusqu'au bout du quai",
+      translation: "tôi (đã) xuống và tôi (đã) đi bộ đến cuối sân ga",
+      correct: "suis descendue, ai marché", // Giả định người kể là nữ (restée assise)
+      wrong: ["descendais, marchais", "suis descendu, ai marché"],
+      explanation: "Đây là chuỗi hành động hoàn thành, kế tiếp nhau: 'xuống' và 'đi bộ'. 'descendre' dùng 'être' làm trợ động từ và hợp giống/số (suis descendue nếu người kể là nữ). 'marcher' dùng 'avoir'."
+    },
+    
+    q9: {
+      original: "beaucoup de gens (attendre)",
+      translation: "nhiều người (đang đợi)",
+      correct: "attendaient, regardaient, dévisageaient",
+      wrong: ["ont attendu, ont regardé, ont dévisagé", "attendaient, regardais, dévisageais"],
+      explanation: "Hành động 'attendre' (đợi) là một hành động đang diễn ra (chưa hoàn thành) trong bối cảnh đó, nên dùng Imparfait. Hành động 'regarder' (nhìn) là hành động diễn ra đồng thời với việc 'attendre', miêu tả bối cảnh, nên dùng Imparfait. Hành động 'dévisager' (săm soi) là hành động diễn ra đồng thời với việc 'attendre' và 'regarder', miêu tả bối cảnh, nên dùng Imparfait."
+    },
+    
+    q10: {
+      original: "ils (craindre) de laisser passer la personne attendue",
+      translation: "họ (đã) sợ để người được đợi đi qua",
+      correct: "craignaient",
+      wrong: ["ont craint", "craignais"],
+      explanation: "Diễn tả một trạng thái (sợ hãi) của những người đợi, nên dùng Imparfait."
+    },
+    q11: {
+      original: "je (apercevoir) mes amis",
+      translation: "tôi (đã) nhìn thấy bạn bè của mình",
+      correct: "ai aperçu",
+      wrong: ["apercevais", "apercevait"],
+      explanation: "Hành động 'apercevoir' (nhìn thấy/phát hiện ra) là một hành động đột ngột, hoàn thành, nên dùng Passé Composé."
+    },
+    q12: {
+      original: "Je (courir) vers eux",
+      translation: "Tôi (đã) chạy về phía họ",
+      correct: "ai couru",
+      wrong: ["courais", "a couru"],
+      explanation: "Hành động 'courir' (chạy) là một hành động hoàn thành, có điểm bắt đầu và kết thúc rõ ràng, nên dùng Passé Composé."
+    },
+    q13: {
+      original: "nous (partir) aussitôt",
+      translation: "chúng tôi (đã) đi ngay lập tức",
+      correct: "sommes partis", // Hoặc parties nếu người kể là nữ và trong 'nous' có nữ
+      wrong: ["partions", "avons partis"],
+      explanation: "Hành động 'partir' (đi) là một hành động hoàn thành, có điểm bắt đầu và kết thúc rõ ràng, nên dùng Passé Composé (với 'être' làm trợ động từ và hợp giống/số)."
+    }
+  };
+
+  let correctAnswersCount = 0;
+  const totalQuestions = Object.keys(questionsData).length;
+  const answeredQuestions = new Set(); 
+
+  // Hàm xáo trộn mảng Fisher-Yates
+  function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+      }
+  }
+
+  // Hàm tạo và hiển thị các lựa chọn
+  function generateOptions() {
+    for (const qKey in questionsData) {
+      const qData = questionsData[qKey];
+      const optionsDiv = document.getElementById(`options-${qKey}`);
+      optionsDiv.innerHTML = ''; 
+
+      const allOptions = [{text: qData.correct, isCorrect: true}];
+      qData.wrong.slice(0, 2).forEach(w => allOptions.push({text: w, isCorrect: false})); 
+
+      shuffleArray(allOptions); 
+
+      allOptions.forEach((option, index) => {
+        const optionId = `${qKey}-${String.fromCharCode(97 + index)}`; 
+        const label = document.createElement('label');
+        label.setAttribute('for', optionId);
+        
+        const input = document.createElement('input');
+        input.type = 'radio';
+        input.name = qKey;
+        input.value = optionId;
+        input.id = optionId;
+        
+        label.appendChild(input);
+        label.appendChild(document.createTextNode(option.text));
+        
+        if (option.isCorrect) {
+          label.dataset.isCorrect = "true";
+          questionsData[qKey].correctOptionId = optionId; 
+        }
+
+        optionsDiv.appendChild(label);
+      });
+    }
+  }
+
+  // Call generateOptions when the page loads
+  document.addEventListener('DOMContentLoaded', generateOptions);
+
+
+  function checkAnswer(questionName) {
+    if (answeredQuestions.has(questionName)) {
+        return; 
+    }
+
+    const selectedOptionInput = document.querySelector(`input[name="${questionName}"]:checked`);
+    const feedbackDiv = document.getElementById(`feedback${questionName.substring(1)}`); 
+    const validateButton = event.target; 
+    
+    feedbackDiv.classList.remove('active', 'correct', 'incorrect', 'warning');
+    feedbackDiv.innerHTML = '';
+
+
+    if (!selectedOptionInput) {
+        feedbackDiv.textContent = 'Vui lòng chọn một đáp án trước khi kiểm tra.';
+        feedbackDiv.classList.add('active', 'warning');
+        return;
+    }
+
+    const qData = questionsData[questionName]; 
+
+    const correctAnswerLabel = document.querySelector(`label[for="${qData.correctOptionId}"]`);
+    if (correctAnswerLabel) {
+      correctAnswerLabel.classList.add('correct-highlight');
+    }
+
+    answeredQuestions.add(questionName);
+    
+    const selectedOptionLabel = selectedOptionInput.parentElement;
+    
+    if (selectedOptionLabel.dataset.isCorrect === "true") {
+      feedbackDiv.innerHTML = '<strong>Chính xác!</strong><br><span class="explanation">' + qData.explanation + '</span>';
+      feedbackDiv.classList.add('active', 'correct');
+      correctAnswersCount++;
+    } else {
+      const correctAnswerText = correctAnswerLabel ? correctAnswerLabel.textContent.trim() : '';
+      feedbackDiv.innerHTML = '<strong>Không chính xác.</strong><br><span class="correct-answer-display">Đáp án đúng là: ' + correctAnswerText + '</span><br><span class="explanation">' + qData.explanation + '</span>';
+      feedbackDiv.classList.add('active', 'incorrect');
+    }
+    
+    const radioButtons = document.querySelectorAll(`input[name="${questionName}"]`);
+    radioButtons.forEach(radio => radio.disabled = true);
+    validateButton.disabled = true;
+  }
+
+  function showScore() {
+    document.getElementById('correct-count').textContent = correctAnswersCount;
+    document.getElementById('total-questions').textContent = totalQuestions;
+    document.getElementById('score-area').style.display = 'block';
+  }
+</script>
+
+</body>
+</html>

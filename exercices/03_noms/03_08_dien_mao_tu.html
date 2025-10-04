@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2025 by anonymous (http://jsbin.com/zeqogujefu/10/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài tập: Giống của danh từ (Toàn diện)</title>
+    <style>
+        /* CSS để làm cho trang kiểm tra đẹp hơn */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-header {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 0.95em;
+            color: #555;
+        }
+        
+        .info-header p {
+            margin: 0;
+        }
+
+        .quiz-status-bar {
+            position: sticky;
+            top: 0;
+            background-color: #4a5a7b;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            z-index: 1000;
+        }
+
+        .quiz-status-bar h1 {
+            margin: 0;
+            font-size: 1.5em;
+        }
+
+        #score-display, #timer-display {
+            font-size: 1.2em;
+            font-weight: bold;
+            background-color: #ffffff;
+            color: #4a5a7b;
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+        
+        .question-block {
+            margin-bottom: 25px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background-color: #fdfdfd;
+        }
+
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .answers label {
+            display: block;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            max-width: 500px;
+        }
+
+        .answers label:hover {
+            background-color: #e9ecef;
+        }
+
+        .answers input[type="radio"] {
+            margin-right: 10px;
+        }
+        
+        .validate-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            display: block;
+            margin-top: 15px; 
+            transition: background-color 0.3s;
+        }
+
+        .validate-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .validate-btn:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+        
+        .feedback {
+            margin-top: 15px;
+            font-weight: normal;
+            font-size: 0.95em;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .feedback-correct {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .feedback-incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .feedback-warning {
+            background-color: #fffbe6;
+            color: #8a6d3b;
+        }
+
+        .correct-answer {
+            background-color: #d4edda !important;
+            border-color: #c3e6cb !important;
+        }
+
+        .incorrect-answer {
+            background-color: #f8d7da !important;
+            border-color: #f5c6cb !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="quiz-container">
+        <div class="info-header">
+            <p><strong>Enseignant:</strong> Nguyễn Hoàng Vũ</p>
+            <p> <span id="test-date"></span></p>
+        </div>
+
+        <div class="quiz-status-bar">
+            <h1>Giống của danh từ</h1>
+            <div>
+                <span id="score-display">Điểm: 0 / 40</span>
+                <span id="timer-display">Thời gian: 30:00</span>
+            </div>
+        </div>
+        
+        <div id="all-questions-container">
+            </div>
+    </div>
+
+    <script>
+        let score = 0;
+        const maxScore = 40;
+        const scoreDisplay = document.getElementById('score-display');
+        let timeInSeconds = 1800; // 30 minutes
+        let timerInterval = null;
+
+        const questionsData = [
+            { id: 1, word: 'journalisme', meaning: 'ngành báo chí', answer: 'le', rule: "Danh từ kết thúc bằng '-isme' thường là giống đực." },
+            { id: 2, word: 'vitesse', meaning: 'tốc độ', answer: 'la', rule: "Danh từ kết thúc bằng '-esse' thường là giống cái." },
+            { id: 3, word: 'répétition', meaning: 'sự lặp lại', answer: 'la', rule: "Danh từ kết thúc bằng '-tion' thường là giống cái." },
+            { id: 4, word: 'économie', meaning: 'kinh tế', answer: 'l\'', rule: "'économie' là giống cái và bắt đầu bằng nguyên âm." },
+            { id: 5, word: 'appartement', meaning: 'căn hộ', answer: 'l\'', rule: "Danh từ '-ment' là giống đực, bắt đầu bằng nguyên âm." },
+            { id: 6, word: 'chaussure', meaning: 'chiếc giày', answer: 'la', rule: "Danh từ kết thúc bằng '-ure' thường là giống cái." },
+            { id: 7, word: 'vérité', meaning: 'sự thật', answer: 'la', rule: "Danh từ kết thúc bằng '-té' thường là giống cái." },
+            { id: 8, word: 'paresse', meaning: 'sự lười biếng', answer: 'la', rule: "Danh từ kết thúc bằng '-esse' thường là giống cái." },
+            { id: 9, word: 'volonté', meaning: 'ý chí', answer: 'la', rule: "Danh từ kết thúc bằng '-té' thường là giống cái." },
+            { id: 10, word: 'gouvernement', meaning: 'chính phủ', answer: 'le', rule: "Danh từ kết thúc bằng '-ment' thường là giống đực." },
+            { id: 11, word: 'traduction', meaning: 'bản dịch', answer: 'la', rule: "Danh từ kết thúc bằng '-tion' thường là giống cái." },
+            { id: 12, word: 'trottoir', meaning: 'vỉa hè', answer: 'le', rule: "'trottoir' là danh từ giống đực." },
+            { id: 13, word: 'pommier', meaning: 'cây táo', answer: 'le', rule: "Danh từ kết thúc bằng '-ier' thường là giống đực." },
+            { id: 14, word: 'exposition', meaning: 'buổi triển lãm', answer: 'l\'', rule: "'exposition' là giống cái và bắt đầu bằng nguyên âm." },
+            { id: 15, word: 'voiture', meaning: 'xe hơi', answer: 'la', rule: "Danh từ kết thúc bằng '-ure' thường là giống cái." },
+            { id: 16, word: 'pâtissier', meaning: 'thợ làm bánh ngọt', answer: 'le', rule: "Danh từ kết thúc bằng '-ier' thường là giống đực." },
+            { id: 17, word: 'action', meaning: 'hành động', answer: 'l\'', rule: "'action' là giống cái và bắt đầu bằng nguyên âm." },
+            { id: 18, word: 'visage', meaning: 'gương mặt', answer: 'le', rule: "Danh từ kết thúc bằng '-age' thường là giống đực." },
+            { id: 19, word: 'prononciation', meaning: 'sự phát âm', answer: 'la', rule: "Danh từ kết thúc bằng '-ion' thường là giống cái." },
+            { id: 20, word: 'garage', meaning: 'nhà để xe', answer: 'le', rule: "Danh từ kết thúc bằng '-age' thường là giống đực." },
+            { id: 21, word: 'année', meaning: 'năm', answer: 'l\'', rule: "'année' là giống cái và bắt đầu bằng nguyên âm." },
+            { id: 22, word: 'qualité', meaning: 'chất lượng', answer: 'la', rule: "Danh từ kết thúc bằng '-té' thường là giống cái." },
+            { id: 23, word: 'journée', meaning: 'một ngày', answer: 'la', rule: "Danh từ kết thúc bằng '-ée' thường là giống cái." },
+            { id: 24, word: 'liberté', meaning: 'sự tự do', answer: 'la', rule: "Danh từ kết thúc bằng '-té' thường là giống cái." },
+            { id: 25, word: 'fromage', meaning: 'phô mai', answer: 'le', rule: "Danh từ kết thúc bằng '-age' thường là giống đực." },
+            { id: 26, word: 'entrée', meaning: 'lối vào', answer: 'l\'', rule: "'entrée' là giống cái và bắt đầu bằng nguyên âm." },
+            { id: 27, word: 'quantité', meaning: 'số lượng', answer: 'la', rule: "Danh từ kết thúc bằng '-té' thường là giống cái." },
+            { id: 28, word: 'coiffure', meaning: 'kiểu tóc', answer: 'la', rule: "Danh từ kết thúc bằng '-ure' thường là giống cái." },
+            { id: 29, word: 'miroir', meaning: 'cái gương', answer: 'le', rule: "'miroir' là danh từ giống đực." },
+            { id: 30, word: 'vie', meaning: 'cuộc sống', answer: 'la', rule: "'vie' là danh từ giống cái." },
+            { id: 31, word: 'vêtement', meaning: 'quần áo', answer: 'le', rule: "Danh từ kết thúc bằng '-ment' thường là giống đực." },
+            { id: 32, word: 'escalier', meaning: 'cầu thang', answer: 'l\'', rule: "'escalier' là giống đực và bắt đầu bằng nguyên âm." },
+            { id: 33, word: 'voyage', meaning: 'chuyến đi', answer: 'le', rule: "Danh từ kết thúc bằng '-age' thường là giống đực." },
+            { id: 34, word: 'jeunesse', meaning: 'tuổi trẻ', answer: 'la', rule: "Danh từ kết thúc bằng '-esse' thường là giống cái." },
+            { id: 35, word: 'bouchée', meaning: 'một miếng ăn', answer: 'la', rule: "Danh từ kết thúc bằng '-ée' thường là giống cái." },
+            { id: 36, word: 'étage', meaning: 'tầng, lầu', answer: 'l\'', rule: "'étage' là giống đực và bắt đầu bằng nguyên âm." },
+            { id: 37, word: 'chimie', meaning: 'hóa học', answer: 'la', rule: "Danh từ kết thúc bằng '-ie' thường là giống cái." },
+            { id: 38, word: 'réalisme', meaning: 'chủ nghĩa hiện thực', answer: 'le', rule: "Danh từ kết thúc bằng '-isme' thường là giống đực." },
+            { id: 39, word: 'adresse', meaning: 'địa chỉ', answer: 'l\'', rule: "'adresse' là giống cái và bắt đầu bằng nguyên âm." },
+            { id: 40, word: 'impressionnisme', meaning: 'trường phái ấn tượng', answer: 'l\'', rule: "Danh từ '-isme' là giống đực, bắt đầu bằng nguyên âm." }
+        ];
+
+        const feedbackExplanations = {};
+        questionsData.forEach(q => {
+            feedbackExplanations[q.id] = `Chính xác! ${q.rule}`;
+        });
+
+        function createAllQuestions() {
+            const container = document.getElementById('all-questions-container');
+            let allQuestionsHTML = '';
+            questionsData.forEach(q => {
+                allQuestionsHTML += `
+                    <div class="question-block" id="q${q.id}">
+                        <p class="question-text">${q.id}. Chọn mạo từ đúng cho "${q.word}" (${q.meaning}).</p>
+                        <div class="answers">
+                            <label><input type="radio" name="q${q.id}" value="le"> a) le</label>
+                            <label><input type="radio" name="q${q.id}" value="la"> b) la</label>
+                            <label><input type="radio" name="q${q.id}" value="l'"> c) l'</label>
+                        </div>
+                        <button class="validate-btn" onclick="validateRadio(${q.id}, '${q.answer === 'le' ? 'a' : (q.answer === 'la' ? 'b' : 'c')}')">Valider</button>
+                        <div class="feedback"></div>
+                    </div>
+                `;
+            });
+            container.innerHTML = allQuestionsHTML;
+        }
+
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const today = new Date();
+            const day = String(today.getDate()).padStart(2, '0');
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const year = today.getFullYear();
+            document.getElementById('test-date').textContent = `${day}/${month}/${year}`;
+            
+            createAllQuestions();
+            updateScoreDisplay();
+            startTimer();
+        });
+
+        function startTimer() {
+            const timerDisplay = document.getElementById('timer-display');
+            clearInterval(timerInterval); 
+            
+            timerInterval = setInterval(() => {
+                timeInSeconds--;
+                const minutes = Math.floor(timeInSeconds / 60);
+                const seconds = timeInSeconds % 60;
+                timerDisplay.textContent = `Thời gian: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                if (timeInSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    timerDisplay.textContent = "Hết giờ!";
+                    alert("Hết giờ làm bài!");
+                    document.querySelectorAll('.validate-btn').forEach(btn => btn.disabled = true);
+                }
+            }, 1000);
+        }
+
+        function updateScoreDisplay() {
+            scoreDisplay.textContent = `Điểm: ${score} / ${maxScore}`;
+        }
+        
+        function updateScore(points = 1) {
+            score += points;
+            updateScoreDisplay();
+        }
+
+        function validateRadio(questionNumber, correctAnswerLetter) {
+            const questionBlock = document.getElementById(`q${questionNumber}`);
+            const radios = document.getElementsByName(`q${questionNumber}`);
+            const feedback = questionBlock.querySelector('.feedback');
+            const button = questionBlock.querySelector('.validate-btn');
+            let selectedAnswer = null;
+
+            radios.forEach(radio => { if (radio.checked) { selectedAnswer = radio; } });
+
+            if (selectedAnswer === null) {
+                feedback.textContent = "Vui lòng chọn một đáp án!";
+                feedback.className = 'feedback feedback-warning';
+                return;
+            }
+            
+            button.disabled = true;
+            radios.forEach(radio => radio.disabled = true);
+            const selectedLabel = selectedAnswer.parentElement;
+            const explanation = feedbackExplanations[questionNumber];
+            
+            // Lấy giá trị thực của đáp án đúng (le, la, l') từ câu hỏi
+            const questionData = questionsData.find(q => q.id === questionNumber);
+            const correctAnswerValue = questionData.answer;
+
+            if (selectedAnswer.value === correctAnswerValue) {
+                feedback.textContent = explanation;
+                feedback.className = 'feedback feedback-correct';
+                selectedLabel.classList.add('correct-answer');
+                updateScore();
+            } else {
+                const cleanedExplanation = explanation.replace("Chính xác! ", "");
+                feedback.innerHTML = `<strong>Không chính xác.</strong> ${cleanedExplanation}<br>Đáp án đúng là <strong>"${correctAnswerValue}"</strong>.`;
+                feedback.className = 'feedback feedback-incorrect';
+                selectedLabel.classList.add('incorrect-answer');
+                radios.forEach(radio => { if (radio.value === correctAnswerValue) { radio.parentElement.classList.add('correct-answer'); } });
+            }
+        }
+    </script>
+</body>
+</html>

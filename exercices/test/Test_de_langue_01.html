@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2025 by anonymous (http://jsbin.com/voguwojoqo/1/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2025 by anonymous (http://jsbin.com/mufileduyu/4/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test de Français</title>
+    <style>
+        /* CSS để làm cho trang kiểm tra đẹp hơn */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-header {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 0.95em;
+            color: #555;
+        }
+        
+        .info-header p {
+            margin: 0;
+        }
+
+        .quiz-status-bar {
+            position: sticky;
+            top: 0;
+            background-color: #4a5a7b;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0;
+            z-index: 1000;
+        }
+
+        .quiz-status-bar h1 {
+            margin: 0;
+            font-size: 1.5em;
+        }
+
+        #score-display, #timer-display {
+            font-size: 1.2em;
+            font-weight: bold;
+            background-color: #ffffff;
+            color: #4a5a7b;
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+        
+        #special-chars-palette {
+            position: sticky;
+            top: 75px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #e0e0e0;
+            z-index: 999;
+            text-align: center;
+            margin-left: -30px;
+            margin-right: -30px;
+            margin-bottom: 25px;
+        }
+
+        #special-chars-palette button {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 1.2em;
+            width: 35px;
+            height: 35px;
+            margin: 2px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        #special-chars-palette button:hover {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .audio-player-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            margin-right: 15px;
+            vertical-align: middle;
+        }
+
+        .audio-player-button svg {
+            width: 28px;
+            height: 28px;
+            fill: #3498db;
+            transition: fill 0.2s;
+        }
+        
+        .audio-player-button:hover svg {
+            fill: #2980b9;
+        }
+        
+         .audio-player-button.playing svg {
+            fill: #e74c3c;
+        }
+
+        .section-title {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+        
+        .reading-section-image {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .question-block {
+            margin-bottom: 25px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background-color: #fdfdfd;
+        }
+
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        /* === THAY ĐỔI: Căn lề trái cho ảnh trong câu hỏi === */
+        .question-image, .listening-image {
+            display: block;
+            height: auto;
+            margin: 20px 0; /* Bỏ 'auto' để căn lề trái */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .question-image {
+             max-width: 100%;
+        }
+
+        .listening-image {
+            max-width: 300px;
+        }
+
+        .reading-passage, .cloze-passage {
+            background-color: #eef3f8;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin-bottom: 15px;
+            font-style: italic;
+            line-height: 2.5;
+        }
+        
+        .cloze-passage input {
+            width: 120px !important;
+            max-width: none !important;
+            text-align: center;
+            font-style: normal;
+        }
+
+        .answers label {
+            display: block;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            max-width: 500px;
+        }
+
+        .answers label:hover {
+            background-color: #e9ecef;
+        }
+
+        .answers input[type="radio"] {
+            margin-right: 10px;
+        }
+        
+        .question-block input[type="text"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1em;
+            width: 100%; 
+            max-width: 400px;
+            box-sizing: border-box; 
+            margin-top: 5px;
+        }
+
+        .validate-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            display: block;
+            margin-top: 15px; 
+            transition: background-color 0.3s;
+        }
+
+        .validate-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .validate-btn:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+        
+        .show-transcription-btn {
+            background-color: #7f8c8d;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            cursor: pointer;
+            display: block;
+            margin-top: 10px;
+        }
+
+        .feedback {
+            margin-top: 15px;
+            font-weight: normal;
+            font-size: 0.95em;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .transcription-text {
+            background-color: #f5f5f5;
+            border-left: 4px solid #7f8c8d;
+            padding: 10px 15px;
+            margin-top: 15px;
+            font-style: italic;
+            color: #34495e;
+        }
+        
+        .feedback-correct {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .feedback-incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .feedback-warning {
+            background-color: #fffbe6;
+            color: #8a6d3b;
+        }
+
+        .correct-answer {
+            background-color: #d4edda !important;
+            border-color: #c3e6cb !important;
+        }
+
+        .incorrect-answer {
+            background-color: #f8d7da !important;
+            border-color: #f5c6cb !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="quiz-container">
+        <div class="info-header">
+            <p><strong>Enseignant:</strong> Nguyễn Hoàng Vũ</p>
+            <p><strong>Étudiant:</strong> Lê Văn Hòa</p>            
+            <p><strong>Ngày kiểm tra:</strong> <span id="test-date"></span></p>
+        </div>
+
+        <div class="quiz-status-bar">
+            <h1>Test de Français 01</h1>
+            <div>
+                <span id="score-display">Điểm: 0 / 29</span>
+                <span id="timer-display">Thời gian: 10:00</span>
+            </div>
+        </div>
+        
+        <div id="special-chars-palette">
+            <button type="button" onclick="insertChar('é')">é</button>
+            <button type="button" onclick="insertChar('è')">è</button>
+            <button type="button" onclick="insertChar('ê')">ê</button>
+            <button type="button" onclick="insertChar('à')">à</button>
+            <button type="button" onclick="insertChar('â')">â</button>
+            <button type="button" onclick="insertChar('ô')">ô</button>
+            <button type="button" onclick="insertChar('û')">û</button>
+            <button type="button" onclick="insertChar('ç')">ç</button>
+            <button type="button" onclick="insertChar('ë')">ë</button>
+            <button type="button" onclick="insertChar('ï')">ï</button>
+            <button type="button" onclick="insertChar('ü')">ü</button>
+        </div>
+
+        <div id="all-questions-container">
+            <h2 class="section-title">Niveau A1</h2>
+            <div class="question-block" id="q1">
+                <p class="question-text">1. Comment tu… au travail le matin ?</p>
+                <div class="answers">
+                    <label><input type="radio" name="q1" value="a"> a) es</label>
+                    <label><input type="radio" name="q1" value="b"> b) marches</label>
+                    <label><input type="radio" name="q1" value="c"> c) restes</label>
+                    <label><input type="radio" name="q1" value="d"> d) vas</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(1, 'd')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q2">
+                <p class="question-text">2. Tu peux acheter… pain ?</p>
+                <div class="answers">
+                    <label><input type="radio" name="q2" value="a"> a) le</label>
+                    <label><input type="radio" name="q2" value="b"> b) la</label>
+                    <label><input type="radio" name="q2" value="c"> c) les</label>
+                    <label><input type="radio" name="q2" value="d"> d) l'</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(2, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          <div class="question-block" id="q3">
+                <p class="question-text">3. Prends ton maillot de bain pour la…</p>
+                <div class="answers">
+                    <label><input type="radio" name="q3" value="a"> a) campagne.</label>
+                    <label><input type="radio" name="q3" value="b"> b) forêt.</label>
+                    <label><input type="radio" name="q3" value="c"> c) montagne.</label>
+                    <label><input type="radio" name="q3" value="d"> d) plage.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(3, 'd')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          <div class="question-block" id="q4">
+                <p class="question-text">4. Qu’est-ce que tu vas faire l’année prochaine ? <br/> Je vais étudier l’anglais… Canada</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q4" value="a"> a) à</label>
+                    <label><input type="radio" name="q4" value="b"> b) au</label>
+                    <label><input type="radio" name="q4" value="c"> c) de</label>
+                    <label><input type="radio" name="q4" value="d"> d) en</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(4, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          <div class="question-block" id="q5">
+                <p class="question-text">5. Qu’est-ce que tu … pour les vacances cette année ? <br/>  Je vais en Grèce avec mon amie.</p>               
+                <div class="answers">
+                    <label><input type="radio" name="q5" value="a"> a) fais</label>
+                    <label><input type="radio" name="q5" value="b"> b) fait</label>
+                    <label><input type="radio" name="q5" value="c"> c) faire</label>
+                    <label><input type="radio" name="q5" value="d"> d) faites</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(5, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          <div class="question-block" id="q6">
+                <p class="question-text">6. Le train de ma sœur arrive à 20h05. Je vais aller la chercher. Tu m’accompagnes… <br/>  Oui, bien sûr. À quelle heure on part ?</p>             
+                <div class="answers">
+                    <label><input type="radio" name="q6" value="a"> a) à l’aéroport ?</label>
+                    <label><input type="radio" name="q6" value="b"> b) à la gare ?</label>
+                    <label><input type="radio" name="q6" value="c"> c) au garage ?</label>
+                    <label><input type="radio" name="q6" value="d"> d) au port ?</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(6, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          <h2 class="section-title">Niveau A2</h2>
+          <div class="question-block" id="q7">
+                <p class="question-text">7. La langue anglaise … environ 20 000 nouveaux mots chaque année.</p>               
+                <div class="answers">
+                    <label><input type="radio" name="q7" value="a"> a) crée</label>
+                    <label><input type="radio" name="q7" value="b"> b) créé</label>
+                    <label><input type="radio" name="q7" value="c"> c) crées</label>
+                    <label><input type="radio" name="q7" value="d"> d) créer</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(7, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+           <div class="question-block" id="q8">
+                <p class="question-text">8. Il est ... de fumer !</p>               
+                <div class="answers">
+                    <label><input type="radio" name="q8" value="a"> a) interdis</label>
+                    <label><input type="radio" name="q8" value="b"> b) interdit</label>
+                    <label><input type="radio" name="q8" value="c"> c) interdite</label>
+                    <label><input type="radio" name="q8" value="d"> d) interdits</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(8, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          <div class="question-block" id="q9">
+                <p class="question-text">9. Tu as vu mes sœurs ? Je ne sais pas où elles sont.<br/>Je ... ai vues devant la pharmacie. </p>                
+                <div class="answers">
+                    <label><input type="radio" name="q9" value="a"> a) la</label>
+                    <label><input type="radio" name="q9" value="b"> b) les</label>
+                    <label><input type="radio" name="q9" value="c"> c) leur</label>
+                    <label><input type="radio" name="q9" value="d"> d) lui</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(9, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          <div class="question-block" id="q10">
+                <p class="question-text">10. Tu veux ... sucre dans ton café ? </p>      
+                <div class="answers">
+                    <label><input type="radio" name="q10" value="a"> a) de</label>
+                    <label><input type="radio" name="q10" value="b"> b) de la</label>
+                    <label><input type="radio" name="q10" value="c"> c) des</label>
+                    <label><input type="radio" name="q10" value="d"> d) du</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(10, 'd')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q11">
+                <p class="question-text">11. Tu viens en vacances au ski avec nous cet hiver ?<br/>Je ne sais pas si j’ai ... d’argent pour vous accompagner. Je te donne ma réponse demain. </p>
+                <div class="answers">
+                    <label><input type="radio" name="q11" value="a"> a) assez</label>
+                    <label><input type="radio" name="q11" value="b"> b) peu</label>
+                    <label><input type="radio" name="q11" value="c"> c) très</label>
+                    <label><input type="radio" name="q11" value="d"> d) trop</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(11, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+           <div class="question-block" id="q12">
+                <p class="question-text">12. Demain, ... fêter mon anniversaire. </p>                
+                <div class="answers">
+                    <label><input type="radio" name="q12" value="a"> a) j’ai été</label>
+                    <label><input type="radio" name="q12" value="b"> b) j’ai eu</label>
+                    <label><input type="radio" name="q12" value="c"> c) je suis</label>
+                    <label><input type="radio" name="q12" value="d"> d) je vais</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(12, 'd')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+           <div class="question-block" id="q13">
+                <p class="question-text">13. Hier, ... au cinéma.</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q13" value="a"> a) je vais aller</label>
+                    <label><input type="radio" name="q13" value="b"> b) je suis allé</label>
+                    <label><input type="radio" name="q13" value="c"> c) je vais</label>
+                    <label><input type="radio" name="q13" value="d"> d) allez</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(13, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          <div class="question-block" id="q14">
+                <p class="question-text">14. Merci beaucoup pour ton invitation à dîner d’hier. <br/>Tu es un vrai chef cuisinier. J’ai … le repas</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q14" value="a"> a) adoré</label>
+                    <label><input type="radio" name="q14" value="b"> b) détesté</label>
+                    <label><input type="radio" name="q14" value="c"> c) dirigé</label>
+                    <label><input type="radio" name="q14" value="d"> d) apporté</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(14, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          <h2 class="section-title">Niveau B1</h2>
+          <div class="question-block" id="q15">
+                <p class="question-text">15. Et si nous... au cinéma ?</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q15" value="a"> a) allions</label>
+                    <label><input type="radio" name="q15" value="b"> b) allons</label>
+                    <label><input type="radio" name="q15" value="c"> c) irons</label>
+                    <label><input type="radio" name="q15" value="d"> d) sommes allés</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(15, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          <div class="question-block" id="q16">
+                <p class="question-text">16. Ce magasin n’est pas loin de chez moi. On peut y… à pieds</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q16" value="a"> a) aller</label>
+                    <label><input type="radio" name="q16" value="b"> b) marcher</label>
+                    <label><input type="radio" name="q16" value="c"> c) promener</label>
+                    <label><input type="radio" name="q16" value="d"> d) rendre</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(16, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+          <div class="question-block" id="q17">
+                <p class="question-text">17. Les clés sont ici, je les ai …</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q17" value="a"> a) trouvais.</label>
+                    <label><input type="radio" name="q17" value="b"> b) trouvé.</label>
+                    <label><input type="radio" name="q17" value="c"> c) trouvées.</label>
+                    <label><input type="radio" name="q17" value="d"> d) trouvéer./label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(17, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+              <div class="question-block" id="q18">
+                <p class="question-text">18. Est-ce que tu pratiques le ski ?<br/>Oui, je sais … faire depuis que je suis très jeune.</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q18" value="a"> a) en</label>
+                    <label><input type="radio" name="q18" value="b"> b) le</label>
+                    <label><input type="radio" name="q18" value="c"> c) lui</label>
+                    <label><input type="radio" name="q18" value="d"> d) y</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(18, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q19">
+                <p class="question-text">19. Tu vas t’inscrire dans quelle faculté en septembre ?<br/>Je ne sais pas. Si … bon en biologie, je ferais des études de médecine. Mais ce n’est pas le cas !</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q19" value="a"> a) j’étais</label>
+                    <label><input type="radio" name="q19" value="b"> b) je serai</label>
+                    <label><input type="radio" name="q19" value="c"> c) je serais</label>
+                    <label><input type="radio" name="q19" value="d"> d) je suis</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(19, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q20">
+                <p class="question-text">20. Tu as des nouvelles de Paul ?<br/>Non, aucune depuis son départ. J’ai… qu’il soit parti sans laisser d’adresse.</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q20" value="a"> a) besoin</label>
+                    <label><input type="radio" name="q20" value="b"> b) envie</label>
+                    <label><input type="radio" name="q20" value="c"> c) peur</label>
+                    <label><input type="radio" name="q20" value="d"> d) raison</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(20, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q21">
+                <p class="question-text">21. Si j’ai le temps, je te promets que … avec toi au théâtre.</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q21" value="a"> a) je viendrais</label>
+                    <label><input type="radio" name="q21" value="b"> b) je viendrai</label>
+                    <label><input type="radio" name="q21" value="c"> c) je suis venu</label>
+                    <label><input type="radio" name="q21" value="d"> d) je venais</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(21, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <h2 class="section-title">Niveau B2</h2>
+             <div class="question-block" id="q22">
+                <p class="question-text">22. Cette personne que tu as rencontrée hier au restaurant et … t’a parlé Paul est dangereuse.</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q22" value="a"> a) que</label>
+                    <label><input type="radio" name="q22" value="b"> b) où</label>
+                    <label><input type="radio" name="q22" value="c"> c) qui</label>
+                    <label><input type="radio" name="q22" value="d"> d) dont</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(22, 'd')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+                          
+            <div class="question-block" id="q23">
+                <p class="question-text">23-24. Quels sont les mots manquants ?<br/>(23)...préserver le fondant de ces croissants, refermer...</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q23" value="a"> a) Afin de</label>
+                    <label><input type="radio" name="q23" value="b"> b) Au lieu de</label>
+                    <label><input type="radio" name="q23" value="c"> c) Faute de</label>
+                    <label><input type="radio" name="q23" value="d"> d) En plus de</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(23, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q24">
+                <p class="question-text">23-24. Quels sont les mots manquants ?<br/>...préserver le fondant de ces croissants, refermer (24)... le sachet après ouverture.</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q24" value="a"> a) amoureusement</label>
+                    <label><input type="radio" name="q24" value="b"> b) attentivement</label>
+                    <label><input type="radio" name="q24" value="c"> c) précieusement</label>
+                    <label><input type="radio" name="q24" value="d"> d) soigneusement</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(24, 'd')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q25">
+                <p class="question-text">25. Je vais être en retard ce soir, peux-tu … le dîner des enfants ?</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q25" value="a"> a) chercher</label>
+                    <label><input type="radio" name="q25" value="b"> b) démarrer</label>
+                    <label><input type="radio" name="q25" value="c"> c) préparer</label>
+                    <label><input type="radio" name="q25" value="d"> d) rencontrer</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(25, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q26">
+                <p class="question-text">26. Les sportifs … j'ai le plus d’admiration sont les alpinistes. Ils prennent des risques énormes.<br/>-Moi, ce sont les cavaliers qui m’impressionnent.</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q26" value="a"> a) avec lesquels</label>
+                    <label><input type="radio" name="q26" value="b"> b) en lesquels</label>
+                    <label><input type="radio" name="q26" value="c"> c) dans lesquels</label>
+                    <label><input type="radio" name="q26" value="d"> d) pour lesquels</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(26, 'd')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q27">
+                <p class="question-text">27. Comment tu as trouvé le repas de ce midi ?<br/>-Très bon. …le dessert était immangeable.</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q27" value="a"> a) En substance</label>
+                    <label><input type="radio" name="q27" value="b"> b) En bref</label>
+                    <label><input type="radio" name="q27" value="c"> c) En revanche</label>
+                    <label><input type="radio" name="q27" value="d"> d) En plus</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(27, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q28">
+                <p class="question-text">28. Il est nécessaire que les gens soient conscients de l’importance de l’écologie.<br/>-Tu penses que cette prise de conscience va … une amélioration des conditions de vie ?</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q28" value="a"> a) constater</label>
+                    <label><input type="radio" name="q28" value="b"> b) entraîner</label>
+                    <label><input type="radio" name="q28" value="c"> c) résoudre</label>
+                    <label><input type="radio" name="q28" value="d"> d) résulter</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(28, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <h2 class="section-title">Niveau C1</h2>
+             <div class="question-block" id="q29">
+                <p class="question-text">29. L’enfant ne pouvait croire qu’il contemplait des bêtes féroces … le lion et le tigre.</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q29" value="a"> a) tel que</label>
+                    <label><input type="radio" name="q29" value="b"> b) tels que</label>
+                    <label><input type="radio" name="q29" value="c"> c) telle que</label>
+                    <label><input type="radio" name="q29" value="d"> d) telles que</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(29, 'd')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q30">
+                <p class="question-text">30. Dans cette véritable « biographie de la langue française », les auteurs veulent mettre … et malmener quelques fausses croyances.</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q30" value="a"> a) les bouchées doubles</label>
+                    <label><input type="radio" name="q30" value="b"> b) les idées en place</label>
+                    <label><input type="radio" name="q30" value="c"> c) les pendules à l’heure</label>
+                    <label><input type="radio" name="q30" value="d"> d) les petits plats dans les grands</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(30, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+              <div class="question-block" id="q31">
+                <p class="question-text">31. Jamais autant de gens ne l’ont parlée qu’aujourd’hui. L’univers des francophones est un … unique et fertile : la langue de Rabelais et Montaigne est devenue celle de Littell, Rahimi, Abdou Diouf, Mick Jagger, Jodie Foster ou Sigourney Weaver.</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q31" value="a"> a) jumelage</label>
+                    <label><input type="radio" name="q31" value="b"> b) façonnage</label>
+                    <label><input type="radio" name="q31" value="c"> c) métissage</label>
+                    <label><input type="radio" name="q31" value="d"> d) montage</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(31, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+             <div class="question-block" id="q32">
+                <p class="question-text">32. Tu as des nouvelles de Marie ?<br/>Aucune. Je l’ai appelée trois fois hier mais…</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q32" value="a"> a) à tort.</label>
+                    <label><input type="radio" name="q32" value="b"> b) en peine.</label>
+                    <label><input type="radio" name="q32" value="c"> c) en vain.</label>
+                    <label><input type="radio" name="q32" value="d"> d) en vrac.</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(32, 'c')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q33">
+                <p class="question-text">33. Les enfants, est-ce que vous vous êtes …  les mains avant de passer à table ?</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q33" value="a"> a) lavé</label>
+                    <label><input type="radio" name="q33" value="b"> b) lavée</label>
+                    <label><input type="radio" name="q33" value="c"> c) lavés</label>
+                    <label><input type="radio" name="q33" value="d"> d) lavées</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(33, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q34">
+                <p class="question-text">34. Avez-vous des déclarations à faire à ce sujet ?<br/>- Oui, mais je n’ai pas… à dire</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q34" value="a"> a) beaucoup</label>
+                    <label><input type="radio" name="q34" value="b"> b) grand-chose</label>
+                    <label><input type="radio" name="q34" value="c"> c) quelque chose</label>
+                    <label><input type="radio" name="q34" value="d"> d) trop</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(34, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <h2 class="section-title">Niveau C2</h2>
+            <div class="question-block" id="q35">
+                <p class="question-text">35. Je vous… gré de bien vouloir me donner votre réponse dans les plus brefs délais.</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q35" value="a"> a) saurais</label>
+                    <label><input type="radio" name="q35" value="b"> b) serais</label>
+                    <label><input type="radio" name="q35" value="c"> c) tiendrais</label>
+                    <label><input type="radio" name="q35" value="d"> d) verrais</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(35, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q36">
+                <p class="question-text">36. Je ne compte pas le nombre de miracles qu’il nous…  pour être ici devant vous.</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q36" value="a"> a) aura fallu</label>
+                    <label><input type="radio" name="q36" value="b"> b) aurons fallu</label>
+                    <label><input type="radio" name="q36" value="c"> c) eût fallu</label>
+                    <label><input type="radio" name="q36" value="d"> d) ont fallu</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(36, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q37">
+                <p class="question-text">37. Il est primordial que le gouvernement poursuive ses efforts pour … la reprise économique dans ce pays.</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q37" value="a"> a) assouvir</label>
+                    <label><input type="radio" name="q37" value="b"> b) conforter</label>
+                    <label><input type="radio" name="q37" value="c"> c) prévaloir</label>
+                    <label><input type="radio" name="q37" value="d"> d) retendre</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(37, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q38">
+                <p class="question-text">38. Tu es encore fâché contre Jean ? Tu as essayé de le recontacter ?<br/>- ... non ! Je ne veux plus entendre parler de lui</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q38" value="a"> a) Eh bien</label>
+                    <label><input type="radio" name="q38" value="b"> b) Et bien</label>
+                    <label><input type="radio" name="q38" value="c"> c) Euh bien</label>
+                    <label><input type="radio" name="q38" value="d"> d) Hé bien</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(38, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q39">
+                <p class="question-text">39. C’est injuste ! On ne peut pas le condamner pour la faute qu’il a commise.
+                                          Il ne savait pas que c’était interdit.<br/>- Aux yeux de la justice, il est responsable car .... n’est censé ignorer la loi.</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q39" value="a"> a) aucun</label>
+                    <label><input type="radio" name="q39" value="b"> b) nul</label>
+                    <label><input type="radio" name="q39" value="c"> c) pas un</label>
+                    <label><input type="radio" name="q39" value="d"> d) rien</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(39, 'b')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+            <div class="question-block" id="q40">
+                <p class="question-text">40. Les symphonies que j’ai … jouer lors de ce festival étaient d’une qualité vraiment médiocre</p>                
+                <div class="answers">
+                    <label><input type="radio" name="q40" value="a"> a) entendu</label>
+                    <label><input type="radio" name="q40" value="b"> b) entendue</label>
+                    <label><input type="radio" name="q40" value="c"> c) entendus</label>
+                    <label><input type="radio" name="q40" value="d"> d) entendues</label>
+                </div>
+                <button class="validate-btn" onclick="validateRadio(40, 'a')">Valider</button>
+                <div class="feedback"></div>
+            </div>
+           
+        </div>
+    </div>
+
+    <script>
+        let score = 0;
+        let lastFocusedInput = null;
+        let timeInSeconds = 2400;
+        let timerInterval = null;
+
+        const clozeAnswers = [
+            ['me lève', 'croissants', 'bus', 'économie', 'livre'],
+            ['marché', 'tomates', 'pommes', 'animé'],
+            ['chien', 'intelligent', 'rouge', 'dort']
+        ];
+        
+        const maxScore = 40  //clozeAnswers.flat().length; // 16 câu đơn + 13 chỗ trống = 29 điểm
+
+        const transcriptionData = {
+            900: "Le train pour Lyon partira à quinze heures trente du quai numéro sept.",
+            1000: "N'oubliez pas d'acheter du pain, du lait et trois croissants pour le petit-déjeuner."
+        };
+        const feedbackExplanations = {
+            1: "Chính xác! ",
+            2: "Chính xác! ",
+            3: "Chính xác! ",
+            4: "Chính xác! ",
+            5: "Chính xác! ",
+            6: "Chính xác! ",
+            7: "Chính xác! ",
+            8: "Chính xác! ",
+            9: "Chính xác! ",
+            10: "Chính xác! ",
+            11: "Chính xác! ",
+            12: "Chính xác! ",
+            13: "Chính xác! ",
+            14: "Chính xác! ",
+            15: "Chính xác! ",
+            16: "Chính xác! ",
+            17: "Chính xác! ",
+            18: "Chính xác! ",
+            19: "Chính xác! ",
+            20: "Chính xác! ",
+            21: "Chính xác! ",
+            22: "Chính xác! ",
+            23: "Chính xác! ",
+            24: "Chính xác! ",
+            25: "Chính xác! ",
+            26: "Chính xác! ",
+            27: "Chính xác! ",
+            28: "Chính xác! ",
+            29: "Chính xác! ",
+            30: "Chính xác! ",
+            31: "Chính xác! ",
+            32: "Chính xác! ",
+            33: "Chính xác! ",
+            34: "Chính xác! ",
+            35: "Chính xác! ",
+            36: "Chính xác! ",
+            37: "Chính xác! ",
+            38: "Chính xác! ",
+            39: "Chính xác! ",
+            40: "Chính xác! "
+           
+        };
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const today = new Date();
+            const day = String(today.getDate()).padStart(2, '0');
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const year = today.getFullYear();
+            document.getElementById('test-date').textContent = `${day}/${month}/${year}`;
+            
+            updateScoreDisplay();
+            startTimer();
+        });
+
+        function startTimer() {
+            const timerDisplay = document.getElementById('timer-display');
+            clearInterval(timerInterval); 
+            
+            timerInterval = setInterval(() => {
+                timeInSeconds--;
+                const minutes = Math.floor(timeInSeconds / 60);
+                const seconds = timeInSeconds % 60;
+                timerDisplay.textContent = `Thời gian: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                if (timeInSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    timerDisplay.textContent = "Hết giờ!";
+                    alert("Hết giờ làm bài!");
+                    document.querySelectorAll('.validate-btn').forEach(btn => btn.disabled = true);
+                }
+            }, 1000);
+        }
+
+        function updateScoreDisplay() {
+            const scoreDisplay = document.getElementById('score-display');
+            scoreDisplay.textContent = `Điểm: ${score} / ${maxScore}`;
+        }
+        
+        function updateScore(points = 1) {
+            score += points;
+            updateScoreDisplay();
+        }
+        
+        function setLastFocused(element) {
+            lastFocusedInput = element;
+        }
+
+        function insertChar(char) {
+            if (lastFocusedInput) {
+                const startPos = lastFocusedInput.selectionStart;
+                const endPos = lastFocusedInput.selectionEnd;
+                const value = lastFocusedInput.value;
+                lastFocusedInput.value = value.substring(0, startPos) + char + value.substring(endPos, value.length);
+                lastFocusedInput.focus();
+                lastFocusedInput.selectionStart = startPos + 1;
+                lastFocusedInput.selectionEnd = startPos + 1;
+            }
+        }
+        
+        function playAudio(questionNumber, buttonElement) {
+            const audioPlayer = document.getElementById(`audio-player-${questionNumber}`);
+            if (audioPlayer) {
+                audioPlayer.play();
+                buttonElement.classList.add('playing');
+                buttonElement.disabled = true;
+                audioPlayer.onended = () => {
+                    buttonElement.classList.remove('playing');
+                    buttonElement.disabled = false;
+                };
+            }
+        }
+
+        function showTranscription(questionNumber) {
+            const transcriptText = transcriptionData[questionNumber];
+            const transcriptContainer = document.getElementById(`transcription-${questionNumber}`);
+            const transcriptButton = document.getElementById(`show-transcription-btn-${questionNumber}`);
+
+            if (transcriptText && transcriptContainer) {
+                transcriptContainer.textContent = transcriptText;
+                transcriptContainer.style.display = 'block';
+                if(transcriptButton) transcriptButton.style.display = 'none';
+            }
+        }
+
+        function validateRadio(questionNumber, correctAnswer) {
+            const questionBlock = document.getElementById(`q${questionNumber}`);
+            const radios = document.getElementsByName(`q${questionNumber}`);
+            const feedback = questionBlock.querySelector('.feedback');
+            const button = questionBlock.querySelector('.validate-btn');
+            let selectedAnswer = null;
+
+            radios.forEach(radio => { if (radio.checked) { selectedAnswer = radio; } });
+
+            if (selectedAnswer === null) {
+                feedback.textContent = "Vui lòng chọn một đáp án!";
+                feedback.className = 'feedback feedback-warning';
+                return;
+            }
+            
+            button.disabled = true;
+            radios.forEach(radio => radio.disabled = true);
+            const selectedLabel = selectedAnswer.parentElement;
+            const explanation = feedbackExplanations[questionNumber];
+
+            if (selectedAnswer.value === correctAnswer) {
+                feedback.textContent = explanation;
+                feedback.className = 'feedback feedback-correct';
+                selectedLabel.classList.add('correct-answer');
+                updateScore();
+            } else {
+                const cleanedExplanation = explanation.replace("Chính xác! ", "");
+                feedback.innerHTML = `<strong>Không chính xác.</strong> ${cleanedExplanation}<br>Đáp án đúng là lựa chọn <strong>"${correctAnswer.toUpperCase()}"</strong>.`;
+                feedback.className = 'feedback feedback-incorrect';
+                selectedLabel.classList.add('incorrect-answer');
+                radios.forEach(radio => { if (radio.value === correctAnswer) { radio.parentElement.classList.add('correct-answer'); } });
+            }
+
+            if (document.getElementById(`audio-player-${questionNumber}`)) {
+                const transcriptBtn = document.getElementById(`show-transcription-btn-${questionNumber}`);
+                if (transcriptBtn) {
+                    transcriptBtn.style.display = 'block';
+                }
+            }
+        }
+        
+        function validateText(questionNumber, correctAnswer) {
+            const questionBlock = document.getElementById(`q${questionNumber}`);
+            const inputField = questionBlock.querySelector('input[type="text"]');
+            const feedback = questionBlock.querySelector('.feedback');
+            const button = questionBlock.querySelector('.validate-btn');
+            const userAnswer = inputField.value.trim();
+
+            if (userAnswer === "") {
+                feedback.textContent = "Vui lòng điền câu trả lời của bạn.";
+                feedback.className = 'feedback feedback-warning';
+                return;
+            }
+            
+            const explanation = feedbackExplanations[questionNumber];
+            
+            button.disabled = true;
+            inputField.disabled = true;
+
+            if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
+                feedback.textContent = explanation;
+                feedback.className = 'feedback feedback-correct';
+                inputField.classList.add('correct-answer');
+                updateScore();
+            } else {
+                const cleanedExplanation = explanation.replace("Chính xác! ", "");
+                feedback.innerHTML = `<strong>Không chính xác.</strong> ${cleanedExplanation}<br>Đáp án đúng phải là: <strong>${correctAnswer}</strong>`;
+                feedback.className = 'feedback feedback-incorrect';
+                inputField.classList.add('incorrect-answer');
+            }
+        }
+
+        function validateCloze(clozeSetIndex, questionId) {
+            const currentAnswers = clozeAnswers[clozeSetIndex - 1]; 
+            const questionBlock = document.getElementById(`q${questionId}`);
+            const button = questionBlock.querySelector('.validate-btn');
+            const feedback = questionBlock.querySelector('.feedback');
+            let correctCount = 0;
+
+            for (let i = 0; i < currentAnswers.length; i++) {
+                const inputId = `cloze-${clozeSetIndex}-${i + 1}`;
+                const inputElement = document.getElementById(inputId);
+                if (inputElement.value.trim() === "") {
+                    feedback.textContent = "Vui lòng điền đầy đủ tất cả các chỗ trống.";
+                    feedback.className = 'feedback feedback-warning';
+                    return;
+                }
+            }
+
+            for (let i = 0; i < currentAnswers.length; i++) {
+                const inputId = `cloze-${clozeSetIndex}-${i + 1}`;
+                const inputElement = document.getElementById(inputId);
+                
+                const userAnswer = inputElement.value.trim().toLowerCase();
+                const correctAnswer = currentAnswers[i].toLowerCase();
+
+                if (userAnswer === correctAnswer) {
+                    inputElement.classList.add('correct-answer');
+                    correctCount++;
+                } else {
+                    inputElement.classList.add('incorrect-answer');
+                    inputElement.value = currentAnswers[i];
+                }
+                
+                inputElement.disabled = true;
+            }
+
+            if (correctCount > 0) {
+                updateScore(correctCount);
+            }
+            
+            feedback.textContent = `Bạn đã điền đúng ${correctCount} trên ${currentAnswers.length} từ.`;
+            feedback.className = 'feedback feedback-correct';
+            
+            button.disabled = true;
+        }
+
+    </script>
+</body>
+</html>

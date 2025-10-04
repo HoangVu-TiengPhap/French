@@ -1,0 +1,221 @@
+ body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; /* Font mềm mại hơn */
+        margin: 0;
+        padding-top: 0;
+        background-color: #e9eff5; /* Nền xanh lam nhạt tổng thể */
+        color: #333;
+      }
+
+      .top-info {
+        max-width: 800px;
+        margin: 20px auto 10px auto;
+        padding: 0 20px;
+        font-size: 0.9em;
+        color: #555;
+        text-align: left; /* ĐÃ SỬA: Căn trái cho tên giáo viên */
+      }
+
+      .main-header {
+        background-color: #ffffff; /* Nền trắng cho header */
+        padding: 15px 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Giảm đổ bóng để phân biệt với sticky bar */
+        z-index: 900;
+        text-align: center;
+        /* ĐÃ XÓA: position: sticky để header không dính */
+        width: 100%;
+        max-width: 800px; /* ĐÃ THÊM: Giới hạn chiều rộng bằng content */
+        margin: 0 auto; /* ĐÃ THÊM: Căn giữa */
+        box-sizing: border-box;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .main-header h1 {
+        color: #2c3e50; /* Màu chữ tiêu đề */
+        margin: 0;
+        font-size: 2em; /* Tăng kích thước tiêu đề một chút */
+        font-weight: 600; /* Làm đậm hơn */
+        order: 1;
+      }
+      .main-header .instructions {
+        font-size: 1.1em; /* Tăng kích thước hướng dẫn */
+        margin-top: 8px; /* Tăng khoảng cách */
+        margin-bottom: 0;
+        font-style: italic;
+        border-bottom: 1px solid #dcdcdc; /* Đường kẻ nhạt hơn */
+        padding-bottom: 8px; /* Tăng padding */
+        width: 85%; /* Mở rộng chiều rộng */
+        margin: 8px auto 0 auto;
+        color: #555; /* Màu chữ hướng dẫn */
+        order: 2;
+      }
+
+      /* Container cho các nút ký tự đặc biệt */
+      .char-buttons-container {
+        /* ĐÃ THÊM: Thiết lập thuộc tính Sticky cho thanh ký tự */
+        position: -webkit-sticky;
+        position: sticky;
+        top: 0; /* Gắn vào đỉnh trang */
+        z-index: 1000; /* Đảm bảo nó luôn ở trên cùng */
+
+        /* ĐÃ THÊM: Giới hạn chiều rộng và căn giữa */
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto; /* Căn giữa */
+        box-sizing: border-box;
+
+        padding: 10px 0 5px 0;
+        background-color: #f0f3f6; /* Nền xanh xám nhạt cho thanh ký tự */
+        border-radius: 0 0 5px 5px; /* Chỉ bo góc dưới */
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Đổ bóng rõ hơn khi sticky */
+        order: 3;
+      }
+      .char-button {
+        background-color: #e2e6ea; /* Nền nút xám sáng */
+        border: 1px solid #d1d6db; /* Viền xám */
+        padding: 6px 10px; /* Tăng kích thước nút */
+        margin: 3px; /* Tăng khoảng cách giữa các nút */
+        cursor: pointer;
+        font-size: 1.2em; /* Kích thước ký tự lớn hơn */
+        font-weight: normal;
+        border-radius: 4px; /* Bo góc nhẹ */
+        transition: background-color 0.2s ease, transform 0.1s ease;
+      }
+      .char-button:hover {
+        background-color: #cdd2d7; /* Đậm hơn khi hover */
+        transform: translateY(-1px); /* Hiệu ứng nhấc nhẹ */
+      }
+      .char-button:active {
+        transform: translateY(0); /* Hiệu ứng nhấn xuống */
+      }
+
+      .example-section {
+        /* Vẫn giữ cho bài tập ÊTRE, nếu không có ví dụ thì có thể bỏ */
+        background-color: #f7f7f7;
+        padding: 18px;
+        border-left: 5px solid #007bff;
+        border-radius: 5px;
+        margin-bottom: 30px;
+        font-size: 1.05em;
+        text-align: left;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      }
+      .example-text strong {
+        color: #007bff;
+      }
+      .example-line {
+        display: inline;
+      }
+      .example-line input {
+        width: 180px !important;
+        margin: 0 5px;
+        background-color: #e9ecef;
+        border: 1px dashed #adb5bd;
+        color: #495057;
+      }
+
+      .content-container {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 0 20px;
+        text-align: left;
+      }
+
+      .exercise-item {
+        margin-bottom: 25px;
+        padding: 15px; /* Tăng padding */
+        border: 1px solid #d1e0f0; /* Viền xanh lam nhạt */
+        border-radius: 8px; /* Bo góc nhiều hơn */
+        background-color: #ffffff; /* Nền trắng cho từng câu hỏi */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08); /* Đổ bóng nhẹ */
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+        text-align: left;
+        transition: transform 0.2s ease; /* Hiệu ứng hover nhẹ */
+      }
+      .exercise-item:hover {
+        transform: translateY(-2px); /* Hiệu ứng nhấc nhẹ khi hover */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .question-text {
+        /* Để hiển thị gợi ý (un téléphone - pratique) */
+        font-size: 1.1em;
+        margin-bottom: 5px; /* Giảm khoảng cách đến bản dịch */
+        font-weight: 600; /* Làm đậm hơn */
+        color: #34495e; /* Màu chữ đậm hơn */
+        display: inline; /* Đặt là inline để nội dung và input trên cùng 1 dòng */
+      }
+      .question-text input[type="text"] {
+        /* Specific styles for inputs */
+        width: 100px; /* Chiều rộng ô nhập */
+        padding: 8px 10px; /* Tăng padding input */
+        margin: 0 5px; /* Khoảng cách quanh input */
+        border: 1px solid #a3c1e0; /* Viền xanh lam nhẹ */
+        border-radius: 5px; /* Bo góc nhẹ */
+        font-size: 1.05em; /* Kích thước chữ input */
+        box-sizing: border-box;
+        display: inline-block; /* Essential for inputs to align horizontally */
+      }
+      .question-text input[type="text"]:focus {
+        border-color: #007bff; /* Viền xanh lam khi focus */
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Đổ bóng xanh lam khi focus */
+        outline: none; /* Bỏ outline mặc định của trình duyệt */
+      }
+      .vietnamese-translation {
+        font-size: 0.9em;
+        color: #7f8c8d; /* Màu xám đá */
+        margin-top: 8px; /* Tăng khoảng cách */
+        margin-bottom: 12px;
+        font-style: italic;
+        display: block; /* Ensure translation is on its own line */
+      }
+      .check-button {
+        padding: 10px 20px; /* Nút lớn hơn */
+        background-color: #4caf50; /* Xanh lá cây tươi (cho nút Vérifier) */
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1em;
+        font-weight: bold; /* Làm đậm chữ nút */
+        transition: background-color 0.3s ease, transform 0.1s ease;
+        margin-top: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Đổ bóng cho nút */
+      }
+      .check-button:hover {
+        background-color: #45a049; /* Đậm hơn khi hover */
+        transform: translateY(-1px);
+      }
+      .check-button:active {
+        transform: translateY(0);
+      }
+
+      .feedback {
+        margin-top: 15px; /* Khoảng cách lớn hơn */
+        font-weight: bold;
+        display: none;
+        padding: 8px 15px; /* Padding lớn hơn */
+        border-radius: 5px; /* Bo góc nhiều hơn */
+        text-align: center;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      }
+      .feedback.correct {
+        color: #1a7e3d;
+        background-color: #d4edda; /* Nền xanh lá cây nhạt hơn */
+        border: 1px solid #1a7e3d;
+      }
+      .feedback.incorrect {
+        color: #b52b2b;
+        background-color: #f8d7da; /* Nền đỏ nhạt hơn */
+        border: 1px solid #b52b2b;
+      }
+      .feedback.warning {
+        color: #d19a00;
+        background-color: #fff3cd; /* Nền vàng nhạt hơn */
+        border: 1px solid #d19a00;
+      }

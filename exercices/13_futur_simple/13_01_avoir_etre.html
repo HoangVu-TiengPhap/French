@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<meta name="robots" content="noindex">
+<html>
+<head>
+<title>ÊTRE & AVOIR (Futur Simple)</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f4f8;
+    color: #333;
+  }
+  
+  /* Đảm bảo header có cùng chiều rộng và căn giữa như container */
+  header {
+    background-color: #e0e7ed;
+    color: #2c3e50;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    /* Các thay đổi để căn chỉnh và bo góc */
+    max-width: 800px; /* Giống container */
+    margin: 0px auto; /* Căn giữa và giảm margin-top */
+    border-radius: 10px 10px 0 0; /* Bo tròn các góc trên, góc dưới để phẳng với container */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Thêm bóng nhẹ cho đẹp */
+  }
+  
+  header h2 {
+    margin: 0;
+    font-size: 1.1em;
+    color: #333;
+  }
+  
+  h1 {
+    color: #2c3e50;
+    text-align: center;
+    margin-top: 0px; /* Giảm margin-top để sát header */
+    margin-bottom: 20px;
+  }
+  
+  .container {
+    max-width: 800px;
+    /* Giảm margin-top để sát header, giữ margin-bottom */
+    margin: 0px auto 30px auto; 
+    padding: 20px;
+    background-color: #ffffff;
+    /* Giữ góc dưới bo tròn, góc trên phẳng để khớp với header */
+    border-radius: 0 0 10px 10px; 
+    /* Thay đổi box-shadow để không bị trùng hoặc tạo khoảng cách với header */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .question-block {
+    margin-bottom: 25px;
+    padding: 20px;
+    border: 1px solid #d0dbe4;
+    border-radius: 8px;
+    background-color: #fdfefe;
+  }
+  .question {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 1.1em;
+    color: #34495e;
+  }
+  .translation {
+    font-style: italic;
+    color: #666;
+    margin-bottom: 15px;
+    font-size: 0.95em;
+  }
+  .options label {
+    display: block;
+    margin-bottom: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: color 0.3s ease;
+    padding: 5px 0;
+  }
+  .options label:hover {
+    color: #5a7d9a;
+  }
+  .options input[type="radio"] {
+    margin-right: 10px;
+    transform: scale(1.1);
+  }
+  .options label.correct-highlight {
+    background-color: #d4edda;
+    border: 2px solid #28a745;
+    border-radius: 5px;
+    padding: 5px;
+    color: #1a7e37;
+  }
+  .feedback {
+    margin-top: 15px;
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 5px;
+    width: calc(100% - 24px);
+    box-sizing: border-box;
+    display: none; /* Ẩn ban đầu */
+  }
+  .feedback.active {
+      display: block;
+  }
+  .correct {
+    background-color: #e6ffe6;
+    color: #1a7e37;
+    border: 1px solid #28a745;
+  }
+  .incorrect {
+    background-color: #ffe6e6;
+    color: #dc3545;
+    border: 1px solid #dc3545;
+  }
+  /* Màu xanh lá cây cho đáp án đúng khi hiển thị trong feedback */
+  .incorrect .correct-answer-display { 
+      color: #28a745; 
+      font-weight: bold;
+      font-style: normal;
+  }
+  .warning {
+      background-color: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffeeba;
+  }
+  .explanation {
+    font-size: 0.9em;
+    font-weight: normal;
+    color: #555;
+    margin-top: 8px;
+    font-style: italic;
+  }
+  .validate-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-top: 15px;
+    transition: background-color 0.3s ease;
+  }
+  .validate-btn:hover {
+    background-color: #45a049;
+  }
+  .validate-btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+  #score-area {
+    text-align: center;
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #e6f7ff;
+    border: 1px solid #b3e0ff;
+    border-radius: 8px;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #0056b3;
+    display: none;
+  }
+  .complete-test-btn {
+    display: block;
+    width: fit-content;
+    margin: 30px auto;
+    background-color: #007bff;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease;
+  }
+  .complete-test-btn:hover {
+    background-color: #0056b3;
+  }
+  @media (max-width: 600px) {
+    .container, header {
+      margin: 0px 15px 30px 15px;
+      padding: 15px;
+      max-width: none; /* Cho phép giãn ra hết cỡ */
+      width: auto;
+    }
+    header {
+      margin-bottom: 0;
+      border-radius: 10px 10px 0 0;
+    }
+    .container {
+      margin-top: 0;
+      border-radius: 0 0 10px 10px;
+    }
+    header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    header h2 {
+      font-size: 1em;
+      margin-bottom: 0px; 
+    }
+    .question, .translation, .options label, .feedback, .validate-btn, .complete-test-btn {
+      font-size: 0.9em;
+    }
+    .feedback {
+      padding: 6px 10px;
+      width: calc(100% - 20px);
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h2>Enseignant: Nguyễn Hoàng Vũ</h2>
+  </header>
+
+<div class="container">
+  <h1>ÊTRE & AVOIR (Futur Simple)</h1>
+
+  <h2>ÊTRE</h2>
+  <div class="question-block" id="q-etre-1-block">
+    <div class="question">1. Je ser...</div>
+    <div class="translation">Tôi sẽ là...</div>
+    <div class="options" id="options-etre-1"></div>
+    <button class="validate-btn" onclick="checkAnswer('etre-1')">Valider</button>
+    <div class="feedback" id="feedback-etre-1"></div>
+  </div>
+
+  <div class="question-block" id="q-etre-2-block">
+    <div class="question">2. Tu ser...</div>
+    <div class="translation">Bạn sẽ là...</div>
+    <div class="options" id="options-etre-2"></div>
+    <button class="validate-btn" onclick="checkAnswer('etre-2')">Valider</button>
+    <div class="feedback" id="feedback-etre-2"></div>
+  </div>
+
+  <div class="question-block" id="q-etre-3-block">
+    <div class="question">3. Il ser...</div>
+    <div class="translation">Anh ấy sẽ là...</div>
+    <div class="options" id="options-etre-3"></div>
+    <button class="validate-btn" onclick="checkAnswer('etre-3')">Valider</button>
+    <div class="feedback" id="feedback-etre-3"></div>
+  </div>
+
+  <div class="question-block" id="q-etre-4-block">
+    <div class="question">4. Nous ser...</div>
+    <div class="translation">Chúng tôi sẽ là...</div>
+    <div class="options" id="options-etre-4"></div>
+    <button class="validate-btn" onclick="checkAnswer('etre-4')">Valider</button>
+    <div class="feedback" id="feedback-etre-4"></div>
+  </div>
+
+  <div class="question-block" id="q-etre-5-block">
+    <div class="question">5. Vous ser...</div>
+    <div class="translation">Bạn (số nhiều/lịch sự) sẽ là...</div>
+    <div class="options" id="options-etre-5"></div>
+    <button class="validate-btn" onclick="checkAnswer('etre-5')">Valider</button>
+    <div class="feedback" id="feedback-etre-5"></div>
+  </div>
+
+  <div class="question-block" id="q-etre-6-block">
+    <div class="question">6. Ils ser...</div>
+    <div class="translation">Họ sẽ là...</div>
+    <div class="options" id="options-etre-6"></div>
+    <button class="validate-btn" onclick="checkAnswer('etre-6')">Valider</button>
+    <div class="feedback" id="feedback-etre-6"></div>
+  </div>
+
+  <hr style="margin: 40px 0; border: 0; border-top: 1px solid #ccc;">
+
+  <h2>AVOIR</h2>
+  <div class="question-block" id="q-avoir-1-block">
+    <div class="question">7. J' aur...</div>
+    <div class="translation">Tôi sẽ có...</div>
+    <div class="options" id="options-avoir-1"></div>
+    <button class="validate-btn" onclick="checkAnswer('avoir-1')">Valider</button>
+    <div class="feedback" id="feedback-avoir-1"></div>
+  </div>
+
+  <div class="question-block" id="q-avoir-2-block">
+    <div class="question">8. Tu aur...</div>
+    <div class="translation">Bạn sẽ có...</div>
+    <div class="options" id="options-avoir-2"></div>
+    <button class="validate-btn" onclick="checkAnswer('avoir-2')">Valider</button>
+    <div class="feedback" id="feedback-avoir-2"></div>
+  </div>
+
+  <div class="question-block" id="q-avoir-3-block">
+    <div class="question">9. Il aur...</div>
+    <div class="translation">Anh ấy sẽ có...</div>
+    <div class="options" id="options-avoir-3"></div>
+    <button class="validate-btn" onclick="checkAnswer('avoir-3')">Valider</button>
+    <div class="feedback" id="feedback-avoir-3"></div>
+  </div>
+
+  <div class="question-block" id="q-avoir-4-block">
+    <div class="question">10. Nous aur...</div>
+    <div class="translation">Chúng tôi sẽ có...</div>
+    <div class="options" id="options-avoir-4"></div>
+    <button class="validate-btn" onclick="checkAnswer('avoir-4')">Valider</button>
+    <div class="feedback" id="feedback-avoir-4"></div>
+  </div>
+
+  <div class="question-block" id="q-avoir-5-block">
+    <div class="question">11. Vous aur...</div>
+    <div class="translation">Bạn (số nhiều/lịch sự) sẽ có...</div>
+    <div class="options" id="options-avoir-5"></div>
+    <button class="validate-btn" onclick="checkAnswer('avoir-5')">Valider</button>
+    <div class="feedback" id="feedback-avoir-5"></div>
+  </div>
+
+  <div class="question-block" id="q-avoir-6-block">
+    <div class="question">12. Ils aur...</div>
+    <div class="translation">Họ sẽ có... (nam)</div>
+    <div class="options" id="options-avoir-6"></div>
+    <button class="validate-btn" onclick="checkAnswer('avoir-6')">Valider</button>
+    <div class="feedback" id="feedback-avoir-6"></div>
+  </div>
+
+  <button class="complete-test-btn" onclick="showScore()">Hoàn thành bài kiểm tra</button>
+
+  <div id="score-area">
+    <p>Bạn đã trả lời đúng <span id="correct-count">0</span> trên tổng số <span id="total-questions">0</span> câu.</p>
+  </div>
+
+</div>
+
+<script>
+  // Định nghĩa dữ liệu cho mỗi câu hỏi
+  const questionsData = {
+    // ÊTRE
+    'etre-1': {
+      original: "Je ser...",
+      translation: "Tôi sẽ là...",
+      correct: "Je serai",
+      wrong: ["Je seras", "Je sera", "Je serons"],
+      explanation: "Đuôi 'ai' cho ngôi 'Je' ở thì tương lai đơn."
+    },
+    'etre-2': {
+      original: "Tu ser...",
+      translation: "Bạn sẽ là...",
+      correct: "Tu seras",
+      wrong: ["Tu serai", "Tu sera", "Tu serez"],
+      explanation: "Đuôi 'as' cho ngôi 'Tu' ở thì tương lai đơn."
+    },
+    'etre-3': {
+      original: "Il ser...",
+      translation: "Anh ấy sẽ là...",
+      correct: "Il sera",
+      wrong: ["Il serai", "Il seras", "Il seront"],
+      explanation: "Đuôi 'a' cho ngôi 'Il/Elle/On' ở thì tương lai đơn."
+    },
+    'etre-4': {
+      original: "Nous ser...",
+      translation: "Chúng tôi sẽ là...",
+      correct: "Nous serons",
+      wrong: ["Nous serai", "Nous seras", "Nous serez"],
+      explanation: "Đuôi 'ons' cho ngôi 'Nous' ở thì tương lai đơn."
+    },
+    'etre-5': {
+      original: "Vous ser...",
+      translation: "Bạn (số nhiều/lịch sự) sẽ là...",
+      correct: "Vous serez",
+      wrong: ["Vous serai", "Vous serons", "Vous seront"],
+      explanation: "Đuôi 'ez' cho ngôi 'Vous' ở thì tương lai đơn."
+    },
+    'etre-6': {
+      original: "Ils ser...",
+      translation: "Họ sẽ là...",
+      correct: "Ils seront",
+      wrong: ["Ils serai", "Ils seras", "Ils serez"],
+      explanation: "Đuôi 'ont' cho ngôi 'Ils/Elles' ở thì tương lai đơn."
+    },
+    // AVOIR
+    'avoir-1': {
+      original: "J' aur...",
+      translation: "Tôi sẽ có...",
+      correct: "J'aurai",
+      wrong: ["J'auras", "J'aura", "J'aurons"],
+      explanation: "Đuôi 'ai' cho ngôi 'Je' (rút gọn của 'J'ai') ở thì tương lai đơn."
+    },
+    'avoir-2': {
+      original: "Tu aur...",
+      translation: "Bạn sẽ có...",
+      correct: "Tu auras",
+      wrong: ["Tu aurai", "Tu aura", "Tu aurez"],
+      explanation: "Đuôi 'as' cho ngôi 'Tu' ở thì tương lai đơn."
+    },
+    'avoir-3': {
+      original: "Il aur...",
+      translation: "Anh ấy sẽ có...",
+      correct: "Il aura",
+      wrong: ["Il aurai", "Il auras", "Il auront"],
+      explanation: "Đuôi 'a' cho ngôi 'Il/Elle/On' ở thì tương lai đơn."
+    },
+    'avoir-4': {
+      original: "Nous aur...",
+      translation: "Chúng tôi sẽ có...",
+      correct: "Nous aurons",
+      wrong: ["Nous aurai", "Nous auras", "Nous aurez"],
+      explanation: "Đuôi 'ons' cho ngôi 'Nous' ở thì tương lai đơn."
+    },
+    'avoir-5': {
+      original: "Vous aur...",
+      translation: "Bạn (số nhiều/lịch sự) sẽ có...",
+      correct: "Vous aurez",
+      wrong: ["Vous aurai", "Vous aurons", "Vous auront"],
+      explanation: "Đuôi 'ez' cho ngôi 'Vous' ở thì tương lai đơn."
+    },
+    'avoir-6': {
+      original: "Ils aur...",
+      translation: "Họ sẽ có... (nam)",
+      correct: "Ils auront",
+      wrong: ["Ils aurai", "Ils auras", "Ils aurez"],
+      explanation: "Đuôi 'ont' cho ngôi 'Ils/Elles' ở thì tương lai đơn."
+    }
+  };
+
+  let correctAnswersCount = 0;
+  const totalQuestions = Object.keys(questionsData).length;
+  const answeredQuestions = new Set(); 
+
+  // Hàm xáo trộn mảng Fisher-Yates
+  function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+      }
+  }
+
+  // Hàm tạo và hiển thị các lựa chọn
+  function generateOptions() {
+    for (const qKey in questionsData) {
+      const qData = questionsData[qKey];
+      const optionsDiv = document.getElementById(`options-${qKey}`);
+      optionsDiv.innerHTML = ''; // Xóa các lựa chọn cũ
+
+      const allOptions = [{text: qData.correct, isCorrect: true}];
+      qData.wrong.forEach(w => allOptions.push({text: w, isCorrect: false}));
+
+      shuffleArray(allOptions); // Xáo trộn thứ tự các lựa chọn
+
+      allOptions.forEach((option, index) => {
+        const optionId = `${qKey}${String.fromCharCode(97 + index)}`; // a, b, c...
+        const label = document.createElement('label');
+        label.setAttribute('for', optionId);
+        
+        const input = document.createElement('input');
+        input.type = 'radio';
+        input.name = qKey;
+        input.value = optionId;
+        input.id = optionId;
+        
+        label.appendChild(input);
+        label.appendChild(document.createTextNode(option.text));
+        
+        if (option.isCorrect) {
+          label.dataset.isCorrect = "true";
+          questionsData[qKey].correctOptionId = optionId; 
+        }
+
+        optionsDiv.appendChild(label);
+      });
+    }
+  }
+
+  // Gọi hàm tạo lựa chọn khi tải trang
+  document.addEventListener('DOMContentLoaded', generateOptions);
+
+
+  function checkAnswer(questionName) {
+    if (answeredQuestions.has(questionName)) {
+        return; 
+    }
+
+    const selectedOptionInput = document.querySelector(`input[name="${questionName}"]:checked`);
+    const feedbackDiv = document.getElementById(`feedback-${questionName}`);
+    const validateButton = event.target; 
+    
+    feedbackDiv.classList.remove('active', 'correct', 'incorrect', 'warning');
+    feedbackDiv.innerHTML = '';
+
+
+    if (!selectedOptionInput) {
+        feedbackDiv.textContent = 'Vui lòng chọn một đáp án trước khi kiểm tra.';
+        feedbackDiv.classList.add('active', 'warning');
+        return;
+    }
+
+    const qData = questionsData[questionName]; 
+
+    const correctAnswerLabel = document.querySelector(`label[for="${qData.correctOptionId}"]`);
+    if (correctAnswerLabel) {
+      // Highlight đáp án đúng trên lựa chọn (vẫn là màu xanh lá)
+      correctAnswerLabel.classList.add('correct-highlight');
+    }
+
+    answeredQuestions.add(questionName);
+    
+    const selectedOptionLabel = selectedOptionInput.parentElement;
+    
+    if (selectedOptionLabel.dataset.isCorrect === "true") {
+      feedbackDiv.innerHTML = '<strong>Chính xác!</strong><br><span class="explanation">' + qData.explanation + '</span>';
+      feedbackDiv.classList.add('active', 'correct');
+      correctAnswersCount++;
+    } else {
+      const correctAnswerText = correctAnswerLabel ? correctAnswerLabel.textContent.trim() : '';
+      // Đáp án đúng được hiển thị với class .correct-answer-display (đã định nghĩa là màu xanh lá)
+      feedbackDiv.innerHTML = '<strong>Không chính xác.</strong><br><span class="correct-answer-display">Đáp án đúng là: ' + correctAnswerText + '</span><br><span class="explanation">' + qData.explanation + '</span>';
+      feedbackDiv.classList.add('active', 'incorrect');
+    }
+    
+    const radioButtons = document.querySelectorAll(`input[name="${questionName}"]`);
+    radioButtons.forEach(radio => radio.disabled = true);
+    validateButton.disabled = true;
+  }
+
+  function showScore() {
+    document.getElementById('correct-count').textContent = correctAnswersCount;
+    document.getElementById('total-questions').textContent = totalQuestions;
+    document.getElementById('score-area').style.display = 'block';
+  }
+</script>
+
+</body>
+</html>

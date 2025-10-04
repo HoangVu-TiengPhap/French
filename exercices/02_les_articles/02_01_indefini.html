@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<meta name="robots" content="noindex">
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indéfinis</title>
+    <style>
+        /* CSS CHUNG CHO TOÀN BỘ TRANG */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding-top: 0; 
+            background-color: #e9eff5;
+            color: #333;
+        }
+
+        /* ĐÃ SỬA: Tên giáo viên sang trái */
+        .top-info {
+            max-width: 800px;
+            margin: 20px auto 10px auto;
+            padding: 0 20px;
+            font-size: 0.9em;
+            color: #555;
+            text-align: left; /* ĐÃ SỬA: Căn lề trái */
+        }
+
+        /* ĐÃ SỬA: Header không sticky, giới hạn chiều rộng và căn giữa */
+        .main-header {
+            background-color: #ffffff;
+            padding: 15px 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            z-index: 900; /* z-index thấp hơn thanh ký tự */
+            text-align: center;
+            /* ĐÃ LOẠI BỎ: position: sticky; top: 0; */
+            width: 100%;
+            max-width: 800px; /* ĐÃ THÊM: Giới hạn chiều rộng bằng content-container */
+            margin: 0 auto; /* ĐÃ THÊM: Căn giữa */
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .main-header h1 {
+            color: #2c3e50;
+            margin: 0;
+            font-size: 2em;
+            font-weight: 600;
+            order: 1;
+        }
+
+        .main-header .instructions {
+            font-size: 1.1em;
+            margin-top: 8px;
+            margin-bottom: 0;
+            font-style: italic;
+            border-bottom: 1px solid #dcdcdc;
+            padding-bottom: 8px;
+            width: 85%;
+            margin: 8px auto 0 auto;
+            color: #555;
+            order: 2;
+        }
+
+        /* ĐÃ SỬA: Chỉ thanh ký tự đặc biệt là sticky */
+        .char-buttons-container {
+            position: -webkit-sticky;
+            position: sticky;
+            top: 0; /* Gắn vào đỉnh trang */
+            z-index: 1000; /* Đảm bảo nó luôn ở trên cùng */
+
+            width: 100%;
+            max-width: 800px; /* ĐÃ THÊM: Giới hạn chiều rộng bằng content-container */
+            margin: 0 auto; /* ĐÃ THÊM: Căn giữa */
+            box-sizing: border-box;
+
+            padding: 10px 0 5px 0;
+            background-color: #f0f3f6;
+            border-radius: 0 0 5px 5px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* ĐÃ SỬA: Đổ bóng rõ hơn khi sticky */
+            /* ĐÃ LOẠI BỎ: margin-top: 15px; order: 3; */
+        }
+
+        .char-button {
+            background-color: #e2e6ea;
+            border: 1px solid #d1d6db;
+            padding: 6px 10px;
+            margin: 3px;
+            cursor: pointer;
+            font-size: 1.2em;
+            font-weight: normal;
+            border-radius: 4px;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+        }
+
+        .char-button:hover {
+            background-color: #cdd2d7;
+            transform: translateY(-1px);
+        }
+
+        .char-button:active {
+            transform: translateY(0);
+        }
+
+        /* Container cho nội dung bài tập */
+        .content-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 20px;
+            text-align: left;
+        }
+
+        /* Phần ví dụ */
+        .example-section {
+            background-color: #f7f7f7;
+            padding: 18px;
+            border-left: 5px solid #007bff;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            font-size: 1.05em;
+            text-align: left;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .example-text {
+            margin-bottom: 5px;
+        }
+
+        .example-text strong {
+            color: #007bff;
+        }
+
+        .example-line {
+            display: inline;
+        }
+
+        .example-line input {
+            width: 150px !important; /* Chiều rộng ô input ví dụ */
+            margin: 0 5px;
+            background-color: #e9ecef;
+            border: 1px dashed #adb5bd;
+            color: #495057;
+        }
+
+        /* Từng câu hỏi trong bài tập */
+        .exercise-item {
+            margin-bottom: 25px;
+            padding: 15px;
+            border: 1px solid #d1e0f0;
+            border-radius: 8px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+            text-align: left;
+            transition: transform 0.2s ease;
+        }
+
+        .exercise-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .prompt-text {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #34495e;
+            display: inline;
+        }
+
+        .question-line {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .question-line input[type="text"] {
+            width: 80px; /* Điều chỉnh chiều rộng ô input cho articles */
+            padding: 8px 10px;
+            margin: 0 5px;
+            border: 1px solid #a3c1e0;
+            border-radius: 5px;
+            font-size: 1.05em;
+            box-sizing: border-box;
+            display: inline-block;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .question-line input[type="text"]:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+            outline: none;
+        }
+
+        .vietnamese-translation {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            margin-top: 8px;
+            margin-bottom: 12px;
+            font-style: italic;
+            display: block;
+        }
+
+        .check-button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+            margin-top: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .check-button:hover {
+            background-color: #45a049;
+            transform: translateY(-1px);
+        }
+
+        .check-button:active {
+            transform: translateY(0);
+        }
+
+        .feedback {
+            margin-top: 15px;
+            font-weight: bold;
+            display: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .feedback.correct {
+            color: #1a7e3d;
+            background-color: #d4edda;
+            border: 1px solid #1a7e3d;
+        }
+
+        .feedback.incorrect {
+            color: #b52b2b;
+            background-color: #f8d7da;
+            border: 1px solid #b52b2b;
+        }
+
+        .feedback.warning {
+            color: #d19a00;
+            background-color: #fff3cd;
+            border: 1px solid #d19a00;
+        }
+
+        .note {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 40px;
+            border-left: 3px solid #ccc;
+            padding-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-info">
+        Enseignant: Nguyễn Hoàng Vũ <br>
+        
+    </div>
+
+    <div class="main-header">
+        <h1 id="exercise-title"></h1>
+        <p class="instructions" id="exercise-instructions"></p>
+    </div>
+    
+    <div class="char-buttons-container">
+        <button class="char-button" onclick="insertChar('é')">é</button>
+        <button class="char-button" onclick="insertChar('è')">è</button>
+        <button class="char-button" onclick="insertChar('ê')">ê</button>
+        <button class="char-button" onclick="insertChar('ë')">ë</button>
+        <button class="char-button" onclick="insertChar('à')">à</button>
+        <button class="char-button" onclick="insertChar('â')">â</button>
+        <button class="char-button" onclick="insertChar('ç')">ç</button>
+        <button class="char-button" onclick="insertChar('ù')">ù</button>
+        <button class="char-button" onclick="insertChar('û')">û</button>
+        <button class="char-button" onclick="insertChar('ï')">ï</button>
+        <button class="char-button" onclick="insertChar('î')">î</button>
+        <button class="char-button" onclick="insertChar('ô')">ô</button>
+        <button class="char-button" onclick="insertChar('œ')">œ</button>
+        <button class="char-button" onclick="insertChar('\'')">'</button>
+    </div>
+
+    <div class="content-container" id="exercise-content-area">
+        </div>
+    <script>
+        // === BIẾN TOÀN CỤC VÀ HÀM CHÈN KÝ TỰ ===
+        let activeInput = null;
+
+        document.addEventListener('mousedown', (event) => {
+            if (event.target.tagName === 'INPUT' && event.target.type === 'text') {
+                activeInput = event.target;
+            } else if (!event.target.classList.contains('char-button')) {
+                activeInput = null;
+            }
+        });
+
+        function insertChar(char) {
+            if (activeInput) {
+                const start = activeInput.selectionStart;
+                const end = activeInput.selectionEnd;
+                const value = activeInput.value;
+
+                activeInput.value = value.substring(0, start) + char + value.substring(end);
+                activeInput.selectionStart = activeInput.selectionEnd = start + char.length;
+                activeInput.focus();
+            } else {
+                alert('Vui lòng click vào ô bạn muốn điền trước khi chọn ký tự! (Please click on the input field you want to fill before selecting a character!)');
+            }
+        }
+
+        // === HÀM KIỂM TRA ĐÁP ÁN (checkMultipleAnswersDynamic - đã được cải tiến để linh hoạt) ===
+        function checkMultipleAnswersDynamic(...args) {
+            const feedbackId = args[args.length - 1];
+            const feedbackElement = document.getElementById(feedbackId);
+
+            let allInputsFilled = true;
+            let allAnswersCorrect = true;
+            let incorrectAnswers = [];
+
+            // Lặp qua các cặp inputId và correctAnswer
+            for (let i = 0; i < args.length - 1; i += 2) {
+                const inputId = args[i];
+                const correctAnswer = args[i + 1];
+
+                const inputElement = document.getElementById(inputId);
+                const userAnswer = inputElement.value.trim().toLowerCase();
+                const cleanCorrectAnswer = correctAnswer.toLowerCase().trim(); 
+
+                if (userAnswer === '') {
+                    allInputsFilled = false;
+                }
+
+                // So sánh đáp án, cho phép bỏ qua apostrophe hoặc khoảng trắng từ apostrophe
+                let isCurrentCorrect = (
+                    userAnswer === cleanCorrectAnswer ||
+                    userAnswer === cleanCorrectAnswer.replace("'", "") || 
+                    userAnswer === cleanCorrectAnswer.replace("'", " ").replace(/\s/g, '') 
+                );
+
+                if (!isCurrentCorrect) {
+                    allAnswersCorrect = false;
+                    incorrectAnswers.push({
+                        inputNum: (i / 2) + 1, 
+                        correct: correctAnswer
+                    });
+                }
+            }
+
+            feedbackElement.classList.remove('correct', 'incorrect', 'warning');
+            feedbackElement.style.display = 'block';
+
+            if (!allInputsFilled) {
+                feedbackElement.textContent = 'Bạn cần điền vào tất cả các ô trống trước khi kiểm tra! (Please fill in all blanks before checking!)';
+                feedbackElement.classList.add('warning');
+            } else if (allAnswersCorrect) {
+                feedbackElement.textContent = 'Chính xác! (Correct!)';
+                feedbackElement.classList.add('correct');
+            } else {
+                let feedbackText = 'Chưa đúng. ';
+                incorrectAnswers.forEach((item, index) => {
+                    feedbackText += `Ô ${item.inputNum}: "${item.correct}". `;
+                });
+                feedbackText += ` (Incorrect. Please check your answers.)`;
+                feedbackElement.classList.add('incorrect');
+                feedbackElement.textContent = feedbackText;
+            }
+        }
+
+        // === ĐỊNH NGHĨA NỘI DUNG CỦA TỪNG BÀI TẬP RIÊNG BIỆT DƯỚI DẠNG CHUỖI HTML ===
+
+        // Bài tập 1: AVOIR (Affirmative & Négative)
+        const exerciseContent_AVOIR_AffirmativeNegative = `
+            <div class="example-section">
+                <strong>Exemple (Ví dụ):</strong>
+                <div class="example-text">
+                    Tu: avoir l'air malade, avoir l'air en forme.
+                </div>
+                <div class="example-text">
+                    &rarr; Tu <input type="text" value="as" disabled class="example-input" style="width:50px !important;"> l'air malade, tu <input type="text" value="n'as pas" disabled class="example-input" style="width:100px !important;"> l'air en forme.
+                </div>
+                <div class="vietnamese-translation">
+                    <em>(Bạn thì: trông ốm yếu, trông khỏe khoắn.)</em><br>
+                    <em>&rarr; Bạn trông ốm yếu, bạn không trông khỏe khoắn.</em>
+                </div>
+            </div>
+
+            <div class="exercise-list">
+                <div class="exercise-item">
+                    <div class="prompt-text">1. Tu: avoir chaud, avoir froid.</div>
+                    <div class="question-line">
+                        Tu <input type="text" id="q1a" data-answer="as"> chaud, tu <input type="text" id="q1b" data-answer="n'as pas"> froid.
+                    </div>
+                    <div class="vietnamese-translation">(Bạn: nóng, lạnh.)</div>
+                    <button class="check-button" onclick="checkMultipleAnswersDynamic('q1a', 'as', 'q1b', 'n\'as pas', 'q1-feedback')">Vérifier</button>
+                    <div id="q1-feedback" class="feedback"></div>
+                </div>
+
+                <div class="exercise-item">
+                    <div class="prompt-text">2. Je: avoir faim, avoir soif.</div>
+                    <div class="question-line">
+                        Je <input type="text" id="q2a" data-answer="ai"> faim, je <input type="text" id="q2b" data-answer="n'ai pas"> soif.
+                    </div>
+                    <div class="vietnamese-translation">(Tôi: đói, khát.)</div>
+                    <button class="check-button" onclick="checkMultipleAnswersDynamic('q2a', 'ai', 'q2b', 'n\'ai pas', 'q2-feedback')">Vérifier</button>
+                    <div id="q2-feedback" class="feedback"></div>
+                </div>
+
+                <div class="exercise-item">
+                    <div class="prompt-text">3. Il: avoir peur, avoir sommeil.</div>
+                    <div class="question-line">
+                        Il <input type="text" id="q3a" data-answer="a"> peur, il <input type="text" id="q3b" data-answer="n'a pas"> sommeil.
+                    </div>
+                    <div class="vietnamese-translation">(Anh ấy: sợ hãi, buồn ngủ.)</div>
+                    <button class="check-button" onclick="checkMultipleAnswersDynamic('q3a', 'a', 'q3b', 'n\'a pas', 'q3-feedback')">Vérifier</button>
+                    <div id="q3-feedback" class="feedback"></div>
+                </div>
+
+                <div class="exercise-item">
+                    <div class="prompt-text">4. Ils: avoir mal aux dents, avoir mal à la tête.</div>
+                    <div class="question-line">
+                        Ils <input type="text" id="q4a" data-answer="ont"> mal aux dents, ils <input type="text" id="q4b" data-answer="n'ont pas"> mal à la tête.
+                    </div>
+                    <div class="vietnamese-translation">(Họ: đau răng, đau đầu.)</div>
+                    <button class="check-button" onclick="checkMultipleAnswersDynamic('q4a', 'ont', 'q4b', 'n\'ont pas', 'q4-feedback')">Vérifier</button>
+                    <div id="q4-feedback" class="feedback"></div>
+                </div>
+
+                <div class="exercise-item">
+                    <div class="prompt-text">5. Vous: avoir besoin de vitamines, avoir envie de fruits.</div>
+                    <div class="question-line">
+                        Vous <input type="text" id="q5a" data-answer="avez"> besoin de vitamines, vous <input type="text" id="q5b" data-answer="n'avez pas"> envie de fruits.
+                    </div>
+                    <div class="vietnamese-translation">(Bạn/Các bạn: cần vitamin, muốn trái cây.)</div>
+                    <button class="check-button" onclick="checkMultipleAnswersDynamic('q5a', 'avez', 'q5b', 'n\'avez pas', 'q5-feedback')">Vérifier</button>
+                    <div id="q5-feedback" class="feedback"></div>
+                </div>
+            </div>
+
+            <p class="note">
+                <strong>Lưu ý:</strong> <br>
+                - Ở thể phủ định, <strong>pas</strong> đứng sau động từ.<br>
+                - Nếu động từ bắt đầu bằng nguyên âm hoặc h câm, **ne** sẽ thành **n'** và **de** sẽ thành **d'** (ví dụ: *n'as pas, n'ai pas, n'ont pas, n'avez pas*).
+            </p>
+        `;
+
+        // Bài tập 2: Articles Indéfinis (un, une, des) - BÀI TẬP BẠN VỪA GỬI HÌNH
+        const exerciseContent_ArticlesIndefinis = `
+            <div class="example-section">
+                <strong>Exemple (Ví dụ):</strong>
+                <div class="example-text">
+                    C'est ... cahier, c'est ... livre.
+                </div>
+                <div class="example-text">
+                    &rarr; C'est <input type="text" value="un" disabled class="example-input" style="width:50px !important;"> cahier, c'est <input type="text" value="un" disabled class="example-input" style="width:50px !important;"> livre.
+                </div>
+                <div class="vietnamese-translation">
+                    <em>(Đây là một quyển vở, đây là một quyển sách.)</em>
+                </div>
+            </div>
+
+            <div class="exercise-list">
+                <div class="exercise-item">
+                    <div class="question-line">
+                        1. C'est <input type="text" id="q1a" data-answer="un"> garçon, c'est <input type="text" id="q1b" data-answer="une"> fille.
+                    </div>
+                    <div class="vietnamese-translation">(Đây là một cậu bé, đây là một cô bé.)</div>
+                    <button class="check-button" onclick="checkMultipleAnswersDynamic('q1a', 'un', 'q1b', 'une', 'q1-feedback')">Vérifier</button>
+                    <div id="q1-feedback" class="feedback"></div>
+                </div>
+
+                <div class="exercise-item">
+                    <div class="question-line">
+                        2. C'est <input type="text" id="q2a" data-answer="une"> voiture, c'est <input type="text" id="q2b" data-answer="un"> train.
+                    </div>
+                    <div class="vietnamese-translation">(Đây là một chiếc xe hơi, đây là một đoàn tàu.)</div>
+                    <button class="check-button" onclick="checkMultipleAnswersDynamic('q2a', 'une', 'q2b', 'un', 'q2-feedback')">Vérifier</button>
+                    <div id="q2-feedback" class="feedback"></div>
+                </div>
+
+                <div class="exercise-item">
+                    <div class="question-line">
+                        3. Ce sont <input type="text" id="q3a" data-answer="des"> exercices, ce sont <input type="text" id="q3b" data-answer="des"> phrases.
+                    </div>
+                    <div class="vietnamese-translation">(Đó là những bài tập, đó là những câu.)</div>
+                    <button class="check-button" onclick="checkMultipleAnswersDynamic('q3a', 'des', 'q3b', 'des', 'q3-feedback')">Vérifier</button>
+                    <div id="q3-feedback" class="feedback"></div>
+                </div>
+
+                <div class="exercise-item">
+                    <div class="question-line">
+                        4. C'est <input type="text" id="q4a" data-answer="un"> médecin; il travaille dans <input type="text" id="q4b" data-answer="un"> hôpital.
+                    </div>
+                    <div class="vietnamese-translation">(Đây là một bác sĩ; anh ấy làm việc trong một bệnh viện.)</div>
+                    <button class="check-button" onclick="checkMultipleAnswersDynamic('q4a', 'un', 'q4b', 'un', 'q4-feedback')">Vérifier</button>
+                    <div id="q4-feedback" class="feedback"></div>
+                </div>
+
+                <div class="exercise-item">
+                    <div class="question-line">
+                        5. Voici <input type="text" id="q5a" data-answer="une"> lettre, <input type="text" id="q5b" data-answer="un"> journal et <input type="text" id="q5c" data-answer="des"> publicités.
+                    </div>
+                    <div class="vietnamese-translation">(Đây là một lá thư, một tờ báo và những quảng cáo.)</div>
+                    <button class="check-button" onclick="checkMultipleAnswersDynamic('q5a', 'une', 'q5b', 'un', 'q5c', 'des', 'q5-feedback')">Vérifier</button>
+                    <div id="q5-feedback" class="feedback"></div>
+                </div>
+
+                <div class="exercise-item">
+                    <div class="question-line">
+                        6. C'est <input type="text" id="q6a" data-answer="une"> musicienne; elle travaille dans <input type="text" id="q6b" data-answer="un"> orchestre.
+                    </div>
+                    <div class="vietnamese-translation">(Đây là một nhạc sĩ; cô ấy làm việc trong một dàn nhạc.)</div>
+                    <button class="check-button" onclick="checkMultipleAnswersDynamic('q6a', 'une', 'q6b', 'un', 'q6-feedback')">Vérifier</button>
+                    <div id="q6-feedback" class="feedback"></div>
+                </div>
+
+                <div class="exercise-item">
+                    <div class="question-line">
+                        7. Sur le balcon, il y a <input type="text" id="q7a" data-answer="des"> plantes et <input type="text" id="q7b" data-answer="une"> cage avec <input type="text" id="q7c" data-answer="un"> oiseau.
+                    </div>
+                    <div class="vietnamese-translation">(Trên ban công có những cây và một cái lồng với một con chim.)</div>
+                    <button class="check-button" onclick="checkMultipleAnswersDynamic('q7a', 'des', 'q7b', 'une', 'q7c', 'un', 'q7-feedback')">Vérifier</button>
+                    <div id="q7-feedback" class="feedback"></div>
+                </div>
+
+                <div class="exercise-item">
+                    <div class="question-line">
+                        8. Dans le village, il y a <input type="text" id="q8a" data-answer="une"> église, <input type="text" id="q8b" data-answer="un"> château et <input type="text" id="q8c" data-answer="des"> jardins.
+                    </div>
+                    <div class="vietnamese-translation">(Trong làng có một nhà thờ, một lâu đài và những khu vườn.)</div>
+                    <button class="check-button" onclick="checkMultipleAnswersDynamic('q8a', 'une', 'q8b', 'un', 'q8c', 'des', 'q8-feedback')">Vérifier</button>
+                    <div id="q8-feedback" class="feedback"></div>
+                </div>
+
+                <div class="exercise-item">
+                    <div class="question-line">
+                        9. Dans <input type="text" id="q9a" data-answer="un"> magasin, il y a <input type="text" id="q9b" data-answer="un"> vendeur et <input type="text" id="q9c" data-answer="des"> clients.
+                    </div>
+                    <div class="vietnamese-translation">(Trong một cửa hàng, có một người bán hàng và những khách hàng.)</div>
+                    <button class="check-button" onclick="checkMultipleAnswersDynamic('q9a', 'un', 'q9b', 'un', 'q9c', 'des', 'q9-feedback')">Vérifier</button>
+                    <div id="q9-feedback" class="feedback"></div>
+                </div>
+
+                <div class="exercise-item">
+                    <div class="question-line">
+                        10. Au café, il y a <input type="text" id="q10a" data-answer="des"> étudiants et <input type="text" id="q10b" data-answer="des"> touristes.
+                    </div>
+                    <div class="vietnamese-translation">(Ở quán cà phê, có những sinh viên và những khách du lịch.)</div>
+                    <button class="check-button" onclick="checkMultipleAnswersDynamic('q10a', 'des', 'q10b', 'des', 'q10-feedback')">Vérifier</button>
+                    <div id="q10-feedback" class="feedback"></div>
+                </div>
+            </div>
+
+            <p class="note">
+                <strong>Lưu ý:</strong> <br>
+                - **Un** dùng cho danh từ giống đực số ít (ví dụ: *un garçon, un train*).<br>
+                - **Une** dùng cho danh từ giống cái số ít (ví dụ: *une fille, une voiture*).<br>
+                - **Des** dùng cho danh từ số nhiều (cả giống đực và cái, ví dụ: *des exercices, des phrases*).<br>
+                - Chú ý cách dùng **C'est / Ce sont** và **il y a**.
+            </p>
+        `;
+
+        // Bài tập 3: C'est / Il est (Elle est...) - "un téléphone - pratique."
+        const exerciseContent_CestIlEst = `
+            <div class="example-section">
+                <strong>Modèle (Mẫu):</strong>
+                <div class="example-line">
+                    un ordinateur - utile. &rarr;
+                    <input type="text" value="C'est un ordinateur." disabled class="example-input">
+                    <input type="text" value="Il est utile." disabled class="example-input">
+                </div>
+                <div class="vietnamese-translation"><em>(Đây là một máy tính. Nó thì hữu ích.)</em></div>
+                <br>
+                <strong>Gợi ý:</strong>
+                <ul>
+                    <li>Câu 1: Sử dụng <strong>C'est + mạo từ (un/une) + danh từ</strong>.</li>
+                    <li>Câu 2: Sử dụng <strong>Il/Elle est + tính từ</strong> (đảm bảo tính từ phù hợp giống/số với danh từ).</li>
+                </ul>
+            </div>
+
+            <div class="exercise-list">
+                <div class="exercise-item">
+                    <span class="prompt-text">1. un téléphone - pratique. &rarr;</span>
+                    <span class="question-inputs">
+                        <input type="text" id="q1a" data-answer="c'est un telephone.">
+                        <input type="text" id="q1b" data-answer="il est pratique.">
+                    </span>
+                    <div class="vietnamese-translation">(Một cái điện thoại - tiện lợi.)</div>
+                    <button class="check-button" onclick="checkMultipleAnswersDynamic('q1a', 'c\'est un téléphone.', 'q1b', 'il est pratique.', 'q1-feedback')">Vérifier</button>
+                    <div id="q1-feedback" class="feedback"></div>
+                </div>
+
+                <div class="exercise-item">
+                    <span class="prompt-text">2. une voiture - rapide. &rarr;</span>
+                    <span class="question-inputs">
+                        <input type="text" id="q2a" data-answer="c'est une voiture.">
+                        <input type="text" id="q2b" data-answer="elle est rapide.">
+                    </span>
+                    <div class="vietnamese-translation">(Một chiếc xe hơi - nhanh.)</div>
+                    <button class="check-button" onclick="checkMultipleAnswersDynamic('q2a', 'c\'est une voiture.', 'q2b', 'elle est rapide.', 'q2-feedback')">Vérifier</button>
+                    <div id="q2-feedback" class="feedback"></div>
+                </div>
+
+                <div class="exercise-item">
+                    <span class="prompt-text">3. une cuisine - moderne. &rarr;</span>
+                    <span class="question-inputs">
+                        <input type="text" id="q3a" data-answer="c'est une cuisine.">
+                        <input type="text" id="q3b" data-answer="elle est moderne.">
+                    </span>
+                    <div class="vietnamese-translation">(Một căn bếp - hiện đại.)</div>
+                    <button class="check-button" onclick="checkMultipleAnswersDynamic('q3a', 'c\'est une cuisine.', 'q3b', 'elle est moderne.', 'q3-feedback')">Vérifier</button>
+                    <div id="q3-feedback" class="feedback"></div>
+                </div>
+
+                <div class="exercise-item">
+                    <span class="prompt-text">4. une chaise - solide. &rarr;</span>
+                    <span class="question-inputs">
+                        <input type="text" id="q4a" data-answer="c'est une chaise.">
+                        <input type="text" id="q4b" data-answer="elle est solide.">
+                    </span>
+                    <div class="vietnamese-translation">(Một cái ghế - vững chắc.)</div>
+                    <button class="check-button" onclick="checkMultipleAnswersDynamic('q4a', 'c\'est une chaise.', 'q4b', 'elle est solide.', 'q4-feedback')">Vérifier</button>
+                    <div id="q4-feedback" class="feedback"></div>
+                </div>
+
+                <div class="exercise-item">
+                    <span class="prompt-text">5. un manteau - rouge. &rarr;</span>
+                    <span class="question-inputs">
+                        <input type="text" id="q5a" data-answer="c'est un manteau.">
+                        <input type="text" id="q5b" data-answer="il est rouge.">
+                    </span>
+                    <div class="vietnamese-translation">(Một chiếc áo khoác - màu đỏ.)</div>
+                    <button class="check-button" onclick="checkMultipleAnswersDynamic('q5a', 'c\'est un manteau.', 'q5b', 'il est rouge.', 'q5-feedback')">Vérifier</button>
+                    <div id="q5-feedback" class="feedback"></div>
+                </div>
+
+                <div class="exercise-item">
+                    <span class="prompt-text">6. un lit - confortable. &rarr;</span>
+                    <span class="question-inputs">
+                        <input type="text" id="q6a" data-answer="c'est un lit.">
+                        <input type="text" id="q6b" data-answer="il est confortable.">
+                    </span>
+                    <div class="vietnamese-translation">(Một cái giường - thoải mái.)</div>
+                    <button class="check-button" onclick="checkMultipleAnswersDynamic('q6a', 'c\'est un lit.', 'q6b', 'il est confortable.', 'q6-feedback')">Vérifier</button>
+                    <div id="q6-feedback" class="feedback"></div>
+                </div>
+            </div>
+
+            <p class="note">
+                <strong>Lưu ý:</strong> <br>
+                - Câu 1: Sử dụng <strong>C'est + mạo từ (un/une) + danh từ</strong>.<br>
+                - Câu 2: Sử dụng <strong>Il/Elle est + tính từ</strong> (đảm bảo tính từ phù hợp giống/số với danh từ).
+            </p>
+        `;
+        
+        // Bài tập 4: ÊTRE và AVOIR ở thì hiện tại - "Je ne (être) pas jeune. Je (avoir) soixante-dix ans."
+        const exerciseContent_ETRE_AVOIR_Present = `
+            <div class="example-section">
+                <strong>Exemple (Ví dụ):</strong>
+                <div class="example-text">
+                    Je (être) jeune. Je (avoir) dix ans.
+                </div>
+                <div class="example-text">
+                    &rarr; Je <input type="text" value="suis" disabled class="example-input" style="width:50px !important;"> jeune. Je <input type="text" value="ai" disabled class="example-input" style="width:50px !important;"> dix ans.
+                </div>
+                <div class="vietnamese-translation">
+                    <em>(Tôi (là) trẻ. Tôi (có) mười tuổi.)</em><br>
+                    <em>&rarr; Tôi trẻ. Tôi mười tuổi.</em>
+                </div>
+            </div>
+
+            <div class="exercise-list">
+                <div class="exercise-item">
+                    <div class="prompt-text">1. Je ne (être) pas jeune. Je (avoir) soixante-dix ans.</div>
+                    <div class="question-line">
+                        Je ne <input type="text" id="q1a" data-answer="suis"> pas jeune. Je <input type="text" id="q1b" data-answer="ai"> soixante-dix ans.
+                    </div>
+                    <div class="vietnamese-translation">(Tôi không (là) trẻ. Tôi (có) bảy mươi tuổi.)</div>
+                    <button class="check-button" onclick="checkMultipleAnswersDynamic('q1a', 'suis', 'q1b', 'ai', 'q1-feedback')">Vérifier</button>
+                    <div id="q1-feedback" class="feedback"></div>
+                </div>
+
+                <div class="exercise-item">
+                    <div class="prompt-text">2. Tu ne (être) pas vieux. Tu (avoir) vingt ans.</div>
+                    <div class="question-line">
+                        Tu ne <input type="text" id="q2a" data-answer="es"> pas vieux. Tu <input type="text" id="q2b" data-answer="as"> vingt ans.
+                    </div>
+                    <div class="vietnamese-translation">(Bạn không (là) già. Bạn (có) hai mươi tuổi.)</div>
+                    <button class="check-button" onclick="checkMultipleAnswersDynamic('q2a', 'es', 'q2b', 'as', 'q2-feedback')">Vérifier</button>
+                    <div id="q2-feedback" class="feedback"></div>
+                </div>
+
+                <div class="exercise-item">
+                    <div class="prompt-text">3. C'(être) un adolescent. Il (avoir) quinze ans.</div>
+                    <div class="question-line">
+                        C'<input type="text" id="q3a" data-answer="est"> un adolescent. Il <input type="text" id="q3b" data-answer="a"> quinze ans.
+                    </div>
+                    <div class="vietnamese-translation">(Đó (là) một thiếu niên. Anh ấy (có) mười lăm tuổi.)</div>
+                    <button class="check-button" onclick="checkMultipleAnswersDynamic('q3a', 'est', 'q3b', 'a', 'q3-feedback')">Vérifier</button>
+                    <div id="q3-feedback" class="feedback"></div>
+                </div>
+
+                <div class="exercise-item">
+                    <div class="prompt-text">4. Elle (être) âgée. Elle (avoir) soixante-quinze ans.</div>
+                    <div class="question-line">
+                        Elle <input type="text" id="q4a" data-answer="est"> âgée. Elle <input type="text" id="q4b" data-answer="a"> soixante-quinze ans.
+                    </div>
+                    <div class="vietnamese-translation">(Cô ấy (là) già. Cô ấy (có) bảy mươi lăm tuổi.)</div>
+                    <button class="check-button" onclick="checkMultipleAnswersDynamic('q4a', 'est', 'q4b', 'a', 'q4-feedback')">Vérifier</button>
+                    <div id="q4-feedback" class="feedback"></div>
+                </div>
+
+                <div class="exercise-item">
+                    <div class="prompt-text">5. Nous (être) des enfants. Nous (avoir) des parents.</div>
+                    <div class="question-line">
+                        Nous <input type="text" id="q5a" data-answer="sommes"> des enfants. Nous <input type="text" id="q5b" data-answer="avons"> des parents.
+                    </div>
+                    <div class="vietnamese-translation">(Chúng tôi (là) trẻ con. Chúng tôi (có) cha mẹ.)</div>
+                    <button class="check-button" onclick="checkMultipleAnswersDynamic('q5a', 'sommes', 'q5b', 'avons', 'q5-feedback')">Vérifier</button>
+                    <div id="q5-feedback" class="feedback"></div>
+                </div>
+
+                <div class="exercise-item">
+                    <div class="prompt-text">6. Vous (être) des parents. Vous (avoir) des enfants.</div>
+                    <div class="question-line">
+                        Vous <input type="text" id="q6a" data-answer="êtes"> des parents. Vous <input type="text" id="q6b" data-answer="avez"> des enfants.
+                    </div>
+                    <div class="vietnamese-translation">(Bạn/Các bạn (là) cha mẹ. Bạn/Các bạn (có) con cái.)</div>
+                    <button class="check-button" onclick="checkMultipleAnswersDynamic('q6a', 'êtes', 'q6b', 'avez', 'q6-feedback')">Vérifier</button>
+                    <div id="q6-feedback" class="feedback"></div>
+                </div>
+
+                <div class="exercise-item">
+                    <div class="prompt-text">7. Ils (être) professeurs. Ils (avoir) des élèves.</div>
+                    <div class="question-line">
+                        Ils <input type="text" id="q7a" data-answer="sont"> professeurs. Ils <input type="text" id="q7b" data-answer="ont"> des élèves.
+                    </div>
+                    <div class="vietnamese-translation">(Họ (là) giáo sư. Họ (có) học sinh.)</div>
+                    <button class="check-button" onclick="checkMultipleAnswersDynamic('q7a', 'sont', 'q7b', 'ont', 'q7-feedback')">Vérifier</button>
+                    <div id="q7-feedback" class="feedback"></div>
+                </div>
+
+                <div class="exercise-item">
+                    <div class="prompt-text">8. Elles (être) secrétaires. Elles (avoir) des ordinateurs.</div>
+                    <div class="question-line">
+                        Elles <input type="text" id="q8a" data-answer="sont"> secrétaires. Elles <input type="text" id="q8b" data-answer="ont"> des ordinateurs.
+                    </div>
+                    <div class="vietnamese-translation">(Họ (là) thư ký. Họ (có) máy tính.)</div>
+                    <button class="check-button" onclick="checkMultipleAnswersDynamic('q8a', 'sont', 'q8b', 'ont', 'q8-feedback')">Vérifier</button>
+                    <div id="q8-feedback" class="feedback"></div>
+                </div>
+
+                <div class="exercise-item">
+                    <div class="prompt-text">9. Moi, je (être) pianiste. Je (avoir) un piano.</div>
+                    <div class="question-line">
+                        Moi, je <input type="text" id="q9a" data-answer="suis"> pianiste. Je <input type="text" id="q9b" data-answer="ai"> un piano.
+                    </div>
+                    <div class="vietnamese-translation">(Tôi thì, tôi (là) nghệ sĩ piano. Tôi (có) một cây đàn piano.)</div>
+                    <button class="check-button" onclick="checkMultipleAnswersDynamic('q9a', 'suis', 'q9b', 'ai', 'q9-feedback')">Vérifier</button>
+                    <div id="q9-feedback" class="feedback"></div>
+                </div>
+
+                <div class="exercise-item">
+                    <div class="prompt-text">10. Eux, ils (être) riches. Ils (avoir) un bateau.</div>
+                    <div class="question-line">
+                        Eux, ils <input type="text" id="q10a" data-answer="sont"> riches. Ils <input type="text" id="q10b" data-answer="ont"> un bateau.
+                    </div>
+                    <div class="vietnamese-translation">(Họ thì, họ (là) giàu có. Họ (có) một chiếc thuyền.)</div>
+                    <button class="check-button" onclick="checkMultipleAnswersDynamic('q10a', 'sont', 'q10b', 'ont', 'q10-feedback')">Vérifier</button>
+                    <div id="q10-feedback" class="feedback"></div>
+                </div>
+            </div>
+
+            <p class="note">
+                <strong>Lưu ý:</strong> <br>
+                - Đảm bảo chia động từ ÊTRE và AVOIR đúng với chủ ngữ tương ứng.<br>
+                - Chú ý dạng phủ định: **ne ... pas** bao quanh động từ chia.<br>
+                - Quy tắc lược bỏ nguyên âm (**n'** thay cho **ne**, **j'** thay cho **je**, **c'** thay cho **ce** khi động từ bắt đầu bằng nguyên âm/h câm).<br>
+                - Các đại từ nhấn mạnh (Moi, Toi, Lui, Eux...) đi trước đại từ chủ ngữ để nhấn mạnh.
+            </p>
+        `;
+
+        // Hàm để tải bài tập vào vùng nội dung chính
+        function loadExercise(exerciseName) {
+            const contentArea = document.getElementById('exercise-content-area');
+            const titleElement = document.getElementById('exercise-title');
+            const instructionsElement = document.getElementById('exercise-instructions');
+            
+            contentArea.innerHTML = ''; // Xóa nội dung bài tập cũ
+
+            switch (exerciseName) {
+                case 'AVOIR_AffirmativeNegative':
+                    titleElement.innerHTML = 'Exercice : AVOIR (Affirmative & Négative)';
+                    instructionsElement.innerHTML = 'Écrire le premier verbe à la forme affirmative et le deuxième verbe à la forme négative.<br><em>(Chia động từ đầu tiên ở thể khẳng định và động từ thứ hai ở thể phủ định.)</em>';
+                    contentArea.innerHTML = exerciseContent_AVOIR_AffirmativeNegative;
+                    break;
+                case 'ArticlesIndefinis':
+                    titleElement.innerHTML = 'Exercice : Articles Indéfinis (un, une, des)';
+                    instructionsElement.innerHTML = 'Mettre l\'article indéfini <strong>un, une</strong> ou <strong>des</strong>.<br><em>(Điền mạo từ không xác định un, une hoặc des.)</em>';
+                    contentArea.innerHTML = exerciseContent_ArticlesIndefinis;
+                    break;
+                case 'CestIlEst':
+                    titleElement.innerHTML = 'Exercice : C\'est + Nom / Il est + Adjectif';
+                    instructionsElement.innerHTML = 'Faites deux phrases comme le modèle en utilisant les mots donnés.<br><em>(Hãy tạo hai câu theo mẫu bằng cách sử dụng các từ cho sẵn.)</em>';
+                    contentArea.innerHTML = exerciseContent_CestIlEst;
+                    break;
+                case 'ETRE_AVOIR_Present': 
+                    titleElement.innerHTML = 'Exercice : ÊTRE et AVOIR au Présent';
+                    instructionsElement.innerHTML = 'Écrire au présent. (Conjuguez les verbes **ÊTRE** et **AVOIR** au présent.)<br><em>(Chia động từ ở thì hiện tại.)</em>';
+                    contentArea.innerHTML = exerciseContent_ETRE_AVOIR_Present;
+                    break;
+                default:
+                    titleElement.innerHTML = 'Chào mừng đến với Bài Tập Tiếng Pháp!';
+                    instructionsElement.innerHTML = 'Vui lòng chọn một bài tập từ menu hoặc chỉnh sửa mã để tải bài tập mặc định.';
+                    contentArea.innerHTML = '<p style="text-align: center; margin-top: 50px;">Bài tập không tồn tại hoặc chưa được chọn. Vui lòng kiểm tra tên bài tập.</p>';
+            }
+        }
+
+        // Tải bài tập mặc định khi trang load: BÀI TẬP ARTICLES INDÉFINIS
+        document.addEventListener('DOMContentLoaded', () => {
+            loadExercise('ArticlesIndefinis'); 
+        });
+    </script>
+</body>
+</html>
