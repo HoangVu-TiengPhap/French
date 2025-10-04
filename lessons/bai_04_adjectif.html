@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2025 by anonymous (http://jsbin.com/kaxamameka/7/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>adjectif</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Quicksand', sans-serif;
+            line-height: 1.7;
+            color: #333;
+            max-width: 950px;
+            margin: 25px auto;
+            padding: 0 25px;
+            background-color: #f7fcfb; /* Nền tươi sáng */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ cho trang */
+            border-radius: 12px; /* Góc bo tròn */
+        }
+        h1 {
+            color: #007bff; /* Màu xanh dương năng động */
+            text-align: center;
+            margin-bottom: 35px;
+            font-size: 2.5em;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #28a745; /* Màu xanh lá tươi mới */
+            border-bottom: 3px solid #28a745;
+            padding-bottom: 8px;
+            margin-top: 45px;
+            font-size: 1.8em;
+        }
+        h3 {
+            color: #ff8c00; /* Màu cam ấm áp */
+            margin-top: 30px;
+            font-size: 1.4em;
+        }
+        .example {
+            background-color: #e6f7ff; /* Nền xanh nhạt cho ví dụ */
+            border-left: 6px solid #007bff;
+            padding: 12px 18px;
+            margin: 18px 0;
+            font-style: italic;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+        }
+        .note {
+            background-color: #fffacd; /* Nền vàng nhạt cho lưu ý */
+            border-left: 6px solid #ffc107;
+            padding: 12px 18px;
+            margin: 18px 0;
+            color: #856404;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+        }
+        .exercise {
+            background-color: #e0f7fa; /* Nền xanh ngọc nhạt cho bài tập */
+            border-left: 6px solid #17a2b8;
+            padding: 20px;
+            margin: 35px 0;
+            border-radius: 10px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+        }
+        .exercise ol, .exercise ul {
+            padding-left: 30px;
+        }
+        .answer-key {
+            background-color: #e8f5e9; /* Nền xanh lá nhạt cho đáp án */
+            border-left: 6px solid #28a745;
+            padding: 20px;
+            margin-top: 35px;
+            border-radius: 10px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+        }
+        b {
+            color: #dc3545; /* Màu đỏ nổi bật cho các từ khóa quan trọng */
+        }
+        .highlight-suffix {
+            color: #fd7e14; /* Màu cam đậm cho hậu tố thêm vào */
+            font-weight: bold;
+        }
+        .highlight-change {
+            color: #6f42c1; /* Màu tím cho phần thay đổi hoàn toàn */
+            font-weight: bold;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08); /* Đổ bóng cho bảng */
+        }
+        table, th, td {
+            border: 1px solid #cce5ff; /* Viền bảng nhẹ nhàng */
+        }
+        th, td {
+            padding: 10px 15px;
+            text-align: left;
+        }
+        th {
+            background-color: #a8dadc; /* Màu nền tiêu đề bảng */
+            color: #333;
+            font-weight: 600;
+        }
+        td {
+            background-color: #f0f8ff; /* Nền ô dữ liệu */
+        }
+        .highlight-table {
+            border: 3px solid #ff4500; /* Viền cam đậm nổi bật */
+            box-shadow: 0 6px 20px rgba(255, 69, 0, 0.2); /* Đổ bóng mạnh hơn */
+        }
+        .highlight-table th {
+            background-color: #ff6347; /* Nền đỏ cam cho tiêu đề bảng nổi bật */
+            color: white;
+        }
+        .highlight-table td {
+            background-color: #ffe0b2; /* Nền cam nhạt cho dữ liệu bảng nổi bật */
+        }
+        hr {
+            border: 0;
+            height: 1px;
+            background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0));
+            margin: 45px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Bài 4: Tính từ</h1>
+
+    <p style="text-align: center; font-style: italic; color: #555;">Chào mừng bạn đến với khóa học trực tuyến về tính từ tiếng Pháp! Trong bài giảng này, chúng ta sẽ khám phá các quy tắc cơ bản và nâng cao về cách sử dụng tính từ để mô tả danh từ một cách chính xác và hiệu quả.</p>
+
+    <hr>
+
+    <h2>I. Tính từ là gì? (Qu'est-ce qu'un adjectif ?)</h2>
+    <p>Trong tiếng Pháp, <b>tính từ</b> (l'adjectif) là một từ dùng để <b>bổ nghĩa cho danh từ</b> hoặc đại từ, thêm thông tin về đặc điểm, tính chất, số lượng, hoặc trạng thái của chúng. Tính từ phải <b>hòa hợp về giống (genre)</b> và <b>số (nombre)</b> với danh từ mà nó bổ nghĩa.</p>
+
+    <div class="example">
+        <p><b>Ví dụ:</b></p>
+        <ul>
+            <li><i>Une <b>belle</b> fleur.</i> (Một bông hoa đẹp - "belle" là tính từ bổ nghĩa cho "fleur" (giống cái, số ít))</li>
+            <li><i>Des <b>grands</b> arbres.</i> (Những cái cây lớn - "grands" là tính từ bổ nghĩa cho "arbres" (giống đực, số nhiều))</li>
+        </ul>
+    </div>
+
+    <hr>
+
+    <h2>II. Giống và số của tính từ (Le genre et le nombre des adjectifs)</h2>
+    <p>Đây là một trong những điểm quan trọng nhất khi học tính từ tiếng Pháp.</p>
+
+    <h3>1. Giống của tính từ (Le genre des adjectifs)</h3>
+    <p>Hầu hết các tính từ có hai dạng: <b>giống đực (masculin)</b> và <b>giống cái (féminin)</b>.</p>
+
+    <ul>
+        <li><b>Quy tắc chung:</b> Để chuyển tính từ giống đực sang giống cái, ta thường <b>thêm 'e' vào cuối</b> tính từ giống đực.
+            <div class="example">
+                <ul>
+                    <li><i>grand</i> (to, lớn - giống đực) &rarr; <i>grand<span class="highlight-suffix">e</span></i> (to, lớn - giống cái)</li>
+                    <li><i>petit</i> (nhỏ, bé - giống đực) &rarr; <i>petit<span class="highlight-suffix">e</span></i> (nhỏ, bé - giống cái)</li>
+                    <li><i>bleu</i> (xanh - giống đực) &rarr; <i>bleu<span class="highlight-suffix">e</span></i> (xanh - giống cái)</li>
+                </ul>
+            </div>
+        </li>
+        <li><b>Các trường hợp đặc biệt:</b>
+            <ul>
+                <li><b>Tính từ kết thúc bằng 'e' ở dạng giống đực thì không đổi ở dạng giống cái.</b>
+                    <div class="example">
+                        <ul>
+                            <li><i>rouge</i> (đỏ - giống đực) &rarr; <i>rouge</i> (đỏ - giống cái)</li>
+                            <li><i>jeune</i> (trẻ - giống đực) &rarr; <i>jeune</i> (trẻ - giống cái)</li>
+                        </ul>
+                    </div>
+                </li>
+                <li><b>Tính từ kết thúc bằng <span class="highlight-change">'-er'</span> ở dạng giống đực, chuyển thành <span class="highlight-change">'-ère'</span> ở dạng giống cái.</b>
+                    <div class="example">
+                        <ul>
+                            <li><i>ch<span class="highlight-change">er</span></i> (đắt - giống đực) &rarr; <i>ch<span class="highlight-change">ère</span></i> (đắt - giống cái)</li>
+                            <li><i>fi<span class="highlight-change">er</span></i> (tự hào - giống đực) &rarr; <i>fi<span class="highlight-change">ère</span></i> (tự hào - giống cái)</li>
+                        </ul>
+                    </div>
+                </li>
+                <li><b>Tính từ kết thúc bằng <span class="highlight-change">'-eur'</span> ở dạng giống đực, chuyển thành <span class="highlight-change">'-euse'</span> (nếu bắt nguồn từ động từ) hoặc <span class="highlight-change">'-rice'</span> (nếu không phải).</b>
+                    <div class="example">
+                        <ul>
+                            <li><i>rêv<span class="highlight-change">eur</span></i> (mơ mộng - giống đực) &rarr; <i>rêv<span class="highlight-change">euse</span></i> (mơ mộng - giống cái)</li>
+                            <li><i>protect<span class="highlight-change">eur</span></i> (bảo vệ - giống đực) &rarr; <i>protect<span class="highlight-change">rice</span></i> (bảo vệ - giống cái)</li>
+                        </ul>
+                    </div>
+                </li>
+                <li><b>Tính từ kết thúc bằng <span class="highlight-change">'-f'</span> ở dạng giống đực, chuyển thành <span class="highlight-change">'-ve'</span> ở dạng giống cái.</b>
+                    <div class="example">
+                        <ul>
+                            <li><i>sporti<span class="highlight-change">f</span></i> (thể thao - giống đực) &rarr; <i>sporti<span class="highlight-change">ve</span></i> (thể thao - giống cái)</li>
+                            <li><i>neu<span class="highlight-change">f</span></i> (mới - giống đực) &rarr; <i>neu<span class="highlight-change">ve</span></i> (mới - giống cái)</li>
+                        </ul>
+                    </div>
+                </li>
+                <li><b>Tính từ kết thúc bằng <span class="highlight-change">'-x'</span> ở dạng giống đực, chuyển thành <span class="highlight-change">'-se'</span> ở dạng giống cái.</b>
+                    <div class="example">
+                        <ul>
+                            <li><i>heureu<span class="highlight-change">x</span></i> (hạnh phúc - giống đực) &rarr; <i>heureu<span class="highlight-change">se</span></i> (hạnh phúc - giống cái)</li>
+                            <li><i>jalou<span class="highlight-change">x</span></i> (ghen tị - giống đực) &rarr; <i>jalou<span class="highlight-change">se</span></i> (ghen tị - giống cái)</li>
+                        </ul>
+                    </div>
+                </li>
+                <li><b>Một số tính từ có dạng giống cái hoàn toàn khác hoặc có sự thay đổi lớn:</b>
+                    <table class="highlight-table">
+                        <thead>
+                            <tr>
+                                <th>Tính từ giống đực</th>
+                                <th>Tính từ giống cái</th>
+                                <th>Nghĩa</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><i>beau</i></td>
+                                <td><i>belle</i></td>
+                                <td>đẹp</td>
+                            </tr>
+                            <tr>
+                                <td><i>nouveau</i></td>
+                                <td><i>nouvelle</i></td>
+                                <td>mới</td>
+                            </tr>
+                            <tr>
+                                <td><i>vieux</i></td>
+                                <td><i>vieille</i></td>
+                                <td>cũ, già</td>
+                            </tr>
+                            <tr>
+                                <td><i>blanc</i></td>
+                                <td><i>blanche</i></td>
+                                <td>trắng</td>
+                            </tr>
+                            <tr>
+                                <td><i>frais</i></td>
+                                <td><i>fraîche</i></td>
+                                <td>tươi</td>
+                            </tr>
+                            <tr>
+                                <td><i>sec</i></td>
+                                <td><i>sèche</i></td>
+                                <td>khô</td>
+                            </tr>
+                            <tr>
+                                <td><i>long</i></td>
+                                <td><i>longue</i></td>
+                                <td>dài</td>
+                            </tr>
+                            <tr>
+                                <td><i>favori</i></td>
+                                <td><i>favorite</i></td>
+                                <td>yêu thích</td>
+                            </tr>
+                            <tr>
+                                <td><i>public</i></td>
+                                <td><i>publique</i></td>
+                                <td>công cộng</td>
+                            </tr>
+                            <tr>
+                                <td><i>grec</i></td>
+                                <td><i>grecque</i></td>
+                                <td>Hy Lạp</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </li>
+            </ul>
+        </li>
+    </ul>
+
+    <h3>2. Số của tính từ (Le nombre des adjectifs)</h3>
+    <p>Tính từ cũng phải <b>hòa hợp về số</b> với danh từ.</p>
+
+    <ul>
+        <li><b>Quy tắc chung:</b> Để chuyển tính từ sang dạng số nhiều, ta thường <b>thêm 's' vào cuối</b> tính từ.
+            <div class="example">
+                <ul>
+                    <li><i>grand</i> (số ít) &rarr; <i>grand<b>s</b></i> (số nhiều)</li>
+                    <li><i>grande</i> (số ít) &rarr; <i>grande<b>s</b></i> (số nhiều)</li>
+                </ul>
+            </div>
+        </li>
+        <li><b>Các trường hợp đặc biệt:</b>
+            <ul>
+                <li><b>Tính từ kết thúc bằng '-s' hoặc '-x' ở dạng số ít thì không đổi ở dạng số nhiều.</b>
+                    <div class="example">
+                        <ul>
+                            <li><i>gris</i> (xám - số ít) &rarr; <i>gris</i> (xám - số nhiều)</li>
+                            <li><i>heureux</i> (hạnh phúc - số ít) &rarr; <i>heureux</i> (hạnh phúc - số nhiều)</li>
+                        </ul>
+                    </div>
+                </li>
+                <li><b>Tính từ kết thúc bằng '-al' ở dạng số ít, thường chuyển thành '-aux' ở dạng số nhiều.</b>
+                    <div class="example">
+                        <ul>
+                            <li><i>national</i> (quốc gia - số ít) &rarr; <i>nati<b>onaux</b></i> (quốc gia - số nhiều)</li>
+                            <li><i>génial</i> (thiên tài - số ít) &rarr; <i>géni<b>aux</b></i> (thiên tài - số nhiều)</li>
+                        </ul>
+                    </div>
+                    <div class="note">
+                        <p><b>Ngoại lệ:</b> Một số tính từ kết thúc bằng '-al' tạo thành số nhiều bằng cách thêm '<span class="highlight-suffix">s</span>': <i>banal</i> (tầm thường) &rarr; <i>banal<span class="highlight-suffix">s</span></i>, <i>fatal</i> (nghiệt ngã) &rarr; <i>fatal<span class="highlight-suffix">s</span></i>, <i>natal</i> (nơi sinh) &rarr; <i>natal<span class="highlight-suffix">s</span></i>, <i>naval</i> (hải quân) &rarr; <i>naval<span class="highlight-suffix">s</span></i>.</p>
+                    </div>
+                </li>
+            </ul>
+        </li>
+    </ul>
+
+    <h3>3. Trường hợp đặc biệt với tính từ chỉ màu sắc</h3>
+    <p>Hầu hết các tính từ chỉ màu sắc đều hòa hợp về giống và số với danh từ. Tuy nhiên, có một số trường hợp ngoại lệ.</p>
+    <ul>
+        <li><b>Các tính từ chỉ màu sắc có nguồn gốc từ danh từ (tên hoa quả, đá quý, vật liệu...) thường không thay đổi (không hòa hợp) về giống và số.</b>
+            <div class="example">
+                <ul>
+                    <li><i>Des jupes <b>marron</b>.</i> (Những chiếc váy màu nâu hạt dẻ - "marron" không thay đổi)</li>
+                    <li><i>Des chaussures <b>orange</b>.</i> (Những đôi giày màu cam - "orange" không thay đổi)</li>
+                    <li><i>Des yeux <b>turquoise</b>.</i> (Đôi mắt màu ngọc lam - "turquoise" không thay đổi)</li>
+                    <li><i>Des murs <b>citron</b>.</i> (Những bức tường màu vàng chanh - "citron" không thay đổi)</li>
+                </ul>
+            </div>
+            <div class="note">
+                <p><b>Lưu ý:</b> Một số màu sắc từ danh từ nhưng đã được Pháp hóa thành tính từ và tuân theo quy tắc hòa hợp: <i>rose</i> (hồng), <i>mauve</i> (tím hoa cà), <i>écarlate</i> (đỏ tươi), <i>fauve</i> (màu da hươu).</p>
+                <div class="example">
+                    <ul>
+                        <li><i>Des robes <b>roses</b>.</i> (Những chiếc váy màu hồng)</li>
+                    </ul>
+                </div>
+            </div>
+        </li>
+        <li><b>Khi hai tính từ màu sắc kết hợp để tạo ra một sắc thái màu mới, chúng thường không thay đổi (không hòa hợp).</b>
+            <div class="example">
+                <ul>
+                    <li><i>Des yeux <b>bleu clair</b>.</i> (Đôi mắt xanh nhạt)</li>
+                    <li><i>Des voitures <b>vert foncé</b>.</i> (Những chiếc xe màu xanh đậm)</li>
+                </ul>
+            </div>
+        </li>
+    </ul>
+
+    <h3>4. Tính từ hòa hợp với chủ ngữ (L'accord des adjectifs avec le sujet)</h3>
+    <p>Khi tính từ được sử dụng với động từ trạng thái như <b>être</b> (thì, là, ở), <b>paraître</b> (dường như), <b>sembler</b> (có vẻ), <b>devenir</b> (trở thành), <b>rester</b> (vẫn còn), <b>avoir l'air</b> (có vẻ), tính từ sẽ hòa hợp về giống và số với chủ ngữ của câu.</p>
+    <div class="example">
+        <ul>
+            <li><i>Le garçon est <b>grand</b>.</i> (Cậu bé cao)</li>
+            <li><i>La fille est <b>grande</b>.</i> (Cô bé cao)</li>
+            <li><i>Les garçons sont <b>grands</b>.</i> (Những cậu bé cao)</li>
+            <li><i>Les filles sont <b>grandes</b>.</i> (Những cô bé cao)</li>
+            <li><i>Il semble <b>fatigué</b>.</i> (Anh ấy có vẻ mệt mỏi)</li>
+            <li><i>Elle semble <b>fatiguée</b>.</i> (Cô ấy có vẻ mệt mỏi)</li>
+            <li><i>Nous sommes <b>heureux</b>.</i> (Chúng tôi hạnh phúc - nếu "nous" là nhóm nam hoặc cả nam và nữ)</li>
+            <li><i>Nous sommes <b>heureuses</b>.</i> (Chúng tôi hạnh phúc - nếu "nous" là nhóm nữ)</li>
+        </ul>
+    </div>
+    <div class="note">
+        <p><b>Lưu ý:</b> Khi chủ ngữ là một nhóm hỗn hợp (nam và nữ), tính từ sẽ chia ở dạng <b>giống đực số nhiều</b>.</p>
+        <div class="example">
+            <ul>
+                <li><i>Paul et Marie sont <b>contents</b>.</i> (Paul và Marie hài lòng)</li>
+            </ul>
+        </div>
+    </div>
+
+
+    <hr>
+
+    <h2>V. Vị trí của tính từ (La place des adjectifs)</h2>
+    <p>Vị trí của tính từ trong tiếng Pháp khá linh hoạt, nhưng có những quy tắc nhất định.</p>
+
+    <h3>1. Tính từ đứng sau danh từ (Adjectifs placés après le nom)</h3>
+    <p><b>Đa số các tính từ</b> đứng <b>sau danh từ</b> mà chúng bổ nghĩa. Đây là quy tắc chung cho các tính từ chỉ:</p>
+    <ul>
+        <li><b>Màu sắc:</b>
+            <div class="example">
+                <ul>
+                    <li><i>Une voiture <b>rouge</b></i> (Một chiếc xe hơi màu đỏ)</li>
+                    <li><i>Des yeux <b>bleus</b></i> (Đôi mắt xanh)</li>
+                </ul>
+            </div>
+        </li>
+        <li><b>Quốc tịch:</b>
+            <div class="example">
+                <ul>
+                    <li><i>Un étudiant <b>vietnamien</b></i> (Một sinh viên Việt Nam)</li>
+                    <li><i>Une chanson <b>française</b></i> (Một bài hát tiếng Pháp)</li>
+                </ul>
+            </div>
+        </li>
+        <li><b>Hình dạng:</b>
+            <div class="example">
+                <ul>
+                    <li><i>Une table <b>ronde</b></i> (Một cái bàn tròn)</li>
+                    <li><i>Une boîte <b>carrée</b></i> (Một cái hộp vuông)</li>
+                </ul>
+            </div>
+        </li>
+        <li><b>Tôn giáo:</b>
+            <div class="example">
+                <ul>
+                    <li><i>Un temple <b>bouddhiste</b></i> (Một ngôi đền Phật giáo)</li>
+                </ul>
+            </div>
+        </li>
+        <li><b>Tính chất vật lý, trạng thái cụ thể:</b>
+            <div class="example">
+                <ul>
+                    <li><i>De l'eau <b>froide</b></i> (Nước lạnh)</li>
+                    <li><i>Un homme <b>riche</b></i> (Một người đàn ông giàu có)</li>
+                    <li><i>Un film <b>intéressant</b></i> (Một bộ phim thú vị)</li>
+                </ul>
+            </div>
+        </li>
+    </ul>
+
+    <h3>2. Tính từ đứng trước danh từ (Adjectifs placés avant le nom)</h3>
+    <p>Một số <b>tính từ phổ biến</b> và <b>ngắn</b> thường đứng <b>trước danh từ</b>. Chúng ta có thể nhớ theo quy tắc <b>"BAGS"</b> (Beauty, Age, Goodness, Size - Vẻ đẹp, Tuổi tác, Sự tốt đẹp, Kích thước).</p>
+    <ul>
+        <li><b>Beauty (Vẻ đẹp):</b> <i>beau/belle</i> (đẹp), <i>joli/jolie</i> (xinh xắn)
+            <div class="example">
+                <ul>
+                    <li><i>Une <b>belle</b> fleur.</i></li>
+                    <li><i>Un <b>joli</b> tableau.</i></li>
+                </ul>
+            </div>
+        </li>
+        <li><b>Age (Tuổi tác/Thời gian):</b> <i>jeune</i> (trẻ), <i>vieux/vieille</i> (già, cũ), <i>nouveau/nouvelle</i> (mới), <i>ancien/ancienne</i> (cũ/xưa)
+            <div class="example">
+                <ul>
+                    <li><i>Un <b>jeune</b> homme.</i></li>
+                    <li><i>Une <b>vieille</b> maison.</i></li>
+                </ul>
+            </div>
+        </li>
+        <li><b>Goodness (Sự tốt đẹp/Xấu xa):</b> <i>bon/bonne</i> (tốt), <i>mauvais/mauvaise</i> (xấu), <i>gentil/gentille</i> (tốt bụng)
+            <div class="example">
+                <ul>
+                    <li><i>Un <b>bon</b> ami.</i></li>
+                    <li><i>Une <b>mauvaise</b> idée.</i></li>
+                </ul>
+            </div>
+        </li>
+        <li><b>Size (Kích thước):</b> <i>grand/grande</i> (lớn), <i>petit/petite</i> (nhỏ), <i>gros/grosse</i> (béo), <i>long/longue</i> (dài)
+            <div class="example">
+                <ul>
+                    <li><i>Une <b>grande</b> ville.</i></li>
+                    <li><i>Un <b>petit</b> chien.</i></li>
+                </ul>
+            </div>
+        </li>
+    </ul>
+
+    <h3>3. Các tính từ thay đổi nghĩa khi thay đổi vị trí</h3>
+    <p>Một số tính từ có thể thay đổi ý nghĩa hoàn toàn hoặc có sắc thái nghĩa khác nhau tùy thuộc vào việc chúng đứng trước hay sau danh từ. Đây là một điểm khá tinh tế trong tiếng Pháp mà bạn cần lưu ý.</p>
+    <ul>
+        <li><b>ancien / ancienne</b>
+            <ul>
+                <li>Trước danh từ: "cựu", "trước đây", "đã từng" (chỉ thời gian đã qua liên quan đến vị trí, chức vụ)
+                    <div class="example">
+                        <ul>
+                            <li><i>Mon <b>ancien</b> professeur.</i> (Giáo sư cũ của tôi - người đã từng là giáo sư của tôi)</li>
+                            <li><i>Une <b>ancienne</b> capitale.</i> (Một thủ đô cũ - từng là thủ đô)</li>
+                        </ul>
+                    </div>
+                </li>
+                <li>Sau danh từ: "cũ kỹ", "lâu đời" (chỉ sự vật đã có từ lâu, cổ kính, đã tồn tại trong thời gian dài)
+                    <div class="example">
+                        <ul>
+                            <li><i>Un meuble <b>ancien</b>.</i> (Một món đồ nội thất cổ)</li>
+                            <li><i>Une tradition <b>ancienne</b>.</i> (Một truyền thống lâu đời)</li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </li>
+        <li><b>cher / chère</b>
+            <ul>
+                <li>Trước danh từ: "thân yêu", "đáng yêu" (chỉ tình cảm, giá trị cảm xúc)
+                    <div class="example">
+                        <ul>
+                            <li><i>Ma <b>chère</b> amie.</i> (Người bạn thân yêu của tôi)</li>
+                            <li><i>Mon <b>cher</b> pays.</i> (Đất nước thân yêu của tôi)</li>
+                        </ul>
+                    </div>
+                </li>
+                <li>Sau danh từ: "đắt tiền" (chỉ giá cả)
+                    <div class="example">
+                        <ul>
+                            <li><i>Une voiture <b>chère</b>.</i> (Một chiếc xe hơi đắt tiền)</li>
+                            <li><i>Des vêtements <b>chers</b>.</i> (Những bộ quần áo đắt tiền)</li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </li>
+        <li><b>dernier / dernière</b>
+            <ul>
+                <li>Trước danh từ: "cuối cùng" (trong một chuỗi, thứ tự)
+                    <div class="example">
+                        <ul>
+                            <li><i>La <b>dernière</b> page.</i> (Trang cuối cùng)</li>
+                            <li><i>Le <b>dernier</b> train.</i> (Chuyến tàu cuối cùng)</li>
+                        </ul>
+                    </div>
+                </li>
+                <li>Sau danh từ: "trước đó", "gần đây nhất" (chỉ thời gian đã qua, trong quá khứ gần)
+                    <div class="example">
+                        <ul>
+                            <li><i>Le mois <b>dernier</b>.</i> (Tháng trước)</li>
+                            <li><i>La semaine <b>dernière</b>.</i> (Tuần trước)</li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </li>
+        <li><b>grand / grande</b>
+            <ul>
+                <li>Trước danh từ: "vĩ đại", "tuyệt vời", "quan trọng" (chỉ phẩm chất, tầm vóc, sự nổi bật)
+                    <div class="example">
+                        <ul>
+                            <li><i>Un <b>grand</b> homme.</i> (Một người đàn ông vĩ đại)</li>
+                            <li><i>Une <b>grande</b> idée.</i> (Một ý tưởng lớn/tuyệt vời)</li>
+                        </ul>
+                    </div>
+                </li>
+                <li>Sau danh từ: "cao", "lớn" (chỉ kích thước thể chất, chiều cao, diện tích)
+                    <div class="example">
+                        <ul>
+                            <li><i>Un homme <b>grand</b>.</i> (Một người đàn ông cao)</li>
+                            <li><i>Une maison <b>grande</b>.</i> (Một ngôi nhà lớn)</li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </li>
+        <li><b>pauvre</b>
+            <ul>
+                <li>Trước danh từ: "tội nghiệp", "đáng thương"
+                    <div class="example">
+                        <ul>
+                            <li><i>Un <b>pauvre</b> chien.</i> (Một con chó tội nghiệp)</li>
+                        </ul>
+                    </div>
+                </li>
+                <li>Sau danh từ: "nghèo khó" (về tài chính)
+                    <div class="example">
+                        <ul>
+                            <li><i>Un homme <b>pauvre</b>.</i> (Một người đàn ông nghèo)</li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </li>
+        <li><b>propre</b>
+            <ul>
+                <li>Trước danh từ: "của riêng", "cá nhân" (chỉ sự sở hữu)
+                    <div class="example">
+                        <ul>
+                            <li><i>Ma <b>propre</b> chambre.</i> (Phòng riêng của tôi)</li>
+                        </ul>
+                    </div>
+                </li>
+                <li>Sau danh từ: "sạch sẽ"
+                    <div class="example">
+                        <ul>
+                            <li><i>Une chambre <b>propre</b>.</i> (Một căn phòng sạch sẽ)</li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </li>
+        <li><b>seul / seule</b>
+            <ul>
+                <li>Trước danh từ: "duy nhất", "chỉ một"
+                    <div class="example">
+                        <ul>
+                            <li><i>La <b>seule</b> solution.</i> (Giải pháp duy nhất)</li>
+                        </ul>
+                    </div>
+                </li>
+                <li>Sau danh từ: "cô đơn", "một mình"
+                    <div class="example">
+                        <ul>
+                            <li><i>Il se sent <b>seul</b>.</i> (Anh ấy cảm thấy cô đơn)</li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </li>
+    </ul>
+
+    <hr>
+
+    <h2>VI. Bài tập thực hành (Exercices)</h2>
+    <p>Để củng cố kiến thức, hãy làm các bài tập sau:</p>
+
+    <div class="exercise">
+        <h3>Bài 1: Chia tính từ theo giống và số thích hợp với danh từ.</h3>
+        <ol>
+            <li>Une (grand) _______ maison.</li>
+            <li>Des (petit) _______ enfants.</li>
+            <li>Un (beau) _______ jardin.</li>
+            <li>Des (nouveau) _______ chaussures.</li>
+            <li>Une robe (rouge) _______.</li>
+            <li>Un chien (blanc) _______.</li>
+            <li>Des fleurs (jaune) _______.</li>
+            <li>Cet homme est (heureux) _______.</li>
+            <li>Cette femme est (sportif) _______.</li>
+            <li>Nous avons des amis (français) _______.</li>
+            <li>J'aime les murs (marron) _______.</li>
+            <li>Elle porte des lunettes (bleu clair) _______.</li>
+            <li>C'est une voiture (sec) _______.</li>
+            <li>Les problèmes (fatal) _______ sont rares.</li>
+        </ol>
+    </div>
+
+    <div class="exercise">
+        <h3>Bài 2: Đặt tính từ vào đúng vị trí trong câu và hòa hợp nếu cần. Chú ý đến sự thay đổi nghĩa.</h3>
+        <ol>
+            <li>Elle a (beau) les yeux. (beautiful eyes)</li>
+            <li>J'ai acheté (nouveau) un livre. (a new book)</li>
+            <li>C'est une (bon) idée. (a good idea)</li>
+            <li>Il habite dans une maison (vieux). (an old house)</li>
+            <li>Nous mangeons de la pizza (italien). (Italian pizza)</li>
+            <li>Ma sœur est (fatigué). (My sister is tired)</li>
+            <li>Les étudiants sont (intelligent). (The students are intelligent)</li>
+            <li>C'est mon (ancien) voisin. (My former neighbor)</li>
+            <li>J'ai lu un livre (ancien). (I read an old book - referring to its age)</li>
+            <li>Il a écrit son (propre) nom. (He wrote his own name)</li>
+            <li>La cuisine est très (propre). (The kitchen is very clean)</li>
+            <li>(pauvre) Il a perdu son chat. (Poor him, he lost his cat)</li>
+            <li>Il est un homme (pauvre). (He is a poor man - financially)</li>
+        </ol>
+    </div>
+
+    <hr>
+
+    <div class="answer-key">
+        <h2>Đáp án bài tập</h2>
+
+        <h3>Bài 1:</h3>
+        <ol>
+            <li>Une <b>grande</b> maison.</li>
+            <li>Des <b>petits</b> enfants.</li>
+            <li>Un <b>beau</b> jardin.</li>
+            <li>Des <b>nouvelles</b> chaussures.</li>
+            <li>Une robe <b>rouge</b>.</li>
+            <li>Un chien <b>blanc</b>.</li>
+            <li>Des fleurs <b>jaunes</b>.</li>
+            <li>Cet homme est <b>heureux</b>.</li>
+            <li>Cette femme est <b>sportive</b>.</li>
+            <li>Nous avons des amis <b>français</b>.</li>
+            <li>J'aime les murs <b>marron</b>. (Màu sắc có nguồn gốc từ danh từ, không hòa hợp)</li>
+            <li>Elle porte des lunettes <b>bleu clair</b>. (Hai tính từ màu sắc kết hợp, không hòa hợp)</li>
+            <li>C'est une voiture <b>sèche</b>.</li>
+            <li>Les problèmes <b>fatals</b> sont rares.</li>
+        </ol>
+
+        <h3>Bài 2:</h3>
+        <ol>
+            <li>Elle a de <b>beaux</b> yeux.</li>
+            <li>J'ai acheté un <b>nouveau</b> livre.</li>
+            <li>C'est une <b>bonne</b> idée.</li>
+            <li>Il habite dans une <b>vieille</b> maison.</li>
+            <li>Nous mangeons de la pizza <b>italienne</b>.</li>
+            <li>Ma sœur est <b>fatiguée</b>.</li>
+            <li>Les étudiants sont <b>intelligents</b>.</li>
+            <li>C'est mon <b>ancien</b> voisin.</li>
+            <li>J'ai lu un livre <b>ancien</b>.</li>
+            <li>Il a écrit son <b>propre</b> nom.</li>
+            <li>La cuisine est très <b>propre</b>.</li>
+            <li><b>Pauvre</b> il a perdu son chat.</li>
+            <li>Il est un homme <b>pauvre</b>.</li>
+        </ol>
+    </div>
+
+    <hr>
+
+    
+</body>
+</html>

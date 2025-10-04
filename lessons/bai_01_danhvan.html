@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+
+<meta name="robots" content="noindex">
+<meta name="robots" content="noindex">
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Học Phát Âm Tiếng Pháp</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            color: #1f2937;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .letter-button, .example-word {
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .letter-button:hover, .example-word:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .special-sound-item {
+            transition: transform 0.2s;
+            cursor: default;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+      
+    <div class="container bg-white rounded-xl shadow-lg p-6 md:p-10">
+        <header class="text-center mb-10">
+            <h1 class="text-3xl md:text-4xl font-bold text-blue-700 mb-2">Học Phát Âm Tiếng Pháp</h1>
+            <p class="text-gray-600">Nhấn vào từng chữ cái hoặc từ để nghe cách phát âm.</p>
+        </header>
+
+        <main>
+            <section class="mb-12">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-800 border-b-2 pb-2">Bảng Chữ Cái (A-Z)</h2>
+                <div class="grid grid-cols-5 sm:grid-cols-6 md:grid-cols-7 lg:grid-cols-8 gap-4">
+                    </div>
+            </section>
+
+            <section>
+                <h2 class="text-2xl font-semibold mb-4 text-gray-800 border-b-2 pb-2">Các Âm Đặc Biệt</h2>
+                <p class="text-gray-600 mb-6">Đây là các âm khác với tiếng Việt, bao gồm cả các âm mũi.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    </div>
+            </section>
+
+            <div id="display-area" class="mt-10 p-6 bg-blue-50 rounded-lg shadow-inner text-center hidden">
+                <p class="text-xl font-bold text-blue-800 mb-2">Âm thanh: <span id="display-sound"></span></p>
+                <p class="text-lg text-gray-700">Ví dụ: <span id="display-example"></span></p>
+                <p class="text-sm text-gray-500 mt-2">Dịch nghĩa: <span id="display-translation"></span></p>
+            </div>
+
+            <div id="error-message" class="mt-10 p-4 bg-red-100 text-red-700 rounded-lg text-center hidden">
+                Rất tiếc, trình duyệt của bạn không hỗ trợ tính năng phát âm.
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Data for the French alphabet and special sounds
+        const alphabet = [
+            { letter: 'A', phonetic: 'a', example: 'ami', translation: 'bạn bè' },
+            { letter: 'B', phonetic: 'b', example: 'bébé', translation: 'em bé' },
+            { letter: 'C', phonetic: 's/k', example: 'citron', translation: 'quả chanh' },
+            { letter: 'D', phonetic: 'd', example: 'deux', translation: 'hai' },
+            { letter: 'E', phonetic: 'ə', example: 'le', translation: 'mạo từ' },
+            { letter: 'F', phonetic: 'f', example: 'femme', translation: 'phụ nữ' },
+            { letter: 'G', phonetic: 'ʒ/g', example: 'garçon', translation: 'con trai' },
+            { letter: 'H', phonetic: 'h', example: 'hôtel', translation: 'khách sạn' },
+            { letter: 'I', phonetic: 'i', example: 'ici', translation: 'ở đây' },
+            { letter: 'J', phonetic: 'ʒ', example: 'jour', translation: 'ngày' },
+            { letter: 'K', phonetic: 'k', example: 'kilo', translation: 'cân' },
+            { letter: 'L', phonetic: 'l', example: 'lait', translation: 'sữa' },
+            { letter: 'M', phonetic: 'm', example: 'merci', translation: 'cảm ơn' },
+            { letter: 'N', phonetic: 'n', example: 'non', translation: 'không' },
+            { letter: 'O', phonetic: 'o', example: 'oui', translation: 'vâng' },
+            { letter: 'P', phonetic: 'p', example: 'père', translation: 'bố' },
+            { letter: 'Q', phonetic: 'k', example: 'qui', translation: 'ai' },
+            { letter: 'R', phonetic: 'ʁ', example: 'rouge', translation: 'màu đỏ' },
+            { letter: 'S', phonetic: 's/z', example: 'soleil', translation: 'mặt trời' },
+            { letter: 'T', phonetic: 't', example: 'table', translation: 'cái bàn' },
+            { letter: 'U', phonetic: 'y', example: 'lune', translation: 'mặt trăng' },
+            { letter: 'V', phonetic: 'v', example: 'ville', translation: 'thành phố' },
+            { letter: 'W', phonetic: 'w', example: 'wagon', translation: 'toa xe' },
+            { letter: 'X', phonetic: 'ks/gz', example: 'taxi', translation: 'xe taxi' },
+            { letter: 'Y', phonetic: 'i/j', example: 'stylo', translation: 'bút' },
+            { letter: 'Z', phonetic: 'z', example: 'zéro', translation: 'số 0' }
+        ];
+
+        const specialSounds = [
+            { sound: 'on', phonetic: '[ɔ̃]', foundIn: ['on', 'om'], examples: [{word: 'bon', translation: 'tốt'}, {word: 'maison', translation: 'ngôi nhà'}], description: 'Âm mũi, hơi giống "ông" nhưng không chạm lưỡi lên vòm họng.' },
+            { sound: 'in', phonetic: '[ɛ̃]', foundIn: ['in', 'im', 'ain', 'aim', 'ein'], examples: [{word: 'vin', translation: 'rượu vang'}, {word: 'jardin', translation: 'khu vườn'}], description: 'Âm mũi, gần như "anh" nhưng rất khép miệng.' },
+            { sound: 'un', phonetic: '[œ̃]', foundIn: ['un', 'um'], examples: [{word: 'un', translation: 'một'}, {word: 'lundi', translation: 'thứ hai'}], description: 'Âm mũi, hơi giống "ơn" nhưng phát âm từ họng.' },
+            { sound: 'an', phonetic: '[ɑ̃]', foundIn: ['an', 'am', 'en', 'em'], examples: [{word: 'dans', translation: 'trong'}, {word: 'parent', translation: 'bố mẹ'}], description: 'Âm mũi, hơi giống "ăng" nhưng không tròn môi.' },
+            { sound: 'ou', phonetic: '[u]', foundIn: ['ou'], examples: [{word: 'où', translation: 'ở đâu'}, {word: 'jour', translation: 'ngày'}], description: 'Âm tròn môi, giống âm "u" trong tiếng Việt.' },
+            { sound: 'oi', phonetic: '[wa]', foundIn: ['oi'], examples: [{word: 'moi', translation: 'tôi'}, {word: 'roi', translation: 'vua'}], description: 'Âm kết hợp giữa "o" và "a" tạo thành một âm đôi, tương tự "oa" trong tiếng Việt nhưng nhanh và gọn hơn.'},
+            { sound: 'eu', phonetic: '[ø]', foundIn: ['eu', 'œu'], examples: [{word: 'deux', translation: 'hai'}, {word: 'bleu', translation: 'màu xanh'}], description: 'Âm tròn môi, phát âm như "ơ" nhưng tròn môi.' },
+            { sound: 'ch', phonetic: '[ʃ]', foundIn: ['ch'], examples: [{word: 'chaud', translation: 'nóng'}, {word: 'chat', translation: 'con mèo'}], description: 'Âm vòm, giống âm "s" hoặc "x" trong tiếng Việt.' },
+            { sound: 'gn', phonetic: '[ɲ]', foundIn: ['gn'], examples: [{word: 'gagner', translation: 'thắng'}, {word: 'campagne', translation: 'miền quê'}], description: 'Âm vòm, giống âm "nh" trong tiếng Việt.' },
+            { sound: 'j', phonetic: '[ʒ]', foundIn: ['j', 'g (trước e, i, y)'], examples: [{word: 'je', translation: 'tôi'}, {word: 'journal', translation: 'tờ báo'}], description: 'Âm vòm, rung cổ họng, khác "gi" hay "j" trong tiếng Việt.' },
+            { sound: 'é', phonetic: '[e]', foundIn: ['é', 'er', 'ez'], examples: [{word: 'été', translation: 'mùa hè'}, {word: 'café', translation: 'cà phê'}], description: 'Âm "ê", phát âm căng và gọn.' },
+            { sound: 'è', phonetic: '[ɛ]', foundIn: ['è', 'e (có dấu)'], examples: [{word: 'mère', translation: 'mẹ'}, {word: 'frère', translation: 'anh/em trai'}], description: 'Âm "e", phát âm mở và rộng hơn "é".' },
+            { sound: 'r', phonetic: '[ʁ]', foundIn: ['r'], examples: [{word: 'Paris', translation: 'Paris'}, {word: 'grand', translation: 'to lớn'}], description: 'Âm họng, phát âm bằng cách rung cuống lưỡi. Đây là âm khó nhất với người Việt.' }
+        ];
+
+        const alphabetContainer = document.querySelector('section:nth-of-type(1) div');
+        const specialSoundsContainer = document.querySelector('section:nth-of-type(2) div');
+        const displayArea = document.getElementById('display-area');
+        const displaySound = document.getElementById('display-sound');
+        const displayExample = document.getElementById('display-example');
+        const displayTranslation = document.getElementById('display-translation');
+        const errorMessage = document.getElementById('error-message');
+
+        // Check for Web Speech API support
+        if (!'speechSynthesis' in window) {
+            errorMessage.classList.remove('hidden');
+        }
+
+        // Function to create and play sound
+        const speakText = (text) => {
+            const synth = window.speechSynthesis;
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'fr-FR'; // Set language to French
+            utterance.rate = 0.8; // Slow down a bit for clarity
+
+            synth.cancel(); // Stop any current speech
+            synth.speak(utterance);
+        };
+
+        // Function to update the display area with multiple examples
+        const updateDisplay = (sound, example, translation) => {
+            displaySound.textContent = sound;
+            displayExample.textContent = example;
+            displayTranslation.textContent = translation;
+            displayArea.classList.remove('hidden');
+        };
+
+        // Generate alphabet buttons
+        alphabet.forEach(item => {
+            const button = document.createElement('button');
+            button.className = 'letter-button flex flex-col items-center justify-center p-4 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold';
+            button.innerHTML = `<span class="text-3xl">${item.letter}</span><span class="text-sm mt-1 text-gray-500">${item.phonetic}</span>`;
+            button.addEventListener('click', () => {
+                speakText(item.letter); // SỬA ĐỔI: Phát âm chính chữ cái
+                updateDisplay(item.letter, item.example, item.translation);
+            });
+            alphabetContainer.appendChild(button);
+        });
+
+        // Generate special sound items
+        specialSounds.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'special-sound-item bg-purple-50 p-6 rounded-lg shadow-md'; // Removed hover effect from the main item
+            div.innerHTML = `
+                <div class="flex items-center mb-3">
+                    <span class="text-3xl font-bold text-purple-700 mr-4">${item.sound}</span>
+                    <span class="text-xl text-gray-600">${item.phonetic}</span>
+                </div>
+                <p class="text-sm text-gray-600 mb-2">Thường gặp với: <span class="font-semibold">${item.foundIn.join(', ')}</span></p>
+                <p class="text-sm text-gray-600 mb-4">${item.description}</p>
+                <div class="flex flex-col space-y-2">
+                    ${item.examples.map(example => `
+                        <div class="example-word flex justify-between items-center p-3 rounded-md bg-purple-100 hover:bg-purple-200">
+                            <span class="font-semibold text-purple-800">${example.word}</span>
+                            <span class="text-sm text-purple-600">(${example.translation})</span>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            
+            // Add click listeners to individual example words
+            const exampleWords = div.querySelectorAll('.example-word');
+            exampleWords.forEach(exampleDiv => {
+                exampleDiv.addEventListener('click', () => {
+                    const wordToSpeak = exampleDiv.querySelector('span').textContent;
+                    speakText(wordToSpeak);
+                });
+            });
+
+            specialSoundsContainer.appendChild(div);
+        });
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+
+<meta name="robots" content="noindex">
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ngữ pháp tiếng Pháp cơ bản: Động từ Être & Avoir</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 0 15px;
+            background-color: #f9f9f9;
+        }
+        h1, h2, h3 {
+            color: #0056b3;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .example {
+            font-style: italic;
+            color: #555;
+            margin-left: 20px;
+            margin-bottom: 10px;
+        }
+        .note {
+            background-color: #e6f7ff;
+            border-left: 4px solid #007bff;
+            padding: 10px;
+            margin-bottom: 15px;
+        }
+
+        /* Điều chỉnh độ rộng cột cho cụm từ Avoir */
+        .french-phrase {
+            display: inline-block;
+            width: 300px; /* Tăng độ rộng */
+            vertical-align: top;
+        }
+        .vietnamese-meaning {
+            display: inline-block;
+            width: calc(100% - 310px); /* Điều chỉnh phần còn lại */
+            vertical-align: top;
+        }
+        .phrase-item {
+            margin-bottom: 8px;
+        }
+        .negation-item {
+            margin-bottom: 10px;
+        }
+        .negation-example {
+            margin-left: 20px;
+        }
+
+        /* Màu sắc cho động từ và cấu trúc phủ định */
+        .etre {
+            color: #d9534f; /* Màu đỏ cho Être */
+            font-weight: bold;
+        }
+        .avoir {
+            color: #5cb85c; /* Màu xanh lá cây cho Avoir */
+            font-weight: bold;
+        }
+        .ne-pas-part {
+            color: #ff0000; /* Màu đỏ tươi cho phần ne...pas */
+            font-weight: bold;
+        }
+        .verb-in-negation {
+            color: #007bff; /* Màu xanh dương cho động từ trong câu phủ định */
+            font-weight: bold;
+        }
+
+        /* Màu nền cho các phần nội dung */
+        .section-etre {
+            background-color: #fcebeb; /* Nền hồng nhạt */
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+        .section-avoir {
+            background-color: #ebfaeb; /* Nền xanh lá nhạt */
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+        .section-cest-ilest {
+            background-color: #e8f5ff; /* Nền xanh dương nhạt */
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+        .section-phrases-avoir {
+            background-color: #fff8e1; /* Nền vàng nhạt */
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+        .section-negation {
+            background-color: #ffe6e6; /* Nền đỏ nhạt hơn */
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        /* Header info - Vui tươi hơn */
+        .header-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 10px 15px;
+            border-bottom: 1px solid #ddd; /* Giữ đường kẻ mờ */
+            background-color: #ffffff; /* Nền trắng */
+            border-radius: 8px 8px 0 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Thêm đổ bóng nhẹ */
+        }
+        .home-icon {
+            font-size: 28px; /* Kích thước icon lớn hơn */
+            color: #ff6f61; /* Màu đỏ san hô */
+            text-decoration: none;
+            transition: color 0.3s ease; /* Hiệu ứng chuyển màu mượt mà */
+        }
+        .home-icon:hover {
+            color: #e04434; /* Màu khi hover */
+        }
+        .enseignant-name {
+            font-weight: bold;
+            color: green; /* Màu tím đậm */
+            font-size: 1.1em; /* Lớn hơn một chút */
+            text-transform: none; /* Đảm bảo chữ thường */
+        }
+
+        /* Style cho phần thực hành */
+        .practice-section {
+            background-color: #e3f9e3; /* Màu xanh lá cây rất nhạt */
+            border: 1px dashed #38a169;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        .practice-section a {
+            color: #0056b3; /* Màu xanh đậm cho link */
+            font-weight: 600;
+            text-decoration: underline;
+        }
+        .practice-title {
+            color: #2d3748;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    
+    <h1>Être & Avoir</h1>
+
+    
+    <div class="section-etre">
+        <h2>Chia động từ Être (to be)</h2>
+        <p>Đây là một trong hai động từ quan trọng nhất trong tiếng Pháp, được sử dụng để mô tả, giới thiệu, và chỉ ra nghề nghiệp/quốc tịch.</p>
+
+        <h3>Être (to be)</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Chủ ngữ</th>
+                    <th>Hiện tại (Présent)</th>
+                    <th>Tiếng Anh</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Je</td>
+                    <td><span class="etre">suis</span></td>
+                    <td>I am</td>
+                </tr>
+                <tr>
+                    <td>Tu</td>
+                    <td><span class="etre">es</span></td>
+                    <td>You are (informal singular)</td>
+                </tr>
+                <tr>
+                    <td>Il/Elle/On</td>
+                    <td><span class="etre">est</span></td>
+                    <td>He/She/One is</td>
+                </tr>
+                <tr>
+                    <td>Nous</td>
+                    <td><span class="etre">sommes</span></td>
+                    <td>We are</td>
+                </tr>
+                <tr>
+                    <td>Vous</td>
+                    <td><span class="etre">êtes</span></td>
+                    <td>You are (plural/formal)</td>
+                </tr>
+                <tr>
+                    <td>Ils/Elles</td>
+                    <td><span class="etre">sont</span></td>
+                    <td>They are</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="example">
+            <ul>
+                <li><span class="etre">Je suis</span> vietnamien. (Tôi là người Việt Nam.)</li>
+                <li>Nous <span class="etre">sommes</span> étudiants. (Chúng tôi là sinh viên.)</li>
+                <li>Il <span class="etre">est</span> fatigué. (Anh ấy mệt.)</li>
+            </ul>
+        </div>
+        
+        <div class="practice-section">
+            <div class="practice-title">Thực hành: Động từ Être</div>
+            <ul style="list-style-type: disc; margin-left: 20px;">
+                <li><a href="../exercices/01_etre_avoir/01_01_etre_au_present.html">Bài tập 1: Chia động từ Être ở thì hiện tại</a></li>
+                
+            </ul>
+        </div>
+    </div>
+    
+    <div class="section-cest-ilest">
+        <h2>Cách dùng C'est, Il est, Ce sont, Ils sont</h2>
+        <p>Đây là những cấu trúc dùng để giới thiệu hoặc mô tả, có nguồn gốc từ động từ Être, nhưng có sự khác biệt quan trọng về ngữ pháp và ý nghĩa.</p>
+
+        <h3>C'est (It is / He is / She is) và Ce sont (They are)</h3>
+        <ul>
+            <li><span class="etre">C'est</span> và <span class="etre">Ce sont</span> được dùng để <strong>giới thiệu hoặc xác định một danh từ</strong>, đặc biệt khi danh từ đó có mạo từ (un, une, des, le, la, les) hoặc tính từ sở hữu/chỉ định đi kèm.</li>
+            <li>Chúng cũng được dùng với <strong>tính từ không đổi</strong> để đưa ra nhận xét chung hoặc với một <strong>tên riêng</strong>.</li>
+        </ul>
+        <div class="example">
+            <ul>
+                <li><strong>C'est + danh từ (có mạo từ/tính từ) / tên riêng / tính từ không đổi</strong>
+                    <ul>
+                        <li><span class="etre">C'est</span> un professeur. (This is a teacher.)</li>
+                        <li><span class="etre">C'est</span> la tour Eiffel. (This is the Eiffel Tower.)</li>
+                        <li><span class="etre">C'est</span> Paul. (This is Paul.)</li>
+                        <li><span class="etre">C'est</span> intéressant. (It's interesting.)</li>
+                    </ul>
+                </li>
+                <li><strong>Ce sont + danh từ số nhiều (có mạo từ/tính từ)</strong>
+                    <ul>
+                        <li><span class="etre">Ce sont</span> des étudiants. (These are students.)</li>
+                        <li><span class="etre">Ce sont</span> mes amis. (These are my friends.)</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <h3>Il est / Elle est (He is / She is / It is) và Ils sont / Elles sont (They are)</h3>
+        <ul>
+            <li><span class="etre">Il est</span> / <span class="etre">Elle est</span> / <span class="etre">Ils sont</span> / <span class="etre">Elles sont</span> được dùng để <strong>mô tả tính chất, nghề nghiệp, quốc tịch</strong> của một người hoặc vật, <strong>khi không có mạo từ</strong> đi kèm với danh từ nghề nghiệp/quốc tịch.</li>
+            <li>Chúng cũng được dùng với <strong>tính từ để mô tả</strong> chủ ngữ.</li>
+        </ul>
+        <div class="example">
+            <ul>
+                <li><strong>Il/Elle est + nghề nghiệp / quốc tịch (không mạo từ) / tính từ</strong>
+                    <ul>
+                        <li><span class="etre">Il est</span> professeur. (He is a teacher.)</li>
+                        <li><span class="etre">Elle est</span> française. (She is French.)</li>
+                        <li><span class="etre">Il est</span> intelligent. (He is intelligent.)</li>
+                    </ul>
+                </li>
+                <li><strong>Ils/Elles sont + nghề nghiệp / quốc tịch (không mạo từ) / tính từ</strong>
+                    <ul>
+                        <li><span class="etre">Ils sont</span> médecins. (They are doctors.)</li>
+                        <li><span class="etre">Elles sont</span> vietnamiennes. (They are Vietnamese.)</li>
+                        <li><span class="etre">Ils sont</span> grands. (They are tall.)</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div class="note">
+            <p><strong>Tóm tắt sự khác biệt chính:</strong></p>
+            <ul>
+                <li><span class="etre">C'est/Ce sont:</span> Dùng để <strong>GIỚI THIỆU/XÁC ĐỊNH</strong> và thường đi với <strong>mạo từ</strong> hoặc <strong>tên riêng</strong>.</li>
+                <li><span class="etre">Il est/Ils sont:</span> Dùng để <strong>MÔ TẢ</strong> tính chất/nghề nghiệp/quốc tịch và thường <strong>không đi kèm mạo từ</strong> với nghề nghiệp/quốc tịch.</li>
+            </ul>
+        </div>
+
+        <div class="practice-section">
+            <div class="practice-title">Thực hành: Phân biệt C'est và Il est</div>
+            <ul style="list-style-type: disc; margin-left: 20px;">
+                <li><a href="../exercices/01_etre_avoir/01_02_cest_il_est_01.html">Bài tập 2: C'est ... Il est/Elle est + adjectif (1).</a></li>
+                <li><a href="../exercices/01_etre_avoir/01_02_cest_il_est_02.html">Bài tập 3: C'est ... Il est/Elle est + adjectif (2).</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section-avoir">
+        <h2>Chia động từ Avoir (to have)</h2>
+        <p>Động từ <span class="avoir">Avoir</span> có nghĩa là "có" và được dùng để diễn tả sự sở hữu, tuổi tác và nhiều trạng thái, cảm xúc khác.</p>
+        <h3>Avoir (to have)</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Chủ ngữ</th>
+                    <th>Hiện tại (Présent)</th>
+                    <th>Tiếng Anh</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>J'</td>
+                    <td><span class="avoir">ai</span></td>
+                    <td>I have</td>
+                </tr>
+                <tr>
+                    <td>Tu</td>
+                    <td><span class="avoir">as</span></td>
+                    <td>You have (informal singular)</td>
+                </tr>
+                <tr>
+                    <td>Il/Elle/On</td>
+                    <td><span class="avoir">a</span></td>
+                    <td>He/She/One has</td>
+                </tr>
+                <tr>
+                    <td>Nous</td>
+                    <td><span class="avoir">avons</span></td>
+                    <td>We have</td>
+                </tr>
+                <tr>
+                    <td>Vous</td>
+                    <td><span class="avoir">avez</span></td>
+                    <td>You have (plural/formal)</td>
+                </tr>
+                <tr>
+                    <td>Ils/Elles</td>
+                    <td><span class="avoir">ont</span></td>
+                    <td>They have</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="example">
+            <ul>
+                <li><span class="avoir">J'ai</span> 30 ans. (I am 30 years old.)</li>
+                <li>Tu <span class="avoir">as</span> un livre. (You have a book.)</li>
+                <li>Ils <span class="avoir">ont</span> faim. (They are hungry.)</li>
+            </ul>
+        </div>
+
+        <div class="practice-section">
+            <div class="practice-title">Thực hành: Động từ Avoir</div>
+            <ul style="list-style-type: disc; margin-left: 20px;">
+                <li><a href="../exercices/01_etre_avoir/01_04_avoir.html">Bài tập 4: Chia động từ Avoir ở thì hiện tại</a></li>
+               
+            </ul>
+        </div>
+    </div>
+
+    
+    <div class="section-phrases-avoir">
+        <h2>Một số cụm từ thông dụng đi với Avoir</h2>
+        <p>Động từ <span class="avoir">avoir</span> không chỉ có nghĩa là "có" mà còn được dùng trong rất nhiều cụm từ biểu thị trạng thái, cảm xúc.</p>
+        <div>
+            <div class="phrase-item">
+                <span class="french-phrase"><strong><span class="avoir">avoir</span> faim:</strong></span> <span class="vietnamese-meaning">đói</span>
+                <div class="example"><span class="avoir">J'ai</span> faim. (I am hungry.)</div>
+            </div>
+            <div class="phrase-item">
+                <span class="french-phrase"><strong><span class="avoir">avoir</span> soif:</strong></span> <span class="vietnamese-meaning">khát</span>
+                <div class="example">Tu <span class="avoir">as</span> soif? (Are you thirsty?)</div>
+            </div>
+            <div class="phrase-item">
+                <span class="french-phrase"><strong><span class="avoir">avoir</span> froid:</strong></span> <span class="vietnamese-meaning">lạnh</span>
+                <div class="example">Nous <span class="avoir">avons</span> froid. (We are cold.)</div>
+            </div>
+            <div class="phrase-item">
+                <span class="french-phrase"><strong><span class="avoir">avoir</span> chaud:</strong></span> <span class="vietnamese-meaning">nóng</span>
+                <div class="example">Elles <span class="avoir">ont</span> chaud. (They are hot.)</div>
+            </div>
+            <div class="phrase-item">
+                <span class="french-phrase"><strong><span class="avoir">avoir</span> sommeil:</strong></span> <span class="vietnamese-meaning">buồn ngủ</span>
+                <div class="example">Il <span class="avoir">a</span> sommeil. (He is sleepy.)</div>
+            </div>
+            <div class="phrase-item">
+                <span class="french-phrase"><strong><span class="avoir">avoir</span> peur (de):</strong></span> <span class="vietnamese-meaning">sợ (cái gì/ai đó)</span>
+                <div class="example"><span class="avoir">J'ai</span> peur des araignées. (I am afraid of spiders.)</div>
+            </div>
+            <div class="phrase-item">
+                <span class="french-phrase"><strong><span class="avoir">avoir</span> envie de + infinitif/danh từ:</strong></span> <span class="vietnamese-meaning">muốn, thèm (làm gì/cái gì)</span>
+                <div class="example"><span class="avoir">J'ai</span> envie de voyager. (I want to travel.)<br>Elle <span class="avoir">a</span> envie d'une glace. (She wants an ice cream.)</div>
+            </div>
+            <div class="phrase-item">
+                <span class="french-phrase"><strong><span class="avoir">avoir</span> besoin de + infinitif/danh từ:</strong></span> <span class="vietnamese-meaning">cần (làm gì/cái gì)</span>
+                <div class="example">Chúng tôi <span class="avoir">có</span> besoin d'aide. (We need help.)<br>Bạn <span class="avoir">có</span> besoin de dormir. (You need to sleep.)</div>
+            </div>
+            <div class="phrase-item">
+                <span class="french-phrase"><strong><span class="avoir">avoir</span> de la chance:</strong></span> <span class="vietnamese-meaning">may mắn</span>
+                <div class="example">Tu <span class="avoir">as</span> de la chance! (You are lucky!)</div>
+            </div>
+            <div class="phrase-item">
+                <span class="french-phrase"><strong><span class="avoir">avoir</span> raison:</strong></span> <span class="vietnamese-meaning">đúng</span>
+                <div class="example">Il <span class="avoir">a</span> raison. (He is right.)</div>
+            </div>
+            <div class="phrase-item">
+                <span class="french-phrase"><strong><span class="avoir">avoir</span> tort:</strong></span> <span class="vietnamese-meaning">sai</span>
+                <div class="example">Elle <span class="avoir">a</span> tort. (She is wrong.)</div>
+            </div>
+            <div class="phrase-item">
+                <span class="french-phrase"><strong><span class="avoir">avoir</span> mal à + bộ phận cơ thể:</strong></span> <span class="vietnamese-meaning">bị đau ở...</span>
+                <div class="example"><span class="avoir">J'ai</span> mal à la tête. (I have a headache.)</div>
+            </div>
+            <div class="phrase-item">
+                <span class="french-phrase"><strong><span class="avoir">avoir</span> l'air + tính từ:</strong></span> <span class="vietnamese-meaning">trông có vẻ, dường như</span>
+                <div class="example">Il <span class="avoir">a</span> l'air fatigué. (He looks tired.)</div>
+            </div>
+        </div>
+
+        
+    </div>
+
+ 
+    <div class="section-negation">
+        <h2>Cách thành lập câu phủ định</h2>
+        <p>Trong tiếng Pháp, để thành lập câu phủ định, bạn sẽ đặt <strong>"<span class="ne-pas-part">ne</span>"</strong> trước động từ và <strong>"<span class="ne-pas-part">pas</span>"</strong> sau động từ chính.</p>
+
+        <p><strong>Cấu trúc chung:</strong></p>
+        <p><strong>Chủ ngữ + <span class="ne-pas-part">ne</span> + <span class="verb-in-negation">động từ</span> + <span class="ne-pas-part">pas</span> + (bổ ngữ)</strong></p>
+        <p>Nếu động từ bắt đầu bằng một nguyên âm (a, e, i, o, u) hoặc "h" câm, <strong>"<span class="ne-pas-part">ne</span>"</strong> sẽ được rút gọn thành <strong>"<span class="ne-pas-part">n'</span>"</strong>.</p>
+
+        <div>
+            <div class="negation-item">
+                <p><strong>Câu khẳng định:</strong> Je parle français. (I speak French.)</p>
+                <div class="negation-example">
+                    <p><strong>Câu phủ định:</strong> Je <span class="ne-pas-part">ne</span> <span class="verb-in-negation">parle</span> <span class="ne-pas-part">pas</span> français. (I do not speak French.)</p>
+                </div>
+            </div>
+            <div class="negation-item">
+                <p><strong>Câu khẳng định:</strong> Tu <span class="etre">es</span> étudiant. (You are a student.)</p>
+                <div class="negation-example">
+                    <p><strong>Câu phủ định:</strong> Tu <span class="ne-pas-part">n'</span><span class="verb-in-negation etre">es</span> <span class="ne-pas-part">pas</span> étudiant. (You are not a student.)</p>
+                </div>
+            </div>
+            <div class="negation-item">
+                <p><strong>Câu khẳng định:</strong> Il <span class="avoir">a</span> un chat. (He has a cat.)</p>
+                <div class="negation-example">
+                    <p><strong>Câu phủ định:</strong> Il <span class="ne-pas-part">n'</span><span class="verb-in-negation avoir">a</span> <span class="ne-pas-part">pas</span> de chat. (He does not have a cat.) <em>(Note: "un" typically changes to "de" in negative sentences when the noun is indefinite.)</em></p>
+                </div>
+            </div>
+            <div class="negation-item">
+                <p><strong>Câu khẳng định:</strong> Nous aimons le chocolat. (We like chocolate.)</p>
+                <div class="negation-example">
+                    <p><strong>Câu phủ định:</strong> Nous <span class="ne-pas-part">n'</span><span class="verb-in-negation">aimons</span> <span class="ne-pas-part">pas</span> le chocolat. (We do not like chocolate.)</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="practice-section">
+            <div class="practice-title">Thực hành: Cấu trúc phủ định (La Négation)</div>
+            <ul style="list-style-type: disc; margin-left: 20px;">
+                <li><a href="../exercices/01_etre_avoir/01_06_avoir_negation.html">Bài tập 5: Avoir ở thể phủ định</a></li>
+                <li><a href="../exercices/01_etre_avoir/01_07_etre_avoir.html">Bài tập 6: Tổng hợp</a></li>
+            </ul>
+        </div>
+    </div>
+  
+    
+</body>
+</html>

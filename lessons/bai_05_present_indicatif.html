@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2025 by anonymous (http://jsbin.com/butiyevigu/3/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<meta name="robots" content="noindex">
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>présent</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            background-color: #e9ecef; /* Màu nền nhẹ nhàng */
+            color: #343a40; /* Màu chữ tối */
+        }
+        .main-title-container {
+            max-width: 960px; /* Chiều rộng bằng với .container */
+            margin: 30px auto 0; /* Đẩy tiêu đề xuống một chút */
+            background-color: #d1ecf1; /* Màu xanh dương nhạt hơn */
+            color: #0c5460; /* Màu chữ xanh đậm hơn */
+            padding: 25px 40px; /* Giữ padding để nội dung không bị sát cạnh */
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 12px 12px 0 0; /* Bo tròn chỉ góc trên */
+        }
+        .main-title-container h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+
+        .container {
+            max-width: 960px; /* Độ rộng container phù hợp hơn */
+            margin: 0 auto 30px; /* Đặt margin-top bằng 0, margin-bottom 30px */
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 0 0 12px 12px; /* Bo tròn chỉ góc dưới */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* Shadow nổi bật hơn */
+        }
+        .container.first-content-block { /* Nếu bạn muốn khối nội dung đầu tiên cũng có bo tròn trên */
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+            margin-top: 0px; /* Nó sẽ nằm ngay dưới main-title-container */
+        }
+
+
+        h2, h3 {
+            color: #0056b3; /* Màu xanh dương cho tiêu đề */
+            border-bottom: 2px solid #007bff; /* Viền dưới đậm hơn */
+            padding-bottom: 8px;
+            margin-top: 40px; /* Khoảng cách lớn hơn cho tiêu đề chính */
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+        h3 {
+            font-size: 1.5em;
+            border-bottom: 1px solid #ced4da; /* Viền nhẹ hơn cho h3 */
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: auto; /* Đảm bảo bảng tự động điều chỉnh theo nội dung */
+            border-collapse: separate; /* Dùng separate để có thể bo góc cell */
+            border-spacing: 0; /* Loại bỏ khoảng cách giữa các cell */
+            margin-bottom: 30px;
+            overflow: hidden; /* Đảm bảo bo góc hoạt động */
+            border-radius: 8px; /* Bo góc bảng */
+        }
+        th, td {
+            border: 1px solid #e0e0e0; /* Viền mỏng hơn */
+            padding: 12px 15px; /* Padding lớn hơn */
+            text-align: left; /* Mặc định căn trái */
+            word-wrap: break-word;
+        }
+        th {
+            background-color: #f0f8ff; /* Màu nền header nhẹ nhàng */
+            color: #004085; /* Màu chữ xanh đậm hơn cho header */
+            font-weight: bold;
+            vertical-align: middle;
+            text-align: center; /* Căn giữa tiêu đề cột */
+        }
+        tr:nth-child(even) {
+            background-color: #f8f9fa; /* Màu xen kẽ cho hàng */
+        }
+        tr:hover {
+            background-color: #e9ecef; /* Hiệu ứng hover */
+        }
+
+        .radical {
+            color: #dc3545; /* Màu đỏ sẫm hơn cho gốc */
+            font-weight: bold;
+        }
+        .ending {
+            color: #28a745; /* Màu xanh lá cây đậm hơn cho đuôi */
+            font-weight: bold;
+        }
+        /* Màu đặc biệt cho C-cédille, 'e' sau 'g', và '-iss-' */
+        .special-highlight {
+            color: #007bff; /* Màu xanh dương đậm */
+            font-weight: bold;
+        }
+        .green-highlight {
+            color: #28a745; /* Màu xanh lá cây */
+            font-weight: bold;
+        }
+
+        .note {
+            background-color: #e7f3ff; /* Nền xanh nhạt */
+            border-left: 6px solid #007bff; /* Viền xanh đậm */
+            padding: 20px;
+            margin-top: 30px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            font-size: 0.95em;
+            color: #004085;
+        }
+        .note ul {
+            padding-left: 20px;
+            margin-bottom: 0;
+        }
+        .note li {
+            margin-bottom: 5px;
+        }
+        small {
+            font-size: 0.85em;
+            color: #6c757d;
+            display: block; /* Đảm bảo chú thích nằm trên dòng riêng */
+            margin-top: 5px;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            body {
+                margin: 10px;
+            }
+            .main-title-container {
+                padding: 15px;
+                margin: 15px auto 0;
+                border-radius: 8px 8px 0 0;
+            }
+            .main-title-container h1 {
+                font-size: 1.8em;
+            }
+            .container {
+                padding: 15px;
+                margin: 0 auto 15px;
+                border-radius: 0 0 8px 8px;
+            }
+            .container.first-content-block {
+                 border-radius: 8px; /* On mobile, full rounded corners for the first block */
+                 margin-top: 15px; /* Adjust spacing */
+            }
+
+            h2 {
+                font-size: 1.6em;
+            }
+            h3 {
+                font-size: 1.3em;
+            }
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+            thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+            tr {
+                border: 1px solid #dee2e6;
+                margin-bottom: 15px;
+                border-radius: 8px;
+            }
+            td {
+                border: none;
+                border-bottom: 1px solid #e0e0e0;
+                position: relative;
+                padding-left: 50%;
+                text-align: right;
+            }
+            td:last-child {
+                border-bottom: none;
+            }
+            td:before {
+                position: absolute;
+                top: 50%;
+                left: 6px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+                content: attr(data-label);
+                font-weight: bold;
+                text-align: left;
+                transform: translateY(-50%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-title-container">
+        <h1>Bài 5: Le présent de l'indicatif</h1>
+    </div>
+
+
+    <div class="container">
+        <h2>1. Nhóm 1 (-ER)</h2>
+
+        <h3>PARLER (Nói)</h3>
+        <table class="verb-table">
+            <thead>
+                <tr>
+                    <th data-label="Đại từ nhân xưng">Đại từ nhân xưng</th>
+                    <th data-label="Động từ chia">PARLER (Nói)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td data-label="Je">Je</td><td data-label="Động từ chia"><span class="radical">parl</span><span class="ending">e</span></td></tr>
+                <tr><td data-label="Tu">Tu</td><td data-label="Động từ chia"><span class="radical">parl</span><span class="ending">es</span></td></tr>
+                <tr><td data-label="Il/Elle/On">Il/Elle/On</td><td data-label="Động từ chia"><span class="radical">parl</span><span class="ending">e</span></td></tr>
+                <tr><td data-label="Nous">Nous</td><td data-label="Động từ chia"><span class="radical">parl</span><span class="ending">ons</span></td></tr>
+                <tr><td data-label="Vous">Vous</td><td data-label="Động từ chia"><span class="radical">parl</span><span class="ending">ez</span></td></tr>
+                <tr><td data-label="Ils/Elles">Ils/Elles</td><td data-label="Động từ chia"><span class="radical">parl</span><span class="ending">ent</span></td></tr>
+            </tbody>
+        </table>
+
+        <h4>MANGER, COMMENCER <small>(Động từ có sự thay đổi chính tả ở ngôi Nous)</small></h4>
+        <table>
+            <thead>
+                <tr>
+                    <th data-label="Đại từ nhân xưng">Đại từ nhân xưng</th>
+                    <th data-label="MANGER (Ăn)"><small>MANGER (thêm 'e' trước 'ons')</small></th>
+                    <th data-label="COMMENCER (Bắt đầu)"><small>COMMENCER ('c' thành 'ç' trước 'ons')</small></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td data-label="Je">Je</td>
+                    <td><span class="radical">mang</span><span class="ending">e</span></td>
+                    <td><span class="radical">commenc</span><span class="ending">e</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Tu">Tu</td>
+                    <td><span class="radical">mang</span><span class="ending">es</span></td>
+                    <td><span class="radical">commenc</span><span class="ending">es</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Il/Elle/On">Il/Elle/On</td>
+                    <td><span class="radical">mang</span><span class="ending">e</span></td>
+                    <td><span class="radical">commenc</span><span class="ending">e</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Nous">Nous</td>
+                    <td><span class="radical">mang</span><span class="special-highlight">e</span><span class="ending">ons</span></td>
+                    <td><span class="radical">commen</span><span class="special-highlight">ç</span><span class="ending">ons</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Vous">Vous</td>
+                    <td><span class="radical">mang</span><span class="ending">ez</span></td>
+                    <td><span class="radical">commenc</span><span class="ending">ez</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Ils/Elles">Ils/Elles</td>
+                    <td><span class="radical">mang</span><span class="ending">ent</span></td>
+                    <td><span class="radical">commenc</span><span class="ending">ent</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4>ACHETER, PRÉFÉRER <small>(Động từ có thay đổi dấu/nguyên âm ở gốc)</small></h4>
+        <table>
+            <thead>
+                <tr>
+                    <th data-label="Đại từ nhân xưng">Đại từ nhân xưng</th>
+                    <th data-label="ACHETER (Mua)"><small>ACHETER ('e' &rarr; 'è')</small></th>
+                    <th data-label="PRÉFÉRER (Thích)"><small>PRÉFÉRER ('é' &rarr; 'è')</small></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td data-label="Je">Je</td>
+                    <td><span class="radical">ach<span class="special-highlight">è</span><span class="radical">t</span><span class="ending">e</span></td>
+                    <td><span class="radical">préf<span class="special-highlight">è</span></span><span class="radical">r</span><span class="ending">e</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Tu">Tu</td>
+                    <td><span class="radical">ach<span class="special-highlight">è</span><span class="radical">t</span></span><span class="ending">es</span></td>
+                    <td><span class="radical">préf<span class="special-highlight">è</span></span><span class="radical">r</span><span class="ending">es</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Il/Elle/On">Il/Elle/On</td>
+                    <td><span class="radical">ach<span class="special-highlight">è</span><span class="radical">t</span></span><span class="ending">e</span></td>
+                    <td><span class="radical">préf<span class="special-highlight">è</span></span><span class="radical">r</span><span class="ending">e</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Nous">Nous</td>
+                    <td><span class="radical">achet</span><span class="ending">ons</span></td>
+                    <td><span class="radical">préfér</span><span class="ending">ons</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Vous">Vous</td>
+                    <td><span class="radical">achet</span><span class="ending">ez</span></td>
+                    <td><span class="radical">préfér</span><span class="ending">ez</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Ils/Elles">Ils/Elles</td>
+                    <td><span class="radical">ach<span class="special-highlight">è</span></span><span class="radical">t</span><span class="ending">ent</span></td>
+                    <td><span class="radical">préf<span class="special-highlight">è</span></span><span class="radical">r</span><span class="ending">ent</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4>APPELER, JETER <small>(Động từ có nhân đôi phụ âm cuối ở gốc)</small></h4>
+        <table>
+            <thead>
+                <tr>
+                    <th data-label="Đại từ nhân xưng">Đại từ nhân xưng</th>
+                    <th data-label="APPELER (Gọi)"><small>APPELER (nhân đôi 'l')</small></th>
+                    <th data-label="JETER (Ném)"><small>JETER (nhân đôi 't')</small></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td data-label="Je">Je</td>
+                    <td><span class="radical">appe</span><span class="special-highlight">ll</span><span class="ending">e</span></td>
+                    <td><span class="radical">je</span><span class="special-highlight">tt</span><span class="ending">e</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Tu">Tu</td>
+                    <td><span class="radical">appe</span><span class="special-highlight">ll</span><span class="ending">es</span></td>
+                    <td><span class="radical">je</span><span class="special-highlight">tt</span><span class="ending">es</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Il/Elle/On">Il/Elle/On</td>
+                    <td><span class="radical">appe</span><span class="special-highlight">ll</span><span class="ending">e</span></td>
+                    <td><span class="radical">je</span><span class="special-highlight">tt</span><span class="ending">e</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Nous">Nous</td>
+                    <td><span class="radical">appel</span><span class="ending">ons</span></td>
+                    <td><span class="radical">jet</span><span class="ending">ons</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Vous">Vous</td>
+                    <td><span class="radical">appel</span><span class="ending">ez</span></td>
+                    <td><span class="radical">jet</span><span class="ending">ez</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Ils/Elles">Ils/Elles</td>
+                    <td><span class="radical">appe</span><span class="special-highlight">ll</span><span class="ending">ent</span></td>
+                    <td><span class="radical">je</span><span class="special-highlight">tt</span><span class="ending">ent</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4>PAYER, ENNUYER, EMPLOYER <small>(Động từ có gốc kết thúc bằng -ayer, -uyer, -oyer)</small></h4>
+        <table>
+            <thead>
+                <tr>
+                    <th data-label="Đại từ nhân xưng">Đại từ nhân xưng</th>
+                    <th data-label="PAYER (Trả)"><small>PAYER (-ayer) (trả tiền)</small></th>
+                    <th data-label="ENNUYER (Làm phiền)"><small>ENNUYER (-uyer) (Làm phiền)</small></th>
+                    <th data-label="EMPLOYER (Sử dụng)"><small>EMPLOYER (-oyer) (Sử dụng)</small></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td data-label="Je">Je</td>
+                    <td><span class="radical">pai</span><span class="ending">e</span>/<span class="radical">pay</span><span class="ending">e</span></td>
+                    <td><span class="radical">ennui</span><span class="ending">e</span></td>
+                    <td><span class="radical">emploi</span><span class="ending">e</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Tu">Tu</td>
+                    <td><span class="radical">pai</span><span class="ending">es</span>/<span class="radical">pay</span><span class="ending">es</span></td>
+                    <td><span class="radical">ennui</span><span class="ending">es</span></td>
+                    <td><span class="radical">emploi</span><span class="ending">es</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Il/Elle/On">Il/Elle/On</td>
+                    <td><span class="radical">pai</span><span class="ending">e</span>/<span class="radical">pay</span><span class="ending">e</span></td>
+                    <td><span class="radical">ennui</span><span class="ending">e</span></td>
+                    <td><span class="radical">emploi</span><span class="ending">e</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Nous">Nous</td>
+                    <td><span class="radical">pay</span><span class="ending">ons</span></td>
+                    <td><span class="radical">ennuy</span><span class="ending">ons</span></td>
+                    <td><span class="radical">employ</span><span class="ending">ons</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Vous">Vous</td>
+                    <td><span class="radical">pay</span><span class="ending">ez</span></td>
+                    <td><span class="radical">ennuy</span><span class="ending">ez</span></td>
+                    <td><span class="radical">employ</span><span class="ending">ez</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Ils/Elles">Ils/Elles</td>
+                    <td><span class="radical">pai</span><span class="ending">ent</span>/<span class="radical">pay</span><span class="ending">ent</span></td>
+                    <td><span class="radical">ennui</span><span class="ending">ent</span></td>
+                    <td><span class="radical">emploi</span><span class="ending">ent</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    ---
+
+    <div class="container">
+        <h2>2. Nhóm 2 (-IR)</h2>
+
+        <h4>FINIR, RÉFLÉCHIR <small>(Có thêm -ISS- ở các ngôi số nhiều)</small></h4>
+        <table>
+            <thead><tr><th data-label="Đại từ nhân xưng">Đại từ nhân xưng</th><th data-label="FINIR (Kết thúc)">FINIR (Kết thúc)</th><th data-label="RÉFLÉCHIR (Suy nghĩ)">RÉFLÉCHIR (Suy nghĩ)</th></tr></thead>
+            <tbody>
+                <tr><td>Je</td><td><span class="radical">fini</span><span class="ending">s</span></td><td><span class="radical">réfléchi</span><span class="ending">s</span></td></tr>
+                <tr><td>Tu</td><td><span class="radical">fini</span><span class="ending">s</span></td><td><span class="radical">réfléchi</span><span class="ending">s</span></td></tr>
+                <tr><td data-label="Il/Elle/On">Il/Elle/On</td><td><span class="radical">fini</span><span class="ending">t</span></td><td><span class="radical">réfléchi</span><span class="ending">t</span></td></tr>
+                <tr><td>Nous</td><td><span class="radical">fin</span><span class="special-highlight">iss</span><span class="ending">ons</span></td><td><span class="radical">réfléch</span><span class="special-highlight">iss</span><span class="ending">ons</span></td></tr>
+                <tr><td>Vous</td><td><span class="radical">fin</span><span class="special-highlight">iss</span><span class="ending">ez</span></td><td><span class="radical">réfléch</span><span class="special-highlight">iss</span><span class="ending">ez</span></td></tr>
+                <tr><td data-label="Ils/Elles">Ils/Elles</td><td><span class="radical">fin</span><span class="special-highlight">iss</span><span class="ending">ent</span></td><td><span class="radical">réfléch</span><span class="special-highlight">iss</span><span class="ending">ent</span></td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    ---
+
+    <div class="container">
+        <h2>3. Nhóm 3 (Bất Quy Tắc)</h2>
+
+        <h3>3.1. Nhóm "-IR" (phụ âm cuối của radical ở ngôi số ít rụng đi)</h3>
+
+        <h4>DORMIR, SERVIR, PARTIR, VIVRE, SUIVRE</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th data-label="Đại từ nhân xưng">Đại từ nhân xưng</th>
+                    <th data-label="DORMIR (Ngủ)">DORMIR (Ngủ)</th>
+                    <th data-label="SERVIR (Phục vụ)">SERVIR (Phục vụ)</th>
+                    <th data-label="PARTIR (Đi)">PARTIR (Đi)</th>
+                    <th data-label="VIVRE (Sống)">VIVRE (Sống)</th>
+                    <th data-label="SUIVRE (Theo)">SUIVRE (Theo)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td data-label="Je">Je</td>
+                    <td><span class="radical">dor</span><span class="ending">s</span></td>
+                    <td><span class="radical">ser</span><span class="ending">s</span></td>
+                    <td><span class="radical">par</span><span class="ending">s</span></td>
+                    <td><span class="radical">vi</span><span class="ending">s</span></td>
+                    <td><span class="radical">sui</span><span class="ending">s</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Tu">Tu</td>
+                    <td><span class="radical">dor</span><span class="ending">s</span></td>
+                    <td><span class="radical">ser</span><span class="ending">s</span></td>
+                    <td><span class="radical">par</span><span class="ending">s</span></td>
+                    <td><span class="radical">vi</span><span class="ending">s</span></td>
+                    <td><span class="radical">sui</span><span class="ending">s</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Il/Elle/On">Il/Elle/On</td>
+                    <td><span class="radical">dor</span><span class="ending">t</span></td>
+                    <td><span class="radical">ser</span><span class="ending">t</span></td>
+                    <td><span class="radical">par</span><span class="ending">t</span></td>
+                    <td><span class="radical">vi</span><span class="ending">t</span></td>
+                    <td><span class="radical">sui</span><span class="ending">t</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Nous">Nous</td>
+                    <td><span class="radical">dorm</span><span class="ending">ons</span></td>
+                    <td><span class="radical">serv</span><span class="ending">ons</span></td>
+                    <td><span class="radical">part</span><span class="ending">ons</span></td>
+                    <td><span class="radical">viv</span><span class="ending">ons</span></td>
+                    <td><span class="radical">suiv</span><span class="ending">ons</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Vous">Vous</td>
+                    <td><span class="radical">dorm</span><span class="ending">ez</span></td>
+                    <td><span class="radical">serv</span><span class="ending">ez</span></td>
+                    <td><span class="radical">part</span><span class="ending">ez</span></td>
+                    <td><span class="radical">viv</span><span class="ending">ez</span></td>
+                    <td><span class="radical">suiv</span><span class="ending">ez</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Ils/Elles">Ils/Elles</td>
+                    <td><span class="radical">dorm</span><span class="ending">ent</span></td>
+                    <td><span class="radical">serv</span><span class="ending">ent</span></td>
+                    <td><span class="radical">part</span><span class="ending">ent</span></td>
+                    <td><span class="radical">viv</span><span class="ending">ent</span></td>
+                    <td><span class="radical">suiv</span><span class="ending">ent</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="container">
+        <h3>3.2. Nhóm "-IR" chia như nhóm "-ER" (chỉ có 1 radical)</h3>
+
+        <h4>OUVRIR, OFFRIR, CUEILLIR, SOUFFRIR</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th data-label="Đại từ nhân xưng">Đại từ nhân xưng</th>
+                    <th data-label="OUVRIR (Mở)">OUVRIR (Mở)</th>
+                    <th data-label="OFFRIR (Cung cấp)">OFFRIR (Cung cấp)</th>
+                    <th data-label="CUEILLIR (Hái)">CUEILLIR (Hái)</th>
+                    <th data-label="SOUFFRIR (Chịu đựng)">SOUFFRIR (Chịu đựng)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td data-label="Je">Je</td>
+                    <td><span class="radical">ouvr</span><span class="ending">e</span></td>
+                    <td><span class="radical">offr</span><span class="ending">e</span></td>
+                    <td><span class="radical">cueill</span><span class="ending">e</span></td>
+                    <td><span class="radical">souffr</span><span class="ending">e</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Tu">Tu</td>
+                    <td><span class="radical">ouvr</span><span class="ending">es</span></td>
+                    <td><span class="radical">offr</span><span class="ending">es</span></td>
+                    <td><span class="radical">cueill</span><span class="ending">es</span></td>
+                    <td><span class="radical">souffr</span><span class="ending">es</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Il/Elle/On">Il/Elle/On</td>
+                    <td><span class="radical">ouvr</span><span class="ending">e</span></td>
+                    <td><span class="radical">offr</span><span class="ending">e</span></td>
+                    <td><span class="radical">cueill</span><span class="ending">e</span></td>
+                    <td><span class="radical">souffr</span><span class="ending">e</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Nous">Nous</td>
+                    <td><span class="radical">ouvr</span><span class="ending">ons</span></td>
+                    <td><span class="radical">offr</span><span class="ending">ons</span></td>
+                    <td><span class="radical">cueill</span><span class="ending">ons</span></td>
+                    <td><span class="radical">souffr</span><span class="ending">ons</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Vous">Vous</td>
+                    <td><span class="radical">ouvr</span><span class="ending">ez</span></td>
+                    <td><span class="radical">offr</span><span class="ending">ez</span></td>
+                    <td><span class="radical">cueill</span><span class="ending">ez</span></td>
+                    <td><span class="radical">souffr</span><span class="ending">ez</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Ils/Elles">Ils/Elles</td>
+                    <td><span class="radical">ouvr</span><span class="ending">ent</span></td>
+                    <td><span class="radical">offr</span><span class="ending">ent</span></td>
+                    <td><span class="radical">cueill</span><span class="ending">ent</span></td>
+                    <td><span class="radical">souffr</span><span class="ending">ent</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="container">
+        <h3>3.3. Nhóm "-TRE/-DRE" (phụ âm cuối của radical ở ngôi số ít là muet)</h3>
+
+        <h4>METTRE, PRENDRE, CONDUIRE, PEINDRE</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th data-label="Đại từ nhân xưng">Đại từ nhân xưng</th>
+                    <th data-label="METTRE (Đặt)">METTRE (Đặt)</th>
+                    <th data-label="PRENDRE (Cầm/Lấy)">PRENDRE (Cầm/Lấy)</th>
+                    <th data-label="CONDUIRE (Lái)">CONDUIRE (Lái)</th>
+                    <th data-label="PEINDRE (Sơn)">PEINDRE (Sơn)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td data-label="Je">Je</td>
+                    <td><span class="radical">me</span><span class="ending">ts</span></td>
+                    <td><span class="radical">pren</span><span class="ending">ds</span></td>
+                    <td><span class="radical">condui</span><span class="ending">s</span></td>
+                    <td><span class="radical">pein</span><span class="ending">s</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Tu">Tu</td>
+                    <td><span class="radical">me</span><span class="ending">ts</span></td>
+                    <td><span class="radical">pren</span><span class="ending">ds</span></td>
+                    <td><span class="radical">condui</span><span class="ending">s</span></td>
+                    <td><span class="radical">pein</span><span class="ending">s</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Il/Elle/On">Il/Elle/On</td>
+                    <td><span class="radical">me</span><span class="ending">t</span></td>
+                    <td><span class="radical">pren</span><span class="ending">d</span></td>
+                    <td><span class="radical">condui</span><span class="ending">t</span></td>
+                    <td><span class="radical">pein</span><span class="ending">t</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Nous">Nous</td>
+                    <td><span class="radical">mett</span><span class="ending">ons</span></td>
+                    <td><span class="radical">pren</span><span class="ending">ons</span></td>
+                    <td><span class="radical">conduis</span><span class="ending">ons</span></td>
+                    <td><span class="radical">peign</span><span class="ending">ons</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Vous">Vous</td>
+                    <td><span class="radical">mett</span><span class="ending">ez</span></td>
+                    <td><span class="radical">pren</span><span class="ending">ez</span></td>
+                    <td><span class="radical">conduis</span><span class="ending">ez</span></td>
+                    <td><span class="radical">peign</span><span class="ending">ez</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Ils/Elles">Ils/Elles</td>
+                    <td><span class="radical">mett</span><span class="ending">ent</span></td>
+                    <td><span class="radical special-highlight">prenn</span><span class="ending">ent</span></td>
+                    <td><span class="radical">conduis</span><span class="ending">ent</span></td>
+                    <td><span class="radical">peign</span><span class="ending">ent</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="container">
+        <h3>3.4. Nhóm đặc biệt: "-IRE"</h3>
+
+        <h4>ÉCRIRE và LIRE</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th data-label="Đại từ nhân xưng">Đại từ nhân xưng</th>
+                    <th data-label="ÉCRIRE (Viết)">ÉCRIRE (Viết)</th>
+                    <th data-label="LIRE (Đọc)">LIRE (Đọc)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td data-label="Je">Je</td>
+                    <td><span class="radical">écri</span><span class="ending">s</span></td>
+                    <td><span class="radical">li</span><span class="ending">s</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Tu">Tu</td>
+                    <td><span class="radical">écri</span><span class="ending">s</span></td>
+                    <td><span class="radical">li</span><span class="ending">s</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Il/Elle/On">Il/Elle/On</td>
+                    <td><span class="radical">écri</span><span class="ending">t</span></td>
+                    <td><span class="radical">li</span><span class="ending">t</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Nous">Nous</td>
+                    <td><span class="radical">écri</span><span class="radical special-highlight">v</span><span class="ending">ons</span></td>
+                    <td><span class="radical">li</span><span class="radical special-highlight">s</span><span class="ending">ons</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Vous">Vous</td>
+                    <td><span class="radical">écri</span><span class="radical special-highlight">v</span><span class="ending">ez</span></td>
+                    <td><span class="radical">li</span><span class="radical special-highlight">s</span><span class="ending">ez</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Ils/Elles">Ils/Elles</td>
+                    <td><span class="radical">écri</span><span class="radical special-highlight">v</span><span class="ending">ent</span></td>
+                    <td><span class="radical">li</span><span class="radical special-highlight">s</span><span class="ending">ent</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="container">
+        <h3>3.5. Nhóm có 1 radical nhưng gốc thay đổi khi chia</h3>
+
+        <h4>COURIR, RIRE, SOURIRE</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th data-label="Đại từ nhân xưng">Đại từ nhân xưng</th>
+                    <th data-label="COURIR (Chạy)">COURIR (Chạy)</th>
+                    <th data-label="RIRE (Cười)">RIRE (Cười)</th>
+                    <th data-label="SOURIRE (Mỉm cười)">SOURIRE (Mỉm cười)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td data-label="Je">Je</td>
+                    <td><span class="radical">cour</span><span class="ending">s</span></td>
+                    <td><span class="radical">ri</span><span class="ending">s</span></td>
+                    <td><span class="radical">souri</span><span class="ending">s</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Tu">Tu</td>
+                    <td><span class="radical">cour</span><span class="ending">s</span></td>
+                    <td><span class="radical">ri</span><span class="ending">s</span></td>
+                    <td><span class="radical">souri</span><span class="ending">s</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Il/Elle/On">Il/Elle/On</td>
+                    <td><span class="radical">cour</span><span class="ending">t</span></td>
+                    <td><span class="radical">ri</span><span class="ending">t</span></td>
+                    <td><span class="radical">souri</span><span class="ending">t</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Nous">Nous</td>
+                    <td><span class="radical">cour</span><span class="ending">ons</span></td>
+                    <td><span class="radical">ri</span><span class="ending">ons</span></td>
+                    <td><span class="radical">souri</span><span class="ending">ons</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Vous">Vous</td>
+                    <td><span class="radical">cour</span><span class="ending">ez</span></td>
+                    <td><span class="radical">ri</span><span class="ending">ez</span></td>
+                    <td><span class="radical">souri</span><span class="ending">ez</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Ils/Elles">Ils/Elles</td>
+                    <td><span class="radical">cour</span><span class="ending">ent</span></td>
+                    <td><span class="radical">ri</span><span class="ending">ent</span></td>
+                    <td><span class="radical">souri</span><span class="ending">ent</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="container">
+        <h3>3.6. Các động từ bất quy tắc khác</h3>
+
+        <h4>ALLER, AVOIR, ÊTRE, FAIRE</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th data-label="Đại từ nhân xưng">Đại từ nhân xưng</th>
+                    <th data-label="ALLER (Đi)">ALLER (Đi)</th>
+                    <th data-label="AVOIR (Có)">AVOIR (Có)</th>
+                    <th data-label="ÊTRE (Là/Thì)">ÊTRE (Là/Thì)</th>
+                    <th data-label="FAIRE (Làm)">FAIRE (Làm)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td data-label="Je">Je</td>
+                    <td><span class="radical special-highlight">vais</span></td>
+                    <td><span class="radical special-highlight">ai</span></td>
+                    <td><span class="radical special-highlight">suis</span></td>
+                    <td><span class="radical">fais</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Tu">Tu</td>
+                    <td><span class="radical special-highlight">vas</span></td>
+                    <td><span class="radical special-highlight">as</span></td>
+                    <td><span class="radical special-highlight">es</span></td>
+                    <td><span class="radical">fais</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Il/Elle/On">Il/Elle/On</td>
+                    <td><span class="radical special-highlight">va</span></td>
+                    <td><span class="radical special-highlight">a</span></td>
+                    <td><span class="radical special-highlight">est</span></td>
+                    <td><span class="radical">fait</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Nous">Nous</td>
+                    <td><span class="radical">all</span><span class="ending">ons</span></td>
+                    <td><span class="radical">av</span><span class="ending">ons</span></td>
+                    <td><span class="radical">sommes</span></td>
+                    <td><span class="radical">fais</span><span class="ending">ons</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Vous">Vous</td>
+                    <td><span class="radical">all</span><span class="ending">ez</span></td>
+                    <td><span class="radical">av</span><span class="ending">ez</span></td>
+                    <td><span class="radical">êtes</span></td>
+                    <td><span class="radical">fait</span><span class="ending">es</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Ils/Elles">Ils/Elles</td>
+                    <td><span class="radical special-highlight">vont</span></td>
+                    <td><span class="radical special-highlight">ont</span></td>
+                    <td><span class="radical special-highlight">sont</span></td>
+                    <td><span class="radical">font</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4>POUVOIR, VOULOIR</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th data-label="Đại từ nhân xưng">Đại từ nhân xưng</th>
+                    <th data-label="POUVOIR (Có thể)">POUVOIR (Có thể)</th>
+                    <th data-label="VOULOIR (Muốn)">VOULOIR (Muốn)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td data-label="Je">Je</td>
+                    <td><span class="radical">peu</span><span class="ending">x</span></td>
+                    <td><span class="radical">veu</span><span class="ending">x</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Tu">Tu</td>
+                    <td><span class="radical">peu</span><span class="ending">x</span></td>
+                    <td><span class="radical">veu</span><span class="ending">x</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Il/Elle/On">Il/Elle/On</td>
+                    <td><span class="radical">peu</span><span class="ending">t</span></td>
+                    <td><span class="radical">veu</span><span class="ending">t</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Nous">Nous</td>
+                    <td><span class="radical">p<span class="special-highlight">ou</span>v</span><span class="ending">ons</span></td>
+                    <td><span class="radical">v<span class="special-highlight">ou</span>l</span><span class="ending">ons</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Vous">Vous</td>
+                    <td><span class="radical">p<span class="special-highlight">ou</span>v</span><span class="ending">ez</span></td>
+                    <td><span class="radical">v<span class="special-highlight">ou</span>l</span><span class="ending">ez</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Ils/Elles">Ils/Elles</td>
+                    <td><span class="radical">peuv</span><span class="ending">ent</span></td>
+                    <td><span class="radical">veul</span><span class="ending">ent</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4>SAVOIR, CONNAÎTRE</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th data-label="Đại từ nhân xưng">Đại từ nhân xưng</th>
+                    <th data-label="SAVOIR (Biết)">SAVOIR (Biết)</th>
+                    <th data-label="CONNAÎTRE (Quen biết)">CONNAÎTRE (Quen biết)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td data-label="Je">Je</td>
+                    <td><span class="radical">sai</span><span class="ending">s</span></td>
+                    <td><span class="radical">connai</span><span class="green-highlight">s</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Tu">Tu</td>
+                    <td><span class="radical">sai</span><span class="ending">s</span></td>
+                    <td><span class="radical">connai</span><span class="green-highlight">s</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Il/Elle/On">Il/Elle/On</td>
+                    <td><span class="radical">sai</span><span class="ending">t</span></td>
+                    <td><span class="radical">connaî</span><span class="ending">t</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Nous">Nous</td>
+                    <td><span class="radical">sa</span><span class="special-highlight">v</span><span class="ending">ons</span></td>
+                    <td><span class="radical">connai</span><span class="special-highlight">ss</span><span class="ending">ons</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Vous">Vous</td>
+                    <td><span class="radical">sa</span><span class="special-highlight">v</span><span class="ending">ez</span></td>
+                    <td><span class="radical">connai</span><span class="special-highlight">ss</span><span class="ending">ez</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Ils/Elles">Ils/Elles</td>
+                    <td><span class="radical">sa</span><span class="special-highlight">v</span><span class="ending">ent</span></td>
+                    <td><span class="radical">connai</span><span class="special-highlight">ss</span><span class="ending">ent</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4>CROIRE, VOIR, ASSOIR</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th data-label="Đại từ nhân xưng">Đại từ nhân xưng</th>
+                    <th data-label="CROIRE (Tin)">CROIRE (Tin)</th>
+                    <th data-label="VOIR (Nhìn)">VOIR (Nhìn)</th>
+                    <th data-label="ASSEOIR (Ngồi)">ASSEOIR (Ngồi)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td data-label="Je">Je</td>
+                    <td><span class="radical">croi</span><span class="ending">s</span></td>
+                    <td><span class="radical">voi</span><span class="ending">s</span></td>
+                    <td><span class="radical">assied</span><span class="ending">s</span> / <span class="radical">assoi</span><span class="ending">s</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Tu">Tu</td>
+                    <td><span class="radical">croi</span><span class="ending">s</span></td>
+                    <td><span class="radical">voi</span><span class="ending">s</span></td>
+                    <td><span class="radical">assied</span><span class="ending">s</span> / <span class="radical">assoi</span><span class="ending">s</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Il/Elle/On">Il/Elle/On</td>
+                    <td><span class="radical">croi</span><span class="ending">t</span></td>
+                    <td><span class="radical">voi</span><span class="ending">t</span></td>
+                    <td><span class="radical">assied</span><span class="ending">t</span> / <span class="radical">assoi</span><span class="ending">t</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Nous">Nous</td>
+                    <td><span class="radical">cro<span class="special-highlight">y</span></span><span class="ending">ons</span></td>
+                    <td><span class="radical">vo<span class="special-highlight">y</span></span><span class="ending">ons</span></td>
+                    <td><span class="radical">asse<span class="special-highlight">y</span></span><span class="ending">ons</span> / <span class="radical">asso<span class="special-highlight">y</span></span><span class="ending">ons</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Vous">Vous</td>
+                    <td><span class="radical">cro<span class="special-highlight">y</span></span><span class="ending">ez</span></td>
+                    <td><span class="radical">vo<span class="special-highlight">y</span></span><span class="ending">ez</span></td>
+                    <td><span class="radical">asse<span class="special-highlight">y</span></span><span class="ending">ez</span> / <span class="radical">asso<span class="special-highlight">y</span></span><span class="ending">ez</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Ils/Elles">Ils/Elles</td>
+                    <td><span class="radical">croi</span><span class="ending">ent</span></td>
+                    <td><span class="radical">voient</span></td>
+                    <td><span class="radical">assi</span><span class="ending">ent</span> / <span class="radical">assoi</span><span class="ending">ent</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="note">
+            Động từ **Asseoir** có hai cách chia được chấp nhận ở thì hiện tại.
+        </div>
+
+        <h4>BOIRE, RECEVOIR, DEVOIR</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th data-label="Đại từ nhân xưng">Đại từ nhân xưng</th>
+                    <th data-label="BOIRE (Uống)">BOIRE (Uống)</th>
+                    <th data-label="RECEVOIR (Nhận)">RECEVOIR (Nhận)</th>
+                    <th data-label="DEVOIR (Phải)">DEVOIR (Phải)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td data-label="Je">Je</td>
+                    <td><span class="radical">b<span class="special-highlight">oi</span></span><span class="ending">s</span></td>
+                    <td><span class="radical">reç<span class="special-highlight">oi</span></span><span class="ending">s</span></td>
+                    <td><span class="radical">d<span class="special-highlight">oi</span></span><span class="ending">s</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Tu">Tu</td>
+                    <td><span class="radical">b<span class="special-highlight">oi</span></span><span class="ending">s</span></td>
+                    <td><span class="radical">reç<span class="special-highlight">oi</span></span><span class="ending">s</span></td>
+                    <td><span class="radical">d<span class="special-highlight">oi</span></span><span class="ending">s</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Il/Elle/On">Il/Elle/On</td>
+                    <td><span class="radical">b<span class="special-highlight">oi</span></span><span class="ending">t</span></td>
+                    <td><span class="radical">reç<span class="special-highlight">oi</span></span><span class="ending">t</span></td>
+                    <td><span class="radical">d<span class="special-highlight">oi</span></span><span class="ending">t</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Nous">Nous</td>
+                    <td><span class="radical">buv</span><span class="ending">ons</span></td>
+                    <td><span class="radical">recev</span><span class="ending">ons</span></td>
+                    <td><span class="radical">dev</span><span class="ending">ons</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Vous">Vous</td>
+                    <td><span class="radical">buv</span><span class="ending">ez</span></td>
+                    <td><span class="radical">recev</span><span class="ending">ez</span></td>
+                    <td><span class="radical">dev</span><span class="ending">ez</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Ils/Elles">Ils/Elles</td>
+                    <td><span class="radical">b<span class="special-highlight">oiv</span></span><span class="ending">ent</span></td>
+                    <td><span class="radical">reç<span class="special-highlight">oiv</span></span><span class="ending">ent</span></td>
+                    <td><span class="radical">d<span class="special-highlight">oiv</span></span><span class="ending">ent</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4>VENIR, TENIR</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th data-label="Đại từ nhân xưng">Đại từ nhân xưng</th>
+                    <th data-label="VENIR (Đến)">VENIR (Đến)</th>
+                    <th data-label="TENIR (Giữ)">TENIR (Giữ)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td data-label="Je">Je</td>
+                    <td><span class="radical special-highlight">vien</span><span class="ending">s</span></td>
+                    <td><span class="radical special-highlight">tien</span><span class="ending">s</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Tu">Tu</td>
+                    <td><span class="radical special-highlight">vien</span><span class="ending">s</span></td>
+                    <td><span class="radical special-highlight">tien</span><span class="ending">s</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Il/Elle/On">Il/Elle/On</td>
+                    <td><span class="radical special-highlight">vien</span><span class="ending">t</span></td>
+                    <td><span class="radical special-highlight">tien</span><span class="ending">t</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Nous">Nous</td>
+                    <td><span class="radical">ven</span><span class="ending">ons</span></td>
+                    <td><span class="radical">ten</span><span class="ending">ons</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Vous">Vous</td>
+                    <td><span class="radical">ven</span><span class="ending">ez</span></td>
+                    <td><span class="radical">ten</span><span class="ending">ez</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Ils/Elles">Ils/Elles</td>
+                    <td><span class="radical special-highlight">vienn</span><span class="ending">ent</span></td>
+                    <td><span class="radical special-highlight">tienn</span><span class="ending">ent</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4>VALOIR, FALLOIR</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th data-label="Đại từ nhân xưng">Đại từ nhân xưng</th>
+                    <th data-label="VALOIR (Có giá trị)">VALOIR (Có giá trị)</th>
+                    <th data-label="FALLOIR (Phải)">FALLOIR (Phải)<br/><small>(chỉ ngôi Il)</small></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td data-label="Je">Je</td>
+                    <td><span class="radical">vau</span><span class="green-highlight">x</span></td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td data-label="Tu">Tu</td>
+                    <td><span class="radical">vau</span><span class="green-highlight">x</span></td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td data-label="Il/Elle/On">Il/Elle/On</td>
+                    <td><span class="radical">vau</span><span class="green-highlight">t</span></td>
+                    <td><span class="radical">fau</span><span class="green-highlight">t</span></td>
+                </tr>
+                <tr>
+                    <td data-label="Nous">Nous</td>
+                    <td><span class="radical">val</span><span class="ending">ons</span></td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td data-label="Vous">Vous</td>
+                    <td><span class="radical">val</span><span class="ending">ez</span></td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td data-label="Ils/Elles">Ils/Elles</td>
+                    <td><span class="radical">val</span><span class="ending">ent</span></td>
+                    <td>-</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="note">
+            Lưu ý:
+             Đối với động từ FALLOIR (Phải), đây là động từ bất nhân xưng nên chỉ được chia ở ngôi "Il".
+        </div>
+    </div>
+</body>
+</html>
