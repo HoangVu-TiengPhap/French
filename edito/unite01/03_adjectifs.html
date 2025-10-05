@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+
+<meta name="robots" content="noindex" />
+<meta name="robots" content="noindex" />
+<meta name="robots" content="noindex" />
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bài kiểm tra Tiếng Pháp</title>
+
+    <link rel="stylesheet" href="../styles/fill-gap.css" />
+  </head>
+  <body>
+    <div class="quiz-container">
+      <div class="info-header">
+        <p><strong>Enseignant:</strong> Nguyễn Hoàng Vũ</p>
+        <p><strong>Jour :</strong> <span id="test-date"></span></p>
+      </div>
+
+      <div class="quiz-status-bar">
+        <h1>Homme ou femme ?</h1>
+      </div>
+
+      <div id="special-chars-palette">
+        <button type="button" onclick="insertChar('é')">é</button>
+        <button type="button" onclick="insertChar('è')">è</button>
+        <button type="button" onclick="insertChar('à')">à</button>
+        <button type="button" onclick="insertChar('ê')">ê</button>
+        <button type="button" onclick="insertChar('â')">â</button>
+        <button type="button" onclick="insertChar('î')">î</button>
+        <button type="button" onclick="insertChar('ô')">ô</button>
+        <button type="button" onclick="insertChar('û')">û</button>
+        <button type="button" onclick="insertChar('ç')">ç</button>
+        <button type="button" onclick="insertChar('ë')">ë</button>
+        <button type="button" onclick="insertChar('ï')">ï</button>
+
+        <button type="button" onclick="insertChar('ü')">ü</button>
+        <button type="button" onclick="insertChar('œ')">œ</button>
+        <div class="score-time">
+          <span id="score-display">0 / 29</span>
+        </div>
+      </div>
+
+      <div id="all-questions-container">
+        <h2 class="section-title">
+          Accordez l’adjectif de nationalité si nécessaire.
+        </h2>
+        <!-- câu 1 -->
+        <div class="question-block" id="q1">
+          <p class="question-text">
+            1. Elle est japonais
+            <span class="blank">
+              <input
+                type="text"
+                id="q1-input"
+                placeholder=""
+                onfocus="setLastFocused(this)"
+              />
+            </span>
+            .
+          </p>
+          <button class="validate-btn" onclick='validateText(1, "e")'>
+            Valider
+          </button>
+          <div class="feedback"></div>
+        </div>
+        <!-- hết câu 1 -->
+        <!-- câu 2 -->
+        <div class="question-block" id="q2">
+          <p class="question-text">
+            2. Il est colombien
+            <span class="blank">
+              <input
+                type="text"
+                id="q2-input"
+                placeholder=""
+                onfocus="setLastFocused(this)"
+              />
+            </span>
+            , Alberto ?
+          </p>
+          <button class="validate-btn" onclick='validateText(2, "")'>
+            Valider
+          </button>
+          <div class="feedback"></div>
+        </div>
+        <!-- hết câu 2 -->
+        <!-- câu 3 -->
+        <div class="question-block" id="q3">
+          <p class="question-text">
+            3. Madame Lambert est belge
+            <span class="blank">
+              <input
+                type="text"
+                id="q3-input"
+                placeholder=""
+                onfocus="setLastFocused(this)"
+              />
+            </span>
+            .
+          </p>
+          <button class="validate-btn" onclick='validateText(3, "")'>
+            Valider
+          </button>
+          <div class="feedback"></div>
+        </div>
+        <!-- hết câu 3 -->
+        <!-- câu 4 -->
+        <div class="question-block" id="q4">
+          <p class="question-text">
+            4. Monsieur Diouf est sénégalais
+            <span class="blank">
+              <input
+                type="text"
+                id="q4-input"
+                placeholder=""
+                onfocus="setLastFocused(this)"
+              />
+            </span>
+            .
+          </p>
+          <button class="validate-btn" onclick='validateText(4, "")'>
+            Valider
+          </button>
+          <div class="feedback"></div>
+        </div>
+        <!-- hết câu 4 -->
+        <!-- câu 5 -->
+        <div class="question-block" id="q5">
+          <p class="question-text">
+            5. Vous êtes marocain
+            <span class="blank">
+              <input
+                type="text"
+                id="q5-input"
+                placeholder=""
+                onfocus="setLastFocused(this)"
+              />
+            </span>
+            , madame ?
+          </p>
+          <button class="validate-btn" onclick='validateText(5, "e")'>
+            Valider
+          </button>
+          <div class="feedback"></div>
+        </div>
+        <!-- hết câu 5 -->
+      </div>
+    </div>
+
+    <script>
+      let score = 0;
+      let lastFocusedInput = null;
+
+      const clozeAnswers = [["e"], [""], ["chien"]];
+
+      const maxScore = 5; //clozeAnswers.flat().length; // 16 câu đơn + 13 chỗ trống = 29 điểm
+
+      const feedbackExplanations = {
+        1: "Chính xác!",
+        2: "Chính xác!",
+        3: "Chính xác!",
+        4: "Chính xác!",
+        5: "Chính xác!",
+      };
+    </script>
+    <script src="../javascripts/fill-gap.js"></script>
+  </body>
+</html>

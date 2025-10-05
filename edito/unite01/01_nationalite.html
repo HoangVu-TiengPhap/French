@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+
+<meta name="robots" content="noindex" />
+<meta name="robots" content="noindex" />
+<meta name="robots" content="noindex" />
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Unité 01</title>
+    <link rel="stylesheet" href="../styles/styles.css" />
+  </head>
+  <body>
+    <div class="quiz-container">
+      <div class="info-header">
+        <p><strong>Enseignant:</strong> Nguyễn Hoàng Vũ</p>
+        <p><strong>Jour :</strong> <span id="test-date"></span></p>
+      </div>
+
+      <div class="quiz-status-bar">
+        <h1>Parlez en français</h1>
+      </div>
+
+      <div id="special-chars-palette">
+        <button type="button" onclick="insertChar('é')">é</button>
+        <button type="button" onclick="insertChar('è')">è</button>
+        <button type="button" onclick="insertChar('à')">à</button>
+        <button type="button" onclick="insertChar('ê')">ê</button>
+        <button type="button" onclick="insertChar('â')">â</button>
+        <button type="button" onclick="insertChar('î')">î</button>
+        <button type="button" onclick="insertChar('ô')">ô</button>
+        <button type="button" onclick="insertChar('û')">û</button>
+        <button type="button" onclick="insertChar('ç')">ç</button>
+        <button type="button" onclick="insertChar('ë')">ë</button>
+        <button type="button" onclick="insertChar('ï')">ï</button>
+
+        <button type="button" onclick="insertChar('ü')">ü</button>
+        <button type="button" onclick="insertChar('œ')">œ</button>
+        <div class="score-time">
+          <span id="score-display">0 / 29</span>
+          <span id="timer-display">10:00</span>
+        </div>
+      </div>
+
+      <div id="all-questions-container">
+        <h2 class="section-title">
+          Trouvez la nationalité et l'âge des personnes.
+        </h2>
+        <h3>Dialogue 1</h3>
+
+        <!-- Question 1 -->
+        <div class="question-block" id="q1">
+          <audio id="audio-player-1" preload="none">
+            <!-- sửa audio  -->
+            <source src="" type="audio/mpeg" />
+            Trình duyệt của bạn không hỗ trợ thẻ audio.
+          </audio>
+          <div>
+            <p class="question-text">1. Lars</p>
+          </div>
+
+          <div class="audio-controls">
+            <!-- sửa số audio  -->
+            <button
+              type="button"
+              class="audio-player-button"
+              onclick="playAudio(1, this)"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width="28px"
+                height="28px"
+              >
+                <path
+                  d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"
+                ></path>
+              </svg>
+            </button>
+            <button type="button" class="oral-transcription-btn" data-q="1">
+              Afficher la transcription
+            </button>
+          </div>
+          <!-- sửa số question -->
+          <div class="answers">
+            <label
+              ><input type="radio" name="q1" value="a" /> a) allemand(e)</label
+            >
+            <label
+              ><input type="radio" name="q1" value="b" /> b) italien(ne)</label
+            >
+            <label
+              ><input type="radio" name="q1" value="c" /> c)
+              hollandais(e)</label
+            >
+          </div>
+          <!-- sửa số validate -->
+          <button class="validate-btn" onclick="validateRadio(1, 'c')">
+            Valider
+          </button>
+          <div class="feedback"></div>
+        </div>
+        <!-- End Question 1 -->
+
+        <!-- Question 2 -->
+        <div class="question-block" id="q2">
+          <div>
+            <p class="question-text">2. Enzo</p>
+          </div>
+
+          <!-- sửa số question -->
+          <div class="answers">
+            <label
+              ><input type="radio" name="q2" value="a" /> a) allemand(e)</label
+            >
+            <label
+              ><input type="radio" name="q2" value="b" /> b) italien(ne)</label
+            >
+            <label
+              ><input type="radio" name="q2" value="c" /> c)
+              hollandais(e)</label
+            >
+          </div>
+          <!-- sửa số validate & sửa đáp án-->
+          <button class="validate-btn" onclick="validateRadio(2, 'b')">
+            Valider
+          </button>
+          <div class="feedback"></div>
+        </div>
+        <!-- End Question 2 -->
+
+        <!-- Question 3 -->
+        <div class="question-block" id="q3">
+          <div>
+            <p class="question-text">3. Lars</p>
+          </div>
+
+          <!-- sửa số question -->
+          <div class="answers">
+            <label
+              ><input type="radio" name="q3" value="a" /> a) 23 (vingt-trois)
+              ans.</label
+            >
+            <label
+              ><input type="radio" name="q3" value="b" /> b) 52 (cinquante-deux)
+              ans.</label
+            >
+            <label
+              ><input type="radio" name="q3" value="c" /> c) 28 (vingt-huit)
+              ans.</label
+            >
+            <label
+              ><input type="radio" name="q3" value="d" /> d) 44
+              (quarante-quatre) ans.</label
+            >
+          </div>
+          <!-- sửa số validate & sửa đáp án-->
+          <button class="validate-btn" onclick="validateRadio(3, 'b')">
+            Valider
+          </button>
+          <div class="feedback"></div>
+        </div>
+        <!-- End Question 3 -->
+          <!-- Question 4 -->
+        <div class="question-block" id="q4">
+          <div>
+            <p class="question-text">4. Enzo</p>
+          </div>
+
+          <!-- sửa số question -->
+          <div class="answers">
+            <label
+              ><input type="radio" name="q4" value="a" /> a) 23 (vingt-trois)
+              ans.</label
+            >
+            <label
+              ><input type="radio" name="q4" value="b" /> b) 52 (cinquante-deux)
+              ans.</label
+            >
+            <label
+              ><input type="radio" name="q4" value="c" /> c) 28 (vingt-huit)
+              ans.</label
+            >
+            <label
+              ><input type="radio" name="q4" value="d" /> d) 44
+              (quarante-quatre) ans.</label
+            >
+          </div>
+          <!-- sửa số validate & sửa đáp án-->
+          <button class="validate-btn" onclick="validateRadio(4, 'd')">
+            Valider
+          </button>
+          <div class="feedback"></div>
+        </div>
+        <!-- End Question 4 -->
+        <hr />
+        <h3>Dialogue 2</h3>
+        <!-- Question 5 -->
+        <div class="question-block" id="q5">
+          <div>
+            <p class="question-text">5. Giulia</p>
+          </div>
+
+          <!-- sửa số question -->
+          <div class="answers">
+            <label
+              ><input type="radio" name="q5" value="a" /> a) allemand(e)</label
+            >
+            <label
+              ><input type="radio" name="q5" value="b" /> b) italien(ne)</label
+            >
+            <label
+              ><input type="radio" name="q5" value="c" /> c)
+              hollandais(e)</label
+            >
+          </div>
+          <!-- sửa số validate & sửa đáp án-->
+          <button class="validate-btn" onclick="validateRadio(5, 'b')">
+            Valider
+          </button>
+          <div class="feedback"></div>
+        </div>
+        <!-- End Question 5 -->
+
+        <!-- Question 6 -->
+        <div class="question-block" id="q6">
+          <div>
+            <p class="question-text">6. Alice</p>
+          </div>
+          <!-- sửa số question -->
+          <div class="answers">
+            <label
+              ><input type="radio" name="q6" value="a" /> a) allemand(e)</label
+            >
+            <label
+              ><input type="radio" name="q6" value="b" /> b) italien(ne)</label
+            >
+            <label
+              ><input type="radio" name="q6" value="c" /> c)
+              hollandais(e)</label
+            >
+          </div>
+          <!-- sửa số validate & sửa đáp án-->
+          <button class="validate-btn" onclick="validateRadio(6, 'a')">
+            Valider
+          </button>
+          <div class="feedback"></div>
+        </div>
+        <!-- End Question 6 -->
+                      
+
+        <!-- Question 7 -->
+        <div class="question-block" id="q7">
+          <div>
+            <p class="question-text">7. Giulia</p>
+          </div>
+
+          <!-- sửa số question -->
+          <div class="answers">
+            <label
+              ><input type="radio" name="q7" value="a" /> a) 23 (vingt-trois)
+              ans.</label
+            >
+            <label
+              ><input type="radio" name="q7" value="b" /> b) 52 (cinquante-deux)
+              ans.</label
+            >
+            <label
+              ><input type="radio" name="q7" value="c" /> c) 28 (vingt-huit)
+              ans.</label
+            >
+            <label
+              ><input type="radio" name="q7" value="d" /> d) 44
+              (quarante-quatre) ans.</label
+            >
+          </div>
+          <!-- sửa số validate & sửa đáp án-->
+          <button class="validate-btn" onclick="validateRadio(7, 'c')">
+            Valider
+          </button>
+          <div class="feedback"></div>
+        </div>
+        <!-- End Question 7 -->
+
+        <!-- Question 8 -->
+        <div class="question-block" id="q8">
+          <div>
+            <p class="question-text">8. Alice</p>
+          </div>
+
+          <!-- sửa số question -->
+          <div class="answers">
+            <label
+              ><input type="radio" name="q8" value="a" /> a) 23 (vingt-trois)
+              ans.</label
+            >
+            <label
+              ><input type="radio" name="q8" value="b" /> b) 52 (cinquante-deux)
+              ans.</label
+            >
+            <label
+              ><input type="radio" name="q8" value="c" /> c) 28 (vingt-huit)
+              ans.</label
+            >
+            <label
+              ><input type="radio" name="q8" value="d" /> d) 44
+              (quarante-quatre) ans.</label
+            >
+          </div>
+          <!-- sửa số validate & sửa đáp án-->
+          <button class="validate-btn" onclick="validateRadio(8, 'a')">
+            Valider
+          </button>
+          <div class="feedback"></div>
+        </div>
+        <!-- End Question 8 -->
+      </div>
+    </div>
+
+    <script>
+      let score = 0;
+      let lastFocusedInput = null;
+      // let timeInSeconds = 600;
+      let timerInterval = null;
+
+      const maxScore = 8;
+      //+ clozeAnswers.flat().length; // 16 câu đơn + 13 chỗ trống = 29 điểm
+      const feedbackExplanations = {
+        1: "Chính xác!",
+        2: "Chính xác!",
+        3: "Chính xác!",
+        4: "Chính xác!",
+        5: "Chính xác!",
+        6: "Chính xác!",
+        7: "Chính xác!",
+        8: "Chính xác!",
+      };
+
+      const transcriptionData = {
+        1: "",
+        2: "",
+        3: "",
+        4: "",
+        5: "",
+        6: "",
+        7: "",
+        8: "",
+      };
+    </script>
+    <script>
+      window.individualAudioUrls = {
+        // Câu hỏi 5 sử dụng URL audio riêng biệt này
+        1: "https://exobank.hachette-livre.fr/contents/final/9782278103782-fxl/OEBPS/assets/sound/13_Edito_A1_Livre.mp3",
+      };
+
+      // Nếu window.audioPrefix tồn tại, nó sẽ được sử dụng cho các câu hỏi còn lại
+      window.audioPrefix =
+        "https://exobank.hachette-livre.fr/contents/final/9782278103782-fxl/OEBPS/assets/sound/13_Edito_A1_Livre.mp3";
+    </script>
+    <script>
+      window.imageSources = {
+        1: "",
+        2: "",
+        3: "",
+        4: "",
+      };
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        Object.keys(imageSources).forEach(function (qNum) {
+          setImageSource(qNum);
+        });
+
+        // Delegate click to show/hide transcription per question
+        document.addEventListener("click", function (e) {
+          const target = e.target;
+          if (!(target instanceof Element)) return;
+          if (!target.classList.contains("oral-transcription-btn")) return;
+
+          const q = parseInt(target.getAttribute("data-q") || "", 10);
+          if (!q || Number.isNaN(q)) return;
+
+          const text = (transcriptionData && transcriptionData[q]) || "";
+          // Find or create container just after audio-controls
+          const audioControls = target.closest(".audio-controls");
+          if (!audioControls) return;
+
+          // Existing dedicated div under this controls?
+          let container = audioControls.nextElementSibling;
+          // If next sibling isn't the text container, create one
+          if (
+            !container ||
+            !(container instanceof HTMLElement) ||
+            !container.classList.contains("oral-transcription-text")
+          ) {
+            container = document.createElement("div");
+            container.className = "oral-transcription-text";
+            container.style.display = "none";
+            audioControls.insertAdjacentElement("afterend", container);
+          }
+
+          container.innerHTML = text ? text.replace(/\n/g, "<br>") : "";
+          const isHidden = container.style.display === "none";
+          container.style.display = isHidden ? "block" : "none";
+          target.textContent = isHidden
+            ? "Masquer la transcription"
+            : "Afficher la transcription";
+        });
+      });
+    </script>
+
+    <script src="..//javascripts/main.js"></script>
+  </body>
+</html>

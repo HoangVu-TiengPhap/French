@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+
+<meta name="robots" content="noindex" />
+<meta name="robots" content="noindex" />
+<meta name="robots" content="noindex" />
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Unité 01</title>
+
+    <link rel="stylesheet" href="../styles/fill-gap.css" />
+  </head>
+  <body>
+    <div class="quiz-container">
+      <div class="info-header">
+        <p><strong>Enseignant:</strong> Nguyễn Hoàng Vũ</p>
+        <p><strong>Jour :</strong> <span id="test-date"></span></p>
+      </div>
+
+      <div class="quiz-status-bar">
+        <h1>Les articles définis</h1>
+      </div>
+
+      <div id="special-chars-palette">
+        <button type="button" onclick="insertChar('é')">é</button>
+        <button type="button" onclick="insertChar('è')">è</button>
+        <button type="button" onclick="insertChar('à')">à</button>
+        <button type="button" onclick="insertChar('ê')">ê</button>
+        <button type="button" onclick="insertChar('â')">â</button>
+        <button type="button" onclick="insertChar('î')">î</button>
+        <button type="button" onclick="insertChar('ô')">ô</button>
+        <button type="button" onclick="insertChar('û')">û</button>
+        <button type="button" onclick="insertChar('ç')">ç</button>
+        <button type="button" onclick="insertChar('ë')">ë</button>
+        <button type="button" onclick="insertChar('ï')">ï</button>
+
+        <button type="button" onclick="insertChar('ü')">ü</button>
+        <button type="button" onclick="insertChar('œ')">œ</button>
+        <div class="score-time">
+          <span id="score-display">0 / 29</span>
+        </div>
+      </div>
+
+      <div id="all-questions-container">
+        <h2 class="section-title">Aimer</h2>
+        <!-- câu 1 -->
+        <div class="question-block" id="q1">
+          <!-- <p class="question-text">1. Avoir</p> -->
+          <p class="cloze-passage">
+            J'
+            <input
+              type="text"
+              id="cloze-1-1"
+              onfocus="setLastFocused(this)"
+            /><br />
+            Tu
+            <input type="text" id="cloze-1-2" onfocus="setLastFocused(this)" />
+            <br />
+            Il/Elle/On<input
+              type="text"
+              id="cloze-1-3"
+              onfocus="setLastFocused(this)"
+            /><br />
+            Nous
+            <input
+              type="text"
+              id="cloze-1-4"
+              onfocus="setLastFocused(this)"
+            /><br />
+            Vous
+            <input
+              type="text"
+              id="cloze-1-5"
+              onfocus="setLastFocused(this)"
+            /><br />
+            Ils/Elles
+            <input
+              type="text"
+              id="cloze-1-6"
+              onfocus="setLastFocused(this)"
+            /><br />
+          </p>
+          <button class="validate-btn" onclick="validateCloze(1, 1)">
+            Valider
+          </button>
+          <div class="feedback"></div>
+        </div>
+        <!-- hết câu 1 -->
+        <h2 class="section-title">
+          Complétez les phrases avec
+          <span style="color: rgb(2, 110, 20)">le, la, l', les</span>.
+        </h2>
+        <!-- câu 2 -->
+        <div class="question-block" id="q2">
+          <p class="cloze-passage">
+            1. J’aime
+            <input type="text" id="cloze-2-1" onfocus="setLastFocused(this)" />
+            café.<br />
+          </p>
+          <button class="validate-btn" onclick="validateCloze(2, 2)">
+            Valider
+          </button>
+          <div class="feedback"></div>
+        </div>
+        <!-- hết câu 2 -->
+        <!-- câu 3 -->
+        <div class="question-block" id="q3">
+          <p class="cloze-passage">
+            2. Tu aimes
+            <input type="text" id="cloze-3-1" onfocus="setLastFocused(this)" />
+            musique et
+            <input type="text" id="cloze-3-2" onfocus="setLastFocused(this)" />
+            cinéma ?
+          </p>
+          <button class="validate-btn" onclick="validateCloze(3, 3)">
+            Valider
+          </button>
+          <div class="feedback"></div>
+        </div>
+        <!-- hết câu 3 -->
+        <!-- câu 4 -->
+        <div class="question-block" id="q4">
+          <p class="cloze-passage">
+            3. Toi, tu aimes
+            <input type="text" id="cloze-4-1" onfocus="setLastFocused(this)" />
+            langues, moi, j’aime
+            <input type="text" id="cloze-4-2" onfocus="setLastFocused(this)" />
+            histoire.
+          </p>
+          <button class="validate-btn" onclick="validateCloze(4, 4)">
+            Valider
+          </button>
+          <div class="feedback"></div>
+        </div>
+        <!-- hết câu 4 -->
+        <!-- câu 5 -->
+        <div class="question-block" id="q5">
+          <p class="cloze-passage">
+            4. J’aime aussi
+            <input type="text" id="cloze-5-1" onfocus="setLastFocused(this)" />
+            chocolat !
+          </p>
+          <button class="validate-btn" onclick="validateCloze(5, 5)">
+            Valider
+          </button>
+          <div class="feedback"></div>
+        </div>
+        <!-- hết câu 5 -->
+      </div>
+    </div>
+
+    <script>
+      let score = 0;
+      let lastFocusedInput = null;
+
+      const clozeAnswers = [
+        ["aime", "aimes", "aime", "aimons", "aimez", "aiment"],
+        ["le"],
+        ["la", "le"],
+        ["les", "l'"],
+        ["le"],
+      ];
+
+      const maxScore = clozeAnswers.flat().length; // 16 câu đơn + 13 chỗ trống = 29 điểm
+
+      const feedbackExplanations = {
+        1: "Chính xác!",
+        2: "Chính xác!",
+        3: "Chính xác!",
+        4: "Chính xác!",
+        5: "Chính xác!",
+      };
+    </script>
+    <script src="../javascripts/fill-gap.js"></script>
+  </body>
+</html>
